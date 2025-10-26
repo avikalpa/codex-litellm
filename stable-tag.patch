@@ -1,0 +1,2474 @@
+diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
+index a2e49fc50..0358bad0c 100644
+--- a/codex-rs/Cargo.lock
++++ b/codex-rs/Cargo.lock
+@@ -178,7 +178,7 @@ checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
+ 
+ [[package]]
+ name = "app_test_support"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+@@ -822,7 +822,7 @@ checksum = "e9b18233253483ce2f65329a24072ec414db782531bdbb7d0bbc4bd2ce6b7e21"
+ 
+ [[package]]
+ name = "codex-ansi-escape"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "ansi-to-tui",
+  "ratatui",
+@@ -831,7 +831,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-app-server"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "app_test_support",
+@@ -865,7 +865,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-app-server-protocol"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "clap",
+@@ -882,7 +882,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-apply-patch"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+@@ -897,7 +897,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-arg0"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "codex-apply-patch",
+@@ -910,7 +910,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-async-utils"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "async-trait",
+  "pretty_assertions",
+@@ -934,7 +934,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-backend-openapi-models"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "serde",
+  "serde_json",
+@@ -943,7 +943,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-chatgpt"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "clap",
+@@ -958,7 +958,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-cli"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+@@ -994,7 +994,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-cloud-tasks"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "async-trait",
+@@ -1020,7 +1020,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-cloud-tasks-client"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "async-trait",
+@@ -1035,7 +1035,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-common"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "clap",
+  "codex-app-server-protocol",
+@@ -1047,7 +1047,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-core"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "askama",
+@@ -1119,7 +1119,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-exec"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+@@ -1152,7 +1152,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-execpolicy"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "allocative",
+  "anyhow",
+@@ -1172,7 +1172,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-feedback"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "codex-protocol",
+@@ -1183,7 +1183,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-file-search"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "clap",
+@@ -1196,7 +1196,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-git-apply"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "once_cell",
+  "regex",
+@@ -1205,7 +1205,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-git-tooling"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "assert_matches",
+  "pretty_assertions",
+@@ -1216,7 +1216,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-linux-sandbox"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "clap",
+  "codex-core",
+@@ -1229,7 +1229,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-login"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "base64",
+@@ -1253,7 +1253,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-mcp-server"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+@@ -1280,7 +1280,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-ollama"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "assert_matches",
+  "async-stream",
+@@ -1296,7 +1296,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-otel"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "chrono",
+  "codex-app-server-protocol",
+@@ -1317,14 +1317,14 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-process-hardening"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "libc",
+ ]
+ 
+ [[package]]
+ name = "codex-protocol"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "base64",
+@@ -1347,7 +1347,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-protocol-ts"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "clap",
+@@ -1357,7 +1357,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-responses-api-proxy"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "clap",
+@@ -1373,7 +1373,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-rmcp-client"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "axum",
+@@ -1401,7 +1401,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-stdio-to-uds"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+@@ -1412,7 +1412,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-tui"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "arboard",
+@@ -1475,7 +1475,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-utils-json-to-toml"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "pretty_assertions",
+  "serde_json",
+@@ -1484,7 +1484,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-utils-pty"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "portable-pty",
+@@ -1493,7 +1493,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-utils-readiness"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "assert_matches",
+  "async-trait",
+@@ -1504,11 +1504,11 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-utils-string"
+-version = "0.0.0"
++version = "0.49.0"
+ 
+ [[package]]
+ name = "codex-utils-tokenizer"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "pretty_assertions",
+@@ -1631,7 +1631,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+ 
+ [[package]]
+ name = "core_test_support"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+@@ -3609,7 +3609,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
+ 
+ [[package]]
+ name = "mcp-types"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "schemars 0.8.22",
+  "serde",
+@@ -3619,7 +3619,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "mcp_test_support"
+-version = "0.0.0"
++version = "0.49.0"
+ dependencies = [
+  "anyhow",
+  "assert_cmd",
+diff --git a/codex-rs/Cargo.toml b/codex-rs/Cargo.toml
+index df029c92c..0249a4f5b 100644
+--- a/codex-rs/Cargo.toml
++++ b/codex-rs/Cargo.toml
+@@ -79,7 +79,6 @@ codex-stdio-to-uds = { path = "stdio-to-uds" }
+ codex-tui = { path = "tui" }
+ codex-utils-json-to-toml = { path = "utils/json-to-toml" }
+ codex-utils-pty = { path = "utils/pty" }
+-codex-utils-readiness = { path = "utils/readiness" }
+ codex-utils-string = { path = "utils/string" }
+ codex-utils-tokenizer = { path = "utils/tokenizer" }
+ core_test_support = { path = "core/tests/common" }
+@@ -157,7 +156,6 @@ reqwest = "0.12"
+ rmcp = { version = "0.8.3", default-features = false }
+ schemars = "0.8.22"
+ seccompiler = "0.5.0"
+-sentry = "0.34.0"
+ serde = "1"
+ serde_json = "1"
+ serde_with = "3.14"
+diff --git a/codex-rs/core/prompt.md b/codex-rs/core/prompt.md
+index e4590c386..6d6a5921a 100644
+--- a/codex-rs/core/prompt.md
++++ b/codex-rs/core/prompt.md
+@@ -129,6 +129,7 @@ You MUST adhere to the following criteria when solving queries:
+ - Working on the repo(s) in the current environment is allowed, even if they are proprietary.
+ - Analyzing code for vulnerabilities is allowed.
+ - Showing user code and tool call details is allowed.
++- After tools finish, always send a clear assistant message that answers the user’s request (summarize findings, decisions, or next steps). Do not end a turn on raw reasoning snippets or tool output alone.
+ - Use the `apply_patch` tool to edit files (NEVER try `applypatch` or `apply-patch`, only `apply_patch`): {"command":["apply_patch","*** Begin Patch\\n*** Update File: path/to/file.py\\n@@ def example():\\n- pass\\n+ return 123\\n*** End Patch"]}
+ 
+ If completing the user's task requires writing or modifying files, your code and final answer should follow these coding guidelines, though user instructions (i.e. AGENTS.md) may override these guidelines:
+diff --git a/codex-rs/core/src/chat_completions.rs b/codex-rs/core/src/chat_completions.rs
+index ac1d7f9cf..7855335cb 100644
+--- a/codex-rs/core/src/chat_completions.rs
++++ b/codex-rs/core/src/chat_completions.rs
+@@ -1,6 +1,5 @@
+ use std::time::Duration;
+ 
+-use crate::ModelProviderInfo;
+ use crate::client_common::Prompt;
+ use crate::client_common::ResponseEvent;
+ use crate::client_common::ResponseStream;
+@@ -12,6 +11,7 @@ use crate::error::Result;
+ use crate::error::RetryLimitReachedError;
+ use crate::error::UnexpectedResponseError;
+ use crate::model_family::ModelFamily;
++use crate::model_provider_info::{ModelProviderInfo, StreamFormat};
+ use crate::tools::spec::create_tools_json_for_chat_completions_api;
+ use crate::util::backoff;
+ use bytes::Bytes;
+@@ -24,6 +24,7 @@ use futures::Stream;
+ use futures::StreamExt;
+ use futures::TryStreamExt;
+ use reqwest::StatusCode;
++use serde_json::Value;
+ use serde_json::json;
+ use std::pin::Pin;
+ use std::task::Context;
+@@ -32,6 +33,7 @@ use tokio::sync::mpsc;
+ use tokio::time::timeout;
+ use tracing::debug;
+ use tracing::trace;
++use uuid::Uuid;
+ 
+ /// Implementation for the classic Chat Completions API.
+ pub(crate) async fn stream_chat_completions(
+@@ -280,13 +282,28 @@ pub(crate) async fn stream_chat_completions(
+     }
+ 
+     let tools_json = create_tools_json_for_chat_completions_api(&prompt.tools)?;
+-    let payload = json!({
++    let mut payload = json!({
+         "model": model_family.slug,
+         "messages": messages,
+         "stream": true,
+         "tools": tools_json,
+     });
+ 
++    if let Some(extra) = provider.chat_completion_parameters.as_ref() {
++        merge_json_objects(&mut payload, extra);
++    }
++
++    if matches!(provider.stream_format, StreamFormat::LiteLLM) {
++        if let Some(obj) = payload.as_object_mut() {
++            obj.insert("stream".to_string(), Value::Bool(false));
++        }
++    }
++
++    let stream_requested = payload
++        .get("stream")
++        .and_then(|v| v.as_bool())
++        .unwrap_or(true);
++
+     debug!(
+         "POST to {}: {}",
+         provider.get_full_url(&None),
+@@ -299,31 +316,261 @@ pub(crate) async fn stream_chat_completions(
+         attempt += 1;
+ 
+         let req_builder = provider.create_request_builder(client, &None).await?;
++        let req_builder = if matches!(provider.stream_format, StreamFormat::OpenAI) {
++            req_builder.header(reqwest::header::ACCEPT, "text/event-stream")
++        } else {
++            req_builder
++        };
+ 
+         let res = otel_event_manager
+-            .log_request(attempt, || {
+-                req_builder
+-                    .header(reqwest::header::ACCEPT, "text/event-stream")
+-                    .json(&payload)
+-                    .send()
+-            })
++            .log_request(attempt, || req_builder.json(&payload).send())
+             .await;
+ 
+         match res {
+             Ok(resp) if resp.status().is_success() => {
+                 let (tx_event, rx_event) = mpsc::channel::<Result<ResponseEvent>>(1600);
+-                let stream = resp.bytes_stream().map_err(|e| {
+-                    CodexErr::ResponseStreamFailed(ResponseStreamFailed {
+-                        source: e,
+-                        request_id: None,
+-                    })
+-                });
+-                tokio::spawn(process_chat_sse(
+-                    stream,
+-                    tx_event,
+-                    provider.stream_idle_timeout(),
+-                    otel_event_manager.clone(),
+-                ));
++
++                match provider.stream_format {
++                    StreamFormat::LiteLLM if !stream_requested => {
++                        tokio::spawn(process_litellm_non_stream_response(resp, tx_event));
++                    }
++                    StreamFormat::LiteLLM => {
++                        tokio::spawn(async move {
++                            let mut stream = resp.bytes_stream();
++                            while let Some(chunk) = stream.next().await {
++                                match chunk {
++                                    Ok(bytes) => {
++                                        let s = String::from_utf8_lossy(&bytes);
++                                        for line in s.lines() {
++                                            if line.starts_with("data:") {
++                                                let data = &line[5..].trim();
++                                                tracing::debug!(%data, "litellm sse line");
++                                                if *data == "[DONE]" {
++                                                    let _ = tx_event
++                                                        .send(Ok(ResponseEvent::Completed {
++                                                            response_id: "litellm-response"
++                                                                .to_string(),
++                                                            token_usage: None,
++                                                        }))
++                                                        .await;
++                                                    return;
++                                                }
++                                                if let Ok(value) =
++                                                    serde_json::from_str::<serde_json::Value>(data)
++                                                {
++                                                    tracing::debug!(json = %value, "litellm parsed chunk");
++                                                    if let Some(choices) = value
++                                                        .get("choices")
++                                                        .and_then(|c| c.as_array())
++                                                    {
++                                                        for choice in choices {
++                                                            if let Some(finish_reason) = choice
++                                                                .get("finish_reason")
++                                                                .and_then(|fr| fr.as_str())
++                                                            {
++                                                                tracing::debug!(
++                                                                    finish_reason,
++                                                                    choice = %choice,
++                                                                    "litellm finish_reason encountered"
++                                                                );
++                                                                if finish_reason != "null" {
++                                                                    let _ = tx_event.send(Ok(ResponseEvent::Completed {
++                                                                        response_id: "litellm-response".to_string(),
++                                                                        token_usage: None,
++                                                                    })).await;
++                                                                    return;
++                                                                }
++                                                            }
++                                                            if let Some(delta) = choice.get("delta")
++                                                            {
++                                                                if let Some(content) = delta
++                                                                    .get("content")
++                                                                    .and_then(|c| c.as_str())
++                                                                {
++                                                                    tracing::debug!(
++                                                                        content,
++                                                                        "litellm text delta"
++                                                                    );
++                                                                    let _ = tx_event.send(Ok(ResponseEvent::OutputTextDelta(content.to_string()))).await;
++                                                                }
++                                                                if let Some(reasoning_val) =
++                                                                    delta.get("reasoning_content")
++                                                                {
++                                                                    match reasoning_val {
++                                                                        serde_json::Value::String(
++                                                                            s,
++                                                                        ) => {
++                                                                            if !s.is_empty() {
++                                                                                let _ = tx_event
++                                                                                    .send(Ok(
++                                                                                        ResponseEvent::ReasoningContentDelta(
++                                                                                            s.clone(),
++                                                                                        ),
++                                                                                    ))
++                                                                                    .await;
++                                                                            }
++                                                                        }
++                                                                        serde_json::Value::Array(
++                                                                            entries,
++                                                                        ) => {
++                                                                            for entry in entries {
++                                                                                if let Some(text) =
++                                                                                    entry
++                                                                                        .get("text")
++                                                                                        .and_then(
++                                                                                            |t| {
++                                                                                                t.as_str()
++                                                                                            },
++                                                                                        )
++                                                                                        .filter(|s| !s.is_empty())
++                                                                                {
++                                                                                    let _ =
++                                                                                        tx_event
++                                                                                            .send(Ok(ResponseEvent::ReasoningContentDelta(text.to_string())))
++                                                                                            .await;
++                                                                                }
++                                                                            }
++                                                                        }
++                                                                        _ => {}
++                                                                    }
++                                                                }
++                                                                if let Some(tool_calls) = delta
++                                                                    .get("tool_calls")
++                                                                    .and_then(|tc| tc.as_array())
++                                                                {
++                                                                    for tool_call in tool_calls {
++                                                                        if let Some(function) =
++                                                                            tool_call
++                                                                                .get("function")
++                                                                        {
++                                                                            let _ = tx_event.send(Ok(ResponseEvent::OutputItemDone(
++                                                                                ResponseItem::FunctionCall {
++                                                                                    id: None,
++                                                                                    name: function.get("name").and_then(|n| n.as_str()).unwrap_or("").to_string(),
++                                                                                    arguments: function.get("arguments").and_then(|a| a.as_str()).unwrap_or("").to_string(),
++                                                                                    call_id: tool_call.get("id").and_then(|i| i.as_str()).unwrap_or("").to_string(),
++                                                                                },
++                                                                            ))).await;
++                                                                        }
++                                                                    }
++                                                                }
++                                                            }
++
++                                                            if let Some(message) =
++                                                                choice.get("message")
++                                                            {
++                                                                tracing::debug!(message = %message, "litellm message object");
++                                                                if let Some(content_array) = message
++                                                                    .get("content")
++                                                                    .and_then(|c| c.as_array())
++                                                                {
++                                                                    for entry in content_array {
++                                                                        if let Some(type_val) =
++                                                                            entry
++                                                                                .get("type")
++                                                                                .and_then(|t| {
++                                                                                    t.as_str()
++                                                                                })
++                                                                        {
++                                                                            if type_val == "text" {
++                                                                                if let Some(text) = entry.get("text").and_then(|t| t.as_str()) {
++                                                                                    tracing::debug!(text, "litellm message text content");
++                                                                                    let item = ResponseItem::Message {
++                                                                                        role: message
++                                                                                            .get("role")
++                                                                                            .and_then(|r| r.as_str())
++                                                                                            .unwrap_or("assistant")
++                                                                                            .to_string(),
++                                                                                        content: vec![ContentItem::OutputText {
++                                                                                            text: text.to_string(),
++                                                                                        }],
++                                                                                        id: None,
++                                                                                    };
++                                                                                    let _ = tx_event
++                                                                                        .send(Ok(
++                                                                                            ResponseEvent::OutputItemDone(
++                                                                                                item,
++                                                                                            ),
++                                                                                        ))
++                                                                                        .await;
++                                                                                }
++                                                                            }
++                                                                        }
++                                                                    }
++                                                                }
++
++                                                                if let Some(reasoning_val) = message
++                                                                    .get("reasoning")
++                                                                    .or_else(|| {
++                                                                        message.get(
++                                                                            "reasoning_content",
++                                                                        )
++                                                                    })
++                                                                {
++                                                                    let maybe_text = reasoning_val
++                                                                        .as_str()
++                                                                        .map(str::to_string)
++                                                                        .and_then(|s| {
++                                                                            if s.is_empty() {
++                                                                                None
++                                                                            } else {
++                                                                                Some(s)
++                                                                            }
++                                                                        })
++                                                                        .or_else(|| {
++                                                                            reasoning_val.as_object().and_then(|obj| {
++                                                                                obj.get("text")
++                                                                                    .and_then(|t| t.as_str())
++                                                                                    .or_else(|| obj.get("content").and_then(|t| t.as_str()))
++                                                                                    .filter(|s| !s.is_empty())
++                                                                                    .map(str::to_string)
++                                                                            })
++                                                                        });
++
++                                                                    if let Some(text) = maybe_text {
++                                                                        let _ = tx_event
++                                                                            .send(Ok(ResponseEvent::ReasoningContentDelta(text)))
++                                                                            .await;
++                                                                    }
++                                                                }
++                                                            }
++                                                        }
++                                                    }
++                                                }
++                                            }
++                                        }
++                                    }
++                                    Err(e) => {
++                                        let _ = tx_event
++                                            .send(Err(CodexErr::ResponseStreamFailed(
++                                                ResponseStreamFailed {
++                                                    source: e.into(),
++                                                    request_id: None,
++                                                },
++                                            )))
++                                            .await;
++                                        return;
++                                    }
++                                }
++                            }
++                        });
++                    }
++                    StreamFormat::OpenAI => {
++                        let stream = resp.bytes_stream().map_err(|e| {
++                            CodexErr::ResponseStreamFailed(ResponseStreamFailed {
++                                source: e,
++                                request_id: None,
++                            })
++                        });
++                        tokio::spawn(process_chat_sse(
++                            stream,
++                            tx_event,
++                            provider.stream_idle_timeout(),
++                            otel_event_manager.clone(),
++                        ));
++                    }
++                }
++
+                 return Ok(ResponseStream { rx_event });
+             }
+             Ok(res) => {
+@@ -368,6 +615,415 @@ pub(crate) async fn stream_chat_completions(
+     }
+ }
+ 
++fn merge_json_objects(target: &mut Value, extra: &Value) {
++    use serde_json::Map;
++
++    match (target, extra) {
++        (Value::Object(target_map), Value::Object(extra_map)) => {
++            for (key, extra_value) in extra_map {
++                match extra_value {
++                    Value::Object(_) => {
++                        let entry = target_map
++                            .entry(key.clone())
++                            .or_insert_with(|| Value::Object(Map::new()));
++                        merge_json_objects(entry, extra_value);
++                    }
++                    _ => {
++                        target_map.insert(key.clone(), extra_value.clone());
++                    }
++                }
++            }
++        }
++        _ => {}
++    }
++}
++
++fn collect_reasoning_strings(value: &Value, acc: &mut Vec<String>) {
++    match value {
++        Value::String(s) => {
++            if !s.is_empty() {
++                acc.push(s.to_string());
++            }
++        }
++        Value::Array(entries) => {
++            for entry in entries {
++                collect_reasoning_strings(entry, acc);
++            }
++        }
++        Value::Object(obj) => {
++            if let Some(s) = obj
++                .get("text")
++                .and_then(|v| v.as_str())
++                .or_else(|| obj.get("content").and_then(|v| v.as_str()))
++            {
++                if !s.is_empty() {
++                    acc.push(s.to_string());
++                }
++            }
++        }
++        _ => {}
++    }
++}
++
++#[derive(Debug)]
++struct AutopRunCall {
++    function: String,
++    arguments: Value,
++}
++
++fn parse_autop_run(text: &str) -> Option<(AutopRunCall, usize)> {
++    const PREFIX: &str = "<|start|>assistant<|channel|>";
++    const MESSAGE_MARKER: &str = "<|message|>";
++    const CALL_SUFFIX: &str = "<|call|>";
++
++    let leading_ws = text.len() - text.trim_start().len();
++    let trimmed = &text[leading_ws..];
++    if !trimmed.starts_with(PREFIX) {
++        return None;
++    }
++
++    let rest = &trimmed[PREFIX.len()..];
++    let message_idx = rest.find(MESSAGE_MARKER)?;
++    let header = rest[..message_idx].trim();
++    let after_header = &rest[message_idx + MESSAGE_MARKER.len()..];
++    let payload_end = after_header.find(CALL_SUFFIX)?;
++    let payload = after_header[..payload_end].trim();
++
++    let to_idx = header.find("to=")?;
++    let target = header[to_idx + 3..].split_whitespace().next()?;
++    let function = target.split('.').last().unwrap_or(target).to_string();
++
++    let arguments: Value = serde_json::from_str(payload).ok()?;
++
++    let consumed = leading_ws
++        + PREFIX.len()
++        + message_idx
++        + MESSAGE_MARKER.len()
++        + payload_end
++        + CALL_SUFFIX.len();
++
++    Some((
++        AutopRunCall {
++            function,
++            arguments,
++        },
++        consumed,
++    ))
++}
++
++fn normalize_autop_run_arguments(call: &mut AutopRunCall) {
++    if call.function == "shell" {
++        if let Some(obj) = call.arguments.as_object_mut() {
++            if let Some(timeout) = obj.remove("timeout") {
++                obj.entry("timeout_ms".to_string()).or_insert(timeout);
++            }
++            obj.entry("workdir".to_string())
++                .or_insert_with(|| Value::String(".".to_string()));
++            if let Some(Value::Array(cmds)) = obj.get_mut("command") {
++                if cmds.len() >= 3
++                    && cmds
++                        .get(0)
++                        .and_then(|v| v.as_str())
++                        .map(|s| s == "bash")
++                        .unwrap_or(false)
++                    && cmds
++                        .get(1)
++                        .and_then(|v| v.as_str())
++                        .map(|s| s == "-lc")
++                        .unwrap_or(false)
++                {
++                    if let Some(Value::String(script)) = cmds.get_mut(2) {
++                        let updated = sanitize_autop_run_command(script);
++                        if updated != *script {
++                            tracing::debug!(
++                                original = %script,
++                                sanitized = %updated,
++                                "sanitized autop-run shell command"
++                            );
++                        }
++                        *script = updated;
++                    }
++                }
++            }
++        }
++    }
++}
++
++async fn strip_and_emit_autop_runs(
++    tx_event: &mpsc::Sender<Result<ResponseEvent>>,
++    text: &str,
++) -> String {
++    const PREFIX: &str = "<|start|>assistant<|channel|>";
++    let mut cursor = 0usize;
++    let mut cleaned = String::new();
++    while let Some(rel_start) = text[cursor..].find(PREFIX) {
++        let start = cursor + rel_start;
++        cleaned.push_str(&text[cursor..start]);
++
++        let slice = &text[start..];
++        if let Some((mut call, consumed)) = parse_autop_run(slice) {
++            normalize_autop_run_arguments(&mut call);
++            if let Ok(arguments) = serde_json::to_string(&call.arguments) {
++                let call_id = format!("autop-run-{}", Uuid::now_v7());
++                let event = ResponseEvent::OutputItemDone(ResponseItem::FunctionCall {
++                    id: None,
++                    name: call.function,
++                    arguments,
++                    call_id,
++                });
++                let _ = tx_event.send(Ok(event)).await;
++            }
++
++            cursor = start + consumed;
++
++            // Skip any immediate whitespace following the autop-run envelope so the
++            // cleaned text does not retain empty lines.
++            while cursor < text.len() {
++                let ch = text[cursor..].chars().next().unwrap();
++                if ch.is_whitespace() {
++                    cursor += ch.len_utf8();
++                } else {
++                    break;
++                }
++            }
++        } else {
++            // Could not parse the sequence – copy the remainder verbatim to avoid
++            // dropping content and exit the loop to prevent infinite scanning.
++            cleaned.push_str(&text[start..]);
++            cursor = text.len();
++        }
++    }
++
++    if cursor < text.len() {
++        cleaned.push_str(&text[cursor..]);
++    }
++
++    cleaned
++}
++
++fn sanitize_autop_run_command(command: &str) -> String {
++    let mut updated = command.to_string();
++    let exclude_dirs = [
++        ".git", ".rustup", ".cargo", ".codex", ".npm", ".cache", ".local", ".venv",
++    ];
++
++    if (updated.contains("grep -R") || updated.contains("grep -r"))
++        && !updated.contains("--exclude-dir")
++    {
++        if let Some(idx) = find_command_idx(&updated, "grep") {
++            let mut injection = String::from("grep");
++            for dir in &exclude_dirs {
++                injection.push_str(&format!(" --exclude-dir={dir}"));
++            }
++            let mut rebuilt = String::new();
++            rebuilt.push_str(&updated[..idx]);
++            rebuilt.push_str(&injection);
++            rebuilt.push_str(&updated[idx + 4..]);
++            updated = rebuilt;
++        }
++    }
++
++    if updated.contains("find . -type f") && !updated.contains("-prune") {
++        let mut exclude = String::from("find . \\( ");
++        for (idx, dir) in exclude_dirs.iter().enumerate() {
++            if idx > 0 {
++                exclude.push_str(" -o ");
++            }
++            exclude.push_str(&format!("-path './{dir}'"));
++        }
++        exclude.push_str(" \\) -prune -o -type f");
++        updated = updated.replacen("find . -type f", &exclude, 1);
++    }
++
++    updated
++}
++
++fn find_command_idx(command: &str, needle: &str) -> Option<usize> {
++    let bytes = command.as_bytes();
++    let needle_bytes = needle.as_bytes();
++    'outer: for i in 0..=bytes.len().saturating_sub(needle_bytes.len()) {
++        if &bytes[i..i + needle_bytes.len()] == needle_bytes {
++            if i > 0 {
++                let prev = bytes[i - 1] as char;
++                if prev.is_alphanumeric() || prev == '_' {
++                    continue 'outer;
++                }
++            }
++            return Some(i);
++        }
++    }
++    None
++}
++
++async fn process_litellm_non_stream_response(
++    resp: reqwest::Response,
++    tx_event: mpsc::Sender<Result<ResponseEvent>>,
++) {
++    match resp.bytes().await {
++        Ok(body) => {
++            tracing::debug!(
++                response = %String::from_utf8_lossy(&body),
++                "litellm non-stream response body"
++            );
++            match serde_json::from_slice::<serde_json::Value>(&body) {
++                Ok(full_value) => {
++                    if let Some(choices) = full_value.get("choices").and_then(|c| c.as_array()) {
++                        for choice in choices {
++                            if let Some(message) = choice.get("message") {
++                                if let Some(tool_calls) =
++                                    message.get("tool_calls").and_then(|tc| tc.as_array())
++                                {
++                                    for tool_call in tool_calls {
++                                        if tool_call.get("type").and_then(|t| t.as_str())
++                                            == Some("function")
++                                        {
++                                            if let Some(function) = tool_call.get("function") {
++                                                let _ = tx_event
++                                                    .send(Ok(ResponseEvent::OutputItemDone(
++                                                        ResponseItem::FunctionCall {
++                                                            id: None,
++                                                            name: function
++                                                                .get("name")
++                                                                .and_then(|n| n.as_str())
++                                                                .unwrap_or("")
++                                                                .to_string(),
++                                                            arguments: function
++                                                                .get("arguments")
++                                                                .and_then(|a| a.as_str())
++                                                                .unwrap_or("")
++                                                                .to_string(),
++                                                            call_id: tool_call
++                                                                .get("id")
++                                                                .and_then(|i| i.as_str())
++                                                                .unwrap_or("")
++                                                                .to_string(),
++                                                        },
++                                                    )))
++                                                    .await;
++                                            }
++                                        }
++                                    }
++                                }
++
++                                let mut aggregated_text = String::new();
++                                match message.get("content") {
++                                    Some(Value::String(s)) => {
++                                        let cleaned = strip_and_emit_autop_runs(&tx_event, s).await;
++                                        aggregated_text.push_str(&cleaned);
++                                    }
++                                    Some(Value::Array(entries)) => {
++                                        for entry in entries {
++                                            if let Some(entry_type) =
++                                                entry.get("type").and_then(|v| v.as_str())
++                                            {
++                                                if entry_type == "text" {
++                                                    if let Some(text) =
++                                                        entry.get("text").and_then(|t| t.as_str())
++                                                    {
++                                                        let cleaned = strip_and_emit_autop_runs(
++                                                            &tx_event, text,
++                                                        )
++                                                        .await;
++                                                        aggregated_text.push_str(&cleaned);
++                                                    }
++                                                }
++                                            }
++                                        }
++                                    }
++                                    Some(Value::Object(obj)) => {
++                                        if let Some(text) = obj.get("text").and_then(|t| t.as_str())
++                                        {
++                                            let cleaned =
++                                                strip_and_emit_autop_runs(&tx_event, text).await;
++                                            aggregated_text.push_str(&cleaned);
++                                        }
++                                    }
++                                    _ => {}
++                                }
++
++                                let trimmed_text = aggregated_text.trim();
++                                if !trimmed_text.is_empty() {
++                                    let role = message
++                                        .get("role")
++                                        .and_then(|r| r.as_str())
++                                        .unwrap_or("assistant")
++                                        .to_string();
++                                    let item = ResponseItem::Message {
++                                        role,
++                                        content: vec![ContentItem::OutputText {
++                                            text: trimmed_text.to_string(),
++                                        }],
++                                        id: None,
++                                    };
++                                    let _ = tx_event
++                                        .send(Ok(ResponseEvent::OutputItemDone(item)))
++                                        .await;
++                                }
++
++                                aggregated_text.clear();
++
++                                if let Some(reasoning_val) = message
++                                    .get("reasoning")
++                                    .or_else(|| message.get("reasoning_content"))
++                                {
++                                    let mut reasoning_chunks = Vec::new();
++                                    collect_reasoning_strings(reasoning_val, &mut reasoning_chunks);
++                                    for chunk in reasoning_chunks {
++                                        if !chunk.is_empty() {
++                                            let _ = tx_event
++                                                .send(Ok(ResponseEvent::ReasoningContentDelta(
++                                                    chunk,
++                                                )))
++                                                .await;
++                                        }
++                                    }
++                                }
++                            }
++
++                            if let Some(reasoning_val) = choice.get("reasoning_content") {
++                                let mut reasoning_chunks = Vec::new();
++                                collect_reasoning_strings(reasoning_val, &mut reasoning_chunks);
++                                for chunk in reasoning_chunks {
++                                    if !chunk.is_empty() {
++                                        let _ = tx_event
++                                            .send(Ok(ResponseEvent::ReasoningContentDelta(chunk)))
++                                            .await;
++                                    }
++                                }
++                            }
++                        }
++                    }
++
++                    let response_id = full_value
++                        .get("id")
++                        .and_then(|v| v.as_str())
++                        .unwrap_or("litellm-response")
++                        .to_string();
++                    let _ = tx_event
++                        .send(Ok(ResponseEvent::Completed {
++                            response_id,
++                            token_usage: None,
++                        }))
++                        .await;
++                }
++                Err(err) => {
++                    let _ = tx_event
++                        .send(Err(CodexErr::Stream(err.to_string(), None)))
++                        .await;
++                }
++            }
++        }
++        Err(err) => {
++            let _ = tx_event
++                .send(Err(CodexErr::ResponseStreamFailed(ResponseStreamFailed {
++                    source: err.into(),
++                    request_id: None,
++                })))
++                .await;
++        }
++    }
++}
++
+ /// Lightweight SSE processor for the Chat Completions streaming format. The
+ /// output is mapped onto Codex's internal [`ResponseEvent`] so that the rest
+ /// of the pipeline can stay agnostic of the underlying wire format.
+diff --git a/codex-rs/core/src/client.rs b/codex-rs/core/src/client.rs
+index de10d6406..1e9d350db 100644
+--- a/codex-rs/core/src/client.rs
++++ b/codex-rs/core/src/client.rs
+@@ -12,6 +12,8 @@ use codex_otel::otel_event_manager::OtelEventManager;
+ use codex_protocol::ConversationId;
+ use codex_protocol::config_types::ReasoningEffort as ReasoningEffortConfig;
+ use codex_protocol::config_types::ReasoningSummary as ReasoningSummaryConfig;
++use codex_protocol::models::ContentItem;
++use codex_protocol::models::ReasoningItemContent;
+ use codex_protocol::models::ResponseItem;
+ use eventsource_stream::Eventsource;
+ use futures::prelude::*;
+@@ -150,37 +152,146 @@ impl ModelClient {
+         match self.provider.wire_api {
+             WireApi::Responses => self.stream_responses(prompt, task_kind).await,
+             WireApi::Chat => {
+-                // Create the raw streaming connection first.
+-                let response_stream = stream_chat_completions(
+-                    prompt,
+-                    &self.config.model_family,
+-                    &self.client,
+-                    &self.provider,
+-                    &self.otel_event_manager,
+-                )
+-                .await?;
+-
+-                // Wrap it with the aggregation adapter so callers see *only*
+-                // the final assistant message per turn (matching the
+-                // behaviour of the Responses API).
+-                let mut aggregated = if self.config.show_raw_agent_reasoning {
+-                    crate::chat_completions::AggregatedChatStream::streaming_mode(response_stream)
+-                } else {
+-                    response_stream.aggregate()
+-                };
++                let prompt_clone = prompt.clone();
++                let model_family_clone = self.config.model_family.clone();
++                let client_clone = self.client.clone();
++                let provider_clone = self.provider.clone();
++                let otel_clone = self.otel_event_manager.clone();
++                let show_raw_reasoning = self.config.show_raw_agent_reasoning;
+ 
+-                // Bridge the aggregated stream back into a standard
+-                // `ResponseStream` by forwarding events through a channel.
+                 let (tx, rx) = mpsc::channel::<Result<ResponseEvent>>(16);
+ 
+                 tokio::spawn(async move {
+                     use futures::StreamExt;
++
++                    let response_stream = match stream_chat_completions(
++                        &prompt_clone,
++                        &model_family_clone,
++                        &client_clone,
++                        &provider_clone,
++                        &otel_clone,
++                    )
++                    .await
++                    {
++                        Ok(stream) => stream,
++                        Err(err) => {
++                            let _ = tx.send(Err(err)).await;
++                            return;
++                        }
++                    };
++
++                    let mut aggregated = if show_raw_reasoning {
++                        crate::chat_completions::AggregatedChatStream::streaming_mode(
++                            response_stream,
++                        )
++                    } else {
++                        response_stream.aggregate()
++                    };
++
++                    let mut saw_assistant_message = false;
++                    let mut last_command: Option<String> = None;
++                    let mut tool_outputs: Vec<String> = Vec::new();
++                    let mut reasoning_snippets: Vec<String> = Vec::new();
++                    let mut pending_completed: Option<Result<ResponseEvent>> = None;
++
+                     while let Some(ev) = aggregated.next().await {
+-                        // Exit early if receiver hung up.
+-                        if tx.send(ev).await.is_err() {
+-                            break;
++                        match &ev {
++                            Ok(ResponseEvent::OutputItemDone(ResponseItem::Message { .. })) => {
++                                saw_assistant_message = true;
++                                if tx.send(ev).await.is_err() {
++                                    return;
++                                }
++                            }
++                            Ok(ResponseEvent::OutputItemDone(ResponseItem::FunctionCall {
++                                name,
++                                arguments,
++                                ..
++                            })) => {
++                                if let Some(cmd) = extract_shell_command(name, arguments) {
++                                    last_command = Some(cmd);
++                                }
++                                if tx.send(ev).await.is_err() {
++                                    return;
++                                }
++                            }
++                            Ok(ResponseEvent::OutputItemDone(
++                                ResponseItem::FunctionCallOutput { output, .. },
++                            )) => {
++                                tool_outputs.push(output.content.clone());
++                                if tx.send(ev).await.is_err() {
++                                    return;
++                                }
++                            }
++                            Ok(ResponseEvent::OutputItemDone(ResponseItem::Reasoning {
++                                content: Some(items),
++                                ..
++                            })) => {
++                                for item in items.iter() {
++                                    match item {
++                                        ReasoningItemContent::ReasoningText { text }
++                                        | ReasoningItemContent::Text { text } => {
++                                            reasoning_snippets.push(text.clone());
++                                        }
++                                    }
++                                }
++                                if tx.send(ev).await.is_err() {
++                                    return;
++                                }
++                            }
++                            Ok(ResponseEvent::Completed { .. }) => {
++                                pending_completed = Some(ev);
++                                break;
++                            }
++                            _ => {
++                                if tx.send(ev).await.is_err() {
++                                    return;
++                                }
++                            }
+                         }
+                     }
++
++                    let awaiting_tool_output = last_command.is_some() && tool_outputs.is_empty();
++                    let produced_tool_result = !tool_outputs.is_empty();
++                    let stream_incomplete = pending_completed.is_none();
++                    let needs_retry =
++                        (!saw_assistant_message && !awaiting_tool_output && !produced_tool_result)
++                            || (stream_incomplete && !produced_tool_result);
++
++                    if needs_retry {
++                        if stream_incomplete {
++                            tracing::warn!(
++                                "chat completion stream ended without a Completed event"
++                            );
++                        }
++                        if !produced_tool_result && reasoning_snippets.is_empty() {
++                            if let Some(text) = synthesize_fallback_response(
++                                last_command.as_deref(),
++                                &tool_outputs,
++                                &reasoning_snippets,
++                            ) {
++                                let fallback_event =
++                                    ResponseEvent::OutputItemDone(ResponseItem::Message {
++                                        role: "assistant".to_string(),
++                                        content: vec![ContentItem::OutputText { text }],
++                                        id: None,
++                                    });
++                                if tx.send(Ok(fallback_event)).await.is_err() {
++                                    return;
++                                }
++                            }
++                        }
++                    }
++
++                    if let Some(ev) = pending_completed {
++                        let _ = tx.send(ev).await;
++                    } else {
++                        let _ = tx
++                            .send(Ok(ResponseEvent::Completed {
++                                response_id: String::new(),
++                                token_usage: None,
++                            }))
++                            .await;
++                    }
+                 });
+ 
+                 Ok(ResponseStream { rx_event: rx })
+@@ -487,6 +598,114 @@ impl ModelClient {
+     }
+ }
+ 
++fn extract_shell_command(name: &str, arguments: &str) -> Option<String> {
++    if name != "shell" && name != "container.exec" {
++        return None;
++    }
++
++    let value: serde_json::Value = serde_json::from_str(arguments).ok()?;
++    let command = value.get("command")?.as_array()?;
++
++    let parts: Vec<&str> = command.iter().filter_map(|item| item.as_str()).collect();
++
++    if parts.is_empty() {
++        None
++    } else {
++        Some(parts.join(" "))
++    }
++}
++
++pub const FALLBACK_REASONING_MARKER: &str = "(This fallback summary was generated automatically because the model did not produce a final response.)";
++pub const FALLBACK_CONTEXT_MARKER: &str = "(This is surfaced so the user is not left without any context. Consider re-running the request.)";
++pub const FALLBACK_GENERIC_MESSAGE: &str = "The model ended the turn without returning a final response and no tool output was available. Please retry the command.";
++
++pub fn is_fallback_message(text: &str) -> bool {
++    text.contains(FALLBACK_REASONING_MARKER)
++        || text.contains(FALLBACK_CONTEXT_MARKER)
++        || text.trim() == FALLBACK_GENERIC_MESSAGE
++}
++
++fn synthesize_fallback_response(
++    last_command: Option<&str>,
++    tool_outputs: &[String],
++    reasoning_snippets: &[String],
++) -> Option<String> {
++    if let Some(output) = tool_outputs
++        .iter()
++        .rev()
++        .filter_map(|raw| parse_shell_output_summary(raw))
++        .next()
++    {
++        let mut message = String::new();
++        message.push_str("No assistant reply was returned by the model. Latest tool output");
++        if let Some(cmd) = last_command {
++            message.push_str(&format!(" for `{cmd}`"));
++        }
++        message.push_str(":\n");
++        message.push_str(&output);
++        message.push_str("\n\n");
++        message.push_str(FALLBACK_REASONING_MARKER);
++        return Some(message);
++    }
++
++    if let Some(reasoning) = reasoning_snippets
++        .iter()
++        .find(|text| !text.trim().is_empty())
++    {
++        let trimmed = trim_snippet(reasoning, 600);
++        let mut message = String::new();
++        message.push_str(
++            "The model ended the turn without a final answer, but provided the following reasoning:\n",
++        );
++        message.push_str(&trimmed);
++        message.push_str("\n\n");
++        message.push_str(FALLBACK_CONTEXT_MARKER);
++        return Some(message);
++    }
++
++    Some(
++        "The model ended the turn without returning a final response and no tool output was available. Please retry the command."
++            .to_string(),
++    )
++}
++
++fn parse_shell_output_summary(raw: &str) -> Option<String> {
++    if let Ok(value) = serde_json::from_str::<serde_json::Value>(raw) {
++        let exit_code = value
++            .get("metadata")
++            .and_then(|meta| meta.get("exit_code"))
++            .and_then(|code| code.as_i64());
++        let stdout = value
++            .get("output")
++            .and_then(|out| out.as_str())
++            .map(|s| trim_snippet(s, 600));
++
++        if stdout.is_some() || exit_code.is_some() {
++            let mut summary = String::new();
++            if let Some(code) = exit_code {
++                summary.push_str(&format!("Exit code: {code}\n"));
++            }
++            if let Some(text) = stdout {
++                summary.push_str(&text);
++            }
++            return Some(summary);
++        }
++    }
++
++    Some(trim_snippet(raw, 600))
++}
++
++fn trim_snippet(text: &str, limit: usize) -> String {
++    let trimmed = text.trim();
++    if trimmed.len() <= limit {
++        trimmed.to_string()
++    } else {
++        let mut snippet = trimmed[..limit].to_string();
++        snippet.push_str("…");
++        snippet
++    }
++}
++
+ enum StreamAttemptError {
+     RetryableHttpError {
+         status: StatusCode,
+diff --git a/codex-rs/core/src/config.rs b/codex-rs/core/src/config.rs
+index b04aba5db..1887d480d 100644
+--- a/codex-rs/core/src/config.rs
++++ b/codex-rs/core/src/config.rs
+@@ -1252,6 +1252,16 @@ impl Config {
+             model_providers.entry(key).or_insert(provider);
+         }
+ 
++        // HACK: Forcibly override stream_format for any provider pointing to the litellm endpoint.
++        // This works around a persistent and mysterious serde deserialization issue.
++        for provider in model_providers.values_mut() {
++            if let Some(base_url) = &provider.base_url {
++                if base_url.contains("llm.gour.top") {
++                    provider.stream_format = crate::model_provider_info::StreamFormat::LiteLLM;
++                }
++            }
++        }
++
+         let model_provider_id = model_provider
+             .or(config_profile.model_provider)
+             .or(cfg.model_provider)
+diff --git a/codex-rs/core/src/error.rs b/codex-rs/core/src/error.rs
+index 0901e426a..a21a0ea07 100644
+--- a/codex-rs/core/src/error.rs
++++ b/codex-rs/core/src/error.rs
+@@ -84,6 +84,9 @@ pub enum CodexErr {
+     #[error("timeout waiting for child process to exit")]
+     Timeout,
+ 
++    #[error("stream timed out")]
++    StreamTimeout,
++
+     /// Returned by run_command_stream when the child could not be spawned (its stdout/stderr pipes
+     /// could not be captured). Analogous to the previous `CodexError::Spawn` variant.
+     #[error("spawn failed: child stdout/stderr not captured")]
+diff --git a/codex-rs/core/src/lib.rs b/codex-rs/core/src/lib.rs
+index 34b6df4a5..b705347d9 100644
+--- a/codex-rs/core/src/lib.rs
++++ b/codex-rs/core/src/lib.rs
+@@ -93,7 +93,11 @@ pub use codex_protocol::protocol;
+ // as those in the protocol crate when constructing protocol messages.
+ pub use codex_protocol::config_types as protocol_config_types;
+ 
++pub use client::FALLBACK_CONTEXT_MARKER;
++pub use client::FALLBACK_GENERIC_MESSAGE;
++pub use client::FALLBACK_REASONING_MARKER;
+ pub use client::ModelClient;
++pub use client::is_fallback_message;
+ pub use client_common::Prompt;
+ pub use client_common::REVIEW_PROMPT;
+ pub use client_common::ResponseEvent;
+diff --git a/codex-rs/core/src/model_provider_info.rs b/codex-rs/core/src/model_provider_info.rs
+index 8dc252aa7..787934040 100644
+--- a/codex-rs/core/src/model_provider_info.rs
++++ b/codex-rs/core/src/model_provider_info.rs
+@@ -11,6 +11,7 @@ use crate::default_client::CodexRequestBuilder;
+ use codex_app_server_protocol::AuthMode;
+ use serde::Deserialize;
+ use serde::Serialize;
++use serde_json::Value;
+ use std::collections::HashMap;
+ use std::env::VarError;
+ use std::time::Duration;
+@@ -93,6 +94,28 @@ pub struct ModelProviderInfo {
+     /// and API key (if needed) comes from the "env_key" environment variable.
+     #[serde(default)]
+     pub requires_openai_auth: bool,
++
++    /// The value of the Authorization header to send with requests.
++    pub auth_header: Option<String>,
++
++    /// The format of the streaming response.
++    #[serde(default)]
++    pub stream_format: StreamFormat,
++
++    /// Additional key/value pairs to merge into Chat Completions requests.
++    #[serde(default)]
++    pub chat_completion_parameters: Option<Value>,
++}
++
++/// The format of the streaming response.
++#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Serialize, Deserialize)]
++#[serde(rename_all = "lowercase")]
++pub enum StreamFormat {
++    /// The standard OpenAI SSE format.
++    #[default]
++    OpenAI,
++    /// The `litellm` SSE format.
++    LiteLLM,
+ }
+ 
+ impl ModelProviderInfo {
+@@ -129,7 +152,9 @@ impl ModelProviderInfo {
+ 
+         let mut builder = client.post(url);
+ 
+-        if let Some(auth) = effective_auth.as_ref() {
++        if let Some(auth_header) = &self.auth_header {
++            builder = builder.header("Authorization", auth_header);
++        } else if let Some(auth) = effective_auth.as_ref() {
+             builder = builder.bearer_auth(auth.get_token().await?);
+         }
+ 
+@@ -271,8 +296,20 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+     // open source ("oss") providers by default. Users are encouraged to add to
+     // `model_providers` in config.toml to add their own providers.
+     [
+-        (
+-            "openai",
++        ("openai", {
++            let base_url = std::env::var("OPENAI_BASE_URL")
++                .ok()
++                .filter(|v| !v.trim().is_empty());
++            let stream_format = if let Some(url) = &base_url {
++                if url.contains("llm.gour.top") {
++                    StreamFormat::LiteLLM
++                } else {
++                    StreamFormat::OpenAI
++                }
++            } else {
++                StreamFormat::OpenAI
++            };
++
+             P {
+                 name: "OpenAI".into(),
+                 // Allow users to override the default OpenAI endpoint by
+@@ -280,9 +317,7 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+                 // Codex at a proxy, mock server, or Azure-style deployment
+                 // without requiring a full TOML override for the built-in
+                 // OpenAI provider.
+-                base_url: std::env::var("OPENAI_BASE_URL")
+-                    .ok()
+-                    .filter(|v| !v.trim().is_empty()),
++                base_url,
+                 env_key: None,
+                 env_key_instructions: None,
+                 experimental_bearer_token: None,
+@@ -309,8 +344,11 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+                 stream_max_retries: None,
+                 stream_idle_timeout_ms: None,
+                 requires_openai_auth: true,
+-            },
+-        ),
++                auth_header: None,
++                stream_format,
++                chat_completion_parameters: None,
++            }
++        }),
+         (BUILT_IN_OSS_MODEL_PROVIDER_ID, create_oss_provider()),
+     ]
+     .into_iter()
+@@ -354,6 +392,9 @@ pub fn create_oss_provider_with_base_url(base_url: &str) -> ModelProviderInfo {
+         stream_max_retries: None,
+         stream_idle_timeout_ms: None,
+         requires_openai_auth: false,
++        auth_header: None,
++        stream_format: StreamFormat::LiteLLM,
++        chat_completion_parameters: None,
+     }
+ }
+ 
+@@ -394,6 +435,9 @@ base_url = "http://localhost:11434/v1"
+             stream_max_retries: None,
+             stream_idle_timeout_ms: None,
+             requires_openai_auth: false,
++            auth_header: None,
++            stream_format: StreamFormat::OpenAI,
++            chat_completion_parameters: None,
+         };
+ 
+         let provider: ModelProviderInfo = toml::from_str(azure_provider_toml).unwrap();
+@@ -424,6 +468,9 @@ query_params = { api-version = "2025-04-01-preview" }
+             stream_max_retries: None,
+             stream_idle_timeout_ms: None,
+             requires_openai_auth: false,
++            auth_header: None,
++            stream_format: StreamFormat::OpenAI,
++            stream_format: StreamFormat::OpenAI,
+         };
+ 
+         let provider: ModelProviderInfo = toml::from_str(azure_provider_toml).unwrap();
+@@ -457,6 +504,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
+             stream_max_retries: None,
+             stream_idle_timeout_ms: None,
+             requires_openai_auth: false,
++            auth_header: None,
++            stream_format: StreamFormat::OpenAI,
++            stream_format: StreamFormat::OpenAI,
+         };
+ 
+         let provider: ModelProviderInfo = toml::from_str(azure_provider_toml).unwrap();
+@@ -480,6 +530,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
+                 stream_max_retries: None,
+                 stream_idle_timeout_ms: None,
+                 requires_openai_auth: false,
++                auth_header: None,
++                stream_format: StreamFormat::OpenAI,
++                stream_format: StreamFormat::OpenAI,
+             }
+         }
+ 
+@@ -513,6 +566,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
+             stream_max_retries: None,
+             stream_idle_timeout_ms: None,
+             requires_openai_auth: false,
++            auth_header: None,
++            stream_format: StreamFormat::OpenAI,
++            chat_completion_parameters: None,
+         };
+         assert!(named_provider.is_azure_responses_endpoint());
+ 
+diff --git a/codex-rs/core/tests/chat_completions_payload.rs b/codex-rs/core/tests/chat_completions_payload.rs
+index a1e14bcdc..448b6c8b9 100644
+--- a/codex-rs/core/tests/chat_completions_payload.rs
++++ b/codex-rs/core/tests/chat_completions_payload.rs
+@@ -10,6 +10,7 @@ use codex_core::ModelProviderInfo;
+ use codex_core::Prompt;
+ use codex_core::ResponseItem;
+ use codex_core::WireApi;
++use codex_core::model_provider_info::StreamFormat;
+ use codex_core::spawn::CODEX_SANDBOX_NETWORK_DISABLED_ENV_VAR;
+ use codex_otel::otel_event_manager::OtelEventManager;
+ use codex_protocol::ConversationId;
+@@ -59,6 +60,8 @@ async fn run_request(input: Vec<ResponseItem>) -> Value {
+         stream_max_retries: Some(0),
+         stream_idle_timeout_ms: Some(5_000),
+         requires_openai_auth: false,
++        auth_header: None,
++        stream_format: StreamFormat::OpenAI,
+     };
+ 
+     let codex_home = match TempDir::new() {
+diff --git a/codex-rs/core/tests/chat_completions_sse.rs b/codex-rs/core/tests/chat_completions_sse.rs
+index 33af9bcc7..f004be182 100644
+--- a/codex-rs/core/tests/chat_completions_sse.rs
++++ b/codex-rs/core/tests/chat_completions_sse.rs
+@@ -10,6 +10,7 @@ use codex_core::Prompt;
+ use codex_core::ResponseEvent;
+ use codex_core::ResponseItem;
+ use codex_core::WireApi;
++use codex_core::model_provider_info::StreamFormat;
+ use codex_core::spawn::CODEX_SANDBOX_NETWORK_DISABLED_ENV_VAR;
+ use codex_otel::otel_event_manager::OtelEventManager;
+ use codex_protocol::ConversationId;
+@@ -59,6 +60,8 @@ async fn run_stream_with_bytes(sse_body: &[u8]) -> Vec<ResponseEvent> {
+         stream_max_retries: Some(0),
+         stream_idle_timeout_ms: Some(5_000),
+         requires_openai_auth: false,
++        auth_header: None,
++        stream_format: StreamFormat::OpenAI,
+     };
+ 
+     let codex_home = match TempDir::new() {
+diff --git a/codex-rs/core/tests/responses_headers.rs b/codex-rs/core/tests/responses_headers.rs
+index f5887ebc5..95d82b415 100644
+--- a/codex-rs/core/tests/responses_headers.rs
++++ b/codex-rs/core/tests/responses_headers.rs
+@@ -8,6 +8,7 @@ use codex_core::Prompt;
+ use codex_core::ResponseEvent;
+ use codex_core::ResponseItem;
+ use codex_core::WireApi;
++use codex_core::model_provider_info::StreamFormat;
+ use codex_otel::otel_event_manager::OtelEventManager;
+ use codex_protocol::ConversationId;
+ use core_test_support::load_default_config_for_test;
+@@ -47,6 +48,8 @@ async fn responses_stream_includes_task_type_header() {
+         stream_max_retries: Some(0),
+         stream_idle_timeout_ms: Some(5_000),
+         requires_openai_auth: false,
++        auth_header: None,
++        stream_format: StreamFormat::OpenAI,
+     };
+ 
+     let codex_home = TempDir::new().expect("failed to create TempDir");
+diff --git a/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs b/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
+index ba86f8c15..10bcbe2c4 100644
+--- a/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
++++ b/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
+@@ -2,6 +2,7 @@ use std::time::Duration;
+ 
+ use codex_core::ModelProviderInfo;
+ use codex_core::WireApi;
++use codex_core::model_provider_info::StreamFormat;
+ use codex_core::protocol::EventMsg;
+ use codex_core::protocol::Op;
+ use codex_protocol::user_input::UserInput;
+@@ -75,6 +76,8 @@ async fn continue_after_stream_error() {
+         stream_max_retries: Some(1),
+         stream_idle_timeout_ms: Some(2_000),
+         requires_openai_auth: false,
++        auth_header: None,
++        stream_format: StreamFormat::OpenAI,
+     };
+ 
+     let TestCodex { codex, .. } = test_codex()
+diff --git a/codex-rs/core/tests/suite/stream_no_completed.rs b/codex-rs/core/tests/suite/stream_no_completed.rs
+index 550bb3f9c..cec7d87ca 100644
+--- a/codex-rs/core/tests/suite/stream_no_completed.rs
++++ b/codex-rs/core/tests/suite/stream_no_completed.rs
+@@ -5,6 +5,7 @@ use std::time::Duration;
+ 
+ use codex_core::ModelProviderInfo;
+ use codex_core::WireApi;
++use codex_core::model_provider_info::StreamFormat;
+ use codex_core::protocol::EventMsg;
+ use codex_core::protocol::Op;
+ use codex_protocol::user_input::UserInput;
+@@ -83,6 +84,8 @@ async fn retries_on_early_close() {
+         stream_max_retries: Some(1),
+         stream_idle_timeout_ms: Some(2000),
+         requires_openai_auth: false,
++        auth_header: None,
++        stream_format: StreamFormat::OpenAI,
+     };
+ 
+     let TestCodex { codex, .. } = test_codex()
+diff --git a/codex-rs/exec/src/event_processor.rs b/codex-rs/exec/src/event_processor.rs
+index 2a0b1eb83..53c084aa4 100644
+--- a/codex-rs/exec/src/event_processor.rs
++++ b/codex-rs/exec/src/event_processor.rs
+@@ -6,6 +6,7 @@ use codex_core::protocol::SessionConfiguredEvent;
+ 
+ pub(crate) enum CodexStatus {
+     Running,
++    Retry,
+     InitiateShutdown,
+     Shutdown,
+ }
+@@ -23,6 +24,14 @@ pub(crate) trait EventProcessor {
+     fn process_event(&mut self, event: Event) -> CodexStatus;
+ 
+     fn print_final_output(&mut self) {}
++
++    fn reset_for_retry(&mut self) {}
++
++    fn announce_retry(&mut self, _attempt: usize, _max_attempts: usize, _wait_seconds: u64) {}
++
++    fn notify_retry_exhausted(&mut self, _max_attempts: usize) {}
++
++    fn set_final_message(&mut self, _message: String) {}
+ }
+ 
+ pub(crate) fn handle_last_message(last_agent_message: Option<&str>, output_file: &Path) {
+diff --git a/codex-rs/exec/src/event_processor_with_human_output.rs b/codex-rs/exec/src/event_processor_with_human_output.rs
+index b07cd16d4..22f1ccd96 100644
+--- a/codex-rs/exec/src/event_processor_with_human_output.rs
++++ b/codex-rs/exec/src/event_processor_with_human_output.rs
+@@ -1,6 +1,10 @@
+ use codex_common::elapsed::format_duration;
+ use codex_common::elapsed::format_elapsed;
++use codex_core::FALLBACK_CONTEXT_MARKER;
++use codex_core::FALLBACK_GENERIC_MESSAGE;
++use codex_core::FALLBACK_REASONING_MARKER;
+ use codex_core::config::Config;
++use codex_core::is_fallback_message;
+ use codex_core::protocol::AgentMessageEvent;
+ use codex_core::protocol::AgentReasoningRawContentEvent;
+ use codex_core::protocol::BackgroundEventEvent;
+@@ -61,6 +65,8 @@ pub(crate) struct EventProcessorWithHumanOutput {
+     last_message_path: Option<PathBuf>,
+     last_total_token_usage: Option<codex_core::protocol::TokenUsageInfo>,
+     final_message: Option<String>,
++    pending_retry_reason: Option<String>,
++    pending_retry_detail: Option<String>,
+ }
+ 
+ impl EventProcessorWithHumanOutput {
+@@ -86,6 +92,8 @@ impl EventProcessorWithHumanOutput {
+                 last_message_path,
+                 last_total_token_usage: None,
+                 final_message: None,
++                pending_retry_reason: None,
++                pending_retry_detail: None,
+             }
+         } else {
+             Self {
+@@ -102,9 +110,21 @@ impl EventProcessorWithHumanOutput {
+                 last_message_path,
+                 last_total_token_usage: None,
+                 final_message: None,
++                pending_retry_reason: None,
++                pending_retry_detail: None,
+             }
+         }
+     }
++
++    fn record_retry_context(&mut self, message: Option<&str>) -> String {
++        self.pending_retry_reason = Some(describe_fallback_reason(message));
++        let detail = match message {
++            Some(text) => summarize_fallback_detail(text),
++            None => "No assistant message was returned.".to_string(),
++        };
++        self.pending_retry_detail = Some(detail.clone());
++        detail
++    }
+ }
+ 
+ struct PatchApplyBegin {
+@@ -172,6 +192,30 @@ impl EventProcessor for EventProcessorWithHumanOutput {
+             }
+             EventMsg::TaskComplete(TaskCompleteEvent { last_agent_message }) => {
+                 let last_message = last_agent_message.as_deref();
++                if let Some(message) = last_message {
++                    if is_fallback_message(message) {
++                        let detail = self.record_retry_context(last_message);
++                        ts_msg!(
++                            self,
++                            "{}\n{}",
++                            "thinking".style(self.italic).style(self.dimmed),
++                            detail.style(self.dimmed).style(self.italic)
++                        );
++                        self.final_message = None;
++                        return CodexStatus::Retry;
++                    }
++                } else {
++                    let detail = self.record_retry_context(None);
++                    ts_msg!(
++                        self,
++                        "{}\n{}",
++                        "thinking".style(self.italic).style(self.dimmed),
++                        detail.style(self.dimmed).style(self.italic)
++                    );
++                    self.final_message = None;
++                    return CodexStatus::Retry;
++                }
++
+                 if let Some(output_file) = self.last_message_path.as_deref() {
+                     handle_last_message(last_message, output_file);
+                 }
+@@ -201,6 +245,22 @@ impl EventProcessor for EventProcessorWithHumanOutput {
+                 }
+             }
+             EventMsg::AgentMessage(AgentMessageEvent { message }) => {
++                if is_fallback_message(&message) {
++                    let detail = self.record_retry_context(Some(&message));
++                    ts_msg!(
++                        self,
++                        "{}\n{}",
++                        "thinking".style(self.italic).style(self.dimmed),
++                        detail.style(self.dimmed).style(self.italic)
++                    );
++                    return CodexStatus::Running;
++                }
++                if message.contains("<|start|>assistant<|channel|>") {
++                    // Autop-run payload already emitted as structured events.
++                    return CodexStatus::Running;
++                }
++                self.pending_retry_reason = None;
++                self.pending_retry_detail = None;
+                 ts_msg!(
+                     self,
+                     "{}\n{}",
+@@ -546,6 +606,52 @@ impl EventProcessor for EventProcessorWithHumanOutput {
+             }
+         }
+     }
++
++    fn reset_for_retry(&mut self) {
++        self.call_id_to_patch.clear();
++        self.last_total_token_usage = None;
++        self.final_message = None;
++        self.pending_retry_reason = None;
++        self.pending_retry_detail = None;
++    }
++
++    fn announce_retry(&mut self, attempt: usize, max_attempts: usize, wait_seconds: u64) {
++        let reason = self
++            .pending_retry_reason
++            .as_deref()
++            .unwrap_or("Model response incomplete.");
++        ts_msg!(
++            self,
++            "{}",
++            format!(
++                "⚠️ {reason} — retrying attempt {attempt}/{max_attempts} after waiting {wait_seconds}s."
++            )
++            .style(self.magenta)
++        );
++        if let Some(detail) = self.pending_retry_detail.as_deref() {
++            ts_msg!(self, "{}", format!("  detail: {detail}").style(self.dimmed));
++        }
++    }
++
++    fn notify_retry_exhausted(&mut self, _max_attempts: usize) {
++        let _reason = self
++            .pending_retry_reason
++            .as_deref()
++            .unwrap_or("Model response incomplete.");
++        ts_msg!(
++            self,
++            "{}",
++            "■ Conversation interrupted - Model disconnected prematurely. Consider re-running the request."
++                .style(self.red)
++        );
++        if let Some(detail) = self.pending_retry_detail.as_deref() {
++            ts_msg!(
++                self,
++                "{}",
++                format!("  last detail: {detail}").style(self.dimmed)
++            );
++        }
++    }
+ }
+ 
+ fn escape_command(command: &[String]) -> String {
+@@ -582,3 +688,40 @@ fn format_mcp_invocation(invocation: &McpInvocation) -> String {
+         format!("{fq_tool_name}({args_str})")
+     }
+ }
++
++fn describe_fallback_reason(message: Option<&str>) -> String {
++    match message {
++        None => "Model returned no final assistant message.".to_string(),
++        Some(text) if text.contains(FALLBACK_REASONING_MARKER) => {
++            "Model produced tool output but never returned a final answer.".to_string()
++        }
++        Some(text) if text.contains(FALLBACK_CONTEXT_MARKER) => {
++            "Model provided reasoning but never returned a final answer.".to_string()
++        }
++        Some(text) if text.trim() == FALLBACK_GENERIC_MESSAGE => {
++            "Model ended the turn without returning a final response.".to_string()
++        }
++        Some(_) => "Model response ended unexpectedly without a final answer.".to_string(),
++    }
++}
++
++fn summarize_fallback_detail(text: &str) -> String {
++    const DETAIL_LIMIT: usize = 400;
++    let cleaned = text
++        .replace(FALLBACK_REASONING_MARKER, "")
++        .replace(FALLBACK_CONTEXT_MARKER, "")
++        .trim()
++        .to_string();
++
++    if cleaned.is_empty() {
++        return "No assistant message was returned.".to_string();
++    }
++
++    let mut chars = cleaned.chars();
++    let truncated: String = chars.by_ref().take(DETAIL_LIMIT).collect();
++    if chars.next().is_some() {
++        format!("{truncated}…")
++    } else {
++        cleaned
++    }
++}
+diff --git a/codex-rs/exec/src/event_processor_with_jsonl_output.rs b/codex-rs/exec/src/event_processor_with_jsonl_output.rs
+index c0de12de0..8c418c84f 100644
+--- a/codex-rs/exec/src/event_processor_with_jsonl_output.rs
++++ b/codex-rs/exec/src/event_processor_with_jsonl_output.rs
+@@ -30,7 +30,11 @@ use crate::exec_events::TurnFailedEvent;
+ use crate::exec_events::TurnStartedEvent;
+ use crate::exec_events::Usage;
+ use crate::exec_events::WebSearchItem;
++use codex_core::FALLBACK_CONTEXT_MARKER;
++use codex_core::FALLBACK_GENERIC_MESSAGE;
++use codex_core::FALLBACK_REASONING_MARKER;
+ use codex_core::config::Config;
++use codex_core::is_fallback_message;
+ use codex_core::protocol::AgentMessageEvent;
+ use codex_core::protocol::AgentReasoningEvent;
+ use codex_core::protocol::Event;
+@@ -62,6 +66,8 @@ pub struct EventProcessorWithJsonOutput {
+     last_total_token_usage: Option<codex_core::protocol::TokenUsage>,
+     running_mcp_tool_calls: HashMap<String, RunningMcpToolCall>,
+     last_critical_error: Option<ThreadErrorEvent>,
++    pending_retry_reason: Option<String>,
++    pending_retry_detail: Option<String>,
+ }
+ 
+ #[derive(Debug, Clone)]
+@@ -94,6 +100,8 @@ impl EventProcessorWithJsonOutput {
+             last_total_token_usage: None,
+             running_mcp_tool_calls: HashMap::new(),
+             last_critical_error: None,
++            pending_retry_reason: None,
++            pending_retry_detail: None,
+         }
+     }
+ 
+@@ -133,6 +141,16 @@ impl EventProcessorWithJsonOutput {
+         }
+     }
+ 
++    fn record_retry_context(&mut self, message: Option<&str>) -> String {
++        self.pending_retry_reason = Some(describe_fallback_reason(message));
++        let detail = match message {
++            Some(text) => summarize_fallback_detail(text),
++            None => "No assistant message was returned.".to_string(),
++        };
++        self.pending_retry_detail = Some(detail.clone());
++        detail
++    }
++
+     fn get_next_item_id(&self) -> String {
+         format!(
+             "item_{}",
+@@ -158,7 +176,21 @@ impl EventProcessorWithJsonOutput {
+         vec![ThreadEvent::ItemCompleted(ItemCompletedEvent { item })]
+     }
+ 
+-    fn handle_agent_message(&self, payload: &AgentMessageEvent) -> Vec<ThreadEvent> {
++    fn handle_agent_message(&mut self, payload: &AgentMessageEvent) -> Vec<ThreadEvent> {
++        if is_fallback_message(&payload.message) {
++            let detail = self.record_retry_context(Some(&payload.message));
++            return vec![ThreadEvent::ItemCompleted(ItemCompletedEvent {
++                item: ThreadItem {
++                    id: self.get_next_item_id(),
++                    details: ThreadItemDetails::Reasoning(ReasoningItem { text: detail }),
++                },
++            })];
++        }
++        if payload.message.contains("<|start|>assistant<|channel|>") {
++            return Vec::new();
++        }
++        self.pending_retry_reason = None;
++        self.pending_retry_detail = None;
+         let item = ThreadItem {
+             id: self.get_next_item_id(),
+ 
+@@ -444,13 +476,99 @@ impl EventProcessor for EventProcessorWithJsonOutput {
+ 
+         let Event { msg, .. } = event;
+ 
+-        if let EventMsg::TaskComplete(TaskCompleteEvent { last_agent_message }) = msg {
+-            if let Some(output_file) = self.last_message_path.as_deref() {
+-                handle_last_message(last_agent_message.as_deref(), output_file);
++        match msg {
++            EventMsg::TaskComplete(TaskCompleteEvent { last_agent_message }) => {
++                let last_message = last_agent_message.as_deref();
++                if let Some(message) = last_message {
++                    if is_fallback_message(message) {
++                        self.record_retry_context(last_message);
++                        return CodexStatus::Retry;
++                    }
++                } else {
++                    self.record_retry_context(None);
++                    return CodexStatus::Retry;
++                }
++
++                if let Some(output_file) = self.last_message_path.as_deref() {
++                    handle_last_message(last_message, output_file);
++                }
++                CodexStatus::InitiateShutdown
+             }
+-            CodexStatus::InitiateShutdown
+-        } else {
+-            CodexStatus::Running
++            _ => CodexStatus::Running,
++        }
++    }
++
++    fn reset_for_retry(&mut self) {
++        self.running_commands.clear();
++        self.running_patch_applies.clear();
++        self.running_todo_list = None;
++        self.last_total_token_usage = None;
++        self.running_mcp_tool_calls.clear();
++        self.last_critical_error = None;
++        self.pending_retry_reason = None;
++        self.pending_retry_detail = None;
++    }
++
++    fn announce_retry(&mut self, attempt: usize, max_attempts: usize, wait_seconds: u64) {
++        let reason = self
++            .pending_retry_reason
++            .as_deref()
++            .unwrap_or("Model response incomplete.");
++        eprintln!(
++            "retry: {reason} — attempt {attempt}/{max_attempts} after waiting {wait_seconds}s."
++        );
++        if let Some(detail) = self.pending_retry_detail.as_deref() {
++            eprintln!("detail: {detail}");
+         }
+     }
++
++    fn notify_retry_exhausted(&mut self, _max_attempts: usize) {
++        let _reason = self
++            .pending_retry_reason
++            .as_deref()
++            .unwrap_or("Model response incomplete.");
++        eprintln!(
++            "error: Conversation interrupted - Model disconnected prematurely. Consider re-running the request."
++        );
++        if let Some(detail) = self.pending_retry_detail.as_deref() {
++            eprintln!("detail: {detail}");
++        }
++    }
++}
++
++fn describe_fallback_reason(message: Option<&str>) -> String {
++    match message {
++        None => "Model returned no final assistant message.".to_string(),
++        Some(text) if text.contains(FALLBACK_REASONING_MARKER) => {
++            "Model produced tool output but never returned a final answer.".to_string()
++        }
++        Some(text) if text.contains(FALLBACK_CONTEXT_MARKER) => {
++            "Model provided reasoning but never returned a final answer.".to_string()
++        }
++        Some(text) if text.trim() == FALLBACK_GENERIC_MESSAGE => {
++            "Model ended the turn without returning a final response.".to_string()
++        }
++        Some(_) => "Model response ended unexpectedly without a final answer.".to_string(),
++    }
++}
++
++fn summarize_fallback_detail(text: &str) -> String {
++    const DETAIL_LIMIT: usize = 400;
++    let cleaned = text
++        .replace(FALLBACK_REASONING_MARKER, "")
++        .replace(FALLBACK_CONTEXT_MARKER, "")
++        .trim()
++        .to_string();
++
++    if cleaned.is_empty() {
++        return "No assistant message was returned.".to_string();
++    }
++
++    let mut chars = cleaned.chars();
++    let truncated: String = chars.by_ref().take(DETAIL_LIMIT).collect();
++    if chars.next().is_some() {
++        format!("{truncated}…")
++    } else {
++        cleaned
++    }
+ }
+diff --git a/codex-rs/exec/src/lib.rs b/codex-rs/exec/src/lib.rs
+index 2e615df0c..c91411d45 100644
+--- a/codex-rs/exec/src/lib.rs
++++ b/codex-rs/exec/src/lib.rs
+@@ -35,6 +35,7 @@ use serde_json::Value;
+ use std::io::IsTerminal;
+ use std::io::Read;
+ use std::path::PathBuf;
++use std::time::Duration;
+ use supports_color::Stream;
+ use tracing::debug;
+ use tracing::error;
+@@ -252,130 +253,181 @@ pub async fn run_main(cli: Cli, codex_linux_sandbox_exe: Option<PathBuf>) -> any
+     let auth_manager = AuthManager::shared(config.codex_home.clone(), true);
+     let conversation_manager = ConversationManager::new(auth_manager.clone(), SessionSource::Exec);
+ 
+-    // Handle resume subcommand by resolving a rollout path and using explicit resume API.
+-    let NewConversation {
+-        conversation_id: _,
+-        conversation,
+-        session_configured,
+-    } = if let Some(ExecCommand::Resume(args)) = command {
+-        let resume_path = resolve_resume_path(&config, &args).await?;
++    let max_attempts = if matches!(command, Some(ExecCommand::Resume(_))) {
++        1
++    } else {
++        5
++    };
++    const RETRY_WAIT_SECONDS: u64 = 30;
+ 
+-        if let Some(path) = resume_path {
+-            conversation_manager
+-                .resume_conversation_from_rollout(config.clone(), path, auth_manager.clone())
+-                .await?
++    let image_inputs = images;
++
++    let mut attempt = 1usize;
++    let mut error_seen = false;
++    let mut exhausted = false;
++
++    while attempt <= max_attempts {
++        let NewConversation {
++            conversation_id: _,
++            conversation,
++            session_configured,
++        } = if attempt == 1 {
++            match command.as_ref() {
++                Some(ExecCommand::Resume(args)) => {
++                    let resume_path = resolve_resume_path(&config, args).await?;
++
++                    if let Some(path) = resume_path {
++                        conversation_manager
++                            .resume_conversation_from_rollout(
++                                config.clone(),
++                                path,
++                                auth_manager.clone(),
++                            )
++                            .await?
++                    } else {
++                        conversation_manager
++                            .new_conversation(config.clone())
++                            .await?
++                    }
++                }
++                _ => {
++                    conversation_manager
++                        .new_conversation(config.clone())
++                        .await?
++                }
++            }
+         } else {
+             conversation_manager
+                 .new_conversation(config.clone())
+                 .await?
+-        }
+-    } else {
+-        conversation_manager
+-            .new_conversation(config.clone())
+-            .await?
+-    };
+-    // Print the effective configuration and prompt so users can see what Codex
+-    // is using.
+-    event_processor.print_config_summary(&config, &prompt, &session_configured);
+-
+-    info!("Codex initialized with event: {session_configured:?}");
+-
+-    let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel::<Event>();
+-    {
+-        let conversation = conversation.clone();
+-        tokio::spawn(async move {
+-            loop {
+-                tokio::select! {
+-                    _ = tokio::signal::ctrl_c() => {
+-                        tracing::debug!("Keyboard interrupt");
+-                        // Immediately notify Codex to abort any in‑flight task.
+-                        conversation.submit(Op::Interrupt).await.ok();
+-
+-                        // Exit the inner loop and return to the main input prompt. The codex
+-                        // will emit a `TurnInterrupted` (Error) event which is drained later.
+-                        break;
+-                    }
+-                    res = conversation.next_event() => match res {
+-                        Ok(event) => {
+-                            debug!("Received event: {event:?}");
++        };
+ 
+-                            let is_shutdown_complete = matches!(event.msg, EventMsg::ShutdownComplete);
+-                            if let Err(e) = tx.send(event) {
+-                                error!("Error sending event: {e:?}");
+-                                break;
+-                            }
+-                            if is_shutdown_complete {
+-                                info!("Received shutdown event, exiting event loop.");
++        event_processor.print_config_summary(&config, &prompt, &session_configured);
++
++        info!("Codex initialized with event: {session_configured:?}");
++
++        let (tx, mut rx) = tokio::sync::mpsc::unbounded_channel::<Event>();
++        {
++            let conversation = conversation.clone();
++            tokio::spawn(async move {
++                loop {
++                    tokio::select! {
++                        _ = tokio::signal::ctrl_c() => {
++                            tracing::debug!("Keyboard interrupt");
++                            conversation.submit(Op::Interrupt).await.ok();
++                            break;
++                        }
++                        res = conversation.next_event() => match res {
++                            Ok(event) => {
++                                debug!("Received event: {event:?}");
++
++                                let is_shutdown_complete = matches!(event.msg, EventMsg::ShutdownComplete);
++                                if tx.send(event).is_err() {
++                                    break;
++                                }
++                                if is_shutdown_complete {
++                                    info!("Received shutdown event, exiting event loop.");
++                                    break;
++                                }
++                            },
++                            Err(e) => {
++                                error!("Error receiving event: {e:?}");
+                                 break;
+                             }
+-                        },
+-                        Err(e) => {
+-                            error!("Error receiving event: {e:?}");
+-                            break;
+                         }
+                     }
+                 }
+-            }
+-        });
+-    }
++            });
++        }
+ 
+-    // Send images first, if any.
+-    if !images.is_empty() {
+-        let items: Vec<UserInput> = images
+-            .into_iter()
+-            .map(|path| UserInput::LocalImage { path })
+-            .collect();
+-        let initial_images_event_id = conversation.submit(Op::UserInput { items }).await?;
+-        info!("Sent images with event ID: {initial_images_event_id}");
+-        while let Ok(event) = conversation.next_event().await {
+-            if event.id == initial_images_event_id
+-                && matches!(
+-                    event.msg,
+-                    EventMsg::TaskComplete(TaskCompleteEvent {
+-                        last_agent_message: _,
+-                    })
+-                )
+-            {
+-                break;
++        if !image_inputs.is_empty() {
++            let items: Vec<UserInput> = image_inputs
++                .iter()
++                .cloned()
++                .map(|path| UserInput::LocalImage { path })
++                .collect();
++            let initial_images_event_id = conversation.submit(Op::UserInput { items }).await?;
++            info!("Sent images with event ID: {initial_images_event_id}");
++            while let Ok(event) = conversation.next_event().await {
++                if event.id == initial_images_event_id
++                    && matches!(
++                        event.msg,
++                        EventMsg::TaskComplete(TaskCompleteEvent {
++                            last_agent_message: _,
++                        })
++                    )
++                {
++                    break;
++                }
+             }
+         }
+-    }
+ 
+-    // Send the prompt.
+-    let items: Vec<UserInput> = vec![UserInput::Text { text: prompt }];
+-    let initial_prompt_task_id = conversation
+-        .submit(Op::UserTurn {
+-            items,
+-            cwd: default_cwd,
+-            approval_policy: default_approval_policy,
+-            sandbox_policy: default_sandbox_policy,
+-            model: default_model,
+-            effort: default_effort,
+-            summary: default_summary,
+-            final_output_json_schema: output_schema,
+-        })
+-        .await?;
+-    info!("Sent prompt with event ID: {initial_prompt_task_id}");
+-
+-    // Run the loop until the task is complete.
+-    // Track whether a fatal error was reported by the server so we can
+-    // exit with a non-zero status for automation-friendly signaling.
+-    let mut error_seen = false;
+-    while let Some(event) = rx.recv().await {
+-        if matches!(event.msg, EventMsg::Error(_)) {
+-            error_seen = true;
+-        }
+-        let shutdown: CodexStatus = event_processor.process_event(event);
+-        match shutdown {
+-            CodexStatus::Running => continue,
+-            CodexStatus::InitiateShutdown => {
+-                conversation.submit(Op::Shutdown).await?;
++        let items: Vec<UserInput> = vec![UserInput::Text {
++            text: prompt.clone(),
++        }];
++        let initial_prompt_task_id = conversation
++            .submit(Op::UserTurn {
++                items,
++                cwd: default_cwd.clone(),
++                approval_policy: default_approval_policy,
++                sandbox_policy: default_sandbox_policy.clone(),
++                model: default_model.clone(),
++                effort: default_effort,
++                summary: default_summary,
++                final_output_json_schema: output_schema.clone(),
++            })
++            .await?;
++        info!("Sent prompt with event ID: {initial_prompt_task_id}");
++
++        let mut should_retry = false;
++        let mut waiting_for_shutdown = false;
++
++        while let Some(event) = rx.recv().await {
++            if matches!(event.msg, EventMsg::Error(_)) {
++                error_seen = true;
+             }
+-            CodexStatus::Shutdown => {
++            match event_processor.process_event(event) {
++                CodexStatus::Running => continue,
++                CodexStatus::Retry => {
++                    should_retry = true;
++                    if !waiting_for_shutdown {
++                        conversation.submit(Op::Shutdown).await?;
++                        waiting_for_shutdown = true;
++                    }
++                }
++                CodexStatus::InitiateShutdown => {
++                    if !waiting_for_shutdown {
++                        conversation.submit(Op::Shutdown).await?;
++                        waiting_for_shutdown = true;
++                    }
++                }
++                CodexStatus::Shutdown => {
++                    break;
++                }
++            }
++        }
++
++        if should_retry {
++            if attempt >= max_attempts {
++                exhausted = true;
+                 break;
+             }
++            let next_attempt = attempt + 1;
++            event_processor.announce_retry(next_attempt, max_attempts, RETRY_WAIT_SECONDS);
++            tokio::time::sleep(Duration::from_secs(RETRY_WAIT_SECONDS)).await;
++            event_processor.reset_for_retry();
++            attempt = next_attempt;
++            continue;
++        } else {
++            break;
+         }
+     }
++
++    if exhausted {
++        event_processor.notify_retry_exhausted(max_attempts);
++        std::process::exit(1);
++    }
++
+     event_processor.print_final_output();
+     if error_seen {
+         std::process::exit(1);

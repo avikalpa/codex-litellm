@@ -1,0 +1,21 @@
+model_provider = "litellm-direct"
+model = "gpt-oss-120b-litellm"
+max_tokens = 128000
+sandbox_mode = "workspace-write"
+approval_policy = "never"
+
+[model_providers.litellm-direct]
+name = "LiteLLM Direct"
+base_url = "https://llm.gour.top/v1"
+wire_api = "chat"
+auth_header = "Bearer sk-1234"
+requires_openai_auth = false
+request_max_retries = 4
+stream_max_retries = 5
+stream_idle_timeout_ms = 300000
+
+[model_providers.litellm-direct.chat_completion_parameters.response_format]
+type = "text"
+
+[model_providers.litellm-direct.chat_completion_parameters]
+modalities = ["text"]

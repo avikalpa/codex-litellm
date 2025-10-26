@@ -1,0 +1,45 @@
+{
+  "name": "@avikalpa/codex-litellm",
+  "version": "0.50.0",
+  "description": "Patched OpenAI Codex CLI with first-class LiteLLM support",
+  "bin": {
+    "codex-litellm": "bin/codex-litellm.js"
+  },
+  "scripts": {
+    "preinstall": "node scripts/install.js"
+  },
+  "keywords": [
+    "codex",
+    "litellm",
+    "cli",
+    "ai",
+    "openai"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/avikalpa/codex-litellm.git"
+  },
+  "bugs": {
+    "url": "https://github.com/avikalpa/codex-litellm/issues"
+  },
+  "homepage": "https://github.com/avikalpa/codex-litellm",
+  "author": "Avikalpa <npm@avikalpa.dev>",
+  "license": "MIT",
+  "files": [
+    "bin",
+    "scripts",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "os": [
+    "linux",
+    "android"
+  ],
+  "cpu": [
+    "x64",
+    "arm64"
+  ]
+}
