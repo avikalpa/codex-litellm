@@ -80,6 +80,10 @@ if [[ ! -d "$CODEX_RS_DIR" ]]; then
   exit 1
 fi
 
+if [[ -f "${ROOT_DIR}/Cross.toml" ]]; then
+  cp "${ROOT_DIR}/Cross.toml" "${CODEX_RS_DIR}/Cross.toml"
+fi
+
 cd "$CODEX_RS_DIR"
 
 if [[ "$CARGO_CMD" == "cargo" ]]; then
