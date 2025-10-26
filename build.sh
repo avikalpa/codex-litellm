@@ -82,6 +82,8 @@ fi
 
 if [[ -f "${ROOT_DIR}/Cross.toml" ]]; then
   cp "${ROOT_DIR}/Cross.toml" "${CODEX_RS_DIR}/Cross.toml"
+  cleanup_cross_toml() { rm -f "${CODEX_RS_DIR}/Cross.toml"; }
+  trap cleanup_cross_toml EXIT
 fi
 
 cd "$CODEX_RS_DIR"
