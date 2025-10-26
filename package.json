@@ -36,7 +36,10 @@
   },
   "os": [
     "linux",
-    "android"
+    "android",
+    "darwin",
+    "win32",
+    "freebsd"
   ],
   "cpu": [
     "x64",

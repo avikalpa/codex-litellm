@@ -10,17 +10,44 @@ on:
 
 jobs:
   build:
-    name: Build ${{ matrix.target }}
-    runs-on: ubuntu-latest
+    name: Build ${{ matrix.suffix }}
+    runs-on: ${{ matrix.runs_on }}
     strategy:
+      fail-fast: false
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
-            use_cross: false
             suffix: linux-x64
-          - target: aarch64-linux-android
+            runs_on: ubuntu-latest
+            use_cross: false
+          - target: aarch64-unknown-linux-gnu
+            suffix: linux-arm64
+            runs_on: ubuntu-latest
             use_cross: true
+          - target: aarch64-linux-android
             suffix: android-arm64
+            runs_on: ubuntu-latest
+            use_cross: true
+          - target: x86_64-apple-darwin
+            suffix: macos-x64
+            runs_on: macos-latest
+            use_cross: false
+          - target: aarch64-apple-darwin
+            suffix: macos-arm64
+            runs_on: macos-latest
+            use_cross: false
+          - target: x86_64-pc-windows-msvc
+            suffix: windows-x64
+            runs_on: windows-latest
+            use_cross: false
+          - target: aarch64-pc-windows-msvc
+            suffix: windows-arm64
+            runs_on: windows-latest
+            use_cross: false
+          - target: x86_64-unknown-freebsd
+            suffix: freebsd-x64
+            runs_on: ubuntu-latest
+            use_cross: true
     steps:
       - uses: actions/checkout@v4
 
@@ -34,11 +61,12 @@ jobs:
         run: cargo install cross --git https://github.com/cross-rs/cross
 
       - name: Build
+        shell: bash
         env:
           TARGET: ${{ matrix.target }}
+          SUFFIX: ${{ matrix.suffix }}
           USE_CROSS: ${{ matrix.use_cross == true && '1' || '0' }}
-        run: |
-          ./build.sh
+        run: ./build.sh
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -65,7 +93,7 @@ jobs:
             dist/**/codex-litellm-*.tar.gz.sha256
 
   publish-npm:
-    needs: build
+    needs: attach-release-assets
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
@@ -77,7 +105,9 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install dependencies
-        run: npm install
+        env:
+          CODEX_LITELLM_SKIP_DOWNLOAD: '1'
+        run: npm install --ignore-scripts
 
       - name: Publish package
         env:

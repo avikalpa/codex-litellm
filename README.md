@@ -15,7 +15,7 @@ test-codex() {
 }
 ```
 
-The installer downloads a prebuilt binary for your platform (currently Linux x64 and Android/Termux arm64).  If no prebuilt is available the installer aborts and you can fall back to a local build.
+The installer downloads a prebuilt binary for your platform (Linux x64/arm64, macOS x64/arm64, Windows x64/arm64, FreeBSD x64, and Android arm64).  If no prebuilt is available the installer aborts and you can fall back to a local build.
 
 ## Local builds
 
@@ -29,7 +29,7 @@ The repository keeps upstream sources out of tree; `build.sh` clones `openai/cod
 USE_CROSS=1 TARGET=aarch64-linux-android ./build.sh
 ```
 
-Outputs land in `dist/` as tarballs plus SHA256 checksums.  The same script is used by CI, so if you need to debug an automation failure you are looking at the exact same steps.
+Outputs land in `dist/` as tarballs plus SHA256 checksums (`codex-litellm-<platform>.tar.gz`).  The same script is used by CI, so if you need to debug an automation failure you are looking at the exact same steps.
 
 ### Development tips
 

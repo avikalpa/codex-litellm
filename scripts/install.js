@@ -7,18 +7,24 @@ const os = require('os');
 const https = require('https');
 const { execFileSync } = require('child_process');
 
-const SUPPORTED = {
-  'linux:x64': 'linux-x64',
-  'android:arm64': 'android-arm64'
-};
-
 if (process.env.CODEX_LITELLM_SKIP_DOWNLOAD === '1') {
   console.log('Skipping codex-litellm binary download.');
   process.exit(0);
 }
 
+const TARGET_SUFFIX = new Map([
+  ['linux:x64', 'linux-x64'],
+  ['linux:arm64', 'linux-arm64'],
+  ['android:arm64', 'android-arm64'],
+  ['darwin:x64', 'macos-x64'],
+  ['darwin:arm64', 'macos-arm64'],
+  ['win32:x64', 'windows-x64'],
+  ['win32:arm64', 'windows-arm64'],
+  ['freebsd:x64', 'freebsd-x64'],
+]);
+
 const key = `${process.platform}:${process.arch}`;
-const suffix = SUPPORTED[key];
+const suffix = TARGET_SUFFIX.get(key);
 
 if (!suffix) {
   console.error(`codex-litellm: no prebuilt binary for ${process.platform}/${process.arch}.`);
@@ -61,13 +67,14 @@ function download(url, dest) {
     request.on('error', (err) => {
       reject(err);
     });
+
     file.on('finish', () => file.close(resolve));
     file.on('error', (err) => reject(err));
   });
 }
 
 function verifyChecksum(filePath, checksumFile) {
-  const expected = fs.readFileSync(checksumFile, 'utf8').split(' ')[0].trim();
+  const expected = fs.readFileSync(checksumFile, 'utf8').split(/\s+/)[0].trim();
   const hash = crypto.createHash('sha256');
   const data = fs.readFileSync(filePath);
   hash.update(data);
@@ -96,7 +103,11 @@ function verifyChecksum(filePath, checksumFile) {
     console.log('Extracting binary...');
     execFileSync('tar', ['-xzf', archivePath, '-C', destDir]);
 
-    const binaryPath = path.join(destDir, 'codex-litellm');
+    const binaryName = process.platform === 'win32' ? 'codex-litellm.exe' : 'codex-litellm';
+    const binaryPath = path.join(destDir, binaryName);
+    if (!fs.existsSync(binaryPath)) {
+      throw new Error(`Binary missing after extraction: ${binaryPath}`);
+    }
     fs.chmodSync(binaryPath, 0o755);
 
     console.log(`codex-litellm binary installed for ${suffix}.`);
