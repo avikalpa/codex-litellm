@@ -6,9 +6,7 @@ pre-build = [
 ]
 
 [target.aarch64-unknown-linux-gnu.env]
-OPENSSL_NO_PKG_CONFIG = "1"
-OPENSSL_STATIC = "1"
-PKG_CONFIG_ALLOW_CROSS = "1"
+passthrough = ["OPENSSL_NO_PKG_CONFIG", "OPENSSL_STATIC", "PKG_CONFIG_ALLOW_CROSS"]
 
 [target.aarch64-linux-android]
 pre-build = [
@@ -17,9 +15,7 @@ pre-build = [
 ]
 
 [target.aarch64-linux-android.env]
-OPENSSL_NO_PKG_CONFIG = "1"
-OPENSSL_STATIC = "1"
-PKG_CONFIG_ALLOW_CROSS = "1"
+passthrough = ["OPENSSL_NO_PKG_CONFIG", "OPENSSL_STATIC", "PKG_CONFIG_ALLOW_CROSS"]
 
 [target.x86_64-unknown-freebsd]
 pre-build = [
@@ -27,9 +23,7 @@ pre-build = [
 ]
 
 [target.x86_64-unknown-freebsd.env]
-OPENSSL_NO_PKG_CONFIG = "1"
-OPENSSL_STATIC = "1"
-PKG_CONFIG_ALLOW_CROSS = "1"
+passthrough = ["OPENSSL_NO_PKG_CONFIG", "OPENSSL_STATIC", "PKG_CONFIG_ALLOW_CROSS"]
 
 [target.x86_64-unknown-illumos]
 pre-build = [
@@ -38,6 +32,4 @@ pre-build = [
 ]
 
 [target.x86_64-unknown-illumos.env]
-OPENSSL_NO_PKG_CONFIG = "1"
-OPENSSL_STATIC = "1"
-PKG_CONFIG_ALLOW_CROSS = "1"
+passthrough = ["OPENSSL_NO_PKG_CONFIG", "OPENSSL_STATIC", "PKG_CONFIG_ALLOW_CROSS"]
