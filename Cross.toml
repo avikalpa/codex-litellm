@@ -1,0 +1,22 @@
+[target.aarch64-unknown-linux-gnu]
+pre-build = [
+  "apt-get update",
+  "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends perl pkg-config make clang"
+]
+
+[target.aarch64-linux-android]
+pre-build = [
+  "apt-get update",
+  "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends perl pkg-config make clang"
+]
+
+[target.x86_64-unknown-freebsd]
+pre-build = [
+  "env ASSUME_ALWAYS_YES=yes pkg install -y perl5 pkgconf gmake"
+]
+
+[target.x86_64-unknown-illumos]
+pre-build = [
+  "pkgin -y update",
+  "pkgin -y install perl pkg-config gmake"
+]
