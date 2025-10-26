@@ -39,7 +39,8 @@
     "android",
     "darwin",
     "win32",
-    "freebsd"
+    "freebsd",
+    "sunos"
   ],
   "cpu": [
     "x64",

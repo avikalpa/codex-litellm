@@ -21,6 +21,7 @@ const TARGET_SUFFIX = new Map([
   ['win32:x64', 'windows-x64'],
   ['win32:arm64', 'windows-arm64'],
   ['freebsd:x64', 'freebsd-x64'],
+  ['sunos:x64', 'illumos-x64'],
 ]);
 
 const key = `${process.platform}:${process.arch}`;

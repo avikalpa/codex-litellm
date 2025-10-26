@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+export PATH="${HOME}/.cargo/bin:${PATH}"
+
 ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)
 TARGET="${TARGET:-x86_64-unknown-linux-gnu}"
 SUFFIX="${SUFFIX:-}"
@@ -20,11 +22,21 @@ if [[ -z "$SUFFIX" ]]; then
     x86_64-pc-windows-msvc) SUFFIX="windows-x64" ;;
     aarch64-pc-windows-msvc) SUFFIX="windows-arm64" ;;
     x86_64-unknown-freebsd) SUFFIX="freebsd-x64" ;;
+    x86_64-unknown-illumos) SUFFIX="illumos-x64" ;;
     *)
       echo "Unable to infer suffix for target $TARGET" >&2
       exit 1
       ;;
   esac
+fi
+
+if [[ "$TARGET" == *"linux"* || "$TARGET" == *"freebsd"* || "$TARGET" == *"illumos"* ]]; then
+  export PKG_CONFIG_ALLOW_CROSS=1
+  if [[ -n "${CROSS_CONTAINER_INHERITS:-}" ]]; then
+    export CROSS_CONTAINER_INHERITS="${CROSS_CONTAINER_INHERITS},PKG_CONFIG_ALLOW_CROSS"
+  else
+    export CROSS_CONTAINER_INHERITS="PKG_CONFIG_ALLOW_CROSS"
+  fi
 fi
 
 mkdir -p "$DIST_ROOT"

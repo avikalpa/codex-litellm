@@ -1,5 +1,5 @@
 diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
-index a2e49fc50..0358bad0c 100644
+index a2e49fc5..1bacd820 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
 @@ -178,7 +178,7 @@ checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
@@ -7,7 +7,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "app_test_support"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -16,7 +16,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-ansi-escape"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "ansi-to-tui",
   "ratatui",
@@ -25,7 +25,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-app-server"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "app_test_support",
@@ -34,7 +34,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-app-server-protocol"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "clap",
@@ -43,7 +43,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-apply-patch"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -52,7 +52,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-arg0"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "codex-apply-patch",
@@ -61,7 +61,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-async-utils"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "async-trait",
   "pretty_assertions",
@@ -70,7 +70,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-backend-openapi-models"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "serde",
   "serde_json",
@@ -79,7 +79,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-chatgpt"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "clap",
@@ -88,7 +88,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-cli"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -97,7 +97,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-cloud-tasks"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "async-trait",
@@ -106,7 +106,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-cloud-tasks-client"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "async-trait",
@@ -115,7 +115,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-common"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "clap",
   "codex-app-server-protocol",
@@ -124,7 +124,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-core"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "askama",
@@ -133,7 +133,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-exec"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -142,7 +142,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-execpolicy"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "allocative",
   "anyhow",
@@ -151,7 +151,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-feedback"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "codex-protocol",
@@ -160,7 +160,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-file-search"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "clap",
@@ -169,7 +169,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-git-apply"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "once_cell",
   "regex",
@@ -178,7 +178,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-git-tooling"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "assert_matches",
   "pretty_assertions",
@@ -187,7 +187,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-linux-sandbox"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "clap",
   "codex-core",
@@ -196,7 +196,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-login"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "base64",
@@ -205,7 +205,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-mcp-server"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -214,7 +214,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-ollama"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "assert_matches",
   "async-stream",
@@ -223,7 +223,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-otel"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "chrono",
   "codex-app-server-protocol",
@@ -232,7 +232,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-process-hardening"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "libc",
  ]
@@ -240,7 +240,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-protocol"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "base64",
@@ -249,7 +249,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-protocol-ts"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "clap",
@@ -258,7 +258,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-responses-api-proxy"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "clap",
@@ -267,7 +267,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-rmcp-client"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "axum",
@@ -276,7 +276,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-stdio-to-uds"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -285,7 +285,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-tui"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "arboard",
@@ -294,7 +294,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-utils-json-to-toml"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "pretty_assertions",
   "serde_json",
@@ -303,7 +303,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-utils-pty"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "portable-pty",
@@ -312,7 +312,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-utils-readiness"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "assert_matches",
   "async-trait",
@@ -321,12 +321,12 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "codex-utils-string"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  
  [[package]]
  name = "codex-utils-tokenizer"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "pretty_assertions",
@@ -335,7 +335,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "core_test_support"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -344,7 +344,7 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "mcp-types"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "schemars 0.8.22",
   "serde",
@@ -353,12 +353,12 @@ index a2e49fc50..0358bad0c 100644
  [[package]]
  name = "mcp_test_support"
 -version = "0.0.0"
-+version = "0.49.0"
++version = "0.50.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
 diff --git a/codex-rs/Cargo.toml b/codex-rs/Cargo.toml
-index df029c92c..0249a4f5b 100644
+index df029c92..226fa710 100644
 --- a/codex-rs/Cargo.toml
 +++ b/codex-rs/Cargo.toml
 @@ -79,7 +79,6 @@ codex-stdio-to-uds = { path = "stdio-to-uds" }
@@ -369,16 +369,17 @@ index df029c92c..0249a4f5b 100644
  codex-utils-string = { path = "utils/string" }
  codex-utils-tokenizer = { path = "utils/tokenizer" }
  core_test_support = { path = "core/tests/common" }
-@@ -157,7 +156,6 @@ reqwest = "0.12"
- rmcp = { version = "0.8.3", default-features = false }
- schemars = "0.8.22"
- seccompiler = "0.5.0"
--sentry = "0.34.0"
- serde = "1"
- serde_json = "1"
- serde_with = "3.14"
+@@ -134,7 +133,7 @@ mime_guess = "2.0.5"
+ multimap = "0.10.0"
+ notify = "8.2.0"
+ nucleo-matcher = "0.3.1"
+-openssl-sys = "*"
++openssl-sys = { version = "0.9.109", features = ["vendored"] }
+ opentelemetry = "0.30.0"
+ opentelemetry-appender-tracing = "0.30.0"
+ opentelemetry-otlp = "0.30.0"
 diff --git a/codex-rs/core/prompt.md b/codex-rs/core/prompt.md
-index e4590c386..6d6a5921a 100644
+index e4590c38..6d6a5921 100644
 --- a/codex-rs/core/prompt.md
 +++ b/codex-rs/core/prompt.md
 @@ -129,6 +129,7 @@ You MUST adhere to the following criteria when solving queries:
@@ -390,7 +391,7 @@ index e4590c386..6d6a5921a 100644
  
  If completing the user's task requires writing or modifying files, your code and final answer should follow these coding guidelines, though user instructions (i.e. AGENTS.md) may override these guidelines:
 diff --git a/codex-rs/core/src/chat_completions.rs b/codex-rs/core/src/chat_completions.rs
-index ac1d7f9cf..7855335cb 100644
+index ac1d7f9c..7855335c 100644
 --- a/codex-rs/core/src/chat_completions.rs
 +++ b/codex-rs/core/src/chat_completions.rs
 @@ -1,6 +1,5 @@
@@ -1151,7 +1152,7 @@ index ac1d7f9cf..7855335cb 100644
  /// output is mapped onto Codex's internal [`ResponseEvent`] so that the rest
  /// of the pipeline can stay agnostic of the underlying wire format.
 diff --git a/codex-rs/core/src/client.rs b/codex-rs/core/src/client.rs
-index de10d6406..1e9d350db 100644
+index de10d640..1e9d350d 100644
 --- a/codex-rs/core/src/client.rs
 +++ b/codex-rs/core/src/client.rs
 @@ -12,6 +12,8 @@ use codex_otel::otel_event_manager::OtelEventManager;
@@ -1449,7 +1450,7 @@ index de10d6406..1e9d350db 100644
      RetryableHttpError {
          status: StatusCode,
 diff --git a/codex-rs/core/src/config.rs b/codex-rs/core/src/config.rs
-index b04aba5db..1887d480d 100644
+index b04aba5d..1887d480 100644
 --- a/codex-rs/core/src/config.rs
 +++ b/codex-rs/core/src/config.rs
 @@ -1252,6 +1252,16 @@ impl Config {
@@ -1470,7 +1471,7 @@ index b04aba5db..1887d480d 100644
              .or(config_profile.model_provider)
              .or(cfg.model_provider)
 diff --git a/codex-rs/core/src/error.rs b/codex-rs/core/src/error.rs
-index 0901e426a..a21a0ea07 100644
+index 0901e426..a21a0ea0 100644
 --- a/codex-rs/core/src/error.rs
 +++ b/codex-rs/core/src/error.rs
 @@ -84,6 +84,9 @@ pub enum CodexErr {
@@ -1484,7 +1485,7 @@ index 0901e426a..a21a0ea07 100644
      /// could not be captured). Analogous to the previous `CodexError::Spawn` variant.
      #[error("spawn failed: child stdout/stderr not captured")]
 diff --git a/codex-rs/core/src/lib.rs b/codex-rs/core/src/lib.rs
-index 34b6df4a5..b705347d9 100644
+index 34b6df4a..b705347d 100644
 --- a/codex-rs/core/src/lib.rs
 +++ b/codex-rs/core/src/lib.rs
 @@ -93,7 +93,11 @@ pub use codex_protocol::protocol;
@@ -1500,7 +1501,7 @@ index 34b6df4a5..b705347d9 100644
  pub use client_common::REVIEW_PROMPT;
  pub use client_common::ResponseEvent;
 diff --git a/codex-rs/core/src/model_provider_info.rs b/codex-rs/core/src/model_provider_info.rs
-index 8dc252aa7..787934040 100644
+index 8dc252aa..78793404 100644
 --- a/codex-rs/core/src/model_provider_info.rs
 +++ b/codex-rs/core/src/model_provider_info.rs
 @@ -11,6 +11,7 @@ use crate::default_client::CodexRequestBuilder;
@@ -1660,7 +1661,7 @@ index 8dc252aa7..787934040 100644
          assert!(named_provider.is_azure_responses_endpoint());
  
 diff --git a/codex-rs/core/tests/chat_completions_payload.rs b/codex-rs/core/tests/chat_completions_payload.rs
-index a1e14bcdc..448b6c8b9 100644
+index a1e14bcd..448b6c8b 100644
 --- a/codex-rs/core/tests/chat_completions_payload.rs
 +++ b/codex-rs/core/tests/chat_completions_payload.rs
 @@ -10,6 +10,7 @@ use codex_core::ModelProviderInfo;
@@ -1681,7 +1682,7 @@ index a1e14bcdc..448b6c8b9 100644
  
      let codex_home = match TempDir::new() {
 diff --git a/codex-rs/core/tests/chat_completions_sse.rs b/codex-rs/core/tests/chat_completions_sse.rs
-index 33af9bcc7..f004be182 100644
+index 33af9bcc..f004be18 100644
 --- a/codex-rs/core/tests/chat_completions_sse.rs
 +++ b/codex-rs/core/tests/chat_completions_sse.rs
 @@ -10,6 +10,7 @@ use codex_core::Prompt;
@@ -1702,7 +1703,7 @@ index 33af9bcc7..f004be182 100644
  
      let codex_home = match TempDir::new() {
 diff --git a/codex-rs/core/tests/responses_headers.rs b/codex-rs/core/tests/responses_headers.rs
-index f5887ebc5..95d82b415 100644
+index f5887ebc..95d82b41 100644
 --- a/codex-rs/core/tests/responses_headers.rs
 +++ b/codex-rs/core/tests/responses_headers.rs
 @@ -8,6 +8,7 @@ use codex_core::Prompt;
@@ -1723,7 +1724,7 @@ index f5887ebc5..95d82b415 100644
  
      let codex_home = TempDir::new().expect("failed to create TempDir");
 diff --git a/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs b/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
-index ba86f8c15..10bcbe2c4 100644
+index ba86f8c1..10bcbe2c 100644
 --- a/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
 +++ b/codex-rs/core/tests/suite/stream_error_allows_next_turn.rs
 @@ -2,6 +2,7 @@ use std::time::Duration;
@@ -1744,7 +1745,7 @@ index ba86f8c15..10bcbe2c4 100644
  
      let TestCodex { codex, .. } = test_codex()
 diff --git a/codex-rs/core/tests/suite/stream_no_completed.rs b/codex-rs/core/tests/suite/stream_no_completed.rs
-index 550bb3f9c..cec7d87ca 100644
+index 550bb3f9..cec7d87c 100644
 --- a/codex-rs/core/tests/suite/stream_no_completed.rs
 +++ b/codex-rs/core/tests/suite/stream_no_completed.rs
 @@ -5,6 +5,7 @@ use std::time::Duration;
@@ -1765,7 +1766,7 @@ index 550bb3f9c..cec7d87ca 100644
  
      let TestCodex { codex, .. } = test_codex()
 diff --git a/codex-rs/exec/src/event_processor.rs b/codex-rs/exec/src/event_processor.rs
-index 2a0b1eb83..53c084aa4 100644
+index 2a0b1eb8..53c084aa 100644
 --- a/codex-rs/exec/src/event_processor.rs
 +++ b/codex-rs/exec/src/event_processor.rs
 @@ -6,6 +6,7 @@ use codex_core::protocol::SessionConfiguredEvent;
@@ -1792,7 +1793,7 @@ index 2a0b1eb83..53c084aa4 100644
  
  pub(crate) fn handle_last_message(last_agent_message: Option<&str>, output_file: &Path) {
 diff --git a/codex-rs/exec/src/event_processor_with_human_output.rs b/codex-rs/exec/src/event_processor_with_human_output.rs
-index b07cd16d4..22f1ccd96 100644
+index b07cd16d..22f1ccd9 100644
 --- a/codex-rs/exec/src/event_processor_with_human_output.rs
 +++ b/codex-rs/exec/src/event_processor_with_human_output.rs
 @@ -1,6 +1,10 @@
@@ -1995,7 +1996,7 @@ index b07cd16d4..22f1ccd96 100644
 +    }
 +}
 diff --git a/codex-rs/exec/src/event_processor_with_jsonl_output.rs b/codex-rs/exec/src/event_processor_with_jsonl_output.rs
-index c0de12de0..8c418c84f 100644
+index c0de12de..8c418c84 100644
 --- a/codex-rs/exec/src/event_processor_with_jsonl_output.rs
 +++ b/codex-rs/exec/src/event_processor_with_jsonl_output.rs
 @@ -30,7 +30,11 @@ use crate::exec_events::TurnFailedEvent;
@@ -2175,7 +2176,7 @@ index c0de12de0..8c418c84f 100644
 +    }
  }
 diff --git a/codex-rs/exec/src/lib.rs b/codex-rs/exec/src/lib.rs
-index 2e615df0c..c91411d45 100644
+index 2e615df0..c91411d4 100644
 --- a/codex-rs/exec/src/lib.rs
 +++ b/codex-rs/exec/src/lib.rs
 @@ -35,6 +35,7 @@ use serde_json::Value;
@@ -2472,3 +2473,102 @@ index 2e615df0c..c91411d45 100644
      event_processor.print_final_output();
      if error_seen {
          std::process::exit(1);
+diff --git a/codex-rs/rmcp-client/Cargo.toml b/codex-rs/rmcp-client/Cargo.toml
+index c515cdbf..50213a4e 100644
+--- a/codex-rs/rmcp-client/Cargo.toml
++++ b/codex-rs/rmcp-client/Cargo.toml
+@@ -13,12 +13,6 @@ axum = { workspace = true, default-features = false, features = [
+     "tokio",
+ ] }
+ codex-protocol = { workspace = true }
+-keyring = { workspace = true, features = [
+-    "apple-native",
+-    "crypto-rust",
+-    "linux-native-async-persistent",
+-    "windows-native",
+-] }
+ mcp-types = { path = "../mcp-types" }
+ rmcp = { workspace = true, default-features = false, features = [
+     "auth",
+@@ -56,6 +50,14 @@ tracing = { workspace = true, features = ["log"] }
+ urlencoding = { workspace = true }
+ webbrowser = { workspace = true }
+ 
++[target.'cfg(not(any(target_os = "freebsd", target_os = "illumos")))'.dependencies]
++keyring = { workspace = true, features = [
++    "apple-native",
++    "crypto-rust",
++    "linux-native-async-persistent",
++    "windows-native",
++] }
++
+ [dev-dependencies]
+ escargot = { workspace = true }
+ pretty_assertions = { workspace = true }
+diff --git a/codex-rs/rmcp-client/src/oauth.rs b/codex-rs/rmcp-client/src/oauth.rs
+index afa0e907..8bf50724 100644
+--- a/codex-rs/rmcp-client/src/oauth.rs
++++ b/codex-rs/rmcp-client/src/oauth.rs
+@@ -18,6 +18,7 @@
+ 
+ use anyhow::Context;
+ use anyhow::Result;
++#[cfg(not(any(target_os = "freebsd", target_os = "illumos")))]
+ use keyring::Entry;
+ use oauth2::AccessToken;
+ use oauth2::EmptyExtraTokenFields;
+@@ -106,6 +107,7 @@ trait KeyringStore {
+ 
+ struct DefaultKeyringStore;
+ 
++#[cfg(not(any(target_os = "freebsd", target_os = "illumos")))]
+ impl KeyringStore for DefaultKeyringStore {
+     fn load(&self, service: &str, account: &str) -> Result<Option<String>, CredentialStoreError> {
+         let entry = Entry::new(service, account).map_err(CredentialStoreError::new)?;
+@@ -131,6 +133,30 @@ impl KeyringStore for DefaultKeyringStore {
+     }
+ }
+ 
++#[cfg(any(target_os = "freebsd", target_os = "illumos"))]
++impl KeyringStore for DefaultKeyringStore {
++    fn load(&self, _service: &str, _account: &str) -> Result<Option<String>, CredentialStoreError> {
++        Err(CredentialStoreError::new(
++            "keyring storage is not available on this platform",
++        ))
++    }
++
++    fn save(
++        &self,
++        _service: &str,
++        _account: &str,
++        _value: &str,
++    ) -> Result<(), CredentialStoreError> {
++        Err(CredentialStoreError::new(
++            "keyring storage is not available on this platform",
++        ))
++    }
++
++    fn delete(&self, _service: &str, _account: &str) -> Result<bool, CredentialStoreError> {
++        Ok(false)
++    }
++}
++
+ /// Wrap OAuthTokenResponse to allow for partial equality comparison.
+ #[derive(Debug, Clone, Serialize, Deserialize)]
+ pub struct WrappedOAuthTokenResponse(pub OAuthTokenResponse);
+@@ -590,7 +616,7 @@ fn sha_256_prefix(value: &Value) -> Result<String> {
+     Ok(truncated.to_string())
+ }
+ 
+-#[cfg(test)]
++#[cfg(all(test, not(any(target_os = "freebsd", target_os = "illumos"))))]
+ mod tests {
+     use super::*;
+     use anyhow::Result;
+@@ -964,3 +990,6 @@ mod tests {
+         }
+     }
+ }
++
++#[cfg(all(test, any(target_os = "freebsd", target_os = "illumos")))]
++mod tests {}

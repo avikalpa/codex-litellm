@@ -15,7 +15,7 @@ test-codex() {
 }
 ```
 
-The installer downloads a prebuilt binary for your platform (Linux x64/arm64, macOS x64/arm64, Windows x64/arm64, FreeBSD x64, and Android arm64).  If no prebuilt is available the installer aborts and you can fall back to a local build.
+The installer downloads a prebuilt binary for your platform (Linux x64/arm64, macOS x64/arm64, Windows x64/arm64, FreeBSD x64, Illumos x64, and Android arm64).  If no prebuilt is available the installer aborts and you can fall back to a local build.
 
 ## Local builds
 
@@ -44,7 +44,14 @@ More notes on day-to-day work live in [`docs/PROJECT_SUMMARY.md`](docs/PROJECT_S
 GitHub Actions (`.github/workflows/build.yml`) builds on every push and pull request, generating:
 
 - `codex-litellm-linux-x64.tar.gz`
+- `codex-litellm-linux-arm64.tar.gz`
 - `codex-litellm-android-arm64.tar.gz`
+- `codex-litellm-macos-x64.tar.gz`
+- `codex-litellm-macos-arm64.tar.gz`
+- `codex-litellm-windows-x64.tar.gz`
+- `codex-litellm-windows-arm64.tar.gz`
+- `codex-litellm-freebsd-x64.tar.gz`
+- `codex-litellm-illumos-x64.tar.gz`
 
 When a GitHub release is created the workflow re-runs, attaches artifacts, and publishes the npm package (requires `NPM_TOKEN`).
 
