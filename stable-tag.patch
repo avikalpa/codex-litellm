@@ -2506,18 +2506,20 @@ index c515cdbf..50213a4e 100644
  escargot = { workspace = true }
  pretty_assertions = { workspace = true }
 diff --git a/codex-rs/rmcp-client/src/oauth.rs b/codex-rs/rmcp-client/src/oauth.rs
-index afa0e907..8bf50724 100644
+index afa0e907..259d3052 100644
 --- a/codex-rs/rmcp-client/src/oauth.rs
 +++ b/codex-rs/rmcp-client/src/oauth.rs
-@@ -18,6 +18,7 @@
+@@ -18,6 +18,9 @@
  
  use anyhow::Context;
  use anyhow::Result;
++#[cfg(any(target_os = "freebsd", target_os = "illumos"))]
++use anyhow::anyhow;
 +#[cfg(not(any(target_os = "freebsd", target_os = "illumos")))]
  use keyring::Entry;
  use oauth2::AccessToken;
  use oauth2::EmptyExtraTokenFields;
-@@ -106,6 +107,7 @@ trait KeyringStore {
+@@ -106,6 +109,7 @@ trait KeyringStore {
  
  struct DefaultKeyringStore;
  
@@ -2525,16 +2527,16 @@ index afa0e907..8bf50724 100644
  impl KeyringStore for DefaultKeyringStore {
      fn load(&self, service: &str, account: &str) -> Result<Option<String>, CredentialStoreError> {
          let entry = Entry::new(service, account).map_err(CredentialStoreError::new)?;
-@@ -131,6 +133,30 @@ impl KeyringStore for DefaultKeyringStore {
+@@ -131,6 +135,30 @@ impl KeyringStore for DefaultKeyringStore {
      }
  }
  
 +#[cfg(any(target_os = "freebsd", target_os = "illumos"))]
 +impl KeyringStore for DefaultKeyringStore {
 +    fn load(&self, _service: &str, _account: &str) -> Result<Option<String>, CredentialStoreError> {
-+        Err(CredentialStoreError::new(
-+            "keyring storage is not available on this platform",
-+        ))
++        Err(CredentialStoreError::new(anyhow!(
++            "keyring storage is not available on this platform"
++        )))
 +    }
 +
 +    fn save(
@@ -2543,9 +2545,9 @@ index afa0e907..8bf50724 100644
 +        _account: &str,
 +        _value: &str,
 +    ) -> Result<(), CredentialStoreError> {
-+        Err(CredentialStoreError::new(
-+            "keyring storage is not available on this platform",
-+        ))
++        Err(CredentialStoreError::new(anyhow!(
++            "keyring storage is not available on this platform"
++        )))
 +    }
 +
 +    fn delete(&self, _service: &str, _account: &str) -> Result<bool, CredentialStoreError> {
@@ -2556,7 +2558,7 @@ index afa0e907..8bf50724 100644
  /// Wrap OAuthTokenResponse to allow for partial equality comparison.
  #[derive(Debug, Clone, Serialize, Deserialize)]
  pub struct WrappedOAuthTokenResponse(pub OAuthTokenResponse);
-@@ -590,7 +616,7 @@ fn sha_256_prefix(value: &Value) -> Result<String> {
+@@ -590,10 +618,12 @@ fn sha_256_prefix(value: &Value) -> Result<String> {
      Ok(truncated.to_string())
  }
  
@@ -2565,7 +2567,12 @@ index afa0e907..8bf50724 100644
  mod tests {
      use super::*;
      use anyhow::Result;
-@@ -964,3 +990,6 @@ mod tests {
++#[cfg(any(target_os = "freebsd", target_os = "illumos"))]
++use anyhow::anyhow;
+     use keyring::Error as KeyringError;
+     use keyring::credential::CredentialApi as _;
+     use keyring::mock::MockCredential;
+@@ -964,3 +994,6 @@ mod tests {
          }
      }
  }
