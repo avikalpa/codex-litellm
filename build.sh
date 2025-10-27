@@ -33,11 +33,18 @@ fi
 if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
   export PKG_CONFIG_ALLOW_CROSS=1
   inherit_vars="PKG_CONFIG_ALLOW_CROSS"
+  if [[ "$TARGET" == "x86_64-unknown-illumos" ]]; then
+    inherit_vars="${inherit_vars},CFLAGS_x86_64_unknown_illumos"
+  fi
   if [[ -n "${CROSS_CONTAINER_INHERITS:-}" ]]; then
     export CROSS_CONTAINER_INHERITS="${CROSS_CONTAINER_INHERITS},${inherit_vars}"
   else
     export CROSS_CONTAINER_INHERITS="${inherit_vars}"
   fi
+fi
+
+if [[ "$TARGET" == "x86_64-unknown-illumos" ]]; then
+  export CFLAGS_x86_64_unknown_illumos="${CFLAGS_x86_64_unknown_illumos:-} -D__illumos__"
 fi
 
 mkdir -p "$DIST_ROOT"

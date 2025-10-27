@@ -5992,6 +5992,19 @@ index b104f512..76fa5784 100644
  tracing-subscriber = { workspace = true }
  
  [dev-dependencies]
+diff --git a/codex-rs/process-hardening/src/lib.rs b/codex-rs/process-hardening/src/lib.rs
+index a787b409..3010c0c7 100644
+--- a/codex-rs/process-hardening/src/lib.rs
++++ b/codex-rs/process-hardening/src/lib.rs
+@@ -91,7 +91,7 @@ pub(crate) fn pre_main_hardening_macos() {
+     }
+ }
+ 
+-#[cfg(unix)]
++#[cfg(any(target_os = "linux", target_os = "android", target_os = "macos"))]
+ fn set_core_file_size_limit_to_zero() {
+     let rlim = libc::rlimit {
+         rlim_cur: 0,
 diff --git a/codex-rs/rmcp-client/Cargo.toml b/codex-rs/rmcp-client/Cargo.toml
 index c515cdbf..50213a4e 100644
 --- a/codex-rs/rmcp-client/Cargo.toml
