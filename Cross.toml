@@ -11,10 +11,8 @@ pre-build = [
   "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends perl pkg-config make clang"
 ]
 
-[target.x86_64-unknown-illumos]
-env = {
-  CFLAGS = "-D__illumos__",
-  CFLAGS_x86_64_unknown_illumos = "-D__illumos__",
-  TARGET_CFLAGS = "-D__illumos__"
-}
+[target.x86_64-unknown-illumos.env]
+CFLAGS = "-D__illumos__"
+CFLAGS_x86_64_unknown_illumos = "-D__illumos__"
+TARGET_CFLAGS = "-D__illumos__"
 
