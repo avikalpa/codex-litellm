@@ -31,16 +31,17 @@ if [[ -z "$SUFFIX" ]]; then
 fi
 
 if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
-  if [[ "$TARGET" == *"linux"* || "$TARGET" == *"android"* || "$TARGET" == *"freebsd"* || "$TARGET" == *"illumos"* ]]; then
-    export PKG_CONFIG_ALLOW_CROSS=1
+  export PKG_CONFIG_ALLOW_CROSS=1
+  inherit_vars="PKG_CONFIG_ALLOW_CROSS"
+  if [[ "$TARGET" == *"android"* || "$TARGET" == *"freebsd"* || "$TARGET" == *"illumos"* ]]; then
     export OPENSSL_NO_PKG_CONFIG=1
     export OPENSSL_STATIC=1
-    inherit_vars="PKG_CONFIG_ALLOW_CROSS,OPENSSL_NO_PKG_CONFIG,OPENSSL_STATIC"
-    if [[ -n "${CROSS_CONTAINER_INHERITS:-}" ]]; then
-      export CROSS_CONTAINER_INHERITS="${CROSS_CONTAINER_INHERITS},${inherit_vars}"
-    else
-      export CROSS_CONTAINER_INHERITS="${inherit_vars}"
-    fi
+    inherit_vars="${inherit_vars},OPENSSL_NO_PKG_CONFIG,OPENSSL_STATIC"
+  fi
+  if [[ -n "${CROSS_CONTAINER_INHERITS:-}" ]]; then
+    export CROSS_CONTAINER_INHERITS="${CROSS_CONTAINER_INHERITS},${inherit_vars}"
+  else
+    export CROSS_CONTAINER_INHERITS="${inherit_vars}"
   fi
 fi
 
