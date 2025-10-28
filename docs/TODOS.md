@@ -9,4 +9,4 @@
 8. When resuming a upstream codex session, we should check if the existing context window is above our context window limit. If yes, the user should be asked the session is over the context window limit of the litellm version and whether to compress it or exit.
 9. (done) Where version info is shown in the program, instead of showing only the upstream version like v0.0.50 it should show upstream+our_commit_id like v0.0.50+cd6y5t
 10. (done) Improvement over 1. Use the Ascii startup onboarding but modified with intructions and options for our use-case.
-
+11. TUI status bar bug: shows 100% context always. We should check context handling logic with point 6 & 7.
