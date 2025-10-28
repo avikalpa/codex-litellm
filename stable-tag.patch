@@ -3900,6 +3900,25 @@ index df029c92..bc860086 100644
  
  [profile.release]
  lto = "fat"
+diff --git a/codex-rs/app-server/src/models.rs b/codex-rs/app-server/src/models.rs
+index be47cbc2..3ee9c1c9 100644
+--- a/codex-rs/app-server/src/models.rs
++++ b/codex-rs/app-server/src/models.rs
+@@ -13,10 +13,10 @@ pub fn supported_models() -> Vec<Model> {
+ 
+ fn model_from_preset(preset: ModelPreset) -> Model {
+     Model {
+-        id: preset.id.to_string(),
+-        model: preset.model.to_string(),
+-        display_name: preset.display_name.to_string(),
+-        description: preset.description.to_string(),
++        id: preset.id,
++        model: preset.model.clone(),
++        display_name: preset.display_name.clone(),
++        description: preset.description.unwrap_or_default(),
+         supported_reasoning_efforts: reasoning_efforts_from_preset(
+             preset.supported_reasoning_efforts,
+         ),
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
 index 940e1e53..3c7273f3 100644
 --- a/codex-rs/cli/src/main.rs
@@ -3954,6 +3973,176 @@ index 276bfca0..c445cec5 100644
  // Shared fuzzy matcher (used by TUI selection popups and other UI filtering)
  pub mod fuzzy_match;
  // Shared model presets used by TUI and MCP server
+diff --git a/codex-rs/common/src/model_presets.rs b/codex-rs/common/src/model_presets.rs
+index b6d06438..9488e84b 100644
+--- a/codex-rs/common/src/model_presets.rs
++++ b/codex-rs/common/src/model_presets.rs
+@@ -2,7 +2,7 @@ use codex_app_server_protocol::AuthMode;
+ use codex_core::protocol_config_types::ReasoningEffort;
+ 
+ /// A reasoning effort option that can be surfaced for a model.
+-#[derive(Debug, Clone, Copy)]
++#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+ pub struct ReasoningEffortPreset {
+     /// Effort level that the model supports.
+     pub effort: ReasoningEffort,
+@@ -11,16 +11,16 @@ pub struct ReasoningEffortPreset {
+ }
+ 
+ /// Metadata describing a Codex-supported model.
+-#[derive(Debug, Clone, Copy)]
++#[derive(Debug, Clone, PartialEq, Eq)]
+ pub struct ModelPreset {
+     /// Stable identifier for the preset.
+-    pub id: &'static str,
++    pub id: String,
+     /// Model slug (e.g., "gpt-5").
+-    pub model: &'static str,
++    pub model: String,
+     /// Display name shown in UIs.
+-    pub display_name: &'static str,
++    pub display_name: String,
+     /// Short human description shown in UIs.
+-    pub description: &'static str,
++    pub description: Option<String>,
+     /// Reasoning effort applied when none is explicitly chosen.
+     pub default_reasoning_effort: ReasoningEffort,
+     /// Supported reasoning effort options.
+@@ -29,59 +29,73 @@ pub struct ModelPreset {
+     pub is_default: bool,
+ }
+ 
+-const PRESETS: &[ModelPreset] = &[
+-    ModelPreset {
+-        id: "gpt-5-codex",
+-        model: "gpt-5-codex",
+-        display_name: "gpt-5-codex",
+-        description: "Optimized for coding tasks with many tools.",
+-        default_reasoning_effort: ReasoningEffort::Medium,
+-        supported_reasoning_efforts: &[
+-            ReasoningEffortPreset {
+-                effort: ReasoningEffort::Low,
+-                description: "Fastest responses with limited reasoning",
+-            },
+-            ReasoningEffortPreset {
+-                effort: ReasoningEffort::Medium,
+-                description: "Dynamically adjusts reasoning based on the task",
+-            },
+-            ReasoningEffortPreset {
+-                effort: ReasoningEffort::High,
+-                description: "Maximizes reasoning depth for complex or ambiguous problems",
+-            },
+-        ],
+-        is_default: true,
++const STANDARD_REASONING_PRESETS: &[ReasoningEffortPreset] = &[
++    ReasoningEffortPreset {
++        effort: ReasoningEffort::Low,
++        description: "Fastest responses with limited reasoning",
+     },
+-    ModelPreset {
+-        id: "gpt-5",
+-        model: "gpt-5",
+-        display_name: "gpt-5",
+-        description: "Broad world knowledge with strong general reasoning.",
+-        default_reasoning_effort: ReasoningEffort::Medium,
+-        supported_reasoning_efforts: &[
+-            ReasoningEffortPreset {
+-                effort: ReasoningEffort::Minimal,
+-                description: "Fastest responses with little reasoning",
+-            },
+-            ReasoningEffortPreset {
+-                effort: ReasoningEffort::Low,
+-                description: "Balances speed with some reasoning; useful for straightforward queries and short explanations",
+-            },
+-            ReasoningEffortPreset {
+-                effort: ReasoningEffort::Medium,
+-                description: "Provides a solid balance of reasoning depth and latency for general-purpose tasks",
+-            },
+-            ReasoningEffortPreset {
+-                effort: ReasoningEffort::High,
+-                description: "Maximizes reasoning depth for complex or ambiguous problems",
+-            },
+-        ],
+-        is_default: false,
++    ReasoningEffortPreset {
++        effort: ReasoningEffort::Medium,
++        description: "Dynamically adjusts reasoning based on the task",
++    },
++    ReasoningEffortPreset {
++        effort: ReasoningEffort::High,
++        description: "Maximizes reasoning depth for complex or ambiguous problems",
++    },
++];
++
++const GPT5_REASONING_PRESETS: &[ReasoningEffortPreset] = &[
++    ReasoningEffortPreset {
++        effort: ReasoningEffort::Minimal,
++        description: "Fastest responses with little reasoning",
++    },
++    ReasoningEffortPreset {
++        effort: ReasoningEffort::Low,
++        description: "Balances speed with some reasoning; useful for straightforward queries and short explanations",
++    },
++    ReasoningEffortPreset {
++        effort: ReasoningEffort::Medium,
++        description: "Provides a solid balance of reasoning depth and latency for general-purpose tasks",
++    },
++    ReasoningEffortPreset {
++        effort: ReasoningEffort::High,
++        description: "Maximizes reasoning depth for complex or ambiguous problems",
+     },
+ ];
+ 
+ pub fn builtin_model_presets(_auth_mode: Option<AuthMode>) -> Vec<ModelPreset> {
+-    PRESETS.to_vec()
++    vec![
++        ModelPreset {
++            id: "gpt-5-codex".to_string(),
++            model: "gpt-5-codex".to_string(),
++            display_name: "gpt-5-codex".to_string(),
++            description: Some("Optimized for coding tasks with many tools.".to_string()),
++            default_reasoning_effort: ReasoningEffort::Medium,
++            supported_reasoning_efforts: STANDARD_REASONING_PRESETS,
++            is_default: true,
++        },
++        ModelPreset {
++            id: "gpt-5".to_string(),
++            model: "gpt-5".to_string(),
++            display_name: "gpt-5".to_string(),
++            description: Some("Broad world knowledge with strong general reasoning.".to_string()),
++            default_reasoning_effort: ReasoningEffort::Medium,
++            supported_reasoning_efforts: GPT5_REASONING_PRESETS,
++            is_default: false,
++        },
++    ]
++}
++
++pub fn make_litellm_model_preset(model: &str, is_default: bool) -> ModelPreset {
++    ModelPreset {
++        id: model.to_string(),
++        model: model.to_string(),
++        display_name: model.to_string(),
++        description: None,
++        default_reasoning_effort: ReasoningEffort::Medium,
++        supported_reasoning_efforts: STANDARD_REASONING_PRESETS,
++        is_default,
++    }
+ }
+ 
+ #[cfg(test)]
+@@ -90,7 +104,10 @@ mod tests {
+ 
+     #[test]
+     fn only_one_default_model_is_configured() {
+-        let default_models = PRESETS.iter().filter(|preset| preset.is_default).count();
+-        assert!(default_models == 1);
++        let default_models = builtin_model_presets(None)
++            .into_iter()
++            .filter(|preset| preset.is_default)
++            .count();
++        assert_eq!(default_models, 1);
+     }
+ }
 diff --git a/codex-rs/core/Cargo.toml b/codex-rs/core/Cargo.toml
 index 9b0e4339..9119dedd 100644
 --- a/codex-rs/core/Cargo.toml
@@ -5088,7 +5277,7 @@ index de10d640..1e9d350d 100644
      RetryableHttpError {
          status: StatusCode,
 diff --git a/codex-rs/core/src/config.rs b/codex-rs/core/src/config.rs
-index b04aba5d..d1cfc937 100644
+index b04aba5d..39f25515 100644
 --- a/codex-rs/core/src/config.rs
 +++ b/codex-rs/core/src/config.rs
 @@ -58,13 +58,14 @@ use toml_edit::Array as TomlArray;
@@ -5110,7 +5299,7 @@ index b04aba5d..d1cfc937 100644
  
  /// Maximum number of bytes of the documentation that will be embedded. Larger
  /// files are *silently truncated* to this size so we do not take up too much of
-@@ -72,6 +73,286 @@ pub const GPT_5_CODEX_MEDIUM_MODEL: &str = "gpt-5-codex";
+@@ -72,6 +73,295 @@ pub const GPT_5_CODEX_MEDIUM_MODEL: &str = "gpt-5-codex";
  pub(crate) const PROJECT_DOC_MAX_BYTES: usize = 32 * 1024; // 32 KiB
  
  pub(crate) const CONFIG_TOML_FILE: &str = "config.toml";
@@ -5291,6 +5480,15 @@ index b04aba5d..d1cfc937 100644
 +    Ok(())
 +}
 +
++pub fn set_default_model(codex_home: &Path, model: &str) -> std::io::Result<()> {
++    ensure_litellm_baseline(codex_home)?;
++    let config_path = codex_home.join(CONFIG_TOML_FILE);
++    let mut doc = load_config_document(&config_path)?;
++    doc["model"] = value(model);
++    save_config_document(&config_path, &doc)?;
++    Ok(())
++}
++
 +pub fn clear_litellm_credentials(codex_home: &Path) -> std::io::Result<bool> {
 +    let config_path = codex_home.join(CONFIG_TOML_FILE);
 +    let mut doc = load_config_document(&config_path)?;
@@ -5397,7 +5595,7 @@ index b04aba5d..d1cfc937 100644
  
  /// Application configuration loaded from disk and merged with overrides.
  #[derive(Debug, Clone, PartialEq)]
-@@ -99,6 +380,9 @@ pub struct Config {
+@@ -99,6 +389,9 @@ pub struct Config {
      /// Info needed to make an API request to the model.
      pub model_provider: ModelProviderInfo,
  
@@ -5407,7 +5605,7 @@ index b04aba5d..d1cfc937 100644
      /// Approval policy for executing commands.
      pub approval_policy: AskForApproval,
  
-@@ -268,7 +552,8 @@ impl Config {
+@@ -268,7 +561,8 @@ impl Config {
          cli_overrides: Vec<(String, TomlValue)>,
          overrides: ConfigOverrides,
      ) -> std::io::Result<Self> {
@@ -5417,7 +5615,7 @@ index b04aba5d..d1cfc937 100644
  
          let root_value = load_resolved_config(
              &codex_home,
-@@ -290,6 +575,7 @@ pub async fn load_config_as_toml_with_cli_overrides(
+@@ -290,6 +584,7 @@ pub async fn load_config_as_toml_with_cli_overrides(
      codex_home: &Path,
      cli_overrides: Vec<(String, TomlValue)>,
  ) -> std::io::Result<ConfigToml> {
@@ -5425,7 +5623,7 @@ index b04aba5d..d1cfc937 100644
      let root_value = load_resolved_config(
          codex_home,
          cli_overrides,
-@@ -1249,13 +1535,23 @@ impl Config {
+@@ -1249,13 +1544,23 @@ impl Config {
          let mut model_providers = built_in_model_providers();
          // Merge user-defined providers into the built-in list.
          for (key, provider) in cfg.model_providers.into_iter() {
@@ -5451,7 +5649,7 @@ index b04aba5d..d1cfc937 100644
          let model_provider = model_providers
              .get(&model_provider_id)
              .ok_or_else(|| {
-@@ -1265,6 +1561,19 @@ impl Config {
+@@ -1265,6 +1570,19 @@ impl Config {
                  )
              })?
              .clone();
@@ -5471,7 +5669,7 @@ index b04aba5d..d1cfc937 100644
  
          let shell_environment_policy = cfg.shell_environment_policy.into();
  
-@@ -1346,6 +1655,7 @@ impl Config {
+@@ -1346,6 +1664,7 @@ impl Config {
              model_auto_compact_token_limit,
              model_provider_id,
              model_provider,
@@ -5479,7 +5677,7 @@ index b04aba5d..d1cfc937 100644
              cwd: resolved_cwd,
              approval_policy,
              sandbox_policy,
-@@ -1525,6 +1835,27 @@ pub fn find_codex_home() -> std::io::Result<PathBuf> {
+@@ -1525,6 +1844,27 @@ pub fn find_codex_home() -> std::io::Result<PathBuf> {
      Ok(p)
  }
  
@@ -5569,10 +5767,10 @@ index 34b6df4a..b705347d 100644
  pub use client_common::REVIEW_PROMPT;
  pub use client_common::ResponseEvent;
 diff --git a/codex-rs/core/src/model_provider_info.rs b/codex-rs/core/src/model_provider_info.rs
-index 8dc252aa..b3802e6a 100644
+index 8dc252aa..648e6937 100644
 --- a/codex-rs/core/src/model_provider_info.rs
 +++ b/codex-rs/core/src/model_provider_info.rs
-@@ -9,11 +9,15 @@ use crate::CodexAuth;
+@@ -9,13 +9,18 @@ use crate::CodexAuth;
  use crate::default_client::CodexHttpClient;
  use crate::default_client::CodexRequestBuilder;
  use codex_app_server_protocol::AuthMode;
@@ -5587,8 +5785,11 @@ index 8dc252aa..b3802e6a 100644
 +use tracing::debug;
  
  use crate::error::EnvVarError;
++use crate::error::UnexpectedResponseError;
  const DEFAULT_STREAM_IDLE_TIMEOUT_MS: u64 = 300_000;
-@@ -93,6 +97,28 @@ pub struct ModelProviderInfo {
+ const DEFAULT_STREAM_MAX_RETRIES: u64 = 5;
+ const DEFAULT_REQUEST_MAX_RETRIES: u64 = 4;
+@@ -93,9 +98,97 @@ pub struct ModelProviderInfo {
      /// and API key (if needed) comes from the "env_key" environment variable.
      #[serde(default)]
      pub requires_openai_auth: bool,
@@ -5617,15 +5818,35 @@ index 8dc252aa..b3802e6a 100644
  }
  
  impl ModelProviderInfo {
-@@ -129,9 +155,40 @@ impl ModelProviderInfo {
- 
-         let mut builder = client.post(url);
- 
--        if let Some(auth) = effective_auth.as_ref() {
--            builder = builder.bearer_auth(auth.get_token().await?);
--        }
++    fn derive_effective_auth(
++        &self,
++        auth: &Option<CodexAuth>,
++    ) -> crate::error::Result<Option<CodexAuth>> {
++        if let Some(secret_key) = &self.experimental_bearer_token {
++            return Ok(Some(CodexAuth::from_api_key(secret_key)));
++        }
++
++        match self.api_key() {
++            Ok(Some(key)) => Ok(Some(CodexAuth::from_api_key(&key))),
++            Ok(None) => Ok(auth.clone()),
++            Err(err) => {
++                if auth.is_some() {
++                    Ok(auth.clone())
++                } else {
++                    Err(err)
++                }
++            }
++        }
++    }
++
++    async fn apply_authentication(
++        &self,
++        builder: CodexRequestBuilder,
++        effective_auth: &Option<CodexAuth>,
++        context: &'static str,
++    ) -> crate::error::Result<CodexRequestBuilder> {
 +        let mut auth_strategy = "none";
-+        builder = match (&self.auth_header, effective_auth.as_ref()) {
++        let builder = match (&self.auth_header, effective_auth.as_ref()) {
 +            (Some(header), _) => {
 +                let trimmed = header.trim();
 +                if trimmed.len() >= 6 && trimmed[..6].eq_ignore_ascii_case("bearer") {
@@ -5656,12 +5877,149 @@ index 8dc252aa..b3802e6a 100644
 +            provider_id = %self.name,
 +            base_url = ?self.base_url,
 +            auth_strategy,
++            context,
 +            "Prepared request builder for provider"
 +        );
- 
-         Ok(self.apply_http_headers(builder))
++
++        Ok(self.apply_http_headers(builder))
++    }
++
+     /// Construct a `POST` RequestBuilder for the given URL using the provided
+     /// [`CodexHttpClient`] applying:
+     ///   • provider-specific headers (static + env based)
+@@ -109,31 +202,11 @@ impl ModelProviderInfo {
+         client: &'a CodexHttpClient,
+         auth: &Option<CodexAuth>,
+     ) -> crate::error::Result<CodexRequestBuilder> {
+-        let effective_auth = if let Some(secret_key) = &self.experimental_bearer_token {
+-            Some(CodexAuth::from_api_key(secret_key))
+-        } else {
+-            match self.api_key() {
+-                Ok(Some(key)) => Some(CodexAuth::from_api_key(&key)),
+-                Ok(None) => auth.clone(),
+-                Err(err) => {
+-                    if auth.is_some() {
+-                        auth.clone()
+-                    } else {
+-                        return Err(err);
+-                    }
+-                }
+-            }
+-        };
+-
++        let effective_auth = self.derive_effective_auth(auth)?;
+         let url = self.get_full_url(&effective_auth);
+-
+-        let mut builder = client.post(url);
+-
+-        if let Some(auth) = effective_auth.as_ref() {
+-            builder = builder.bearer_auth(auth.get_token().await?);
+-        }
+-
+-        Ok(self.apply_http_headers(builder))
++        let builder = client.post(url);
++        self.apply_authentication(builder, &effective_auth, "chat-request")
++            .await
      }
-@@ -271,8 +328,20 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+ 
+     fn get_query_string(&self) -> String {
+@@ -149,7 +222,7 @@ impl ModelProviderInfo {
+             })
+     }
+ 
+-    pub(crate) fn get_full_url(&self, auth: &Option<CodexAuth>) -> String {
++    fn effective_base_url(&self, auth: &Option<CodexAuth>) -> String {
+         let default_base_url = if matches!(
+             auth,
+             Some(CodexAuth {
+@@ -161,11 +234,18 @@ impl ModelProviderInfo {
+         } else {
+             "https://api.openai.com/v1"
+         };
+-        let query_string = self.get_query_string();
+-        let base_url = self
+-            .base_url
++
++        self.base_url
+             .clone()
+-            .unwrap_or(default_base_url.to_string());
++            .unwrap_or_else(|| default_base_url.to_string())
++    }
++
++    pub(crate) fn get_full_url(&self, auth: &Option<CodexAuth>) -> String {
++        let query_string = self.get_query_string();
++        let mut base_url = self.effective_base_url(auth);
++        if base_url.ends_with('/') {
++            base_url.pop();
++        }
+ 
+         match self.wire_api {
+             WireApi::Responses => format!("{base_url}/responses{query_string}"),
+@@ -258,6 +338,63 @@ impl ModelProviderInfo {
+     }
+ }
+ 
++#[derive(Deserialize)]
++struct LiteLlmModelsResponse {
++    data: Vec<LiteLlmModelEntry>,
++}
++
++#[derive(Deserialize)]
++struct LiteLlmModelEntry {
++    id: String,
++}
++
++impl ModelProviderInfo {
++    pub async fn list_models(
++        &self,
++        client: &CodexHttpClient,
++        auth: &Option<CodexAuth>,
++    ) -> crate::error::Result<Vec<String>> {
++        let effective_auth = self.derive_effective_auth(auth)?;
++        let mut base_url = self.effective_base_url(&effective_auth);
++        if base_url.ends_with('/') {
++            base_url.pop();
++        }
++        let mut url = format!("{base_url}/models");
++        let query = self.get_query_string();
++        if !query.is_empty() {
++            url.push_str(&query);
++        }
++
++        let builder = client.get(url);
++        let builder = self
++            .apply_authentication(builder, &effective_auth, "list-models")
++            .await?;
++        let response = builder
++            .send()
++            .await
++            .map_err(|err| crate::error::CodexErr::Fatal(err.to_string()))?;
++
++        if !response.status().is_success() {
++            let status = response.status();
++            let body = response.text().await.unwrap_or_default();
++            return Err(crate::error::CodexErr::UnexpectedStatus(
++                UnexpectedResponseError {
++                    status,
++                    body,
++                    request_id: None,
++                },
++            ));
++        }
++
++        let models = response
++            .json::<LiteLlmModelsResponse>()
++            .await
++            .map_err(|err| crate::error::CodexErr::Fatal(err.to_string()))?
++            .data;
++        Ok(models.into_iter().map(|entry| entry.id).collect())
++    }
++}
++
+ const DEFAULT_OLLAMA_PORT: u32 = 11434;
+ 
+ pub const BUILT_IN_OSS_MODEL_PROVIDER_ID: &str = "oss";
+@@ -271,8 +408,20 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
      // open source ("oss") providers by default. Users are encouraged to add to
      // `model_providers` in config.toml to add their own providers.
      [
@@ -5684,7 +6042,7 @@ index 8dc252aa..b3802e6a 100644
              P {
                  name: "OpenAI".into(),
                  // Allow users to override the default OpenAI endpoint by
-@@ -280,16 +349,14 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+@@ -280,16 +429,14 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
                  // Codex at a proxy, mock server, or Azure-style deployment
                  // without requiring a full TOML override for the built-in
                  // OpenAI provider.
@@ -5703,7 +6061,7 @@ index 8dc252aa..b3802e6a 100644
                          .into_iter()
                          .collect(),
                  ),
-@@ -309,9 +376,39 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+@@ -309,9 +456,39 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
                  stream_max_retries: None,
                  stream_idle_timeout_ms: None,
                  requires_openai_auth: true,
@@ -5745,7 +6103,7 @@ index 8dc252aa..b3802e6a 100644
      ]
      .into_iter()
      .map(|(k, v)| (k.to_string(), v))
-@@ -354,6 +451,9 @@ pub fn create_oss_provider_with_base_url(base_url: &str) -> ModelProviderInfo {
+@@ -354,6 +531,9 @@ pub fn create_oss_provider_with_base_url(base_url: &str) -> ModelProviderInfo {
          stream_max_retries: None,
          stream_idle_timeout_ms: None,
          requires_openai_auth: false,
@@ -5755,7 +6113,7 @@ index 8dc252aa..b3802e6a 100644
      }
  }
  
-@@ -394,6 +494,9 @@ base_url = "http://localhost:11434/v1"
+@@ -394,6 +574,9 @@ base_url = "http://localhost:11434/v1"
              stream_max_retries: None,
              stream_idle_timeout_ms: None,
              requires_openai_auth: false,
@@ -5765,7 +6123,7 @@ index 8dc252aa..b3802e6a 100644
          };
  
          let provider: ModelProviderInfo = toml::from_str(azure_provider_toml).unwrap();
-@@ -424,6 +527,9 @@ query_params = { api-version = "2025-04-01-preview" }
+@@ -424,6 +607,9 @@ query_params = { api-version = "2025-04-01-preview" }
              stream_max_retries: None,
              stream_idle_timeout_ms: None,
              requires_openai_auth: false,
@@ -5775,7 +6133,7 @@ index 8dc252aa..b3802e6a 100644
          };
  
          let provider: ModelProviderInfo = toml::from_str(azure_provider_toml).unwrap();
-@@ -457,6 +563,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
+@@ -457,6 +643,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
              stream_max_retries: None,
              stream_idle_timeout_ms: None,
              requires_openai_auth: false,
@@ -5785,7 +6143,7 @@ index 8dc252aa..b3802e6a 100644
          };
  
          let provider: ModelProviderInfo = toml::from_str(azure_provider_toml).unwrap();
-@@ -480,6 +589,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
+@@ -480,6 +669,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
                  stream_max_retries: None,
                  stream_idle_timeout_ms: None,
                  requires_openai_auth: false,
@@ -5795,7 +6153,7 @@ index 8dc252aa..b3802e6a 100644
              }
          }
  
-@@ -513,6 +625,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
+@@ -513,6 +705,9 @@ env_http_headers = { "X-Example-Env-Header" = "EXAMPLE_ENV_VAR" }
              stream_max_retries: None,
              stream_idle_timeout_ms: None,
              requires_openai_auth: false,
@@ -6831,8 +7189,462 @@ index 824e4fee..d8993558 100644
  tracing = { workspace = true, features = ["log"] }
  tracing-appender = { workspace = true }
  tracing-subscriber = { workspace = true, features = ["env-filter"] }
+diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
+index c8eab729..50179015 100644
+--- a/codex-rs/tui/src/app.rs
++++ b/codex-rs/tui/src/app.rs
+@@ -14,6 +14,7 @@ use crate::tui;
+ use crate::tui::TuiEvent;
+ use crate::updates::UpdateAction;
+ use codex_ansi_escape::ansi_escape_line;
++use codex_common::model_presets::ModelPreset;
+ use codex_core::AuthManager;
+ use codex_core::ConversationManager;
+ use codex_core::config::Config;
+@@ -62,6 +63,8 @@ pub(crate) struct App {
+ 
+     pub(crate) file_search: FileSearchManager,
+ 
++    pub(crate) model_presets: Vec<ModelPreset>,
++
+     pub(crate) transcript_cells: Vec<Arc<dyn HistoryCell>>,
+ 
+     // Pager overlay state (Transcript or Static like Diff)
+@@ -92,6 +95,8 @@ impl App {
+         initial_images: Vec<PathBuf>,
+         resume_selection: ResumeSelection,
+         feedback: codex_feedback::CodexFeedback,
++        model_presets: Vec<ModelPreset>,
++        auto_open_model_selector: bool,
+     ) -> Result<AppExitInfo> {
+         use tokio_stream::StreamExt;
+         let (app_event_tx, mut app_event_rx) = unbounded_channel();
+@@ -104,6 +109,9 @@ impl App {
+ 
+         let enhanced_keys_supported = tui.enhanced_keys_supported();
+ 
++        let should_auto_open_selector =
++            auto_open_model_selector && matches!(resume_selection, ResumeSelection::StartFresh);
++
+         let chat_widget = match resume_selection {
+             ResumeSelection::StartFresh | ResumeSelection::Exit => {
+                 let init = crate::chatwidget::ChatWidgetInit {
+@@ -115,6 +123,8 @@ impl App {
+                     enhanced_keys_supported,
+                     auth_manager: auth_manager.clone(),
+                     feedback: feedback.clone(),
++                    model_presets: model_presets.clone(),
++                    auto_open_model_selector: should_auto_open_selector,
+                 };
+                 ChatWidget::new(init, conversation_manager.clone())
+             }
+@@ -138,6 +148,8 @@ impl App {
+                     enhanced_keys_supported,
+                     auth_manager: auth_manager.clone(),
+                     feedback: feedback.clone(),
++                    model_presets: model_presets.clone(),
++                    auto_open_model_selector: false,
+                 };
+                 ChatWidget::new_from_existing(
+                     init,
+@@ -159,6 +171,7 @@ impl App {
+             config,
+             active_profile,
+             file_search,
++            model_presets,
+             enhanced_keys_supported,
+             transcript_cells: Vec::new(),
+             overlay: None,
+@@ -258,6 +271,8 @@ impl App {
+                     enhanced_keys_supported: self.enhanced_keys_supported,
+                     auth_manager: self.auth_manager.clone(),
+                     feedback: self.feedback.clone(),
++                    model_presets: self.model_presets.clone(),
++                    auto_open_model_selector: false,
+                 };
+                 self.chat_widget = ChatWidget::new(init, self.server.clone());
+                 tui.frame_requester().schedule_frame();
+@@ -354,6 +369,10 @@ impl App {
+                     self.config.model_family = family;
+                 }
+             }
++            AppEvent::UpdateModelPresets { presets, auto_open } => {
++                self.model_presets = presets.clone();
++                self.chat_widget.update_model_presets(presets, auto_open);
++            }
+             AppEvent::OpenReasoningPopup { model } => {
+                 self.chat_widget.open_reasoning_popup(model);
+             }
+@@ -553,6 +572,7 @@ mod tests {
+     use std::path::PathBuf;
+     use std::sync::Arc;
+     use std::sync::atomic::AtomicBool;
++    use codex_common::model_presets::builtin_model_presets;
+ 
+     fn make_test_app() -> App {
+         let (chat_widget, app_event_tx, _rx, _op_rx) = make_chatwidget_manual_with_sender();
+@@ -573,6 +593,7 @@ mod tests {
+             config,
+             active_profile: None,
+             file_search,
++            model_presets: builtin_model_presets(None),
+             transcript_cells: Vec::new(),
+             overlay: None,
+             deferred_history_lines: Vec::new(),
+diff --git a/codex-rs/tui/src/app_backtrack.rs b/codex-rs/tui/src/app_backtrack.rs
+index b3e948ec..ddb17cde 100644
+--- a/codex-rs/tui/src/app_backtrack.rs
++++ b/codex-rs/tui/src/app_backtrack.rs
+@@ -340,6 +340,8 @@ impl App {
+             enhanced_keys_supported: self.enhanced_keys_supported,
+             auth_manager: self.auth_manager.clone(),
+             feedback: self.feedback.clone(),
++            model_presets: self.model_presets.clone(),
++            auto_open_model_selector: false,
+         };
+         self.chat_widget =
+             crate::chatwidget::ChatWidget::new_from_existing(init, conv, session_configured);
+diff --git a/codex-rs/tui/src/app_event.rs b/codex-rs/tui/src/app_event.rs
+index 8b14b0be..fec13203 100644
+--- a/codex-rs/tui/src/app_event.rs
++++ b/codex-rs/tui/src/app_event.rs
+@@ -62,6 +62,13 @@ pub(crate) enum AppEvent {
+         effort: Option<ReasoningEffort>,
+     },
+ 
++    /// Replace the available model presets (LiteLLM) and optionally reopen selector.
++    #[allow(dead_code)]
++    UpdateModelPresets {
++        presets: Vec<ModelPreset>,
++        auto_open: bool,
++    },
++
+     /// Open the reasoning selection popup after picking a model.
+     OpenReasoningPopup {
+         model: ModelPreset,
+diff --git a/codex-rs/tui/src/chatwidget.rs b/codex-rs/tui/src/chatwidget.rs
+index fdebe158..a5ac61ba 100644
+--- a/codex-rs/tui/src/chatwidget.rs
++++ b/codex-rs/tui/src/chatwidget.rs
+@@ -226,6 +226,8 @@ pub(crate) struct ChatWidgetInit {
+     pub(crate) enhanced_keys_supported: bool,
+     pub(crate) auth_manager: Arc<AuthManager>,
+     pub(crate) feedback: codex_feedback::CodexFeedback,
++    pub(crate) model_presets: Vec<ModelPreset>,
++    pub(crate) auto_open_model_selector: bool,
+ }
+ 
+ pub(crate) struct ChatWidget {
+@@ -250,6 +252,8 @@ pub(crate) struct ChatWidget {
+     reasoning_buffer: String,
+     // Accumulates full reasoning content for transcript-only recording
+     full_reasoning_buffer: String,
++    // Last reasoning delta trimmed, to deduplicate final chunks
++    last_reasoning_delta: Option<String>,
+     // Current status header shown in the status indicator.
+     current_status_header: String,
+     // Previous status header to restore after a transient stream retry.
+@@ -278,6 +282,8 @@ pub(crate) struct ChatWidget {
+     feedback: codex_feedback::CodexFeedback,
+     // Current session rollout path (if known)
+     current_rollout_path: Option<PathBuf>,
++    model_presets: Vec<ModelPreset>,
++    auto_open_model_selector: bool,
+ }
+ 
+ struct UserMessage {
+@@ -319,6 +325,13 @@ impl ChatWidget {
+         self.bottom_pane.update_status_header(header);
+     }
+ 
++    pub(crate) fn update_model_presets(&mut self, presets: Vec<ModelPreset>, auto_open: bool) {
++        self.model_presets = presets;
++        if auto_open {
++            self.auto_open_model_selector = true;
++        }
++    }
++
+     // --- Small event handlers ---
+     fn on_session_configured(&mut self, event: codex_core::protocol::SessionConfiguredEvent) {
+         self.bottom_pane
+@@ -338,6 +351,10 @@ impl ChatWidget {
+         }
+         // Ask codex-core to enumerate custom prompts for this session.
+         self.submit_op(Op::ListCustomPrompts);
++        if self.auto_open_model_selector {
++            self.auto_open_model_selector = false;
++            self.open_model_popup();
++        }
+         if let Some(user_message) = self.initial_user_message.take() {
+             self.submit_user_message(user_message);
+         }
+@@ -406,21 +423,26 @@ impl ChatWidget {
+         } else {
+             // Fallback while we don't yet have a bold header: leave existing header as-is.
+         }
++
++        let trimmed_delta = delta.trim();
++        if !trimmed_delta.is_empty() {
++            self.last_reasoning_delta = Some(trimmed_delta.to_string());
++        }
+         self.request_redraw();
+     }
+ 
+     fn on_agent_reasoning_final(&mut self) {
+         // At the end of a reasoning block, record transcript-only content.
+         self.full_reasoning_buffer.push_str(&self.reasoning_buffer);
+-        if !self.full_reasoning_buffer.is_empty() {
+-            let cell = history_cell::new_reasoning_summary_block(
+-                self.full_reasoning_buffer.clone(),
+-                &self.config,
+-            );
++        let reasoning = self.full_reasoning_buffer.trim();
++        if !reasoning.is_empty() {
++            let cell =
++                history_cell::new_reasoning_summary_block(reasoning.to_string(), &self.config);
+             self.add_boxed_history(cell);
+         }
+         self.reasoning_buffer.clear();
+         self.full_reasoning_buffer.clear();
++        self.last_reasoning_delta = None;
+         self.request_redraw();
+     }
+ 
+@@ -429,6 +451,7 @@ impl ChatWidget {
+         self.full_reasoning_buffer.push_str(&self.reasoning_buffer);
+         self.full_reasoning_buffer.push_str("\n\n");
+         self.reasoning_buffer.clear();
++        self.last_reasoning_delta = None;
+     }
+ 
+     // Raw reasoning uses the same flow as summarized reasoning
+@@ -440,6 +463,7 @@ impl ChatWidget {
+         self.set_status_header(String::from("Working"));
+         self.full_reasoning_buffer.clear();
+         self.reasoning_buffer.clear();
++        self.last_reasoning_delta = None;
+         self.request_redraw();
+     }
+ 
+@@ -947,6 +971,8 @@ impl ChatWidget {
+             enhanced_keys_supported,
+             auth_manager,
+             feedback,
++            model_presets,
++            auto_open_model_selector,
+         } = common;
+         let mut rng = rand::rng();
+         let placeholder = EXAMPLE_PROMPTS[rng.random_range(0..EXAMPLE_PROMPTS.len())].to_string();
+@@ -981,6 +1007,7 @@ impl ChatWidget {
+             interrupts: InterruptManager::new(),
+             reasoning_buffer: String::new(),
+             full_reasoning_buffer: String::new(),
++            last_reasoning_delta: None,
+             current_status_header: String::from("Working"),
+             retry_status_header: None,
+             conversation_id: None,
+@@ -995,6 +1022,8 @@ impl ChatWidget {
+             last_rendered_width: std::cell::Cell::new(None),
+             feedback,
+             current_rollout_path: None,
++            model_presets,
++            auto_open_model_selector,
+         }
+     }
+ 
+@@ -1013,6 +1042,8 @@ impl ChatWidget {
+             enhanced_keys_supported,
+             auth_manager,
+             feedback,
++            model_presets,
++            auto_open_model_selector,
+         } = common;
+         let mut rng = rand::rng();
+         let placeholder = EXAMPLE_PROMPTS[rng.random_range(0..EXAMPLE_PROMPTS.len())].to_string();
+@@ -1049,6 +1080,7 @@ impl ChatWidget {
+             interrupts: InterruptManager::new(),
+             reasoning_buffer: String::new(),
+             full_reasoning_buffer: String::new(),
++            last_reasoning_delta: None,
+             current_status_header: String::from("Working"),
+             retry_status_header: None,
+             conversation_id: None,
+@@ -1063,6 +1095,8 @@ impl ChatWidget {
+             last_rendered_width: std::cell::Cell::new(None),
+             feedback,
+             current_rollout_path: None,
++            model_presets,
++            auto_open_model_selector,
+         }
+     }
+ 
+@@ -1458,7 +1492,28 @@ impl ChatWidget {
+             | EventMsg::AgentReasoningRawContentDelta(AgentReasoningRawContentDeltaEvent {
+                 delta,
+             }) => self.on_agent_reasoning_delta(delta),
+-            EventMsg::AgentReasoning(AgentReasoningEvent { .. }) => self.on_agent_reasoning_final(),
++            EventMsg::AgentReasoning(AgentReasoningEvent { text }) => {
++                if !text.is_empty() {
++                    let trimmed_final = text.trim().to_string();
++                    let trimmed_buffer = self.reasoning_buffer.trim().to_string();
++                    let duplicate_final = self
++                        .last_reasoning_delta
++                        .as_ref()
++                        .is_some_and(|last| last == &trimmed_final);
++
++                    if trimmed_buffer.is_empty() {
++                        self.on_agent_reasoning_delta(text);
++                    } else if duplicate_final {
++                        // Skip appending duplicate final chunk emitted after streaming deltas.
++                    } else if trimmed_final.starts_with(&trimmed_buffer) {
++                        self.reasoning_buffer.clear();
++                        self.on_agent_reasoning_delta(text);
++                    } else {
++                        self.on_agent_reasoning_delta(text);
++                    }
++                }
++                self.on_agent_reasoning_final();
++            }
+             EventMsg::AgentReasoningRawContent(AgentReasoningRawContentEvent { text }) => {
+                 self.on_agent_reasoning_delta(text);
+                 self.on_agent_reasoning_final()
+@@ -1668,25 +1723,25 @@ impl ChatWidget {
+     /// a second popup is shown to choose the reasoning effort.
+     pub(crate) fn open_model_popup(&mut self) {
+         let current_model = self.config.model.clone();
+-        let auth_mode = self.auth_manager.auth().map(|auth| auth.mode);
+-        let presets: Vec<ModelPreset> = builtin_model_presets(auth_mode);
++        let presets: Vec<ModelPreset> = if self.model_presets.is_empty() {
++            let auth_mode = self.auth_manager.auth().map(|auth| auth.mode);
++            builtin_model_presets(auth_mode)
++        } else {
++            self.model_presets.clone()
++        };
+ 
+         let mut items: Vec<SelectionItem> = Vec::new();
+         for preset in presets.into_iter() {
+-            let description = if preset.description.is_empty() {
+-                None
+-            } else {
+-                Some(preset.description.to_string())
+-            };
++            let description = preset.description.clone().filter(|text| !text.is_empty());
+             let is_current = preset.model == current_model;
+-            let preset_for_action = preset;
++            let preset_for_action = preset.clone();
+             let actions: Vec<SelectionAction> = vec![Box::new(move |tx| {
+                 tx.send(AppEvent::OpenReasoningPopup {
+-                    model: preset_for_action,
++                    model: preset_for_action.clone(),
+                 });
+             })];
+             items.push(SelectionItem {
+-                name: preset.display_name.to_string(),
++                name: preset.display_name.clone(),
+                 description,
+                 is_current,
+                 actions,
+diff --git a/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__deltas_then_same_final_message_are_rendered_snapshot.snap b/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__deltas_then_same_final_message_are_rendered_snapshot.snap
+index 60620871..1f229423 100644
+--- a/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__deltas_then_same_final_message_are_rendered_snapshot.snap
++++ b/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__deltas_then_same_final_message_are_rendered_snapshot.snap
+@@ -2,4 +2,8 @@
+ source: tui/src/chatwidget/tests.rs
+ expression: combined
+ ---
++• I will first analyze the request.
++
++────────────────────────────────────────────────────────────────────────────────
++
+ • Here is the result.
+diff --git a/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__final_reasoning_then_message_without_deltas_are_rendered.snap b/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__final_reasoning_then_message_without_deltas_are_rendered.snap
+index 60620871..1f229423 100644
+--- a/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__final_reasoning_then_message_without_deltas_are_rendered.snap
++++ b/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__final_reasoning_then_message_without_deltas_are_rendered.snap
+@@ -2,4 +2,8 @@
+ source: tui/src/chatwidget/tests.rs
+ expression: combined
+ ---
++• I will first analyze the request.
++
++────────────────────────────────────────────────────────────────────────────────
++
+ • Here is the result.
+diff --git a/codex-rs/tui/src/chatwidget/tests.rs b/codex-rs/tui/src/chatwidget/tests.rs
+index 6ec87765..79314e9d 100644
+--- a/codex-rs/tui/src/chatwidget/tests.rs
++++ b/codex-rs/tui/src/chatwidget/tests.rs
+@@ -5,6 +5,8 @@ use crate::test_backend::VT100Backend;
+ use crate::tui::FrameRequester;
+ use assert_matches::assert_matches;
+ use codex_common::approval_presets::builtin_approval_presets;
++use codex_common::model_presets::builtin_model_presets;
++use codex_common::model_presets::make_litellm_model_preset;
+ use codex_core::AuthManager;
+ use codex_core::CodexAuth;
+ use codex_core::config::Config;
+@@ -242,6 +244,8 @@ async fn helpers_are_available_and_do_not_panic() {
+         enhanced_keys_supported: false,
+         auth_manager,
+         feedback: codex_feedback::CodexFeedback::new(),
++        model_presets: builtin_model_presets(None),
++        auto_open_model_selector: false,
+     };
+     let mut w = ChatWidget::new(init, conversation_manager);
+     // Basic construction sanity.
+@@ -285,6 +289,7 @@ fn make_chatwidget_manual() -> (
+         interrupts: InterruptManager::new(),
+         reasoning_buffer: String::new(),
+         full_reasoning_buffer: String::new(),
++        last_reasoning_delta: None,
+         current_status_header: String::from("Working"),
+         retry_status_header: None,
+         conversation_id: None,
+@@ -300,6 +305,8 @@ fn make_chatwidget_manual() -> (
+         last_rendered_width: std::cell::Cell::new(None),
+         feedback: codex_feedback::CodexFeedback::new(),
+         current_rollout_path: None,
++        model_presets: builtin_model_presets(None),
++        auto_open_model_selector: false,
+     };
+     (widget, rx, op_rx)
+ }
+@@ -1165,6 +1172,22 @@ fn model_selection_popup_snapshot() {
+     assert_snapshot!("model_selection_popup", popup);
+ }
+ 
++#[test]
++fn model_selection_popup_litellm_snapshot() {
++    let (mut chat, _rx, _op_rx) = make_chatwidget_manual();
++
++    let presets = vec![
++        make_litellm_model_preset("gpt-oss-120b-litellm", true),
++        make_litellm_model_preset("gpt-oss-34b-litellm", false),
++    ];
++    chat.update_model_presets(presets, false);
++    chat.config.model = "gpt-oss-34b-litellm".to_string();
++    chat.open_model_popup();
++
++    let popup = render_bottom_popup(&chat, 80);
++    assert_snapshot!("model_selection_popup_litellm", popup);
++}
++
+ #[test]
+ fn approvals_selection_popup_snapshot() {
+     let (mut chat, _rx, _op_rx) = make_chatwidget_manual();
+@@ -2316,6 +2339,10 @@ fn final_reasoning_then_message_without_deltas_are_rendered() {
+ 
+     // Drain history and snapshot the combined visible content.
+     let cells = drain_insert_history(&mut rx);
++    println!("cells len: {}", cells.len());
++    for (idx, lines) in cells.iter().enumerate() {
++        println!("cell {idx}: {}", lines_to_single_string(lines));
++    }
+     let combined = cells
+         .iter()
+         .map(|lines| lines_to_single_string(lines))
 diff --git a/codex-rs/tui/src/history_cell.rs b/codex-rs/tui/src/history_cell.rs
-index e630e001..4531974e 100644
+index e630e001..5a1e438d 100644
 --- a/codex-rs/tui/src/history_cell.rs
 +++ b/codex-rs/tui/src/history_cell.rs
 @@ -17,6 +17,7 @@ use crate::text_formatting::truncate_text;
@@ -6843,7 +7655,17 @@ index e630e001..4531974e 100644
  use crate::wrapping::RtOptions;
  use crate::wrapping::word_wrap_line;
  use crate::wrapping::word_wrap_lines;
-@@ -565,7 +566,7 @@ pub(crate) fn new_session_info(
+@@ -161,6 +162,9 @@ impl ReasoningSummaryCell {
+     }
+ 
+     fn lines(&self, width: u16) -> Vec<Line<'static>> {
++        if self.content.trim().is_empty() {
++            return Vec::new();
++        }
+         let mut lines: Vec<Line<'static>> = Vec::new();
+         append_markdown(
+             &self.content,
+@@ -565,7 +569,7 @@ pub(crate) fn new_session_info(
              model,
              reasoning_effort,
              config.cwd.clone(),
@@ -6852,11 +7674,20 @@ index e630e001..4531974e 100644
          );
  
          // Help lines below the header (new copy and list)
+@@ -1354,7 +1358,7 @@ pub(crate) fn new_reasoning_summary_block(
+     Box::new(ReasoningSummaryCell::new(
+         "".to_string(),
+         full_reasoning_buffer,
+-        true,
++        false,
+     ))
+ }
+ 
 diff --git a/codex-rs/tui/src/lib.rs b/codex-rs/tui/src/lib.rs
-index 50f6b1a0..49338abf 100644
+index 50f6b1a0..a0ed2e3c 100644
 --- a/codex-rs/tui/src/lib.rs
 +++ b/codex-rs/tui/src/lib.rs
-@@ -3,10 +3,12 @@
+@@ -3,10 +3,15 @@
  // alternate‑screen mode starts; that file opts‑out locally via `allow`.
  #![deny(clippy::print_stdout, clippy::print_stderr)]
  #![deny(clippy::disallowed_methods)]
@@ -6866,10 +7697,39 @@ index 50f6b1a0..49338abf 100644
  pub use app::AppExitInfo;
  use codex_app_server_protocol::AuthMode;
 +use codex_common::litellm::ensure_litellm_baseline_only;
++use codex_common::model_presets::ModelPreset;
++use codex_common::model_presets::builtin_model_presets;
++use codex_common::model_presets::make_litellm_model_preset;
  use codex_core::AuthManager;
  use codex_core::BUILT_IN_OSS_MODEL_PROVIDER_ID;
  use codex_core::CodexAuth;
-@@ -134,6 +136,20 @@ pub async fn run_main(
+@@ -15,6 +20,8 @@ use codex_core::RolloutRecorder;
+ use codex_core::auth::enforce_login_restrictions;
+ use codex_core::config::Config;
+ use codex_core::config::ConfigOverrides;
++use codex_core::config::set_default_model;
++use codex_core::default_client::create_client;
+ use codex_core::find_conversation_path_by_id_str;
+ use codex_core::protocol::AskForApproval;
+ use codex_ollama::DEFAULT_OSS_MODEL;
+@@ -23,6 +30,7 @@ use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
+ use std::fs::OpenOptions;
+ use std::path::PathBuf;
+ use tracing::error;
++use tracing::warn;
+ use tracing_appender::non_blocking;
+ use tracing_subscriber::EnvFilter;
+ use tracing_subscriber::filter::Targets;
+@@ -76,6 +84,8 @@ mod version;
+ 
+ mod wrapping;
+ 
++const LITELLM_PROVIDER_ID: &str = "litellm";
++
+ #[cfg(test)]
+ pub mod test_backend;
+ 
+@@ -134,6 +144,20 @@ pub async fn run_main(
      let cwd = cli.cwd.clone().map(|p| p.canonicalize().unwrap_or(p));
      let additional_dirs = cli.add_dir.clone();
  
@@ -6890,7 +7750,7 @@ index 50f6b1a0..49338abf 100644
      let overrides = ConfigOverrides {
          model,
          review_model: None,
-@@ -228,7 +244,7 @@ pub async fn run_main(
+@@ -228,7 +252,7 @@ pub async fn run_main(
              .map_err(|e| std::io::Error::other(format!("OSS setup failed: {e}")))?;
      }
  
@@ -6899,7 +7759,26 @@ index 50f6b1a0..49338abf 100644
  
      #[allow(clippy::print_stderr)]
      let otel = match otel {
-@@ -355,6 +371,7 @@ async fn run_ratatui_app(
+@@ -327,7 +351,9 @@ async fn run_ratatui_app(
+         should_show_windows_wsl_screen,
+     );
+ 
+-    let config = if should_show_onboarding {
++    let mut litellm_credentials_updated = false;
++
++    let mut config = if should_show_onboarding {
+         let onboarding_result = run_onboarding_app(
+             OnboardingScreenArgs {
+                 show_login_screen: should_show_login_screen(login_status, &initial_config),
+@@ -340,6 +366,7 @@ async fn run_ratatui_app(
+             &mut tui,
+         )
+         .await?;
++        litellm_credentials_updated = onboarding_result.litellm_credentials_updated;
+         if onboarding_result.windows_install_selected {
+             restore();
+             session_log::log_session_end();
+@@ -355,12 +382,13 @@ async fn run_ratatui_app(
          }
          // if the user acknowledged windows or made an explicit decision ato trust the directory, reload the config accordingly
          if should_show_windows_wsl_screen
@@ -6907,7 +7786,81 @@ index 50f6b1a0..49338abf 100644
              || onboarding_result
                  .directory_trust_decision
                  .map(|d| d == TrustDirectorySelection::Trust)
-@@ -528,6 +545,9 @@ fn should_show_onboarding(
+                 .unwrap_or(false)
+         {
+-            load_config_or_exit(cli_kv_overrides, overrides).await
++            load_config_or_exit(cli_kv_overrides.clone(), overrides.clone()).await
+         } else {
+             initial_config
+         }
+@@ -368,6 +396,57 @@ async fn run_ratatui_app(
+         initial_config
+     };
+ 
++    let auth_mode = auth_manager.auth().map(|auth| auth.mode);
++    let mut model_presets = builtin_model_presets(auth_mode);
++    let mut auto_open_model_selector = litellm_credentials_updated;
++
++    if config.model_provider_id == LITELLM_PROVIDER_ID {
++        let client = create_client();
++        let auth = auth_manager.auth();
++        match config.model_provider.list_models(&client, &auth).await {
++            Ok(models) if !models.is_empty() => {
++                let mut presets: Vec<ModelPreset> = models
++                    .iter()
++                    .map(|id| make_litellm_model_preset(id, false))
++                    .collect();
++
++                let current_model_missing =
++                    presets.iter().all(|preset| preset.model != config.model);
++
++                if current_model_missing {
++                    auto_open_model_selector = true;
++                    if let Some(first) = presets.first() {
++                        let default_model = first.model.clone();
++                        if let Err(err) = set_default_model(&config.codex_home, &default_model) {
++                            warn!("failed to persist LiteLLM default model: {err}");
++                        } else {
++                            config =
++                                load_config_or_exit(cli_kv_overrides.clone(), overrides.clone())
++                                    .await;
++                        }
++                    }
++                }
++
++                for preset in presets.iter_mut() {
++                    preset.is_default = preset.model == config.model;
++                }
++                if presets.iter().all(|preset| !preset.is_default) {
++                    if let Some(first) = presets.first_mut() {
++                        first.is_default = true;
++                    }
++                }
++
++                model_presets = presets;
++            }
++            Ok(_) => {
++                warn!("LiteLLM endpoint returned no models");
++            }
++            Err(err) => {
++                warn!("Failed to fetch LiteLLM models: {err}");
++            }
++        }
++    }
++
+     // Determine resume behavior: explicit id, then resume last, then picker.
+     let resume_selection = if let Some(id_str) = cli.resume_session_id.as_deref() {
+         match find_conversation_path_by_id_str(&config.codex_home, id_str).await? {
+@@ -434,6 +513,8 @@ async fn run_ratatui_app(
+         images,
+         resume_selection,
+         feedback,
++        model_presets,
++        auto_open_model_selector,
+     )
+     .await;
+ 
+@@ -528,6 +609,9 @@ fn should_show_onboarding(
  fn should_show_login_screen(login_status: LoginStatus, config: &Config) -> bool {
      // Only show the login screen for providers that actually require OpenAI auth
      // (OpenAI or equivalents). For OSS/other providers, skip login entirely.
@@ -7672,6 +8625,18 @@ index 645c86ba..ea819fc3 100644
  
          Paragraph::new(lines)
              .wrap(Wrap { trim: false })
+diff --git a/codex-rs/tui/src/slash_command.rs b/codex-rs/tui/src/slash_command.rs
+index 22da09f3..e4de9054 100644
+--- a/codex-rs/tui/src/slash_command.rs
++++ b/codex-rs/tui/src/slash_command.rs
+@@ -12,6 +12,7 @@ use strum_macros::IntoStaticStr;
+ pub enum SlashCommand {
+     // DO NOT ALPHA-SORT! Enum order is presentation order in the popup, so
+     // more frequently used commands should be listed first.
++    #[strum(serialize = "models")]
+     Model,
+     Approvals,
+     Review,
 diff --git a/codex-rs/tui/src/status/card.rs b/codex-rs/tui/src/status/card.rs
 index 93335097..a66fa86d 100644
 --- a/codex-rs/tui/src/status/card.rs
