@@ -125,6 +125,12 @@ This section documents incorrect assumptions and procedural errors made during d
 - **Manual Edits:** If I am unable to edit a file, I will create a `manual-edit.txt` file in the `codex-litellm/` directory with the code that needs to be manually edited. I will then ask you to perform the manual edit and will verify the changes before proceeding.
 
 ---
+## Telemetry Modules
+
+- `codex-litellm-debug-telemetry`: tracing hooks and log writers that capture high-fidelity debug events (header layout, onboarding flow, etc.) into timestamped files under `logs/` for post-mortem analysis.
+- `codex-litellm-model-session-telemetry`: in-memory aggregation of LiteLLM model usage (tokens and turn counts) surfaced via `/status` to mirror upstream Codex billing insights.
+
+---
 ## 8. Generating a Unified Patch File
 
 ### Purpose

@@ -112,3 +112,9 @@ Notes:
 - Implemented a two-stage onboarding model picker with proper scrolling, matching the `/model` UX (model list followed by reasoning effort). Down-arrow repeat issue resolved by gating on `KeyEventKind::Press`.
 - LiteLLM baseline now runs before config deserialization (`core/src/config_loader/mod.rs`), ensuring brand-new homes start with `model_provider = "litellm"` so the onboarding model step always appears.
 - Need follow-up verification that `/model` mid-session swaps the active turn context; telemetry check still pending.
+
+## 2025-11-04 Sweep C
+- Added `codex-litellm-model-session-telemetry` crate to aggregate per-session model usage; hooked `ChatWidget::set_token_info` to record LiteLLM token deltas and expose a snapshot for `/status`.
+- `/status` card now renders a "LiteLLM usage" section showing total tokens and per-model breakdown based on the new telemetry snapshot.
+- Refreshed the onboarding picker theme (matching `/model`), replaced the fallback `gpt-oss-120b-litellm` entry, and expanded the welcome screen with environment-variable guidance.
+- TODO polish entries updated for the completed two-stage selector and status integration; docs will need a pass later to replace legacy debug-telemetry wording with the new crate names.

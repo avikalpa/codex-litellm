@@ -1,5 +1,5 @@
 diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
-index 64c83b0f..b9341961 100644
+index 64c83b0f..61a6e37f 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
 @@ -178,7 +178,7 @@ checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
@@ -203,8 +203,20 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "clap",
   "codex-core",
-@@ -1242,7 +1249,7 @@ dependencies = [
+@@ -1240,9 +1247,19 @@ dependencies = [
+  "tokio",
+ ]
  
++[[package]]
++name = "codex-litellm-model-session-telemetry"
++version = "0.1.0"
++dependencies = [
++ "chrono",
++ "once_cell",
++ "parking_lot",
++ "serde",
++]
++
  [[package]]
  name = "codex-login"
 -version = "0.0.0"
@@ -212,7 +224,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "base64",
-@@ -1266,7 +1273,7 @@ dependencies = [
+@@ -1266,7 +1283,7 @@ dependencies = [
  
  [[package]]
  name = "codex-mcp-server"
@@ -221,7 +233,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1293,7 +1300,7 @@ dependencies = [
+@@ -1293,7 +1310,7 @@ dependencies = [
  
  [[package]]
  name = "codex-ollama"
@@ -230,7 +242,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "assert_matches",
   "async-stream",
-@@ -1309,7 +1316,7 @@ dependencies = [
+@@ -1309,7 +1326,7 @@ dependencies = [
  
  [[package]]
  name = "codex-otel"
@@ -239,7 +251,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "chrono",
   "codex-app-server-protocol",
-@@ -1330,14 +1337,14 @@ dependencies = [
+@@ -1330,14 +1347,14 @@ dependencies = [
  
  [[package]]
  name = "codex-process-hardening"
@@ -256,7 +268,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "base64",
-@@ -1363,7 +1370,7 @@ dependencies = [
+@@ -1363,7 +1380,7 @@ dependencies = [
  
  [[package]]
  name = "codex-protocol-ts"
@@ -265,7 +277,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -1373,7 +1380,7 @@ dependencies = [
+@@ -1373,7 +1390,7 @@ dependencies = [
  
  [[package]]
  name = "codex-responses-api-proxy"
@@ -274,7 +286,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -1389,7 +1396,7 @@ dependencies = [
+@@ -1389,7 +1406,7 @@ dependencies = [
  
  [[package]]
  name = "codex-rmcp-client"
@@ -283,7 +295,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "axum",
-@@ -1418,7 +1425,7 @@ dependencies = [
+@@ -1418,7 +1435,7 @@ dependencies = [
  
  [[package]]
  name = "codex-stdio-to-uds"
@@ -292,7 +304,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1429,7 +1436,7 @@ dependencies = [
+@@ -1429,7 +1446,7 @@ dependencies = [
  
  [[package]]
  name = "codex-tui"
@@ -301,7 +313,15 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "arboard",
-@@ -1491,7 +1498,7 @@ dependencies = [
+@@ -1445,6 +1462,7 @@ dependencies = [
+  "codex-core",
+  "codex-feedback",
+  "codex-file-search",
++ "codex-litellm-model-session-telemetry",
+  "codex-login",
+  "codex-ollama",
+  "codex-protocol",
+@@ -1491,7 +1509,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-cache"
@@ -310,7 +330,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "lru",
   "sha1",
-@@ -1500,7 +1507,7 @@ dependencies = [
+@@ -1500,7 +1518,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-image"
@@ -319,7 +339,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "base64",
   "codex-utils-cache",
-@@ -1512,7 +1519,7 @@ dependencies = [
+@@ -1512,7 +1530,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-json-to-toml"
@@ -328,7 +348,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "pretty_assertions",
   "serde_json",
-@@ -1521,7 +1528,7 @@ dependencies = [
+@@ -1521,7 +1539,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-pty"
@@ -337,7 +357,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "portable-pty",
-@@ -1530,7 +1537,7 @@ dependencies = [
+@@ -1530,7 +1548,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-readiness"
@@ -346,7 +366,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "assert_matches",
   "async-trait",
-@@ -1541,11 +1548,11 @@ dependencies = [
+@@ -1541,11 +1559,11 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-string"
@@ -360,7 +380,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "pretty_assertions",
-@@ -1680,7 +1687,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+@@ -1680,7 +1698,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
  
  [[package]]
  name = "core_test_support"
@@ -369,7 +389,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -3653,7 +3660,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
+@@ -3653,7 +3671,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
  
  [[package]]
  name = "mcp-types"
@@ -378,7 +398,7 @@ index 64c83b0f..b9341961 100644
  dependencies = [
   "schemars 0.8.22",
   "serde",
-@@ -3663,7 +3670,7 @@ dependencies = [
+@@ -3663,7 +3681,7 @@ dependencies = [
  
  [[package]]
  name = "mcp_test_support"
@@ -388,22 +408,24 @@ index 64c83b0f..b9341961 100644
   "anyhow",
   "assert_cmd",
 diff --git a/codex-rs/Cargo.toml b/codex-rs/Cargo.toml
-index 06fe7cba..953e0b09 100644
+index 06fe7cba..eb1c6147 100644
 --- a/codex-rs/Cargo.toml
 +++ b/codex-rs/Cargo.toml
-@@ -2,6 +2,7 @@
+@@ -2,6 +2,8 @@
  members = [
      "backend-client",
      "ansi-escape",
 +    "build-info",
++    "codex-litellm-model-session-telemetry",
      "async-utils",
      "app-server",
      "app-server-protocol",
-@@ -60,6 +61,7 @@ codex-apply-patch = { path = "apply-patch" }
+@@ -60,6 +62,8 @@ codex-apply-patch = { path = "apply-patch" }
  codex-arg0 = { path = "arg0" }
  codex-async-utils = { path = "async-utils" }
  codex-backend-client = { path = "backend-client" }
 +codex-build-info = { path = "build-info" }
++codex-litellm-model-session-telemetry = { path = "codex-litellm-model-session-telemetry" }
  codex-chatgpt = { path = "chatgpt" }
  codex-common = { path = "common" }
  codex-core = { path = "core" }
@@ -1371,6 +1393,18 @@ index 6b55b015..311cb2b6 100644
      #[cfg(target_os = "macos")]
      let LoaderOverrides {
          managed_config_path,
+diff --git a/codex-rs/tui/Cargo.toml b/codex-rs/tui/Cargo.toml
+index f087202c..22a13a0c 100644
+--- a/codex-rs/tui/Cargo.toml
++++ b/codex-rs/tui/Cargo.toml
+@@ -40,6 +40,7 @@ codex-ollama = { workspace = true }
+ codex-protocol = { workspace = true }
+ codex-app-server-protocol = { workspace = true }
+ codex-feedback = { workspace = true }
++codex-litellm-model-session-telemetry = { workspace = true }
+ color-eyre = { workspace = true }
+ crossterm = { workspace = true, features = ["bracketed-paste", "event-stream"] }
+ diffy = { workspace = true }
 diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
 index 3c06113c..2adf5a55 100644
 --- a/codex-rs/tui/src/app.rs
@@ -1562,10 +1596,10 @@ index 44d7b264..a5988a8e 100644
              );
          }
 diff --git a/codex-rs/tui/src/chatwidget.rs b/codex-rs/tui/src/chatwidget.rs
-index 3dfa1b36..e3dae495 100644
+index 3dfa1b36..668168c7 100644
 --- a/codex-rs/tui/src/chatwidget.rs
 +++ b/codex-rs/tui/src/chatwidget.rs
-@@ -102,18 +102,18 @@ use self::interrupts::InterruptManager;
+@@ -102,22 +102,23 @@ use self::interrupts::InterruptManager;
  mod agent;
  use self::agent::spawn_agent;
  use self::agent::spawn_agent_from_existing;
@@ -1588,7 +1622,12 @@ index 3dfa1b36..e3dae495 100644
  use codex_core::protocol::AskForApproval;
  use codex_core::protocol::SandboxPolicy;
  use codex_core::protocol_config_types::ReasoningEffort as ReasoningEffortConfig;
-@@ -227,6 +227,9 @@ pub(crate) struct ChatWidgetInit {
+ use codex_file_search::FileMatch;
++use codex_litellm_model_session_telemetry as session_telemetry;
+ use codex_protocol::plan_tool::UpdatePlanArgs;
+ use strum::IntoEnumIterator;
+ 
+@@ -227,6 +228,9 @@ pub(crate) struct ChatWidgetInit {
      pub(crate) enhanced_keys_supported: bool,
      pub(crate) auth_manager: Arc<AuthManager>,
      pub(crate) feedback: codex_feedback::CodexFeedback,
@@ -1598,7 +1637,7 @@ index 3dfa1b36..e3dae495 100644
  }
  
  pub(crate) struct ChatWidget {
-@@ -236,7 +239,6 @@ pub(crate) struct ChatWidget {
+@@ -236,7 +240,6 @@ pub(crate) struct ChatWidget {
      active_cell: Option<Box<dyn HistoryCell>>,
      config: Config,
      auth_manager: Arc<AuthManager>,
@@ -1606,7 +1645,7 @@ index 3dfa1b36..e3dae495 100644
      initial_user_message: Option<UserMessage>,
      token_info: Option<TokenUsageInfo>,
      rate_limit_snapshot: Option<RateLimitSnapshotDisplay>,
-@@ -276,6 +278,11 @@ pub(crate) struct ChatWidget {
+@@ -276,6 +279,11 @@ pub(crate) struct ChatWidget {
      feedback: codex_feedback::CodexFeedback,
      // Current session rollout path (if known)
      current_rollout_path: Option<PathBuf>,
@@ -1618,7 +1657,7 @@ index 3dfa1b36..e3dae495 100644
  }
  
  struct UserMessage {
-@@ -314,6 +321,14 @@ impl ChatWidget {
+@@ -314,15 +322,24 @@ impl ChatWidget {
          self.bottom_pane.update_status_header(header);
      }
  
@@ -1633,8 +1672,10 @@ index 3dfa1b36..e3dae495 100644
      // --- Small event handlers ---
      fn on_session_configured(&mut self, event: codex_core::protocol::SessionConfiguredEvent) {
          self.bottom_pane
-@@ -321,8 +336,7 @@ impl ChatWidget {
+             .set_history_metadata(event.history_log_id, event.history_entry_count);
++        let session_key = event.session_id.to_string();
          self.conversation_id = Some(event.session_id);
++        session_telemetry::clear_session(Some(&session_key));
          self.current_rollout_path = Some(event.rollout_path.clone());
          let initial_messages = event.initial_messages.clone();
 -        let model_for_header = event.model.clone();
@@ -1643,7 +1684,7 @@ index 3dfa1b36..e3dae495 100644
          self.add_to_history(history_cell::new_session_info(
              &self.config,
              event,
-@@ -333,6 +347,10 @@ impl ChatWidget {
+@@ -333,6 +350,10 @@ impl ChatWidget {
          }
          // Ask codex-core to enumerate custom prompts for this session.
          self.submit_op(Op::ListCustomPrompts);
@@ -1654,7 +1695,44 @@ index 3dfa1b36..e3dae495 100644
          if let Some(user_message) = self.initial_user_message.take() {
              self.submit_user_message(user_message);
          }
-@@ -979,12 +997,15 @@ impl ChatWidget {
+@@ -457,6 +478,7 @@ impl ChatWidget {
+ 
+     pub(crate) fn set_token_info(&mut self, info: Option<TokenUsageInfo>) {
+         if let Some(info) = info {
++            let last_usage = info.last_token_usage.clone();
+             let context_window = info
+                 .model_context_window
+                 .or(self.config.model_context_window);
+@@ -465,6 +487,28 @@ impl ChatWidget {
+                     .percent_of_context_window_remaining(window)
+             });
+             self.bottom_pane.set_context_window_percent(percent);
++
++            if last_usage.total_tokens > 0 {
++                let prompt_tokens = last_usage
++                    .input_tokens
++                    .saturating_sub(last_usage.cached_input_tokens);
++                let reasoning_tokens = last_usage.reasoning_output_tokens;
++                let session_key = self.conversation_id.as_ref().map(|id| id.to_string());
++                let reasoning_label = self
++                    .config
++                    .model_reasoning_effort
++                    .map(|effort| effort.to_string());
++                session_telemetry::record_turn(
++                    session_key.as_deref(),
++                    &self.config.model,
++                    reasoning_label.as_deref(),
++                    prompt_tokens,
++                    last_usage.output_tokens,
++                    reasoning_tokens,
++                    last_usage.total_tokens,
++                );
++            }
++
+             self.token_info = Some(info);
+         }
+     }
+@@ -979,12 +1023,15 @@ impl ChatWidget {
              enhanced_keys_supported,
              auth_manager,
              feedback,
@@ -1671,7 +1749,7 @@ index 3dfa1b36..e3dae495 100644
              app_event_tx: app_event_tx.clone(),
              frame_requester: frame_requester.clone(),
              codex_op_tx,
-@@ -999,7 +1020,6 @@ impl ChatWidget {
+@@ -999,7 +1046,6 @@ impl ChatWidget {
              active_cell: None,
              config: config.clone(),
              auth_manager,
@@ -1679,7 +1757,7 @@ index 3dfa1b36..e3dae495 100644
              initial_user_message: create_initial_user_message(
                  initial_prompt.unwrap_or_default(),
                  initial_images,
-@@ -1025,7 +1045,18 @@ impl ChatWidget {
+@@ -1025,7 +1071,18 @@ impl ChatWidget {
              last_rendered_width: std::cell::Cell::new(None),
              feedback,
              current_rollout_path: None,
@@ -1698,7 +1776,7 @@ index 3dfa1b36..e3dae495 100644
      }
  
      /// Create a ChatWidget attached to an existing conversation (e.g., a fork).
-@@ -1043,6 +1074,9 @@ impl ChatWidget {
+@@ -1043,6 +1100,9 @@ impl ChatWidget {
              enhanced_keys_supported,
              auth_manager,
              feedback,
@@ -1708,7 +1786,7 @@ index 3dfa1b36..e3dae495 100644
          } = common;
          let mut rng = rand::rng();
          let placeholder = EXAMPLE_PROMPTS[rng.random_range(0..EXAMPLE_PROMPTS.len())].to_string();
-@@ -1050,7 +1084,7 @@ impl ChatWidget {
+@@ -1050,7 +1110,7 @@ impl ChatWidget {
          let codex_op_tx =
              spawn_agent_from_existing(conversation, session_configured, app_event_tx.clone());
  
@@ -1717,7 +1795,7 @@ index 3dfa1b36..e3dae495 100644
              app_event_tx: app_event_tx.clone(),
              frame_requester: frame_requester.clone(),
              codex_op_tx,
-@@ -1065,7 +1099,6 @@ impl ChatWidget {
+@@ -1065,7 +1125,6 @@ impl ChatWidget {
              active_cell: None,
              config: config.clone(),
              auth_manager,
@@ -1725,7 +1803,7 @@ index 3dfa1b36..e3dae495 100644
              initial_user_message: create_initial_user_message(
                  initial_prompt.unwrap_or_default(),
                  initial_images,
-@@ -1091,7 +1124,18 @@ impl ChatWidget {
+@@ -1091,7 +1150,18 @@ impl ChatWidget {
              last_rendered_width: std::cell::Cell::new(None),
              feedback,
              current_rollout_path: None,
@@ -1744,7 +1822,7 @@ index 3dfa1b36..e3dae495 100644
      }
  
      pub fn desired_height(&self, width: u16) -> u16 {
-@@ -1680,20 +1724,58 @@ impl ChatWidget {
+@@ -1680,20 +1750,58 @@ impl ChatWidget {
      pub(crate) fn open_model_popup(&mut self) {
          let current_model = self.config.model.clone();
          let auth_mode = self.auth_manager.auth().map(|auth| auth.mode);
@@ -1812,7 +1890,7 @@ index 3dfa1b36..e3dae495 100644
                  });
              })];
              items.push(SelectionItem {
-@@ -2059,8 +2141,11 @@ impl ChatWidget {
+@@ -2059,8 +2167,11 @@ impl ChatWidget {
  
      /// Set the model in the widget's config copy.
      pub(crate) fn set_model(&mut self, model: &str) {
@@ -1825,7 +1903,7 @@ index 3dfa1b36..e3dae495 100644
      }
  
      pub(crate) fn add_info_message(&mut self, message: String, hint: Option<String>) {
-@@ -2358,7 +2443,7 @@ impl ChatWidget {
+@@ -2358,7 +2469,7 @@ impl ChatWidget {
  
  impl WidgetRef for &ChatWidget {
      fn render_ref(&self, area: Rect, buf: &mut Buffer) {
@@ -2746,10 +2824,10 @@ index 6c420dae..23d79a96 100644
  pub use trust_directory::TrustDirectorySelection;
 diff --git a/codex-rs/tui/src/onboarding/model.rs b/codex-rs/tui/src/onboarding/model.rs
 new file mode 100644
-index 00000000..fda904f7
+index 00000000..5c6762cd
 --- /dev/null
 +++ b/codex-rs/tui/src/onboarding/model.rs
-@@ -0,0 +1,785 @@
+@@ -0,0 +1,806 @@
 +use codex_common::model_presets::{
 +    ModelPreset, builtin_model_presets, fetch_litellm_model_presets, is_litellm_provider_id,
 +    presets_for_provider,
@@ -2768,6 +2846,8 @@ index 00000000..fda904f7
 +
 +use super::onboarding_screen::{KeyboardHandler, StepState, StepStateProvider};
 +use crate::tui::FrameRequester;
++
++const FALLBACK_LITELLM_MODEL: &str = "gpt-oss-120b-litellm";
 +
 +#[derive(Clone)]
 +pub(crate) struct ModelSelectionResult {
@@ -2904,6 +2984,10 @@ index 00000000..fda904f7
 +        if presets.len() > 1 && presets[0].model == self.config.model {
 +            let fallback = presets.remove(0);
 +            presets.push(fallback);
++        }
++
++        if presets.len() > 1 {
++            presets.retain(|preset| preset.model != FALLBACK_LITELLM_MODEL);
 +        }
 +
 +        for preset in presets.iter_mut() {
@@ -3223,9 +3307,18 @@ index 00000000..fda904f7
 +
 +    fn render_model_stage(&self, area: Rect, buf: &mut Buffer) {
 +        let instructions = vec![
-+            Line::from("Select a LiteLLM model for Codex CLI.".bold()),
-+            Line::from("Use ↑/↓ (PageUp/PageDown) to browse models."),
-+            Line::from("Press Enter to choose reasoning level. Esc skips selection."),
++            Line::from(vec![Span::styled(
++                "Select a LiteLLM model for Codex CLI.",
++                Style::default().add_modifier(Modifier::BOLD),
++            )]),
++            Line::from(vec![Span::styled(
++                "Use ↑/↓ (PageUp/PageDown) to browse models.",
++                Style::default().fg(Color::Gray),
++            )]),
++            Line::from(vec![Span::styled(
++                "Press Enter to choose reasoning level. Esc skips selection.",
++                Style::default().fg(Color::Gray),
++            )]),
 +        ];
 +        let instruction_height = instructions.len() as u16 + 1;
 +        let instruction_height = instruction_height.min(area.height);
@@ -3311,8 +3404,14 @@ index 00000000..fda904f7
 +    fn render_reasoning_stage(&self, area: Rect, buf: &mut Buffer, state: &ReasoningStageState) {
 +        let preset = &self.presets[state.preset_index];
 +        let header = vec![
-+            Line::from(format!("Select reasoning level for {}", preset.display_name).bold()),
-+            Line::from("Use ↑/↓ to highlight, Enter to confirm, Esc to pick a different model."),
++            Line::from(vec![Span::styled(
++                format!("Select reasoning level for {}", preset.display_name),
++                Style::default().add_modifier(Modifier::BOLD),
++            )]),
++            Line::from(vec![Span::styled(
++                "Use ↑/↓ to highlight, Enter to confirm, Esc to pick a different model.",
++                Style::default().fg(Color::Gray),
++            )]),
 +        ];
 +        let header_height = header.len() as u16 + 1;
 +
@@ -3760,10 +3859,10 @@ index 709f158b..6eb408b7 100644
      })
  }
 diff --git a/codex-rs/tui/src/onboarding/welcome.rs b/codex-rs/tui/src/onboarding/welcome.rs
-index 645c86ba..ea819fc3 100644
+index 645c86ba..cd9b13e0 100644
 --- a/codex-rs/tui/src/onboarding/welcome.rs
 +++ b/codex-rs/tui/src/onboarding/welcome.rs
-@@ -68,9 +68,12 @@ impl WidgetRef for &WelcomeWidget {
+@@ -68,8 +68,18 @@ impl WidgetRef for &WelcomeWidget {
          lines.push(Line::from(vec![
              "  ".into(),
              "Welcome to ".into(),
@@ -3771,13 +3870,19 @@ index 645c86ba..ea819fc3 100644
 -            ", OpenAI's command-line coding agent".into(),
 +            "codex-litellm".bold(),
 +            ", the LiteLLM-native build of Codex".into(),
-         ]));
-+        lines.push(
++        ]));
++        lines.push(Line::from(vec![
 +            "  We'll walk through connecting to your LiteLLM endpoint on the next screen.".into(),
-+        );
++        ]));
++        lines.push(Line::from(vec![
++            "  Tip: set ".into(),
++            "LITELLM_BASE_URL".bold(),
++            " and ".into(),
++            "LITELLM_API_KEY".bold(),
++            " before launching to skip the credential step entirely.".into(),
+         ]));
  
          Paragraph::new(lines)
-             .wrap(Wrap { trim: false })
 diff --git a/codex-rs/tui/src/slash_command.rs b/codex-rs/tui/src/slash_command.rs
 index 969d279b..6f7f87ab 100644
 --- a/codex-rs/tui/src/slash_command.rs
@@ -3791,10 +3896,84 @@ index 969d279b..6f7f87ab 100644
      Approvals,
      Review,
 diff --git a/codex-rs/tui/src/status/card.rs b/codex-rs/tui/src/status/card.rs
-index fdf6629a..a6708055 100644
+index fdf6629a..612f15e4 100644
 --- a/codex-rs/tui/src/status/card.rs
 +++ b/codex-rs/tui/src/status/card.rs
-@@ -268,7 +268,11 @@ impl HistoryCell for StatusHistoryCell {
+@@ -33,6 +33,8 @@ use super::rate_limits::format_status_limit_summary;
+ use super::rate_limits::render_status_limit_progress_bar;
+ use crate::wrapping::RtOptions;
+ use crate::wrapping::word_wrap_lines;
++use codex_litellm_model_session_telemetry as session_telemetry;
++use codex_litellm_model_session_telemetry::SessionTelemetrySnapshot;
+ 
+ #[derive(Debug, Clone)]
+ struct StatusContextWindowData {
+@@ -61,6 +63,7 @@ struct StatusHistoryCell {
+     session_id: Option<String>,
+     token_usage: StatusTokenUsageData,
+     rate_limits: StatusRateLimitData,
++    model_session_summary: Option<SessionTelemetrySnapshot>,
+ }
+ 
+ pub(crate) fn new_status_output(
+@@ -108,6 +111,7 @@ impl StatusHistoryCell {
+         let agents_summary = compose_agents_summary(config);
+         let account = compose_account_display(config);
+         let session_id = session_id.as_ref().map(std::string::ToString::to_string);
++        let model_session_summary = session_telemetry::snapshot(session_id.as_deref());
+         let context_window = config.model_context_window.and_then(|window| {
+             context_usage.map(|usage| StatusContextWindowData {
+                 percent_remaining: usage.percent_of_context_window_remaining(window),
+@@ -135,6 +139,7 @@ impl StatusHistoryCell {
+             session_id,
+             token_usage,
+             rate_limits,
++            model_session_summary,
+         }
+     }
+ 
+@@ -239,6 +244,40 @@ impl StatusHistoryCell {
+         lines
+     }
+ 
++    fn litellm_usage_lines(
++        &self,
++        summary: &SessionTelemetrySnapshot,
++        formatter: &FieldFormatter,
++    ) -> Vec<Line<'static>> {
++        let total_fmt = format_tokens_compact(summary.total_tokens);
++        let turn_label = match summary.total_turns {
++            1 => "1 turn".to_string(),
++            turns => format!("{turns} turns"),
++        };
++
++        let mut lines = Vec::new();
++        lines.push(formatter.line(
++            "LiteLLM usage",
++            vec![Span::from(format!("{total_fmt} across {turn_label}"))],
++        ));
++
++        for model in summary.models.iter() {
++            let model_tokens = format_tokens_compact(model.total_tokens);
++            let model_turns = match model.turns {
++                1 => "1 turn".to_string(),
++                turns => format!("{turns} turns"),
++            };
++            let mut detail = format!("{model_tokens} · {model_turns}");
++            if let Some(effort) = model.last_reasoning_effort.as_ref() {
++                detail.push_str(&format!(" · last effort {effort}"));
++            }
++            let value_spans = vec![Span::from(format!("{} — {}", model.model, detail)).dim()];
++            lines.push(formatter.continuation(value_spans));
++        }
++
++        lines
++    }
++
+     fn collect_rate_limit_labels(&self, seen: &mut BTreeSet<String>, labels: &mut Vec<String>) {
+         match &self.rate_limits {
+             StatusRateLimitData::Available(rows) => {
+@@ -268,7 +307,11 @@ impl HistoryCell for StatusHistoryCell {
              Span::from(format!("{}>_ ", FieldFormatter::INDENT)).dim(),
              Span::from("OpenAI Codex").bold(),
              Span::from(" ").dim(),
@@ -3807,3 +3986,24 @@ index fdf6629a..a6708055 100644
          ]));
          lines.push(Line::from(Vec::<Span<'static>>::new()));
  
+@@ -306,6 +349,9 @@ impl HistoryCell for StatusHistoryCell {
+         if self.token_usage.context_window.is_some() {
+             push_label(&mut labels, &mut seen, "Context window");
+         }
++        if self.model_session_summary.is_some() {
++            push_label(&mut labels, &mut seen, "LiteLLM usage");
++        }
+         self.collect_rate_limit_labels(&mut seen, &mut labels);
+ 
+         let formatter = FieldFormatter::from_labels(labels.iter().map(String::as_str));
+@@ -359,6 +405,10 @@ impl HistoryCell for StatusHistoryCell {
+             lines.push(formatter.line("Context window", spans));
+         }
+ 
++        if let Some(summary) = self.model_session_summary.as_ref() {
++            lines.extend(self.litellm_usage_lines(summary, &formatter));
++        }
++
+         lines.extend(self.rate_limit_lines(available_inner_width, &formatter));
+ 
+         let content_width = lines.iter().map(line_display_width).max().unwrap_or(0);
