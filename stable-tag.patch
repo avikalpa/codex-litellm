@@ -3896,7 +3896,7 @@ index 969d279b..6f7f87ab 100644
      Approvals,
      Review,
 diff --git a/codex-rs/tui/src/status/card.rs b/codex-rs/tui/src/status/card.rs
-index fdf6629a..612f15e4 100644
+index fdf6629a..259a12ef 100644
 --- a/codex-rs/tui/src/status/card.rs
 +++ b/codex-rs/tui/src/status/card.rs
 @@ -33,6 +33,8 @@ use super::rate_limits::format_status_limit_summary;
@@ -3986,7 +3986,7 @@ index fdf6629a..612f15e4 100644
          ]));
          lines.push(Line::from(Vec::<Span<'static>>::new()));
  
-@@ -306,6 +349,9 @@ impl HistoryCell for StatusHistoryCell {
+@@ -306,18 +349,21 @@ impl HistoryCell for StatusHistoryCell {
          if self.token_usage.context_window.is_some() {
              push_label(&mut labels, &mut seen, "Context window");
          }
@@ -3996,6 +3996,22 @@ index fdf6629a..612f15e4 100644
          self.collect_rate_limit_labels(&mut seen, &mut labels);
  
          let formatter = FieldFormatter::from_labels(labels.iter().map(String::as_str));
+         let value_width = formatter.value_width(available_inner_width);
+ 
+         let note_first_line = Line::from(vec![
+-            Span::from("Visit ").cyan(),
+-            "chatgpt.com/codex/settings/usage".cyan().underlined(),
+-            Span::from(" for up-to-date").cyan(),
++            Span::from("LiteLLM usage totals refresh after each turn.").cyan(),
+         ]);
+         let note_second_line = Line::from(vec![
+-            Span::from("information on rate limits and credits").cyan(),
++            Span::from("Run ").cyan(),
++            "/status".magenta(),
++            Span::from(" again after activity to update limits and tokens.").cyan(),
+         ]);
+         let note_lines = word_wrap_lines(
+             [note_first_line, note_second_line],
 @@ -359,6 +405,10 @@ impl HistoryCell for StatusHistoryCell {
              lines.push(formatter.line("Context window", spans));
          }

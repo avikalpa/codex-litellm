@@ -131,6 +131,14 @@ This section documents incorrect assumptions and procedural errors made during d
 - `codex-litellm-model-session-telemetry`: in-memory aggregation of LiteLLM model usage (tokens and turn counts) surfaced via `/status` to mirror upstream Codex billing insights.
 
 ---
+
+---
+## Telemetry Modules
+
+- `codex-litellm-debug-telemetry`: tracing hooks and log writers that capture high-fidelity debug events (header layout, onboarding flow, etc.) into timestamped files under `logs/` for post-mortem analysis.
+- `codex-litellm-model-session-telemetry`: in-memory aggregation of LiteLLM model usage (tokens and turn counts) surfaced via `/status` to mirror upstream Codex billing insights.
+
+---
 ## 8. Generating a Unified Patch File
 
 ### Purpose
