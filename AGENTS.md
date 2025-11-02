@@ -68,6 +68,7 @@ Due to the nature of this project, where we are patching an upstream repository,
     *   Applying our existing patch with `git apply ../<patch-file-name>.patch`.
     *   Manually applying any additional fixes to the codebase.
     *   Building the CLI in debug mode with `cargo build` in the `codex/codex-rs` workspace.
+    *   If `git apply` fails or the UI suddenly reverts to upstream defaults, pause and walk through the recovery checklist in `docs/COMMITTING_NOTES.md#when-the-patch-no-longer-applies` before continuing.
 
 2.  **Testing:**
     *   Run `setup-test-env.sh` to create a `test-workspace` directory.
@@ -119,7 +120,7 @@ This section documents incorrect assumptions and procedural errors made during d
 -   **Build Performance:** Rust build times, especially for large projects, can be slow. `cargo` uses incremental compilation by default, which helps for small changes. For significant speed-ups, a more powerful machine or distributed compilation tools like `sccache` would be necessary. For our purposes, we will proceed with the existing build times.
 -   **Configuration File Location:** The `codex-cli` looks for `config.toml` under `CODEX_HOME` (falling back to `~/.codex` when unset). During development we point `CODEX_HOME` at the workspace-local `.codex` directory and copy the repo’s `config.toml` there so tests never mutate the user’s real configuration.
 -   **Patching Workflow:** When a fix is verified, regenerate `stable-tag.patch` against the current upstream release tag (e.g., `rust-v0.50.0`). This file overwrites the previous patch and is always applied from the `codex/` directory via `git apply ../stable-tag.patch`.
--   **Milestone Commits:** After each significant checkpoint, capture the state via the workflow documented in `docs/COMMITTING_NOTES.md` so upstream history stays clean and our patch log remains reproducible.
+-   **Milestone Commits:** After each significant checkpoint—especially right after regenerating `stable-tag.patch`—capture the state via the workflow documented in `docs/COMMITTING_NOTES.md` so upstream history stays clean and our patch log remains reproducible.
 - **Assumptions are the enemy of progress:** I have made the mistake of assuming the cause of an issue without first verifying it by consulting the source of truth (e.g., source code, documentation, or direct API calls). This has led to wasted time and effort. **Lesson:** Always check the source of truth before implementing a fix.
 - **Manual Edits:** If I am unable to edit a file, I will create a `manual-edit.txt` file in the `codex-litellm/` directory with the code that needs to be manually edited. I will then ask you to perform the manual edit and will verify the changes before proceeding.
 

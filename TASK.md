@@ -95,3 +95,8 @@ Notes:
 - Plan: Audit `model_presets.rs`, `onboarding/model.rs`, and `chatwidget.rs` to verify LiteLLM preset fetching, onboarding step visibility, and header refresh calls. Identify where the selected slug fails to flow into `SessionHeaderState` and `/model` popup state.
 - Next actions: 1) Trace onboarding transitions to ensure `ModelSelectionWidget` reaches `Ready`. 2) Re-hook `set_model` / `UpdateModel` to call `refresh_header_lines`. 3) Ensure `/model` popup uses persisted LiteLLM preset list instead of fallback defaults before fixing exec/no-output regression.
 - Update: Restored header rendering via a cached `session_header_lines` helper, refreshed the header whenever model/reasoning changes, surfaced the LiteLLM model step (now visible while awaiting credentials) and persisted the chosen slug in the onboarding widget. `/model` now seeds from the current LiteLLM preset list, and `cargo build --bin codex` completes.
+
+### 2025-11-03 Patch Recovery
+- Observed: Upstream checkout reset to tag rust-v0.53.0 without our LiteLLM commit, so onboarding reverted to upstream defaults and stable-tag.patch no longer matched.
+- Fix: Recovered the lost commit from git reflog, cherry-picked it back onto litellm/rust-v0.53.0, regenerated stable-tag.patch, and documented the recovery workflow in docs/COMMITTING_NOTES.md with a pointer from AGENTS.md.
+- Next: Resume the header/model wiring investigation now that the patch applies cleanly again.
