@@ -100,3 +100,15 @@ Notes:
 - Observed: Upstream checkout reset to tag rust-v0.53.0 without our LiteLLM commit, so onboarding reverted to upstream defaults and stable-tag.patch no longer matched.
 - Fix: Recovered the lost commit from git reflog, cherry-picked it back onto litellm/rust-v0.53.0, regenerated stable-tag.patch, and documented the recovery workflow in docs/COMMITTING_NOTES.md with a pointer from AGENTS.md.
 - Next: Resume the header/model wiring investigation now that the patch applies cleanly again.
+
+## 2025-11-04 Sweep A
+- Observed: Fresh onboarding still skips the LiteLLM model selector; first session keeps header + backend on the fallback `gpt-oss-120b-litellm`, leading to 400s until `/model` runs. Subsequent sessions remember the LiteLLM slug, so persistence is fine once it’s set.
+- Hypothesis: Our config load path continues to default `model_provider_id` to OpenAI before the LiteLLM baseline runs, preventing the model step from ever entering `InProgress`. Without that selection, the reloaded config keeps the fallback slug and the header never changes.
+- Next actions: apply the LiteLLM baseline ahead of config deserialization (or relax the onboarding guard to key off credential readiness), then ensure the onboarding-selected slug propagates to the header via the reloaded config instead of per-turn overrides.
+- Notes: `/model` popup already lists the LiteLLM catalog correctly post-onboarding; fixing the first-session selection should eliminate the header mismatch without chasing realtime header updates.
+- Verification: `CODEX_HOME=/tmp/codex-home-test codex exec "1+1"` now bootstraps `config.toml` with `model_provider = "litellm"` before prompting for credentials, confirming the baseline runs before onboarding. Need live TUI repro to ensure the model picker surfaces, but config + header inputs now originate from the LiteLLM slug.
+
+## 2025-11-04 Sweep B
+- Implemented a two-stage onboarding model picker with proper scrolling, matching the `/model` UX (model list followed by reasoning effort). Down-arrow repeat issue resolved by gating on `KeyEventKind::Press`.
+- LiteLLM baseline now runs before config deserialization (`core/src/config_loader/mod.rs`), ensuring brand-new homes start with `model_provider = "litellm"` so the onboarding model step always appears.
+- Need follow-up verification that `/model` mid-session swaps the active turn context; telemetry check still pending.

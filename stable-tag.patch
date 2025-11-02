@@ -1350,6 +1350,27 @@ index 1ee48d30..b17466d7 100644
              approval_policy: AskForApproval::OnFailure,
              sandbox_policy: SandboxPolicy::new_read_only_policy(),
              did_user_set_custom_approval_policy_or_sandbox_mode: true,
+diff --git a/codex-rs/core/src/config_loader/mod.rs b/codex-rs/core/src/config_loader/mod.rs
+index 6b55b015..311cb2b6 100644
+--- a/codex-rs/core/src/config_loader/mod.rs
++++ b/codex-rs/core/src/config_loader/mod.rs
+@@ -1,6 +1,6 @@
+ mod macos;
+ 
+-use crate::config::CONFIG_TOML_FILE;
++use crate::config::{CONFIG_TOML_FILE, ensure_litellm_baseline};
+ use macos::load_managed_admin_config_layer;
+ use std::io;
+ use std::path::Path;
+@@ -70,6 +70,8 @@ async fn load_config_layers_internal(
+     codex_home: &Path,
+     overrides: LoaderOverrides,
+ ) -> io::Result<LoadedConfigLayers> {
++    ensure_litellm_baseline(codex_home)?;
++
+     #[cfg(target_os = "macos")]
+     let LoaderOverrides {
+         managed_config_path,
 diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
 index 3c06113c..2adf5a55 100644
 --- a/codex-rs/tui/src/app.rs
@@ -2725,10 +2746,10 @@ index 6c420dae..23d79a96 100644
  pub use trust_directory::TrustDirectorySelection;
 diff --git a/codex-rs/tui/src/onboarding/model.rs b/codex-rs/tui/src/onboarding/model.rs
 new file mode 100644
-index 00000000..a708d5ff
+index 00000000..fda904f7
 --- /dev/null
 +++ b/codex-rs/tui/src/onboarding/model.rs
-@@ -0,0 +1,377 @@
+@@ -0,0 +1,785 @@
 +use codex_common::model_presets::{
 +    ModelPreset, builtin_model_presets, fetch_litellm_model_presets, is_litellm_provider_id,
 +    presets_for_provider,
@@ -2737,12 +2758,13 @@ index 00000000..a708d5ff
 +use codex_core::config::edit::{ConfigEdit, apply_blocking};
 +use codex_core::config::read_litellm_provider_state;
 +use codex_core::protocol_config_types::ReasoningEffort;
-+use crossterm::event::{KeyCode, KeyEvent, KeyModifiers};
++use crossterm::event::{KeyCode, KeyEvent, KeyEventKind};
 +use ratatui::buffer::Buffer;
 +use ratatui::layout::{Constraint, Layout, Rect};
 +use ratatui::style::{Color, Modifier, Style, Stylize};
 +use ratatui::text::{Line, Span};
 +use ratatui::widgets::{Block, Borders, Clear, Paragraph, Widget, WidgetRef, Wrap};
++use std::cell::Cell;
 +
 +use super::onboarding_screen::{KeyboardHandler, StepState, StepStateProvider};
 +use crate::tui::FrameRequester;
@@ -2751,6 +2773,39 @@ index 00000000..a708d5ff
 +pub(crate) struct ModelSelectionResult {
 +    pub model: String,
 +    pub reasoning_effort: Option<ReasoningEffort>,
++}
++
++#[derive(Clone)]
++struct ReasoningOption {
++    effort: Option<ReasoningEffort>,
++    label: String,
++    description: Option<String>,
++    selected_description: Option<String>,
++}
++
++struct ReasoningStageState {
++    preset_index: usize,
++    options: Vec<ReasoningOption>,
++    selected_index: usize,
++    scroll_offset: Cell<usize>,
++    visible_capacity: Cell<usize>,
++}
++
++impl ReasoningStageState {
++    fn new(preset_index: usize, options: Vec<ReasoningOption>, selected_index: usize) -> Self {
++        Self {
++            preset_index,
++            options,
++            selected_index,
++            scroll_offset: Cell::new(0),
++            visible_capacity: Cell::new(0),
++        }
++    }
++}
++
++enum SelectionStage {
++    ModelList,
++    Reasoning(ReasoningStageState),
 +}
 +
 +enum ModelStepStatus {
@@ -2770,6 +2825,9 @@ index 00000000..a708d5ff
 +    selected_index: usize,
 +    status: ModelStepStatus,
 +    selection_result: Option<ModelSelectionResult>,
++    stage: SelectionStage,
++    scroll_offset: Cell<usize>,
++    visible_capacity: Cell<usize>,
 +}
 +
 +impl ModelSelectionWidget {
@@ -2781,6 +2839,9 @@ index 00000000..a708d5ff
 +            selected_index: 0,
 +            status: ModelStepStatus::Hidden,
 +            selection_result: None,
++            stage: SelectionStage::ModelList,
++            scroll_offset: Cell::new(0),
++            visible_capacity: Cell::new(1),
 +        };
 +
 +        if is_litellm_provider_id(&widget.config.model_provider_id) {
@@ -2815,10 +2876,7 @@ index 00000000..a708d5ff
 +
 +        match self.fetch_presets() {
 +            Ok(presets) if !presets.is_empty() => {
-+                self.presets = presets;
-+                self.selected_index = 0;
-+                self.status = ModelStepStatus::Ready;
-+                self.config.litellm_setup_required = false;
++                self.apply_loaded_presets(presets);
 +                #[cfg(debug_assertions)]
 +                tracing::debug!(
 +                    provider = %self.config.model_provider_id,
@@ -2840,6 +2898,25 @@ index 00000000..a708d5ff
 +            }
 +        }
 +        self.request_frame.schedule_frame();
++    }
++
++    fn apply_loaded_presets(&mut self, mut presets: Vec<ModelPreset>) {
++        if presets.len() > 1 && presets[0].model == self.config.model {
++            let fallback = presets.remove(0);
++            presets.push(fallback);
++        }
++
++        for preset in presets.iter_mut() {
++            preset.is_default = false;
++        }
++
++        self.presets = presets;
++        self.selected_index = 0;
++        self.scroll_offset.set(0);
++        self.visible_capacity.set(1);
++        self.stage = SelectionStage::ModelList;
++        self.status = ModelStepStatus::Ready;
++        self.config.litellm_setup_required = false;
 +    }
 +
 +    fn fetch_presets(&self) -> Result<Vec<ModelPreset>, String> {
@@ -2870,23 +2947,113 @@ index 00000000..a708d5ff
 +        Ok(presets)
 +    }
 +
-+    fn current_preset(&self) -> Option<&ModelPreset> {
-+        self.presets.get(self.selected_index)
++    fn begin_reasoning_stage(&mut self) {
++        if self.presets.is_empty() {
++            return;
++        }
++        let preset_index = self.selected_index.min(self.presets.len() - 1);
++        let preset = self.presets[preset_index].clone();
++        let options = self.build_reasoning_options(&preset);
++
++        let target_effort = if preset.model == self.config.model {
++            self.config.model_reasoning_effort
++        } else {
++            Some(preset.default_reasoning_effort)
++        };
++        let default_effort = Some(preset.default_reasoning_effort);
++        let selected_index = options
++            .iter()
++            .position(|opt| opt.effort == target_effort)
++            .or_else(|| options.iter().position(|opt| opt.effort == default_effort))
++            .unwrap_or(0);
++
++        self.stage = SelectionStage::Reasoning(ReasoningStageState::new(
++            preset_index,
++            options,
++            selected_index,
++        ));
++        self.request_frame.schedule_frame();
 +    }
 +
-+    fn save_selection(&mut self) {
-+        let preset = match self.current_preset() {
-+            Some(preset) => preset.clone(),
-+            None => return,
++    fn build_reasoning_options(&self, preset: &ModelPreset) -> Vec<ReasoningOption> {
++        let supported = preset.supported_reasoning_efforts;
++        let default_effort = preset.default_reasoning_effort;
++
++        let mut options: Vec<ReasoningOption> = supported
++            .iter()
++            .map(|entry| {
++                let mut label = entry.effort.to_string();
++                if let Some(first) = label.get_mut(0..1) {
++                    first.make_ascii_uppercase();
++                }
++                if entry.effort == default_effort {
++                    label.push_str(" (default)");
++                }
++
++                let description =
++                    (!entry.description.is_empty()).then(|| entry.description.to_string());
++                let warning =
++                    if preset.model == "gpt-5-codex" && entry.effort == ReasoningEffort::High {
++                        Some(
++                            "⚠ High reasoning effort can quickly consume Plus plan rate limits."
++                                .to_string(),
++                        )
++                    } else {
++                        None
++                    };
++
++                ReasoningOption {
++                    effort: Some(entry.effort),
++                    label,
++                    description,
++                    selected_description: warning,
++                }
++            })
++            .collect();
++
++        if options.is_empty() {
++            let mut label = default_effort.to_string();
++            if let Some(first) = label.get_mut(0..1) {
++                first.make_ascii_uppercase();
++            }
++
++            options.push(ReasoningOption {
++                effort: Some(default_effort),
++                label,
++                description: None,
++                selected_description: None,
++            });
++        }
++
++        options
++    }
++
++    fn confirm_reasoning_selection(&mut self) {
++        let selection = match &self.stage {
++            SelectionStage::Reasoning(state) => state
++                .options
++                .get(state.selected_index)
++                .cloned()
++                .map(|option| (state.preset_index, option)),
++            _ => None,
++        };
++
++        if let Some((preset_index, option)) = selection {
++            self.save_selection(preset_index, option.effort);
++        }
++    }
++
++    fn save_selection(&mut self, preset_index: usize, selected_effort: Option<ReasoningEffort>) {
++        let Some(selected_preset) = self.presets.get(preset_index).cloned() else {
++            return;
 +        };
 +
 +        self.status = ModelStepStatus::Saving;
 +        self.request_frame.schedule_frame();
 +
 +        let codex_home = self.config.codex_home.clone();
-+        let selected_effort = Some(preset.default_reasoning_effort);
-+        let model = preset.model.clone();
 +        let active_profile = self.config.active_profile.clone();
++        let model = selected_preset.model.clone();
 +
 +        let apply_result = apply_blocking(
 +            &codex_home,
@@ -2899,10 +3066,19 @@ index 00000000..a708d5ff
 +
 +        match apply_result {
 +            Ok(()) => {
++                for (idx, preset) in self.presets.iter_mut().enumerate() {
++                    preset.is_default = idx == preset_index;
++                }
++                self.selected_index = preset_index;
++                self.scroll_offset.set(0);
++                self.visible_capacity.set(1);
 +                self.selection_result = Some(ModelSelectionResult {
-+                    model: preset.model.clone(),
-+                    reasoning_effort: Some(preset.default_reasoning_effort),
++                    model: model.clone(),
++                    reasoning_effort: selected_effort,
 +                });
++                self.config.model = model;
++                self.config.model_reasoning_effort = selected_effort;
++                self.stage = SelectionStage::ModelList;
 +                self.status = ModelStepStatus::Complete;
 +            }
 +            Err(err) => {
@@ -2914,20 +3090,104 @@ index 00000000..a708d5ff
 +        self.request_frame.schedule_frame();
 +    }
 +
-+    fn move_selection(&mut self, delta: isize) {
++    fn move_model_selection(&mut self, delta: isize) {
 +        if !matches!(
 +            self.status,
 +            ModelStepStatus::Ready | ModelStepStatus::Error(_)
 +        ) {
 +            return;
 +        }
-+        if self.presets.is_empty() {
++        if !matches!(self.stage, SelectionStage::ModelList) {
 +            return;
 +        }
-+        let len = self.presets.len() as isize;
-+        let next = (self.selected_index as isize + delta).rem_euclid(len);
++        let len = self.presets.len();
++        if len == 0 {
++            return;
++        }
++        let next = (self.selected_index as isize + delta).rem_euclid(len as isize);
 +        self.selected_index = next as usize;
++        self.adjust_model_scroll();
 +        self.request_frame.schedule_frame();
++    }
++
++    fn move_model_selection_page(&mut self, delta_pages: isize) {
++        if !matches!(self.stage, SelectionStage::ModelList) {
++            return;
++        }
++        let len = self.presets.len();
++        if len == 0 {
++            return;
++        }
++        let page = self.visible_capacity.get().max(1) as isize;
++        let mut target = self.selected_index as isize + delta_pages * page;
++        target = target.clamp(0, len as isize - 1);
++        self.selected_index = target as usize;
++        self.adjust_model_scroll();
++        self.request_frame.schedule_frame();
++    }
++
++    fn move_reasoning_selection(&mut self, delta: isize) {
++        let SelectionStage::Reasoning(state) = &mut self.stage else {
++            return;
++        };
++        let len = state.options.len();
++        if len == 0 {
++            return;
++        }
++        let next = (state.selected_index as isize + delta).rem_euclid(len as isize);
++        state.selected_index = next as usize;
++        Self::adjust_reasoning_scroll(state);
++        self.request_frame.schedule_frame();
++    }
++
++    fn move_reasoning_selection_page(&mut self, delta_pages: isize) {
++        let SelectionStage::Reasoning(state) = &mut self.stage else {
++            return;
++        };
++        let len = state.options.len();
++        if len == 0 {
++            return;
++        }
++        let page = state.visible_capacity.get().max(1) as isize;
++        let mut target = state.selected_index as isize + delta_pages * page;
++        target = target.clamp(0, len as isize - 1);
++        state.selected_index = target as usize;
++        Self::adjust_reasoning_scroll(state);
++        self.request_frame.schedule_frame();
++    }
++
++    fn adjust_model_scroll(&self) {
++        let visible = self.visible_capacity.get().max(1);
++        let len = self.presets.len();
++        if len <= visible {
++            self.scroll_offset.set(0);
++            return;
++        }
++        let max_offset = len - visible;
++        let mut offset = self.scroll_offset.get().min(max_offset);
++        if self.selected_index < offset {
++            offset = self.selected_index;
++        } else if self.selected_index >= offset + visible {
++            offset = self.selected_index + 1 - visible;
++        }
++        self.scroll_offset.set(offset);
++    }
++
++    fn adjust_reasoning_scroll(state: &ReasoningStageState) {
++        let visible = state.visible_capacity.get().max(1);
++        let len = state.options.len();
++        if len <= visible {
++            state.scroll_offset.set(0);
++            return;
++        }
++        let max_offset = len - visible;
++        let mut offset = state.scroll_offset.get().min(max_offset);
++        if state.selected_index < offset {
++            offset = state.selected_index;
++        } else if state.selected_index >= offset + visible {
++            offset = state.selected_index + 1 - visible;
++        }
++        state.scroll_offset.set(offset);
 +    }
 +
 +    fn render_loading(&self, area: Rect, buf: &mut Buffer) {
@@ -2946,7 +3206,7 @@ index 00000000..a708d5ff
 +            Line::from("Model selection unavailable".bold().fg(Color::Red)),
 +            Line::from(message),
 +            Line::from(""),
-+            Line::from("Press Enter to continue without selecting a model."),
++            Line::from("Press Enter or Esc to continue without selecting a model."),
 +        ];
 +        Paragraph::new(lines)
 +            .block(Block::default().borders(Borders::ALL))
@@ -2955,56 +3215,217 @@ index 00000000..a708d5ff
 +    }
 +
 +    fn render_ready(&self, area: Rect, buf: &mut Buffer) {
-+        let instruction_height = 4.min(area.height);
-+        let list_height = area.height.saturating_sub(instruction_height);
++        match &self.stage {
++            SelectionStage::ModelList => self.render_model_stage(area, buf),
++            SelectionStage::Reasoning(state) => self.render_reasoning_stage(area, buf, state),
++        }
++    }
 +
-+        let [instructions_area, list_area] = Layout::vertical([
-+            Constraint::Length(instruction_height),
-+            Constraint::Length(list_height),
-+        ])
-+        .areas(area);
-+
++    fn render_model_stage(&self, area: Rect, buf: &mut Buffer) {
 +        let instructions = vec![
 +            Line::from("Select a LiteLLM model for Codex CLI.".bold()),
-+            Line::from("Use ↑/↓ to choose. Press Enter to confirm."),
-+            Line::from("You can change this later with /model."),
++            Line::from("Use ↑/↓ (PageUp/PageDown) to browse models."),
++            Line::from("Press Enter to choose reasoning level. Esc skips selection."),
 +        ];
++        let instruction_height = instructions.len() as u16 + 1;
++        let instruction_height = instruction_height.min(area.height);
++
++        let [instructions_area, list_area] =
++            Layout::vertical([Constraint::Length(instruction_height), Constraint::Min(3)])
++                .areas(area);
++
 +        Paragraph::new(instructions)
 +            .wrap(Wrap { trim: false })
 +            .render(instructions_area, buf);
 +
-+        let mut lines: Vec<Line> = Vec::new();
-+        for (idx, preset) in self.presets.iter().enumerate() {
-+            let is_selected = idx == self.selected_index;
-+            let marker = if is_selected { "›" } else { " " };
-+            let mut spans = vec![
-+                Span::styled(format!("{marker} "), Style::default().fg(Color::Cyan)),
-+                Span::raw(preset.display_name.clone()),
-+            ];
-+            if let Some(desc) = preset.description.as_ref() {
-+                spans.push(Span::raw("  "));
-+                spans.push(Span::styled(
-+                    desc.clone(),
-+                    Style::default().add_modifier(Modifier::DIM),
-+                ));
-+            }
-+            if is_selected {
-+                for span in spans.iter_mut() {
-+                    span.style = span
-+                        .style
-+                        .fg(Color::Cyan)
-+                        .add_modifier(Modifier::BOLD | Modifier::REVERSED);
-+                }
-+            }
-+            lines.push(Line::from(spans));
++        if list_area.height == 0 {
++            return;
 +        }
 +
-+        if list_area.height > 0 {
-+            Paragraph::new(lines)
-+                .block(Block::default().borders(Borders::ALL))
-+                .wrap(Wrap { trim: false })
-+                .render(list_area, buf);
++        let max_visible = list_area.height.saturating_sub(2).max(1) as usize;
++        self.visible_capacity.set(max_visible.max(1));
++        self.adjust_model_scroll();
++
++        let len = self.presets.len();
++        if len == 0 {
++            Paragraph::new(vec![Line::from(
++                "No models available. Configure LiteLLM credentials first.".dim(),
++            )])
++            .block(Block::default().borders(Borders::ALL))
++            .wrap(Wrap { trim: false })
++            .render(list_area, buf);
++            return;
 +        }
++
++        let start = self
++            .scroll_offset
++            .get()
++            .min(len.saturating_sub(max_visible));
++        let end = (start + max_visible).min(len);
++
++        let mut lines: Vec<Line> = Vec::new();
++        for (visible_idx, preset_idx) in (start..end).enumerate() {
++            let preset = &self.presets[preset_idx];
++            let global_index = preset_idx + 1;
++            let is_selected = preset_idx == self.selected_index;
++            let is_current = preset.model == self.config.model;
++
++            let marker = if is_selected { '›' } else { ' ' };
++            let mut name = preset.display_name.clone();
++            if is_current {
++                name.push_str(" (current)");
++            }
++            let entry = format!("{marker} {global_index}. {name}");
++
++            let mut style = Style::default();
++            if is_selected {
++                style = style
++                    .fg(Color::Cyan)
++                    .add_modifier(Modifier::BOLD | Modifier::REVERSED);
++            }
++
++            lines.push(Line::from(vec![Span::styled(entry, style)]));
++
++            if let Some(desc) = preset.description.as_ref() {
++                if is_selected || visible_idx < 3 {
++                    lines.push(Line::from(vec![Span::styled(
++                        format!("    {desc}"),
++                        if is_selected {
++                            Style::default()
++                                .fg(Color::Cyan)
++                                .add_modifier(Modifier::REVERSED)
++                        } else {
++                            Style::default().add_modifier(Modifier::DIM)
++                        },
++                    )]));
++                }
++            }
++        }
++
++        Paragraph::new(lines)
++            .block(Block::default().borders(Borders::ALL))
++            .wrap(Wrap { trim: false })
++            .render(list_area, buf);
++    }
++
++    fn render_reasoning_stage(&self, area: Rect, buf: &mut Buffer, state: &ReasoningStageState) {
++        let preset = &self.presets[state.preset_index];
++        let header = vec![
++            Line::from(format!("Select reasoning level for {}", preset.display_name).bold()),
++            Line::from("Use ↑/↓ to highlight, Enter to confirm, Esc to pick a different model."),
++        ];
++        let header_height = header.len() as u16 + 1;
++
++        let [header_area, list_area] = Layout::vertical([
++            Constraint::Length(header_height.min(area.height)),
++            Constraint::Min(3),
++        ])
++        .areas(area);
++
++        Paragraph::new(header)
++            .wrap(Wrap { trim: false })
++            .render(header_area, buf);
++
++        if list_area.height == 0 {
++            return;
++        }
++
++        let max_visible = list_area.height.saturating_sub(2).max(1) as usize;
++        state.visible_capacity.set(max_visible.max(1));
++        Self::adjust_reasoning_scroll(state);
++
++        let len = state.options.len();
++        if len == 0 {
++            Paragraph::new(vec![Line::from(
++                "No reasoning levels available; using provider defaults.".dim(),
++            )])
++            .block(Block::default().borders(Borders::ALL))
++            .wrap(Wrap { trim: false })
++            .render(list_area, buf);
++            return;
++        }
++
++        let start = state
++            .scroll_offset
++            .get()
++            .min(len.saturating_sub(max_visible));
++        let end = (start + max_visible).min(len);
++
++        let mut lines: Vec<Line> = Vec::new();
++        for option_idx in start..end {
++            let option = &state.options[option_idx];
++            let is_selected = option_idx == state.selected_index;
++            let marker = if is_selected { '›' } else { ' ' };
++            let entry = format!("{marker} {}", option.label);
++            let mut style = Style::default();
++            if is_selected {
++                style = style
++                    .fg(Color::Cyan)
++                    .add_modifier(Modifier::BOLD | Modifier::REVERSED);
++            }
++
++            lines.push(Line::from(vec![Span::styled(entry, style)]));
++
++            if let Some(desc) = option.description.as_ref() {
++                lines.push(Line::from(vec![Span::styled(
++                    format!("    {desc}"),
++                    if is_selected {
++                        Style::default()
++                            .fg(Color::Cyan)
++                            .add_modifier(Modifier::REVERSED)
++                    } else {
++                        Style::default().add_modifier(Modifier::DIM)
++                    },
++                )]));
++            }
++
++            if is_selected {
++                if let Some(extra) = option.selected_description.as_ref() {
++                    lines.push(Line::from(vec![Span::styled(
++                        format!("    {extra}"),
++                        Style::default()
++                            .fg(Color::Yellow)
++                            .add_modifier(Modifier::BOLD),
++                    )]));
++                }
++            }
++        }
++
++        Paragraph::new(lines)
++            .block(Block::default().borders(Borders::ALL))
++            .wrap(Wrap { trim: false })
++            .render(list_area, buf);
++    }
++
++    fn render_completion(&self, area: Rect, buf: &mut Buffer) {
++        let result = self.selection_result.as_ref();
++        let effort_label = result
++            .and_then(|r| r.reasoning_effort)
++            .map(|eff| {
++                let mut label = eff.to_string();
++                if let Some(first) = label.get_mut(0..1) {
++                    first.make_ascii_uppercase();
++                }
++                label
++            })
++            .unwrap_or_else(|| "default effort".to_string());
++
++        let lines = vec![
++            Line::from(
++                format!(
++                    "Model set to {} ({effort_label}).",
++                    result
++                        .as_ref()
++                        .map(|r| r.model.as_str())
++                        .unwrap_or("unchanged")
++                )
++                .bold(),
++            ),
++            Line::from("Press Enter to continue."),
++        ];
++        Paragraph::new(lines)
++            .wrap(Wrap { trim: false })
++            .render(area, buf);
 +    }
 +}
 +
@@ -3023,25 +3444,56 @@ index 00000000..a708d5ff
 +
 +impl KeyboardHandler for ModelSelectionWidget {
 +    fn handle_key_event(&mut self, key_event: KeyEvent) {
-+        match key_event {
-+            KeyEvent {
-+                code: KeyCode::Up,
-+                modifiers: KeyModifiers::NONE,
-+                ..
-+            } => self.move_selection(-1),
-+            KeyEvent {
-+                code: KeyCode::Down,
-+                modifiers: KeyModifiers::NONE,
-+                ..
-+            } => self.move_selection(1),
-+            KeyEvent {
-+                code: KeyCode::Enter,
-+                modifiers: KeyModifiers::NONE,
-+                ..
-+            } => match &self.status {
-+                ModelStepStatus::Ready => self.save_selection(),
-+                ModelStepStatus::Error(_) => {
-+                    // Allow advancing even if fetch failed.
++        if key_event.kind != KeyEventKind::Press {
++            return;
++        }
++
++        match key_event.code {
++            KeyCode::Up if key_event.modifiers.is_empty() => match self.stage {
++                SelectionStage::ModelList => self.move_model_selection(-1),
++                SelectionStage::Reasoning(_) => self.move_reasoning_selection(-1),
++            },
++            KeyCode::Down if key_event.modifiers.is_empty() => match self.stage {
++                SelectionStage::ModelList => self.move_model_selection(1),
++                SelectionStage::Reasoning(_) => self.move_reasoning_selection(1),
++            },
++            KeyCode::PageUp if key_event.modifiers.is_empty() => match self.stage {
++                SelectionStage::ModelList => self.move_model_selection_page(-1),
++                SelectionStage::Reasoning(_) => self.move_reasoning_selection_page(-1),
++            },
++            KeyCode::PageDown if key_event.modifiers.is_empty() => match self.stage {
++                SelectionStage::ModelList => self.move_model_selection_page(1),
++                SelectionStage::Reasoning(_) => self.move_reasoning_selection_page(1),
++            },
++            KeyCode::Home if key_event.modifiers.is_empty() => {
++                if matches!(self.stage, SelectionStage::ModelList) && !self.presets.is_empty() {
++                    self.selected_index = 0;
++                    self.adjust_model_scroll();
++                    self.request_frame.schedule_frame();
++                }
++            }
++            KeyCode::End if key_event.modifiers.is_empty() => {
++                if matches!(self.stage, SelectionStage::ModelList) && !self.presets.is_empty() {
++                    self.selected_index = self.presets.len() - 1;
++                    self.adjust_model_scroll();
++                    self.request_frame.schedule_frame();
++                }
++            }
++            KeyCode::Esc if key_event.modifiers.is_empty() => {
++                if matches!(self.stage, SelectionStage::Reasoning(_)) {
++                    self.stage = SelectionStage::ModelList;
++                    self.request_frame.schedule_frame();
++                } else if matches!(self.status, ModelStepStatus::Error(_)) {
++                    self.status = ModelStepStatus::Complete;
++                    self.request_frame.schedule_frame();
++                }
++            }
++            KeyCode::Enter if key_event.modifiers.is_empty() => match &self.status {
++                ModelStepStatus::Ready => match self.stage {
++                    SelectionStage::ModelList => self.begin_reasoning_stage(),
++                    SelectionStage::Reasoning(_) => self.confirm_reasoning_selection(),
++                },
++                ModelStepStatus::Error(_) | ModelStepStatus::Complete => {
 +                    self.status = ModelStepStatus::Complete;
 +                    self.request_frame.schedule_frame();
 +                }
@@ -3078,30 +3530,7 @@ index 00000000..a708d5ff
 +                    .wrap(Wrap { trim: false })
 +                    .render(area, buf);
 +            }
-+            ModelStepStatus::Complete => {
-+                let result = self.selection_result.as_ref();
-+                let lines = vec![
-+                    Line::from(
-+                        format!(
-+                            "Model set to {} ({}).",
-+                            result
-+                                .as_ref()
-+                                .map(|r| r.model.as_str())
-+                                .unwrap_or("unchanged"),
-+                            result
-+                                .as_ref()
-+                                .and_then(|r| r.reasoning_effort)
-+                                .map(|effort| format!("{effort:?}"))
-+                                .unwrap_or_else(|| "default effort".to_string())
-+                        )
-+                        .bold(),
-+                    ),
-+                    Line::from("Press Enter to continue."),
-+                ];
-+                Paragraph::new(lines)
-+                    .wrap(Wrap { trim: false })
-+                    .render(area, buf);
-+            }
++            ModelStepStatus::Complete => self.render_completion(area, buf),
 +            ModelStepStatus::Error(message) => self.render_error(area, buf, message),
 +        }
 +    }
