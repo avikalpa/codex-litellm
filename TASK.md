@@ -118,3 +118,25 @@ Notes:
 - `/status` card now renders a "LiteLLM usage" section showing total tokens and per-model breakdown based on the new telemetry snapshot.
 - Refreshed the onboarding picker theme (matching `/model`), replaced the fallback `gpt-oss-120b-litellm` entry, and expanded the welcome screen with environment-variable guidance.
 - TODO polish entries updated for the completed two-stage selector and status integration; docs will need a pass later to replace legacy debug-telemetry wording with the new crate names.
+
+## 2025-11-04 Sweep D
+- Observed: Model onboarding + `/model` behaviour confirmed stable; documentation and workflow notes lagged behind the implementation.
+- Actions: Marked the model-experience checklist complete in `docs/TODOS.md`, added a “Model Response Fixes” bucket for upcoming telemetry work, documented telemetry modules in the new `docs/TELEMETRY.md`, and refreshed `AGENTS.md` with the daily operator loop (read `TASK.md`, action `docs/TODOS.md`, commit at every milestone).
+- Updated `docs/PROJECT_SUMMARY.md` to reflect the v0.53.0 baseline and LiteLLM UX refresh.
+- Next steps: work remaining TODO buckets (session lifecycle, status/context polish, telemetry rotation, model response audits) with commits after each milestone and regenerate `stable-tag.patch` once code changes land.
+- Progress: Implemented `/quit` resume hint inside the TUI (history banner + test coverage), added resume-time overflow detection that warns users to `/compact`, and checked off the corresponding Session Lifecycle TODO entries.
+- Follow-up: Context indicator now derives from cumulative token usage, ensuring the footer reflects actual context consumption; added a regression test and marked the Status/UI TODO complete.
+- Telemetry & response logging: Added `[telemetry] enabled/max_total_bytes` overrides (plus CLI `--telemetry/--no-telemetry`), pruned old logs on startup, and instrumented chat completions requests/responses so `codex-litellm-debug-telemetry` captures LiteLLM traffic. Model response TODO updated accordingly.
+- Telemetry: Added global `[telemetry] enabled/max_total_bytes` handling, pruned stale logs on startup, and taught the TUI/exec bootstrapper to skip writers when disabled; telemetry docs and TODOs updated accordingly.
+
+## 2025-11-04 Sweep E
+- Objective: close the outstanding telemetry TODO by emitting structured markers during `/model` usage and keep the status snapshots stable after the LiteLLM defaults shift.
+- Actions: patched `ChatWidget` + `AppEvent::PersistModelSelection` to log `model_selection.*` events (preset load source, reasoning choices, persistence outcome) into `codex-litellm-debug-telemetry`; added reasoning popup instrumentation and replaced the ad-hoc println() with structured logs.
+- Fixes: adjusted `Status` tests to rebuild configs via a helper that rehydrates the OpenAI model family/provider so reasoning/context details stay visible; accepted the `/quit` resume text in the binary-size snapshot.
+- Verification: `cargo test -p codex-tui` + `cargo build --locked --bin codex` pass on the updated tree; docs/TODOs/telemetry references updated to reflect the new markers.
+
+## 2025-11-04 Sweep F
+- Observed: Remaining TODOs called for logging which TUI surface emitted each response, normalising LiteLLM output between streaming/non-streaming providers, keeping conversation context aligned with tool calls, and publishing OpenWrt/Termux packages.
+- Actions: Added `display.*` telemetry events across `ChatWidget` (user prompts, agent streams, status headers, rate-limit warnings); tightened the chat completions aggregator to avoid reasoning duplication and added aggregated-mode regression tests plus context-order assertions; introduced packaging scripts for OpenWrt (`package-openwrt.sh`) and Termux (`package-termux.sh`) and wired them into the release workflow alongside artifact uploads.
+- Docs: Marked the Model Response TODOs complete, expanded telemetry docs with `display.*`, documented the new packaging targets in `docs/EXCLUSIVE_FEATURES.md`, updated the project summary/README with installation notes, and logged the sweep here.
+- Verification: `cargo test -p codex-core chat_completions_sse`, `cargo test -p codex-tui`, and `cargo build --locked --bin codex` all executed successfully.

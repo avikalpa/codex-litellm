@@ -57,6 +57,28 @@ npm install -g @avikalpa/codex-litellm
 codex-litellm --version
 ```
 
+#### OpenWrt packages
+
+Each GitHub release publishes `.ipk` archives for `x86_64` and `aarch64_generic`
+targets. Download the package that matches your router architecture and
+install:
+
+```bash
+opkg install codex-litellm_<version>_<arch>.ipk
+```
+
+#### Termux packages
+
+Termux users can install the Android-friendly `.deb` packages that ship with
+every release:
+
+```bash
+dpkg -i codex-litellm_<version>_aarch64.deb   # or _x86_64
+```
+
+The binary is installed under
+`$PREFIX/bin/codex-litellm` (i.e. `~/../../com.termux/files/usr/bin`).
+
 #### Optional: Create Command Alias
 
 For convenient usage, you can create an alias:

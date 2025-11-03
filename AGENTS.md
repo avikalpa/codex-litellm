@@ -35,8 +35,9 @@ This project was born out of a persistent and complex issue: making the `codex-c
 - **Repository root** (`~/gh/codex-litellm/`): Headquarters for our patchset project.
     - **`AGENTS.md`**: Project operating manual (this document). `CLAUDE.md` remains for historical reference only.
     - **`docs/`**: Contains detailed strategic and analytical documents. The primary roadmap for any implementation task will be located here (`docs/TODOS.md`, `docs/PROJECT_SUMMARY.md`, etc.).
-    - **`stable-tag.patch`**: Diff generated from the `codex/` source tree after modifications are complete.
+- **`stable-tag.patch`**: Diff generated from the `codex/` source tree after modifications are complete.
 - **`config.toml`**: Canonical LiteLLM configuration. Copy this into the active CODEX_HOME during testing so runs target the correct backend.
+- **`docs/TELEMETRY.md`**: Reference for the LiteLLM-only debug and session telemetry modules.
 
 ---
 
@@ -48,6 +49,14 @@ Codex (this agent) is the primary engineer for day-to-day work. Gemini may occas
 -   **Gemini (on demand):** Contributes strategic analysis or planning support when explicitly invited.
 
 This structured approach ensures that our work is methodical, well-documented, and ultimately successful.
+
+### Daily Operator Loop
+
+1. Begin every work session by skimming `TASK.md` for the current sweep notes and journaling context. Add a new entry if you start a fresh sweep.
+2. Review `docs/TODOS.md` and pick the next actionable item. Feel free to append TODOs as new issues are discovered.
+3. Tackle tasks one milestone at a time. After each milestone (bug fix, feature slice, doc update), regenerate `stable-tag.patch`, then commit the root repository per the steps in `docs/COMMITTING_NOTES.md`.
+4. When telemetry, onboarding, or other sensitive flows change, record the behaviour in `docs/TELEMETRY.md` and update `docs/PROJECT_SUMMARY.md` as needed.
+5. Always run `cargo build --locked --bin codex` before handing the tree back to the user. Prefer adding focused tests (`cargo test -p codex-tui`, `cargo insta test`) when they cover the regression you are fixing.
 
 ---
 
@@ -127,16 +136,12 @@ This section documents incorrect assumptions and procedural errors made during d
 ---
 ## Telemetry Modules
 
-- `codex-litellm-debug-telemetry`: tracing hooks and log writers that capture high-fidelity debug events (header layout, onboarding flow, etc.) into timestamped files under `logs/` for post-mortem analysis.
-- `codex-litellm-model-session-telemetry`: in-memory aggregation of LiteLLM model usage (tokens and turn counts) surfaced via `/status` to mirror upstream Codex billing insights.
-
----
-
----
-## Telemetry Modules
+See `docs/EXCLUSIVE_FEATURES.md` for configuration knobs and logging formats.
 
 - `codex-litellm-debug-telemetry`: tracing hooks and log writers that capture high-fidelity debug events (header layout, onboarding flow, etc.) into timestamped files under `logs/` for post-mortem analysis.
 - `codex-litellm-model-session-telemetry`: in-memory aggregation of LiteLLM model usage (tokens and turn counts) surfaced via `/status` to mirror upstream Codex billing insights.
+
+Runtime toggles: pass `--telemetry` or `--no-telemetry` to `codex` / `codex exec` when you need to override the `[telemetry] enabled` setting without editing `config.toml`.
 
 ---
 ## 8. Generating a Unified Patch File

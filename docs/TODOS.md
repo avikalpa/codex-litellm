@@ -1,12 +1,37 @@
 # Polish
-1. (done) We should not require a config.toml file. Just like codex, during the first session we should ask the user for the litellm endpoint and API_KEY.
-2. (done) We should also be able to change these parameters by /logout and then restarting a codex session.
-3. (done) In upstream codex when we /quit a session, the session can be resumed using codex resume (this works). During quitting, it tells the user that we can codex resume <UUID>.
-4. (done) We should be able to change models using /models like in upstream codex. In the first session, we should ask the user by querying the litellm endppoint and receiving the models which model should be the default for this and future sessions.
-5. (done) Similarly, /status should surface LiteLLM usage stats just like upstream codex does.
-6. (done) /model selector will be in two stages, just like in upstream codex. First model selection, and then low, medium, and high thinking; defaulting to medium. Assume all models have 130k context window.
-7. (done) We should also adjust the session context of upstream codex to 130k and then auto compact. There should be an option in config.toml to adjust context window of patched codex. Because each model supports different context length. 130k is the lowest common denominator. Hence our default. I think currently upstream codex has context window of 400k matching their gpt models.
-8. (done) When resuming a upstream codex session, we should check if the existing context window is above our context window limit. If yes, the user should be asked the session is over the context window limit of the litellm version and whether to compress it or exit.
-9. (done) Where version info is shown in the program, instead of showing only the upstream version like v0.0.50 it should show upstream+our_commit_id like v0.0.50+cd6y5t
-10. (done) Improvement over 1. Use the Ascii startup onboarding but modified with intructions and options for our use-case.
-11. (done) TUI status bar bug: shows 100% context always. We should check context handling logic with point 6 & 7.
+
+## Model Experience
+- [x] We should not require a pre-existing `config.toml`. During the first session the onboarding flow must prompt for the LiteLLM endpoint and API key, mirroring upstream Codex.
+- [x] `/logout` followed by a restart should re-run the credentials onboarding flow so the user can change endpoint/API key without manual edits.
+- [x] The onboarding sequence should include the LiteLLM model selector between credentials and approvals, seeded from the latest `/v1/models` response.
+- [x] `/model` must offer the full two-stage selector (model list, then reasoning effort) and persist the choice for the current and future sessions. The list should contain only live LiteLLM presets—no legacy test slugs like `gpt-oss-120b-litellm`.
+
+## Session Lifecycle & Context
+- Current state: Probably a lot has already been implemented just not documented here. Check first.
+- [x] When quitting via `/quit`, show the resumable command (e.g. `codex resume <UUID>`) exactly like upstream.
+- [x] Default the session context window to 130k tokens (configurable via `codex.toml`) and auto-compact history when a conversation exceeds the limit.
+- [x] On resume, detect history that exceeds the configured context window and prompt the user to compact or abort.
+- [x] Display the combined version string (`upstream_tag+lit_commit`) everywhere the CLI surfaces version info.
+
+## Status & UI
+- Current state: Probably a lot has already been implemented just not documented here. Check first.
+- [x] `/status` should surface LiteLLM usage stats (tokens in/out, context consumption, rate limit notices) and handle “no data yet” cases gracefully.
+- [x] The TUI status/context indicators must reflect the correct context % and reasoning summary (no perpetually 100% bars).
+- [x] Retain the customized ASCII onboarding welcome screen with LiteLLM-specific guidance.
+
+## Telemetry
+- Current state: telemetry logs are routed beneath `$CODEX_HOME/logs/` with per-crate toggles; session usage is recorded through `codex-litellm-model-session-telemetry` and exposed via `/status`; debug traces funnel through `codex-litellm-debug-telemetry`.
+- Next improvements to explore:
+  - [x] Add log rotation or size-based pruning so `$CODEX_HOME/logs` does not grow unbounded.
+  - [x] Record structured markers for onboarding/model selection events to speed up future regressions.
+  - [x] Consider a lightweight CLI switch (e.g. `--no-telemetry`) to disable both debug and session logging for sensitive environments.
+
+## Model Response Fixes
+- Caveats: Check for docs/PROJECT_SUMMARY.md for litellm nuances (eg. streaming responses do not work, always use non-streaming as a fix)
+- [x] Ensure every LiteLLM request and response is captured by `codex-litellm-debug-telemetry`, including provider-specific variants.
+- [x] Log which display element in the TUI gets triggered by request or response.
+- [x] Normalize rendered responses across providers so the TUI displays assistant output consistently (watch for streamed vs. buffered payloads).
+- [x] Keep the conversation context in sync with streamed tool calls and reasoning sections across providers.
+
+## Publishing
+- We should push to github for github actions workflow. Add workflows to publish package to openwrt and termux in addition to npmjs workflow.
