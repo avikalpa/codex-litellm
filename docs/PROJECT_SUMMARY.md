@@ -31,6 +31,7 @@
 | Nov 02 | Telemetry pruning | Global `max_total_bytes` limit keeps `${CODEX_HOME}/logs` bounded, prunes the oldest non-active telemetry files on startup, and new `--(no-)telemetry` flags expose runtime enable/disable toggles. |
 | Nov 04 | Model selection telemetry | `/model` popup + onboarding emit `codex_litellm_debug::model_selection.*` events (preset source, reasoning choices, persistence), and status snapshots adjust to the new LiteLLM defaults. |
 | Nov 04 | Expanded release packaging | Release automation now wraps the Linux builds into OpenWrt `.ipk` and Termux `.deb` packages via new packaging scripts. |
+| Nov 04 | Licensing alignment | Project relicensed under Apache-2.0; all release artifacts now include the bundled `LICENSE` and `NOTICE` files for downstream compliance. |
 
 ---
 

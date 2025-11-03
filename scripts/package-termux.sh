@@ -27,7 +27,8 @@ tar -C "$TMP_ROOT" -xf "$ARCHIVE"
 PKG_DIR="$TMP_ROOT/pkg"
 DEBIAN_DIR="$PKG_DIR/DEBIAN"
 BIN_DIR="$PKG_DIR/data/data/com.termux/files/usr/bin"
-mkdir -p "$DEBIAN_DIR" "$BIN_DIR"
+DOC_DIR="$PKG_DIR/data/data/com.termux/files/usr/share/doc/codex-litellm"
+mkdir -p "$DEBIAN_DIR" "$BIN_DIR" "$DOC_DIR"
 
 BIN_NAME="codex-litellm"
 if [[ -f "$TMP_ROOT/${BIN_NAME}.exe" ]]; then
@@ -36,6 +37,8 @@ if [[ -f "$TMP_ROOT/${BIN_NAME}.exe" ]]; then
 fi
 
 install -m 0755 "$TMP_ROOT/$BIN_NAME" "$BIN_DIR/$BIN_NAME"
+install -m 0644 "$TMP_ROOT/LICENSE" "$DOC_DIR/LICENSE"
+install -m 0644 "$TMP_ROOT/NOTICE" "$DOC_DIR/NOTICE"
 
 cat >"$DEBIAN_DIR/control" <<EOF
 Package: codex-litellm

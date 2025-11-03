@@ -119,6 +119,11 @@ fi
 cp "$SRC_BIN" "$DEST_BIN"
 chmod +x "$DEST_BIN"
 
+# Bundle license and notice files with the archive so downstream redistributors
+# receive the required legal texts without extra packaging steps.
+cp "${ROOT_DIR}/LICENSE" "$ARTIFACT_DIR/LICENSE"
+cp "${ROOT_DIR}/NOTICE" "$ARTIFACT_DIR/NOTICE"
+
 cd "$DIST_ROOT"
 ARCHIVE_NAME="codex-litellm-${SUFFIX}.tar.gz"
 

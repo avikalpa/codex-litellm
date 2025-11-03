@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/avikalpa/codex-litellm",
   "author": "Avikalpa <npm@avikalpa.dev>",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "files": [
     "bin",
     "scripts",

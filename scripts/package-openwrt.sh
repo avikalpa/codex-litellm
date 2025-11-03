@@ -27,6 +27,7 @@ tar -C "$TMP_ROOT" -xf "$ARCHIVE"
 PKG_DIR="$TMP_ROOT/pkg"
 INSTALL_ROOT="$PKG_DIR/usr/bin"
 CONTROL_DIR="$PKG_DIR/CONTROL"
+LICENSE_DIR="$PKG_DIR/usr/share/licenses/codex-litellm"
 mkdir -p "$INSTALL_ROOT" "$CONTROL_DIR"
 
 BIN_NAME="codex-litellm"
@@ -36,6 +37,9 @@ if [[ -f "$TMP_ROOT/${BIN_NAME}.exe" ]]; then
 fi
 
 install -m 0755 "$TMP_ROOT/$BIN_NAME" "$INSTALL_ROOT/$BIN_NAME"
+mkdir -p "$LICENSE_DIR"
+install -m 0644 "$TMP_ROOT/LICENSE" "$LICENSE_DIR/LICENSE"
+install -m 0644 "$TMP_ROOT/NOTICE" "$LICENSE_DIR/NOTICE"
 
 cat >"$CONTROL_DIR/control" <<EOF
 Package: codex-litellm

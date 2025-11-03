@@ -1,0 +1,14 @@
+codex-litellm — NOTICE
+
+This distribution includes material derived from the upstream “codex” project,
+which is licensed under the Apache License, Version 2.0.
+
+Upstream copyright holders retain their rights.
+For the Apache-2.0 license text, see LICENSE.
+
+Material changes by Avikalpa and contributors (high level):
+- LiteLLM-native integration and CLI glue
+- Build/distribution scaffolding
+- Telemetry/logging integration and tooling
+
+Trademarks are the property of their respective owners. No endorsement implied.

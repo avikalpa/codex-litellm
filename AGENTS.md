@@ -38,6 +38,7 @@ This project was born out of a persistent and complex issue: making the `codex-c
 - **`stable-tag.patch`**: Diff generated from the `codex/` source tree after modifications are complete.
 - **`config.toml`**: Canonical LiteLLM configuration. Copy this into the active CODEX_HOME during testing so runs target the correct backend.
 - **`docs/TELEMETRY.md`**: Reference for the LiteLLM-only debug and session telemetry modules.
+- **`docs/COMPLIANCE.md`**: Licensing and attribution rules (Apache-2.0 baseline, NOTICE policy, source header guidance).
 
 ---
 

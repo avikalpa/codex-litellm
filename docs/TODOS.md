@@ -34,4 +34,8 @@
 - [x] Keep the conversation context in sync with streamed tool calls and reasoning sections across providers.
 
 ## Publishing
-- We should push to github for github actions workflow. Add workflows to publish package to openwrt and termux in addition to npmjs workflow.
+- [x] Push to GitHub so the Actions release workflow runs (artifacts + npm/OpenWrt/Termux).
+- [x] Change the project license to Apache-2.0 to match upstream.
+- [x] Bundle `LICENSE` and `NOTICE` inside every release artifact (tarballs, OpenWrt `.ipk`, Termux `.deb`).
+- [x] Refresh README copy to reflect the new licensing stance and distribution notes.
+- [x] Capture our release/compliance playbook in `docs/COMPLIANCE.md`, keep it general-purpose, and link it from `AGENTS.md` so future sweeps follow the same checklist.
