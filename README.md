@@ -65,12 +65,14 @@ For convenient usage, you can create an alias:
 # Add to shell profile (~/.bashrc, ~/.zshrc, etc.)
 alias cdxl='codex-litellm'
 
-# Or for complete separation from upstream codex:
+# Optional: For complete separation from upstream codex config:
 alias cdxl='CODEX_HOME=~/.codex-litellm codex-litellm'
 
 # Apply the alias
 source ~/.bashrc  # or source ~/.zshrc
 ```
+
+The `CODEX_HOME` override is optional - use it only if you want complete separation of configuration data between this fork and the upstream OpenAI Codex CLI.
 
 Now use `cdxl` instead of `codex-litellm` in all commands.
 
