@@ -143,7 +143,7 @@ Notes:
 
 ## 2025-11-04 Sweep G
 - Objective: Align licensing with upstream Apache-2.0 requirements and make sure every distribution artifact carries the proper legal notices.
-- Actions: Replaced the MIT license text with Apache-2.0, refreshed README/package metadata, and updated `docs/TODOS.md` + `docs/PROJECT_SUMMARY.md` to record the change.
+- Actions: Replaced the previous license text with Apache-2.0, refreshed README/package metadata, and updated `docs/TODOS.md` + `docs/PROJECT_SUMMARY.md` to record the change.
 - Packaging: `build.sh`, `package-openwrt.sh`, and `package-termux.sh` now copy `LICENSE` + `NOTICE` into the produced archives so downstream distributors inherit the required files automatically.
 - Verification: Manual spot-check of generated dist directories ensures the license payload is present; follow-up build/test will run after the script updates are committed.
 
