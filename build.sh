@@ -12,6 +12,11 @@ CODEX_DIR="${ROOT_DIR}/codex"
 DIST_ROOT="${ROOT_DIR}/dist"
 BINARY_NAME="codex-litellm"
 
+# Prefer vendored OpenSSL builds so cross targets like Android/illumos
+# do not depend on host-provided libssl packages.
+export NATIVE_TLS_VENDORED=1
+export OPENSSL_STATIC=1
+
 if [[ -z "$SUFFIX" ]]; then
   case "$TARGET" in
     x86_64-unknown-linux-gnu) SUFFIX="linux-x64" ;;
@@ -32,7 +37,7 @@ fi
 
 if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
   export PKG_CONFIG_ALLOW_CROSS=1
-  inherit_vars="PKG_CONFIG_ALLOW_CROSS"
+  inherit_vars="PKG_CONFIG_ALLOW_CROSS,NATIVE_TLS_VENDORED,OPENSSL_STATIC"
   if [[ "$TARGET" == "x86_64-unknown-illumos" ]]; then
     inherit_vars="${inherit_vars},CFLAGS_x86_64_unknown_illumos,CFLAGS,TARGET_CFLAGS"
   fi
@@ -72,7 +77,7 @@ git checkout "rust-v${LATEST_STABLE_TAG}" --quiet
 
 echo "Resetting tree and applying patch..."
 git reset --hard HEAD --quiet
-patch -p1 < "$PATCH_FILE"
+git apply --whitespace=nowarn "$PATCH_FILE"
 
 CARGO_CMD="cargo"
 if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then

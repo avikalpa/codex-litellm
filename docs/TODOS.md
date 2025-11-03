@@ -39,3 +39,6 @@
 - [x] Bundle `LICENSE` and `NOTICE` inside every release artifact (tarballs, OpenWrt `.ipk`, Termux `.deb`).
 - [x] Refresh README copy to reflect the new licensing stance and distribution notes.
 - [x] Capture our release/compliance playbook in `docs/COMPLIANCE.md`, keep it general-purpose, and link it from `AGENTS.md` so future sweeps follow the same checklist.
+- [ ] Publish the inaugural GitHub Actions release to npm under the `codex-litellm` package name.
+- [ ] Package and push OpenWrt builds targeting GL-iNET Flint-2 and OpenWrt One; add additional architectures where feasible.
+- [ ] Package and publish Termux binaries for current devices, expanding to broader architectures as tooling allows.
