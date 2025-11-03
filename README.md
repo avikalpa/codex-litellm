@@ -16,9 +16,11 @@ A **patched build of the OpenAI Codex CLI** that enables direct communication wi
 ### Prerequisites
 
 Before installation, ensure you have:
-- Node.js 18+ installed
 - Access to at least one LLM provider API key
 - A LiteLLM backend endpoint (cloud or self-hosted)
+- Command line access
+
+**Note**: While this project is written in Rust, it uses npm for binary distribution. No Node.js development environment is required.
 
 ### Step 1: LiteLLM Backend Setup
 
@@ -48,12 +50,29 @@ export LITELLM_API_KEY="your-api-key"
 ### Step 2: Installation
 
 ```bash
-# Install via npm (requires Node 18+)
+# Install via npm (binary distribution)
 npm install -g @avikalpa/codex-litellm
 
 # Verify installation
 codex-litellm --version
 ```
+
+#### Optional: Create Command Alias
+
+For convenient usage, you can create an alias:
+
+```bash
+# Add to shell profile (~/.bashrc, ~/.zshrc, etc.)
+alias cdxl='codex-litellm'
+
+# Or for complete separation from upstream codex:
+alias cdxl='CODEX_HOME=~/.codex-litellm codex-litellm'
+
+# Apply the alias
+source ~/.bashrc  # or source ~/.zshrc
+```
+
+Now use `cdxl` instead of `codex-litellm` in all commands.
 
 ### Step 3: Configuration
 
@@ -77,7 +96,7 @@ EOF
 ### Step 4: Verification
 
 ```bash
-# Test basic functionality
+# Test basic functionality (or use alias: cdxl exec "...")
 codex-litellm exec "What is the capital of France?"
 
 # Test tool execution
@@ -86,6 +105,8 @@ codex-litellm exec "List files in current directory"
 # Start interactive mode
 codex-litellm
 ```
+
+After setting up the alias, you can use `cdxl` instead of `codex-litellm` in all commands.
 
 For detailed platform-specific instructions, see the [Quick Start Guide](https://github.com/avikalpa/codex-litellm/wiki/Quick-Start).
 
