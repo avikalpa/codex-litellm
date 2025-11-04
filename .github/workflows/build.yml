@@ -129,14 +129,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install packaging tools
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y python3-pip
-          python3 -m pip install --user --upgrade pip
-          python3 -m pip install --user opkg-utils
-          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
-
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
