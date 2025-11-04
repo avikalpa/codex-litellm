@@ -28,10 +28,6 @@ jobs:
             suffix: linux-arm64
             runs_on: ubuntu-latest
             use_cross: true
-          - target: aarch64-linux-android
-            suffix: android-arm64
-            runs_on: ubuntu-latest
-            use_cross: true
           - target: x86_64-apple-darwin
             suffix: macos-x64
             runs_on: macos-latest
@@ -40,22 +36,6 @@ jobs:
             suffix: macos-arm64
             runs_on: macos-latest
             use_cross: false
-          - target: x86_64-pc-windows-msvc
-            suffix: windows-x64
-            runs_on: windows-latest
-            use_cross: false
-          - target: aarch64-pc-windows-msvc
-            suffix: windows-arm64
-            runs_on: windows-latest
-            use_cross: false
-          - target: x86_64-unknown-freebsd
-            suffix: freebsd-x64
-            runs_on: ubuntu-latest
-            use_cross: true
-          - target: x86_64-unknown-illumos
-            suffix: illumos-x64
-            runs_on: ubuntu-latest
-            use_cross: true
     steps:
       - uses: actions/checkout@v4
 
@@ -121,79 +101,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish --access public
-
-  publish-openwrt:
-    needs: attach-release-assets
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release'
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Determine version
-        id: pkg-version
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/download-artifact@v4
-        with:
-          path: dist
-
-      - name: Build OpenWrt packages
-        run: |
-          mkdir -p dist/openwrt
-          scripts/package-openwrt.sh dist/codex-litellm-linux-x64/codex-litellm-linux-x64.tar.gz x86_64 ${{ steps.pkg-version.outputs.value }} dist/openwrt
-          scripts/package-openwrt.sh dist/codex-litellm-linux-arm64/codex-litellm-linux-arm64.tar.gz aarch64_generic ${{ steps.pkg-version.outputs.value }} dist/openwrt
-
-      - name: Upload OpenWrt artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: codex-litellm-openwrt
-          path: dist/openwrt/*.ipk
-
-      - name: Publish OpenWrt packages
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/openwrt/*.ipk
-
-  publish-termux:
-    needs: attach-release-assets
-    runs-on: ubuntu-latest
-    if: github.event_name == 'release'
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Determine version
-        id: termux-version
-        run: |
-          VERSION=$(node -p "require('./package.json').version")
-          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
-
-      - uses: actions/download-artifact@v4
-        with:
-          path: dist
-
-      - name: Build Termux packages
-        run: |
-          mkdir -p dist/termux
-          scripts/package-termux.sh dist/codex-litellm-linux-x64/codex-litellm-linux-x64.tar.gz x86_64 ${{ steps.termux-version.outputs.value }} dist/termux
-          scripts/package-termux.sh dist/codex-litellm-linux-arm64/codex-litellm-linux-arm64.tar.gz aarch64 ${{ steps.termux-version.outputs.value }} dist/termux
-
-      - name: Upload Termux artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: codex-litellm-termux
-          path: dist/termux/*.deb
-
-      - name: Publish Termux packages
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/termux/*.deb
