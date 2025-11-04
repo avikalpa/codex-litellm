@@ -79,6 +79,11 @@ echo "Resetting tree and applying patch..."
 git reset --hard HEAD --quiet
 git apply --whitespace=nowarn "$PATCH_FILE"
 
+UPSTREAM_COMMIT=$(git rev-parse --short HEAD)
+LITELLM_COMMIT=$(cd "$ROOT_DIR" && git rev-parse --short HEAD)
+export CODEX_UPSTREAM_COMMIT="$UPSTREAM_COMMIT"
+export CODEX_LITELLM_COMMIT="$LITELLM_COMMIT"
+
 CARGO_CMD="cargo"
 if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
   CARGO_CMD="cross"

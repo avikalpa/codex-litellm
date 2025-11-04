@@ -43,3 +43,4 @@
 - [ ] Stage Linux (x64 + arm64) and macOS (x64 + arm64) desktop artifacts first, along with the npm release; expand to OpenWrt/Termux and the remaining targets only after the core publish path is green.
 - [ ] Package and push OpenWrt builds covering GL-iNET Flint-2 (`aarch64_generic`) and OpenWrt One (`x86_64`) once the desktop/npm release is verified; stage additional arches (ipq807x, mt7621) when toolchains are reproducible.
 - [ ] Package and publish Termux binaries for `aarch64` and `x86_64` after the primary release lands, then investigate extending support to `armv7`/`i686`.
+- [x] Manually validate npm install (`npm i -g @avikalpa/codex-litellm`), set LiteLLM env vars, and run a sample exec command (`codex-litellm --model vercel/gpt-oss-120b exec "who are you"`).

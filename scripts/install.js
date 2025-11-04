@@ -35,7 +35,7 @@ if (!suffix) {
 
 const pkg = require('../package.json');
 const version = pkg.version;
-const tag = `v${version}`;
+const tag = process.env.CODEX_LITELLM_RELEASE_TAG || (pkg.codexLitellm && pkg.codexLitellm.releaseTag) || `v${version}`;
 const baseUrl = `https://github.com/avikalpa/codex-litellm/releases/download/${tag}`;
 const archiveName = `codex-litellm-${suffix}.tar.gz`;
 const archiveUrl = `${baseUrl}/${archiveName}`;

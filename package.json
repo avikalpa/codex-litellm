@@ -1,6 +1,6 @@
 {
   "name": "@avikalpa/codex-litellm",
-  "version": "0.53.0",
+  "version": "0.55.0",
   "description": "Patched OpenAI Codex CLI with first-class LiteLLM support",
   "bin": {
     "codex-litellm": "bin/codex-litellm.js"
@@ -45,5 +45,10 @@
   "cpu": [
     "x64",
     "arm64"
-  ]
+  ],
+  "codexLitellm": {
+    "baseVersion": "0.55.0",
+    "upstreamCommit": "2e2063ca",
+    "releaseTag": "v0.55.0-litellm.dev"
+  }
 }

@@ -1,5 +1,5 @@
 diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
-index 64c83b0f..8ac9f794 100644
+index 4961486e..7b800c41 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
 @@ -27,17 +27,6 @@ version = "2.0.1"
@@ -20,12 +20,12 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "ahash"
  version = "0.8.12"
-@@ -178,7 +167,7 @@ checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
+@@ -178,7 +167,7 @@ checksum = "a23eb6b1614318a8071c9b2521f36b424b2c83db5eb3a0fead4a6c0809af6e61"
  
  [[package]]
  name = "app_test_support"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -236,7 +236,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-ansi-escape"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "ansi-to-tui",
   "ratatui",
@@ -245,7 +245,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-app-server"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "app_test_support",
@@ -254,7 +254,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-app-server-protocol"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "clap",
@@ -263,7 +263,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-apply-patch"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
@@ -272,7 +272,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-arg0"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "codex-apply-patch",
@@ -281,7 +281,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-async-utils"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "async-trait",
   "pretty_assertions",
@@ -290,7 +290,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-backend-openapi-models"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "serde",
   "serde_json",
@@ -304,7 +304,7 @@ index 64c83b0f..8ac9f794 100644
 +
 +[[package]]
 +name = "codex-chatgpt"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "clap",
@@ -313,34 +313,34 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-cli"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -996,7 +829,7 @@ dependencies = [
+@@ -997,7 +830,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cloud-tasks"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1022,7 +855,7 @@ dependencies = [
+@@ -1023,7 +856,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cloud-tasks-client"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1037,19 +870,22 @@ dependencies = [
+@@ -1038,19 +871,22 @@ dependencies = [
  
  [[package]]
  name = "codex-common"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "clap",
   "codex-app-server-protocol",
@@ -356,74 +356,74 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-core"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "askama",
-@@ -1128,7 +964,7 @@ dependencies = [
+@@ -1129,7 +965,7 @@ dependencies = [
  
  [[package]]
  name = "codex-exec"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1161,7 +997,7 @@ dependencies = [
+@@ -1162,7 +998,7 @@ dependencies = [
  
  [[package]]
  name = "codex-execpolicy"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "allocative",
   "anyhow",
-@@ -1181,7 +1017,7 @@ dependencies = [
+@@ -1182,7 +1018,7 @@ dependencies = [
  
  [[package]]
  name = "codex-feedback"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "codex-protocol",
-@@ -1192,7 +1028,7 @@ dependencies = [
+@@ -1193,7 +1029,7 @@ dependencies = [
  
  [[package]]
  name = "codex-file-search"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1205,7 +1041,7 @@ dependencies = [
+@@ -1206,7 +1042,7 @@ dependencies = [
  
  [[package]]
  name = "codex-git"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "assert_matches",
   "once_cell",
-@@ -1221,7 +1057,7 @@ dependencies = [
+@@ -1222,7 +1058,7 @@ dependencies = [
  
  [[package]]
  name = "codex-keyring-store"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "keyring",
   "tracing",
-@@ -1229,7 +1065,7 @@ dependencies = [
+@@ -1230,7 +1066,7 @@ dependencies = [
  
  [[package]]
  name = "codex-linux-sandbox"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "clap",
   "codex-core",
-@@ -1240,9 +1076,20 @@ dependencies = [
+@@ -1241,9 +1077,20 @@ dependencies = [
   "tokio",
  ]
  
@@ -441,43 +441,43 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-login"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "base64",
-@@ -1266,7 +1113,7 @@ dependencies = [
+@@ -1267,7 +1114,7 @@ dependencies = [
  
  [[package]]
  name = "codex-mcp-server"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1293,7 +1140,7 @@ dependencies = [
+@@ -1294,7 +1141,7 @@ dependencies = [
  
  [[package]]
  name = "codex-ollama"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "assert_matches",
   "async-stream",
-@@ -1309,7 +1156,7 @@ dependencies = [
+@@ -1310,7 +1157,7 @@ dependencies = [
  
  [[package]]
  name = "codex-otel"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "chrono",
   "codex-app-server-protocol",
-@@ -1330,14 +1177,14 @@ dependencies = [
+@@ -1331,14 +1178,14 @@ dependencies = [
  
  [[package]]
  name = "codex-process-hardening"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "libc",
  ]
@@ -485,56 +485,56 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "codex-protocol"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "base64",
-@@ -1363,7 +1210,7 @@ dependencies = [
+@@ -1364,7 +1211,7 @@ dependencies = [
  
  [[package]]
  name = "codex-protocol-ts"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1373,7 +1220,7 @@ dependencies = [
+@@ -1374,7 +1221,7 @@ dependencies = [
  
  [[package]]
  name = "codex-responses-api-proxy"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1389,7 +1236,7 @@ dependencies = [
+@@ -1390,7 +1237,7 @@ dependencies = [
  
  [[package]]
  name = "codex-rmcp-client"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "axum",
-@@ -1418,7 +1265,7 @@ dependencies = [
+@@ -1419,7 +1266,7 @@ dependencies = [
  
  [[package]]
  name = "codex-stdio-to-uds"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1429,7 +1276,7 @@ dependencies = [
+@@ -1430,7 +1277,7 @@ dependencies = [
  
  [[package]]
  name = "codex-tui"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "arboard",
-@@ -1445,6 +1292,7 @@ dependencies = [
+@@ -1446,6 +1293,7 @@ dependencies = [
   "codex-core",
   "codex-feedback",
   "codex-file-search",
@@ -542,75 +542,75 @@ index 64c83b0f..8ac9f794 100644
   "codex-login",
   "codex-ollama",
   "codex-protocol",
-@@ -1491,7 +1339,7 @@ dependencies = [
+@@ -1493,7 +1341,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-cache"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "lru",
   "sha1",
-@@ -1500,7 +1348,7 @@ dependencies = [
+@@ -1502,7 +1350,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-image"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "base64",
   "codex-utils-cache",
-@@ -1512,7 +1360,7 @@ dependencies = [
+@@ -1514,7 +1362,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-json-to-toml"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "pretty_assertions",
   "serde_json",
-@@ -1521,7 +1369,7 @@ dependencies = [
+@@ -1523,7 +1371,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-pty"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "portable-pty",
-@@ -1530,7 +1378,7 @@ dependencies = [
+@@ -1532,7 +1380,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-readiness"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "assert_matches",
   "async-trait",
-@@ -1541,11 +1389,11 @@ dependencies = [
+@@ -1543,11 +1391,11 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-string"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  
  [[package]]
  name = "codex-utils-tokenizer"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "pretty_assertions",
-@@ -1680,7 +1528,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+@@ -1682,7 +1530,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
  
  [[package]]
  name = "core_test_support"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1885,35 +1733,6 @@ dependencies = [
+@@ -1886,35 +1734,6 @@ dependencies = [
   "syn 2.0.104",
  ]
  
@@ -646,7 +646,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "deadpool"
  version = "0.12.3"
-@@ -2046,7 +1865,6 @@ checksum = "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292"
+@@ -2047,7 +1866,6 @@ checksum = "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292"
  dependencies = [
   "block-buffer",
   "crypto-common",
@@ -654,7 +654,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -2208,21 +2026,6 @@ version = "1.0.0"
+@@ -2209,21 +2027,6 @@ version = "1.0.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "34aa73646ffb006b8f5147f3dc182bd4bcb190227ce861fc4a4844bf8e3cb2c0"
  
@@ -676,7 +676,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "endian-type"
  version = "0.1.2"
-@@ -2236,7 +2039,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -2237,7 +2040,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "1027f7680c853e056ebcec683615fb6fbbc07dbaa13b4d5d9442b146ded4ecef"
  dependencies = [
   "enumflags2_derive",
@@ -684,7 +684,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -2491,21 +2293,6 @@ version = "0.1.5"
+@@ -2492,21 +2294,6 @@ version = "0.1.5"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2"
  
@@ -706,7 +706,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "form_urlencoded"
  version = "1.2.1"
-@@ -2572,19 +2359,6 @@ version = "0.3.31"
+@@ -2573,19 +2360,6 @@ version = "0.3.31"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "9e5c1b78ca4aae1ac06c48a526a655760685149f0d465d21f37abfe57ce075c6"
  
@@ -726,7 +726,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "futures-macro"
  version = "0.3.31"
-@@ -2784,24 +2558,6 @@ version = "0.4.3"
+@@ -2791,24 +2565,6 @@ version = "0.4.3"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
  
@@ -751,7 +751,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "home"
  version = "0.5.11"
-@@ -2909,13 +2665,13 @@ dependencies = [
+@@ -2916,13 +2672,13 @@ dependencies = [
   "http",
   "hyper",
   "hyper-util",
@@ -767,7 +767,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -2931,22 +2687,6 @@ dependencies = [
+@@ -2938,22 +2694,6 @@ dependencies = [
   "tower-service",
  ]
  
@@ -790,7 +790,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "hyper-util"
  version = "0.1.16"
-@@ -2966,11 +2706,9 @@ dependencies = [
+@@ -2973,11 +2713,9 @@ dependencies = [
   "percent-encoding",
   "pin-project-lite",
   "socket2 0.6.0",
@@ -802,7 +802,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -3236,16 +2974,6 @@ dependencies = [
+@@ -3244,16 +2982,6 @@ dependencies = [
   "libc",
  ]
  
@@ -819,7 +819,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "insta"
  version = "1.43.2"
-@@ -3424,15 +3152,7 @@ version = "3.6.3"
+@@ -3432,15 +3160,7 @@ version = "3.6.3"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "eebcc3aff044e5944a8fbaf69eb277d11986064cba30c468730e8b9909fb551c"
  dependencies = [
@@ -835,7 +835,7 @@ index 64c83b0f..8ac9f794 100644
   "zeroize",
  ]
  
-@@ -3510,15 +3230,6 @@ version = "0.2.175"
+@@ -3518,15 +3238,6 @@ version = "0.2.175"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543"
  
@@ -851,7 +851,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "libm"
  version = "0.2.15"
-@@ -3535,16 +3246,6 @@ dependencies = [
+@@ -3543,16 +3254,6 @@ dependencies = [
   "libc",
  ]
  
@@ -868,25 +868,25 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "linux-raw-sys"
  version = "0.4.15"
-@@ -3653,7 +3354,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
+@@ -3661,7 +3362,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
  
  [[package]]
  name = "mcp-types"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "schemars 0.8.22",
   "serde",
-@@ -3663,7 +3364,7 @@ dependencies = [
+@@ -3671,7 +3372,7 @@ dependencies = [
  
  [[package]]
  name = "mcp_test_support"
 -version = "0.0.0"
-+version = "0.53.0"
++version = "0.55.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -3765,23 +3466,6 @@ dependencies = [
+@@ -3773,23 +3474,6 @@ dependencies = [
   "serde",
  ]
  
@@ -910,7 +910,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "ndk-context"
  version = "0.1.1"
-@@ -3798,34 +3482,21 @@ checksum = "650eef8c711430f1a879fdd01d4745a7deea475becfb90269c06775983bbf086"
+@@ -3806,34 +3490,21 @@ checksum = "650eef8c711430f1a879fdd01d4745a7deea475becfb90269c06775983bbf086"
  name = "nibble_vec"
  version = "0.1.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -951,7 +951,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -3899,20 +3570,6 @@ dependencies = [
+@@ -3907,20 +3578,6 @@ dependencies = [
   "unicode-segmentation",
  ]
  
@@ -972,7 +972,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "num-bigint"
  version = "0.4.6"
-@@ -3923,15 +3580,6 @@ dependencies = [
+@@ -3931,15 +3588,6 @@ dependencies = [
   "num-traits",
  ]
  
@@ -988,7 +988,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "num-conv"
  version = "0.1.0"
-@@ -3947,28 +3595,6 @@ dependencies = [
+@@ -3955,28 +3603,6 @@ dependencies = [
   "num-traits",
  ]
  
@@ -1017,7 +1017,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "num-traits"
  version = "0.2.19"
-@@ -4111,32 +3737,6 @@ version = "1.70.1"
+@@ -4119,32 +3745,6 @@ version = "1.70.1"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "a4895175b425cb1f87721b59f0f286c2092bd4af812243672510e1ac53e2e0ad"
  
@@ -1050,7 +1050,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "openssl-probe"
  version = "0.1.6"
-@@ -4269,16 +3869,6 @@ version = "0.2.0"
+@@ -4277,16 +3877,6 @@ version = "0.2.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "04744f49eae99ab78e0d5c0b603ab218f515ea8cfe5a456d7629ad883a3b6e7d"
  
@@ -1067,7 +1067,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "os_info"
  version = "3.12.0"
-@@ -4413,17 +4003,6 @@ version = "0.1.0"
+@@ -4421,17 +4011,6 @@ version = "0.1.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
  
@@ -1085,7 +1085,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "pkg-config"
  version = "0.3.32"
-@@ -4456,20 +4035,6 @@ dependencies = [
+@@ -4464,20 +4043,6 @@ dependencies = [
   "miniz_oxide",
  ]
  
@@ -1106,7 +1106,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "portable-atomic"
  version = "1.11.1"
-@@ -4578,15 +4143,6 @@ dependencies = [
+@@ -4586,15 +4151,6 @@ dependencies = [
   "yansi",
  ]
  
@@ -1122,16 +1122,16 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "proc-macro2"
  version = "1.0.95"
-@@ -4688,7 +4244,7 @@ dependencies = [
+@@ -4696,7 +4252,7 @@ dependencies = [
   "quinn-proto",
   "quinn-udp",
   "rustc-hash 2.1.1",
 - "rustls",
 + "rustls 0.23.29",
   "socket2 0.6.0",
-  "thiserror 2.0.16",
+  "thiserror 2.0.17",
   "tokio",
-@@ -4708,7 +4264,7 @@ dependencies = [
+@@ -4716,7 +4272,7 @@ dependencies = [
   "rand 0.9.2",
   "ring",
   "rustc-hash 2.1.1",
@@ -1139,8 +1139,8 @@ index 64c83b0f..8ac9f794 100644
 + "rustls 0.23.29",
   "rustls-pki-types",
   "slab",
-  "thiserror 2.0.16",
-@@ -4944,26 +4500,21 @@ checksum = "d429f34c8092b2d42c7c93cec323bb4adeb7c67698f70839adec842ec10c7ceb"
+  "thiserror 2.0.17",
+@@ -4952,26 +4508,21 @@ checksum = "d429f34c8092b2d42c7c93cec323bb4adeb7c67698f70839adec842ec10c7ceb"
  dependencies = [
   "base64",
   "bytes",
@@ -1168,7 +1168,7 @@ index 64c83b0f..8ac9f794 100644
   "rustls-native-certs",
   "rustls-pki-types",
   "serde",
-@@ -4971,7 +4522,6 @@ dependencies = [
+@@ -4979,7 +4530,6 @@ dependencies = [
   "serde_urlencoded",
   "sync_wrapper",
   "tokio",
@@ -1176,7 +1176,7 @@ index 64c83b0f..8ac9f794 100644
   "tokio-rustls",
   "tokio-util",
   "tower",
-@@ -4982,7 +4532,7 @@ dependencies = [
+@@ -4990,7 +4540,7 @@ dependencies = [
   "wasm-bindgen-futures",
   "wasm-streams",
   "web-sys",
@@ -1185,7 +1185,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -5099,16 +4649,31 @@ dependencies = [
+@@ -5107,16 +4657,31 @@ dependencies = [
   "windows-sys 0.60.2",
  ]
  
@@ -1218,7 +1218,7 @@ index 64c83b0f..8ac9f794 100644
   "subtle",
   "zeroize",
  ]
-@@ -5122,7 +4687,7 @@ dependencies = [
+@@ -5130,7 +4695,7 @@ dependencies = [
   "openssl-probe",
   "rustls-pki-types",
   "schannel",
@@ -1227,7 +1227,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -5135,6 +4700,17 @@ dependencies = [
+@@ -5143,6 +4708,17 @@ dependencies = [
   "zeroize",
  ]
  
@@ -1245,7 +1245,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "rustls-webpki"
  version = "0.103.4"
-@@ -5332,38 +4908,6 @@ dependencies = [
+@@ -5340,38 +4916,6 @@ dependencies = [
   "libc",
  ]
  
@@ -1284,7 +1284,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "security-framework"
  version = "3.5.1"
-@@ -5400,8 +4944,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -5408,8 +4952,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "5484316556650182f03b43d4c746ce0e3e48074a21e2f51244b648b6542e1066"
  dependencies = [
   "httpdate",
@@ -1294,7 +1294,7 @@ index 64c83b0f..8ac9f794 100644
   "sentry-backtrace",
   "sentry-contexts",
   "sentry-core",
-@@ -5410,6 +4954,7 @@ dependencies = [
+@@ -5418,6 +4962,7 @@ dependencies = [
   "sentry-tracing",
   "tokio",
   "ureq",
@@ -1302,7 +1302,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -6063,27 +5608,6 @@ dependencies = [
+@@ -6077,27 +5622,6 @@ dependencies = [
   "libc",
  ]
  
@@ -1330,7 +1330,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "tempfile"
  version = "3.23.0"
-@@ -6363,23 +5887,13 @@ dependencies = [
+@@ -6377,23 +5901,13 @@ dependencies = [
   "syn 2.0.104",
  ]
  
@@ -1355,7 +1355,7 @@ index 64c83b0f..8ac9f794 100644
   "tokio",
  ]
  
-@@ -6821,9 +6335,11 @@ checksum = "02d1a66277ed75f640d608235660df48c8e3c19f3b4edb6a263315626cc3c01d"
+@@ -6835,9 +6349,11 @@ checksum = "02d1a66277ed75f640d608235660df48c8e3c19f3b4edb6a263315626cc3c01d"
  dependencies = [
   "base64",
   "log",
@@ -1368,7 +1368,7 @@ index 64c83b0f..8ac9f794 100644
  ]
  
  [[package]]
-@@ -7070,6 +6586,15 @@ dependencies = [
+@@ -7085,6 +6601,15 @@ dependencies = [
   "web-sys",
  ]
  
@@ -1384,7 +1384,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "webpki-roots"
  version = "1.0.2"
-@@ -7224,17 +6749,6 @@ dependencies = [
+@@ -7239,17 +6764,6 @@ dependencies = [
   "windows-link 0.1.3",
  ]
  
@@ -1402,7 +1402,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "windows-result"
  version = "0.3.4"
-@@ -7628,16 +7142,6 @@ version = "0.13.1"
+@@ -7643,16 +7157,6 @@ version = "0.13.1"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "ec107c4503ea0b4a98ef47356329af139c0a4f7750e621cf2973cd3385ebcb3d"
  
@@ -1419,7 +1419,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "yansi"
  version = "1.0.1"
-@@ -7668,68 +7172,6 @@ dependencies = [
+@@ -7683,68 +7187,6 @@ dependencies = [
   "synstructure",
  ]
  
@@ -1488,7 +1488,7 @@ index 64c83b0f..8ac9f794 100644
  [[package]]
  name = "zerocopy"
  version = "0.8.26"
-@@ -7776,20 +7218,6 @@ name = "zeroize"
+@@ -7791,20 +7233,6 @@ name = "zeroize"
  version = "1.8.1"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "ced3678a2879b30306d323f4542626697a464a97c0a07c9aebf7ebca65cd4dde"
@@ -1509,7 +1509,7 @@ index 64c83b0f..8ac9f794 100644
  
  [[package]]
  name = "zerotrie"
-@@ -7839,40 +7267,3 @@ checksum = "2c9e525af0a6a658e031e95f14b7f889976b74a11ba0eca5a5fc9ac8a1c43a6a"
+@@ -7854,40 +7282,3 @@ checksum = "2c9e525af0a6a658e031e95f14b7f889976b74a11ba0eca5a5fc9ac8a1c43a6a"
  dependencies = [
   "zune-core",
  ]
@@ -1551,7 +1551,7 @@ index 64c83b0f..8ac9f794 100644
 - "syn 2.0.104",
 -]
 diff --git a/codex-rs/Cargo.toml b/codex-rs/Cargo.toml
-index 06fe7cba..cb013279 100644
+index a727e144..5abccd2d 100644
 --- a/codex-rs/Cargo.toml
 +++ b/codex-rs/Cargo.toml
 @@ -2,6 +2,7 @@
@@ -1627,10 +1627,10 @@ index 06fe7cba..cb013279 100644
  tree-sitter = "0.25.10"
  tree-sitter-bash = "0.25"
 diff --git a/codex-rs/app-server/src/codex_message_processor.rs b/codex-rs/app-server/src/codex_message_processor.rs
-index 99310e19..1e2aa8d2 100644
+index 8ea4cef8..ba38605b 100644
 --- a/codex-rs/app-server/src/codex_message_processor.rs
 +++ b/codex-rs/app-server/src/codex_message_processor.rs
-@@ -1781,6 +1781,7 @@ async fn derive_config_from_params(
+@@ -1825,6 +1825,7 @@ async fn derive_config_from_params(
          tools_web_search_request: None,
          experimental_sandbox_command_assessment: None,
          additional_writable_roots: Vec::new(),
@@ -1651,335 +1651,19 @@ index be47cbc2..36d3f09f 100644
          supported_reasoning_efforts: reasoning_efforts_from_preset(
              preset.supported_reasoning_efforts,
          ),
-diff --git a/codex-rs/build-info/Cargo.toml b/codex-rs/build-info/Cargo.toml
-new file mode 100644
-index 00000000..3ba70fe6
---- /dev/null
-+++ b/codex-rs/build-info/Cargo.toml
-@@ -0,0 +1,6 @@
-+[package]
-+name = "codex-build-info"
-+version = "0.0.0"
-+edition = "2021"
-+
-+[dependencies]
-diff --git a/codex-rs/build-info/build.rs b/codex-rs/build-info/build.rs
-new file mode 100644
-index 00000000..5766b67b
---- /dev/null
-+++ b/codex-rs/build-info/build.rs
-@@ -0,0 +1,27 @@
-+use std::process::Command;
-+
-+fn resolve_commit() -> String {
-+    Command::new("git")
-+        .args(["rev-parse", "--short", "HEAD"])
-+        .output()
-+        .ok()
-+        .and_then(|output| {
-+            if output.status.success() {
-+                let trimmed = String::from_utf8_lossy(&output.stdout).trim().to_string();
-+                if trimmed.is_empty() {
-+                    None
-+                } else {
-+                    Some(trimmed)
-+                }
-+            } else {
-+                None
-+            }
-+        })
-+        .unwrap_or_else(|| "unknown".to_string())
-+}
-+
-+fn main() {
-+    let commit = resolve_commit();
-+    println!("cargo:rustc-env=CODEX_LITELLM_COMMIT={commit}");
-+    println!("cargo:rustc-env=CODEX_UPSTREAM_COMMIT={commit}");
-+}
-diff --git a/codex-rs/build-info/src/lib.rs b/codex-rs/build-info/src/lib.rs
-new file mode 100644
-index 00000000..db1f6841
---- /dev/null
-+++ b/codex-rs/build-info/src/lib.rs
-@@ -0,0 +1,20 @@
-+pub const CODEX_UPSTREAM_COMMIT: &str = env!("CODEX_UPSTREAM_COMMIT");
-+pub const CODEX_LITELLM_COMMIT: &str = env!("CODEX_LITELLM_COMMIT");
-+pub const VERSION_WITH_COMMIT: &str = concat!(
-+    env!("CARGO_PKG_VERSION"),
-+    "+",
-+    env!("CODEX_UPSTREAM_COMMIT"),
-+    "+lit",
-+    env!("CODEX_LITELLM_COMMIT")
-+);
-+
-+pub fn decorate_version(base_version: &str) -> String {
-+    format!(
-+        "{base_version}+{}+lit{}",
-+        CODEX_UPSTREAM_COMMIT, CODEX_LITELLM_COMMIT
-+    )
-+}
-+
-+pub fn version_with_commit() -> String {
-+    VERSION_WITH_COMMIT.to_string()
-+}
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
-index 9b2d106c..32363ae2 100644
+index 929fd9e7..41287cb1 100644
 --- a/codex-rs/cli/src/main.rs
 +++ b/codex-rs/cli/src/main.rs
-@@ -519,6 +519,7 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
+@@ -525,6 +525,8 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
+                 // Thread through relevant top-level flags (at minimum, `--profile`).
                  let overrides = ConfigOverrides {
                      config_profile: interactive.config_profile.clone(),
-                     tools_web_search_request: interactive.web_search.then_some(true),
++                    tools_web_search_request: interactive.web_search.then_some(true),
 +                    telemetry_enabled: None,
                      ..Default::default()
                  };
  
-diff --git a/codex-rs/codex-litellm-model-session-telemetry/Cargo.toml b/codex-rs/codex-litellm-model-session-telemetry/Cargo.toml
-new file mode 100644
-index 00000000..51d7aa59
---- /dev/null
-+++ b/codex-rs/codex-litellm-model-session-telemetry/Cargo.toml
-@@ -0,0 +1,11 @@
-+[package]
-+name = "codex-litellm-model-session-telemetry"
-+version = "0.1.0"
-+edition = "2021"
-+
-+[dependencies]
-+chrono = { workspace = true }
-+once_cell = "1.19"
-+parking_lot = "0.12"
-+serde = { workspace = true, features = ["derive"] }
-+serde_json = { workspace = true }
-diff --git a/codex-rs/codex-litellm-model-session-telemetry/src/lib.rs b/codex-rs/codex-litellm-model-session-telemetry/src/lib.rs
-new file mode 100644
-index 00000000..385ef480
---- /dev/null
-+++ b/codex-rs/codex-litellm-model-session-telemetry/src/lib.rs
-@@ -0,0 +1,223 @@
-+use chrono::{DateTime, SecondsFormat, Utc};
-+use once_cell::sync::Lazy;
-+use parking_lot::Mutex;
-+use serde::Serialize;
-+use serde_json::json;
-+use std::collections::BTreeMap;
-+use std::collections::HashMap;
-+use std::fs::{File, OpenOptions};
-+use std::io::{BufWriter, Write};
-+use std::path::PathBuf;
-+
-+const DEFAULT_SESSION_KEY: &str = "_default";
-+
-+#[derive(Debug, Clone, Default, Serialize)]
-+pub struct ModelUsageSnapshot {
-+    pub model: String,
-+    pub turns: u32,
-+    pub total_tokens: i64,
-+    pub prompt_tokens: i64,
-+    pub completion_tokens: i64,
-+    pub reasoning_tokens: i64,
-+    pub last_reasoning_effort: Option<String>,
-+    pub last_updated: DateTime<Utc>,
-+}
-+
-+#[derive(Debug, Clone, Default, Serialize)]
-+pub struct SessionTelemetrySnapshot {
-+    pub total_turns: u32,
-+    pub total_tokens: i64,
-+    pub total_prompt_tokens: i64,
-+    pub total_completion_tokens: i64,
-+    pub total_reasoning_tokens: i64,
-+    pub last_model: Option<String>,
-+    pub last_reasoning_effort: Option<String>,
-+    pub last_updated: Option<DateTime<Utc>>,
-+    pub models: Vec<ModelUsageSnapshot>,
-+}
-+
-+#[derive(Debug, Default)]
-+struct ModelUsageEntry {
-+    turns: u32,
-+    total_tokens: i64,
-+    prompt_tokens: i64,
-+    completion_tokens: i64,
-+    reasoning_tokens: i64,
-+    last_reasoning_effort: Option<String>,
-+    last_updated: DateTime<Utc>,
-+}
-+
-+#[derive(Debug, Default)]
-+struct SessionTelemetryEntry {
-+    total_turns: u32,
-+    total_tokens: i64,
-+    total_prompt_tokens: i64,
-+    total_completion_tokens: i64,
-+    total_reasoning_tokens: i64,
-+    last_model: Option<String>,
-+    last_reasoning_effort: Option<String>,
-+    last_updated: Option<DateTime<Utc>>,
-+    models: BTreeMap<String, ModelUsageEntry>,
-+}
-+
-+static TELEMETRY: Lazy<Mutex<HashMap<String, SessionTelemetryEntry>>> =
-+    Lazy::new(|| Mutex::new(HashMap::new()));
-+
-+static LOG_FILE: Lazy<Mutex<Option<LogFile>>> = Lazy::new(|| Mutex::new(None));
-+
-+struct LogFile {
-+    writer: BufWriter<File>,
-+}
-+
-+impl LogFile {
-+    fn write_turn(
-+        &mut self,
-+        session_id: Option<&str>,
-+        model: &str,
-+        reasoning_effort: Option<&str>,
-+        prompt_tokens: i64,
-+        completion_tokens: i64,
-+        reasoning_tokens: i64,
-+        total_tokens: i64,
-+    ) -> std::io::Result<()> {
-+        let record = json!({
-+            "ts": Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true),
-+            "session_id": session_id,
-+            "model": model,
-+            "reasoning_effort": reasoning_effort,
-+            "prompt_tokens": prompt_tokens,
-+            "completion_tokens": completion_tokens,
-+            "reasoning_tokens": reasoning_tokens,
-+            "total_tokens": total_tokens,
-+        });
-+        serde_json::to_writer(&mut self.writer, &record)?;
-+        self.writer.write_all(b"\n")?;
-+        self.writer.flush()?;
-+        Ok(())
-+    }
-+}
-+
-+fn normalize_session_id(session_id: Option<&str>) -> String {
-+    session_id
-+        .map(|id| id.trim().to_string())
-+        .filter(|id| !id.is_empty())
-+        .unwrap_or_else(|| DEFAULT_SESSION_KEY.to_string())
-+}
-+
-+pub fn configure_log_file(path: Option<PathBuf>) -> std::io::Result<()> {
-+    let mut guard = LOG_FILE.lock();
-+    if let Some(path) = path {
-+        let mut opts = OpenOptions::new();
-+        opts.create(true).append(true).write(true);
-+        #[cfg(unix)]
-+        {
-+            use std::os::unix::fs::OpenOptionsExt;
-+            opts.mode(0o600);
-+        }
-+        let file = opts.open(path)?;
-+        *guard = Some(LogFile {
-+            writer: BufWriter::new(file),
-+        });
-+    } else {
-+        guard.take();
-+    }
-+    Ok(())
-+}
-+
-+pub fn clear_session(session_id: Option<&str>) {
-+    let key = normalize_session_id(session_id);
-+    TELEMETRY.lock().remove(&key);
-+}
-+
-+pub fn record_turn(
-+    session_id: Option<&str>,
-+    model: &str,
-+    reasoning_effort: Option<&str>,
-+    prompt_tokens: i64,
-+    completion_tokens: i64,
-+    reasoning_tokens: i64,
-+    total_tokens: i64,
-+) {
-+    let key = normalize_session_id(session_id);
-+    let mut guard = TELEMETRY.lock();
-+    let entry = guard.entry(key).or_default();
-+
-+    let now = Utc::now();
-+    let model_entry = entry
-+        .models
-+        .entry(model.to_string())
-+        .or_insert_with(ModelUsageEntry::default);
-+
-+    model_entry.turns = model_entry.turns.saturating_add(1);
-+    model_entry.total_tokens += total_tokens;
-+    model_entry.prompt_tokens += prompt_tokens;
-+    model_entry.completion_tokens += completion_tokens;
-+    model_entry.reasoning_tokens += reasoning_tokens;
-+    model_entry.last_reasoning_effort = reasoning_effort.map(|effort| effort.to_string());
-+    model_entry.last_updated = now;
-+
-+    entry.total_turns = entry.total_turns.saturating_add(1);
-+    entry.total_tokens += total_tokens;
-+    entry.total_prompt_tokens += prompt_tokens;
-+    entry.total_completion_tokens += completion_tokens;
-+    entry.total_reasoning_tokens += reasoning_tokens;
-+    entry.last_model = Some(model.to_string());
-+    entry.last_reasoning_effort = reasoning_effort.map(|effort| effort.to_string());
-+    entry.last_updated = Some(now);
-+
-+    drop(guard);
-+
-+    {
-+        let mut log_guard = LOG_FILE.lock();
-+        if let Some(log_file) = log_guard.as_mut() {
-+            if let Err(err) = log_file.write_turn(
-+                session_id,
-+                model,
-+                reasoning_effort,
-+                prompt_tokens,
-+                completion_tokens,
-+                reasoning_tokens,
-+                total_tokens,
-+            ) {
-+                eprintln!(
-+                    "[codex-litellm-model-session-telemetry] failed to write log entry: {err}"
-+                );
-+            }
-+        }
-+    }
-+}
-+
-+pub fn snapshot(session_id: Option<&str>) -> Option<SessionTelemetrySnapshot> {
-+    let key = normalize_session_id(session_id);
-+    let guard = TELEMETRY.lock();
-+    let entry = guard.get(&key)?;
-+
-+    let mut models: Vec<ModelUsageSnapshot> = entry
-+        .models
-+        .iter()
-+        .map(|(model, usage)| ModelUsageSnapshot {
-+            model: model.clone(),
-+            turns: usage.turns,
-+            total_tokens: usage.total_tokens,
-+            prompt_tokens: usage.prompt_tokens,
-+            completion_tokens: usage.completion_tokens,
-+            reasoning_tokens: usage.reasoning_tokens,
-+            last_reasoning_effort: usage.last_reasoning_effort.clone(),
-+            last_updated: usage.last_updated,
-+        })
-+        .collect();
-+
-+    models.sort_by(|a, b| b.total_tokens.cmp(&a.total_tokens));
-+
-+    Some(SessionTelemetrySnapshot {
-+        total_turns: entry.total_turns,
-+        total_tokens: entry.total_tokens,
-+        total_prompt_tokens: entry.total_prompt_tokens,
-+        total_completion_tokens: entry.total_completion_tokens,
-+        total_reasoning_tokens: entry.total_reasoning_tokens,
-+        last_model: entry.last_model.clone(),
-+        last_reasoning_effort: entry.last_reasoning_effort.clone(),
-+        last_updated: entry.last_updated,
-+        models,
-+    })
-+}
 diff --git a/codex-rs/common/Cargo.toml b/codex-rs/common/Cargo.toml
 index d8f30cc0..2c667b84 100644
 --- a/codex-rs/common/Cargo.toml
@@ -2012,89 +1696,6 @@ index 276bfca0..c445cec5 100644
  // Shared fuzzy matcher (used by TUI selection popups and other UI filtering)
  pub mod fuzzy_match;
  // Shared model presets used by TUI and MCP server
-diff --git a/codex-rs/common/src/litellm.rs b/codex-rs/common/src/litellm.rs
-new file mode 100644
-index 00000000..2c105720
---- /dev/null
-+++ b/codex-rs/common/src/litellm.rs
-@@ -0,0 +1,77 @@
-+use codex_build_info::{decorate_version as decorate_version_inner, version_with_commit};
-+use codex_core::config::{
-+    LiteLlmProviderUpdate, ensure_litellm_baseline, read_litellm_provider_state,
-+    write_litellm_provider_state,
-+};
-+use std::env;
-+use std::io;
-+use std::io::IsTerminal;
-+use std::io::Write as _;
-+use std::path::Path;
-+
-+pub const LITELLM_BASE_URL_ENV: &str = "LITELLM_BASE_URL";
-+pub const LITELLM_API_KEY_ENV: &str = "LITELLM_API_KEY";
-+
-+pub fn decorate_version(base_version: &str) -> String {
-+    decorate_version_inner(base_version)
-+}
-+
-+pub fn version_with_commit_string() -> String {
-+    version_with_commit()
-+}
-+
-+pub fn ensure_litellm_credentials(codex_home: &Path) -> io::Result<()> {
-+    ensure_litellm_baseline(codex_home)?;
-+    let state = read_litellm_provider_state(codex_home)?;
-+    let mut update = LiteLlmProviderUpdate::default();
-+
-+    if state.base_url.is_none() {
-+        let base_url = prompt_or_env("LiteLLM endpoint URL", LITELLM_BASE_URL_ENV, false)?;
-+        update.base_url = Some(base_url);
-+    }
-+
-+    if state.api_key.is_none() {
-+        let api_key = prompt_or_env("LiteLLM API key", LITELLM_API_KEY_ENV, true)?;
-+        update.api_key = Some(api_key);
-+    }
-+
-+    write_litellm_provider_state(codex_home, update)
-+}
-+
-+fn prompt_or_env(label: &str, env_var: &str, secret: bool) -> io::Result<String> {
-+    if let Ok(value) = env::var(env_var) {
-+        let trimmed = value.trim();
-+        if !trimmed.is_empty() {
-+            eprintln!("{label} sourced from ${env_var}.");
-+            return Ok(trimmed.to_string());
-+        }
-+    }
-+
-+    if !io::stdin().is_terminal() {
-+        return Err(io::Error::new(
-+            io::ErrorKind::InvalidInput,
-+            format!("{label} is not configured and ${env_var} is unset."),
-+        ));
-+    }
-+
-+    prompt_for_value(label, secret)
-+}
-+
-+fn prompt_for_value(label: &str, secret: bool) -> io::Result<String> {
-+    loop {
-+        if secret {
-+            eprint!("{label}: ");
-+        } else {
-+            eprint!("{label}: ");
-+        }
-+        io::stderr().flush()?;
-+        let mut buffer = String::new();
-+        io::stdin().read_line(&mut buffer)?;
-+        let value = buffer.trim().to_string();
-+        if value.is_empty() {
-+            eprintln!("{label} cannot be empty.");
-+            continue;
-+        }
-+        return Ok(value);
-+    }
-+}
 diff --git a/codex-rs/common/src/model_presets.rs b/codex-rs/common/src/model_presets.rs
 index b6d06438..3947ebb4 100644
 --- a/codex-rs/common/src/model_presets.rs
@@ -2461,7 +2062,7 @@ index b6d06438..3947ebb4 100644
      }
  }
 diff --git a/codex-rs/core/Cargo.toml b/codex-rs/core/Cargo.toml
-index 2b48c088..e399201f 100644
+index 17a7a166..3a6ce6ea 100644
 --- a/codex-rs/core/Cargo.toml
 +++ b/codex-rs/core/Cargo.toml
 @@ -39,12 +39,7 @@ eventsource-stream = { workspace = true }
@@ -4074,7 +3675,7 @@ index e9f832e6..996d7ecf 100644
  oauth2 = "5"
  reqwest = { version = "0.12", default-features = false, features = [
 diff --git a/codex-rs/tui/Cargo.toml b/codex-rs/tui/Cargo.toml
-index f087202c..22a13a0c 100644
+index c56aba0f..afa4357c 100644
 --- a/codex-rs/tui/Cargo.toml
 +++ b/codex-rs/tui/Cargo.toml
 @@ -40,6 +40,7 @@ codex-ollama = { workspace = true }
@@ -4083,8 +3684,8 @@ index f087202c..22a13a0c 100644
  codex-feedback = { workspace = true }
 +codex-litellm-model-session-telemetry = { workspace = true }
  color-eyre = { workspace = true }
- crossterm = { workspace = true, features = ["bracketed-paste", "event-stream"] }
- diffy = { workspace = true }
+ crossterm = { workspace = true, features = [
+     "bracketed-paste",
 diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
 index 3c06113c..1cdb9df4 100644
 --- a/codex-rs/tui/src/app.rs
@@ -4366,10 +3967,10 @@ index ddd0f90c..3262b9f4 100644
                                                  
    Press enter to confirm or esc to go back
 diff --git a/codex-rs/tui/src/chatwidget.rs b/codex-rs/tui/src/chatwidget.rs
-index 3dfa1b36..53522379 100644
+index 5239c66e..df9e7615 100644
 --- a/codex-rs/tui/src/chatwidget.rs
 +++ b/codex-rs/tui/src/chatwidget.rs
-@@ -102,22 +102,25 @@ use self::interrupts::InterruptManager;
+@@ -103,22 +103,25 @@ use self::interrupts::InterruptManager;
  mod agent;
  use self::agent::spawn_agent;
  use self::agent::spawn_agent_from_existing;
@@ -4399,7 +4000,7 @@ index 3dfa1b36..53522379 100644
  use codex_protocol::plan_tool::UpdatePlanArgs;
  use strum::IntoEnumIterator;
  
-@@ -227,6 +230,9 @@ pub(crate) struct ChatWidgetInit {
+@@ -228,6 +231,9 @@ pub(crate) struct ChatWidgetInit {
      pub(crate) enhanced_keys_supported: bool,
      pub(crate) auth_manager: Arc<AuthManager>,
      pub(crate) feedback: codex_feedback::CodexFeedback,
@@ -4409,7 +4010,7 @@ index 3dfa1b36..53522379 100644
  }
  
  pub(crate) struct ChatWidget {
-@@ -236,7 +242,6 @@ pub(crate) struct ChatWidget {
+@@ -237,7 +243,6 @@ pub(crate) struct ChatWidget {
      active_cell: Option<Box<dyn HistoryCell>>,
      config: Config,
      auth_manager: Arc<AuthManager>,
@@ -4417,7 +4018,7 @@ index 3dfa1b36..53522379 100644
      initial_user_message: Option<UserMessage>,
      token_info: Option<TokenUsageInfo>,
      rate_limit_snapshot: Option<RateLimitSnapshotDisplay>,
-@@ -276,6 +281,12 @@ pub(crate) struct ChatWidget {
+@@ -277,6 +282,12 @@ pub(crate) struct ChatWidget {
      feedback: codex_feedback::CodexFeedback,
      // Current session rollout path (if known)
      current_rollout_path: Option<PathBuf>,
@@ -4430,7 +4031,7 @@ index 3dfa1b36..53522379 100644
  }
  
  struct UserMessage {
-@@ -301,6 +312,40 @@ fn create_initial_user_message(text: String, image_paths: Vec<PathBuf>) -> Optio
+@@ -302,6 +313,40 @@ fn create_initial_user_message(text: String, image_paths: Vec<PathBuf>) -> Optio
  }
  
  impl ChatWidget {
@@ -4471,7 +4072,7 @@ index 3dfa1b36..53522379 100644
      fn flush_answer_stream_with_separator(&mut self) {
          if let Some(mut controller) = self.stream_controller.take()
              && let Some(cell) = controller.finalize()
-@@ -310,19 +355,32 @@ impl ChatWidget {
+@@ -311,19 +356,32 @@ impl ChatWidget {
      }
  
      fn set_status_header(&mut self, header: String) {
@@ -4506,7 +4107,7 @@ index 3dfa1b36..53522379 100644
          self.add_to_history(history_cell::new_session_info(
              &self.config,
              event,
-@@ -333,6 +391,10 @@ impl ChatWidget {
+@@ -334,6 +392,10 @@ impl ChatWidget {
          }
          // Ask codex-core to enumerate custom prompts for this session.
          self.submit_op(Op::ListCustomPrompts);
@@ -4517,7 +4118,7 @@ index 3dfa1b36..53522379 100644
          if let Some(user_message) = self.initial_user_message.take() {
              self.submit_user_message(user_message);
          }
-@@ -375,6 +437,7 @@ impl ChatWidget {
+@@ -376,6 +438,7 @@ impl ChatWidget {
      }
  
      fn on_agent_message(&mut self, message: String) {
@@ -4525,7 +4126,7 @@ index 3dfa1b36..53522379 100644
          // If we have a stream_controller, then the final agent message is redundant and will be a
          // duplicate of what has already been streamed.
          if self.stream_controller.is_none() {
-@@ -393,6 +456,7 @@ impl ChatWidget {
+@@ -394,6 +457,7 @@ impl ChatWidget {
          // For reasoning deltas, do not stream to history. Accumulate the
          // current reasoning block and extract the first bold element
          // (between **/**) as the chunk header. Show this header as status.
@@ -4533,7 +4134,7 @@ index 3dfa1b36..53522379 100644
          self.reasoning_buffer.push_str(&delta);
  
          if let Some(header) = extract_first_bold(&self.reasoning_buffer) {
-@@ -406,6 +470,15 @@ impl ChatWidget {
+@@ -407,6 +471,15 @@ impl ChatWidget {
  
      fn on_agent_reasoning_final(&mut self) {
          // At the end of a reasoning block, record transcript-only content.
@@ -4549,7 +4150,7 @@ index 3dfa1b36..53522379 100644
          self.full_reasoning_buffer.push_str(&self.reasoning_buffer);
          if !self.full_reasoning_buffer.is_empty() {
              let cell = history_cell::new_reasoning_summary_block(
-@@ -429,6 +502,7 @@ impl ChatWidget {
+@@ -430,6 +503,7 @@ impl ChatWidget {
      // Raw reasoning uses the same flow as summarized reasoning
  
      fn on_task_started(&mut self) {
@@ -4557,7 +4158,7 @@ index 3dfa1b36..53522379 100644
          self.bottom_pane.clear_ctrl_c_quit_hint();
          self.bottom_pane.set_task_running(true);
          self.retry_status_header = None;
-@@ -450,6 +524,10 @@ impl ChatWidget {
+@@ -451,6 +525,10 @@ impl ChatWidget {
          // If there is a queued user message, send exactly one now to begin the next turn.
          self.maybe_send_next_queued_input();
          // Emit a notification when the turn completes (suppressed if focused).
@@ -4568,7 +4169,7 @@ index 3dfa1b36..53522379 100644
          self.notify(Notification::AgentTurnComplete {
              response: last_agent_message.unwrap_or_default(),
          });
-@@ -460,12 +538,61 @@ impl ChatWidget {
+@@ -461,12 +539,61 @@ impl ChatWidget {
              let context_window = info
                  .model_context_window
                  .or(self.config.model_context_window);
@@ -4634,7 +4235,7 @@ index 3dfa1b36..53522379 100644
          }
      }
  
-@@ -488,10 +615,27 @@ impl ChatWidget {
+@@ -489,10 +616,27 @@ impl ChatWidget {
              );
  
              let display = crate::status::rate_limit_snapshot_display(&snapshot, Local::now());
@@ -4662,7 +4263,7 @@ index 3dfa1b36..53522379 100644
                      self.add_to_history(history_cell::new_warning_event(warning));
                  }
                  self.request_redraw();
-@@ -511,6 +655,7 @@ impl ChatWidget {
+@@ -512,6 +656,7 @@ impl ChatWidget {
      }
  
      fn on_error(&mut self, message: String) {
@@ -4670,7 +4271,7 @@ index 3dfa1b36..53522379 100644
          self.finalize_turn();
          self.add_to_history(history_cell::new_error_event(message));
          self.request_redraw();
-@@ -524,6 +669,8 @@ impl ChatWidget {
+@@ -530,6 +675,8 @@ impl ChatWidget {
      /// separated by newlines rather than auto‑submitting the next one.
      fn on_interrupted_turn(&mut self, reason: TurnAbortReason) {
          // Finalize, log a gentle prompt, and clear running state.
@@ -4679,7 +4280,7 @@ index 3dfa1b36..53522379 100644
          self.finalize_turn();
  
          if reason != TurnAbortReason::ReviewEnded {
-@@ -558,6 +705,7 @@ impl ChatWidget {
+@@ -564,6 +711,7 @@ impl ChatWidget {
      }
  
      fn on_plan_update(&mut self, update: UpdatePlanArgs) {
@@ -4687,7 +4288,7 @@ index 3dfa1b36..53522379 100644
          self.add_to_history(history_cell::new_plan_update(update));
      }
  
-@@ -758,6 +906,12 @@ impl ChatWidget {
+@@ -764,6 +912,12 @@ impl ChatWidget {
          // Before streaming agent content, flush any active exec cell group.
          self.flush_active_cell();
  
@@ -4700,7 +4301,7 @@ index 3dfa1b36..53522379 100644
          if self.stream_controller.is_none() {
              if self.needs_final_message_separator {
                  let elapsed_seconds = self
-@@ -979,12 +1133,15 @@ impl ChatWidget {
+@@ -985,12 +1139,15 @@ impl ChatWidget {
              enhanced_keys_supported,
              auth_manager,
              feedback,
@@ -4717,7 +4318,7 @@ index 3dfa1b36..53522379 100644
              app_event_tx: app_event_tx.clone(),
              frame_requester: frame_requester.clone(),
              codex_op_tx,
-@@ -999,7 +1156,6 @@ impl ChatWidget {
+@@ -1005,7 +1162,6 @@ impl ChatWidget {
              active_cell: None,
              config: config.clone(),
              auth_manager,
@@ -4725,7 +4326,7 @@ index 3dfa1b36..53522379 100644
              initial_user_message: create_initial_user_message(
                  initial_prompt.unwrap_or_default(),
                  initial_images,
-@@ -1025,7 +1181,19 @@ impl ChatWidget {
+@@ -1031,7 +1187,19 @@ impl ChatWidget {
              last_rendered_width: std::cell::Cell::new(None),
              feedback,
              current_rollout_path: None,
@@ -4745,7 +4346,7 @@ index 3dfa1b36..53522379 100644
      }
  
      /// Create a ChatWidget attached to an existing conversation (e.g., a fork).
-@@ -1043,6 +1211,9 @@ impl ChatWidget {
+@@ -1049,6 +1217,9 @@ impl ChatWidget {
              enhanced_keys_supported,
              auth_manager,
              feedback,
@@ -4755,7 +4356,7 @@ index 3dfa1b36..53522379 100644
          } = common;
          let mut rng = rand::rng();
          let placeholder = EXAMPLE_PROMPTS[rng.random_range(0..EXAMPLE_PROMPTS.len())].to_string();
-@@ -1050,7 +1221,7 @@ impl ChatWidget {
+@@ -1056,7 +1227,7 @@ impl ChatWidget {
          let codex_op_tx =
              spawn_agent_from_existing(conversation, session_configured, app_event_tx.clone());
  
@@ -4764,7 +4365,7 @@ index 3dfa1b36..53522379 100644
              app_event_tx: app_event_tx.clone(),
              frame_requester: frame_requester.clone(),
              codex_op_tx,
-@@ -1065,7 +1236,6 @@ impl ChatWidget {
+@@ -1071,7 +1242,6 @@ impl ChatWidget {
              active_cell: None,
              config: config.clone(),
              auth_manager,
@@ -4772,7 +4373,7 @@ index 3dfa1b36..53522379 100644
              initial_user_message: create_initial_user_message(
                  initial_prompt.unwrap_or_default(),
                  initial_images,
-@@ -1091,7 +1261,19 @@ impl ChatWidget {
+@@ -1097,7 +1267,19 @@ impl ChatWidget {
              last_rendered_width: std::cell::Cell::new(None),
              feedback,
              current_rollout_path: None,
@@ -4792,7 +4393,7 @@ index 3dfa1b36..53522379 100644
      }
  
      pub fn desired_height(&self, width: u16) -> u16 {
-@@ -1369,6 +1551,7 @@ impl ChatWidget {
+@@ -1375,6 +1557,7 @@ impl ChatWidget {
          }
  
          let mut items: Vec<UserInput> = Vec::new();
@@ -4800,7 +4401,7 @@ index 3dfa1b36..53522379 100644
  
          // Special-case: "!cmd" executes a local shell command instead of sending to the model.
          if let Some(stripped) = text.strip_prefix('!') {
-@@ -1389,9 +1572,19 @@ impl ChatWidget {
+@@ -1395,9 +1578,19 @@ impl ChatWidget {
          }
  
          if !text.is_empty() {
@@ -4820,7 +4421,7 @@ index 3dfa1b36..53522379 100644
          for path in image_paths {
              items.push(UserInput::LocalImage { path });
          }
-@@ -1593,7 +1786,12 @@ impl ChatWidget {
+@@ -1600,7 +1793,12 @@ impl ChatWidget {
          }
      }
  
@@ -4834,7 +4435,7 @@ index 3dfa1b36..53522379 100644
          self.app_event_tx.send(AppEvent::ExitRequest);
      }
  
-@@ -1665,11 +1863,14 @@ impl ChatWidget {
+@@ -1672,11 +1870,14 @@ impl ChatWidget {
          } else {
              (&default_usage, Some(&default_usage))
          };
@@ -4849,7 +4450,7 @@ index 3dfa1b36..53522379 100644
              self.rate_limit_snapshot.as_ref(),
              Local::now(),
          ));
-@@ -1680,20 +1881,87 @@ impl ChatWidget {
+@@ -1687,20 +1888,87 @@ impl ChatWidget {
      pub(crate) fn open_model_popup(&mut self) {
          let current_model = self.config.model.clone();
          let auth_mode = self.auth_manager.auth().map(|auth| auth.mode);
@@ -4946,7 +4547,7 @@ index 3dfa1b36..53522379 100644
                  });
              })];
              items.push(SelectionItem {
-@@ -1747,6 +2015,13 @@ impl ChatWidget {
+@@ -1754,6 +2022,13 @@ impl ChatWidget {
              .flatten()
              .or_else(|| choices.iter().find_map(|choice| choice.stored))
              .or(Some(default_effort));
@@ -4960,7 +4561,7 @@ index 3dfa1b36..53522379 100644
  
          let model_slug = preset.model.to_string();
          let is_current_model = self.config.model == preset.model;
-@@ -1803,11 +2078,10 @@ impl ChatWidget {
+@@ -1810,11 +2085,10 @@ impl ChatWidget {
                      effort: effort_for_action,
                  });
                  tracing::info!(
@@ -4976,7 +4577,7 @@ index 3dfa1b36..53522379 100644
                  );
              })];
  
-@@ -2059,16 +2333,24 @@ impl ChatWidget {
+@@ -2066,16 +2340,24 @@ impl ChatWidget {
  
      /// Set the model in the widget's config copy.
      pub(crate) fn set_model(&mut self, model: &str) {
@@ -5002,7 +4603,7 @@ index 3dfa1b36..53522379 100644
          self.add_to_history(history_cell::new_error_event(message));
          self.request_redraw();
      }
-@@ -2358,7 +2640,7 @@ impl ChatWidget {
+@@ -2365,7 +2647,7 @@ impl ChatWidget {
  
  impl WidgetRef for &ChatWidget {
      fn render_ref(&self, area: Rect, buf: &mut Buffer) {
@@ -5435,7 +5036,7 @@ index 086a3a8c..4be372e7 100644
  "                                                                                "
  "  Press enter to confirm or esc to cancel                                       "
 diff --git a/codex-rs/tui/src/chatwidget/tests.rs b/codex-rs/tui/src/chatwidget/tests.rs
-index 6c9b78e3..7693e550 100644
+index 135dd249..407c35db 100644
 --- a/codex-rs/tui/src/chatwidget/tests.rs
 +++ b/codex-rs/tui/src/chatwidget/tests.rs
 @@ -5,6 +5,7 @@ use crate::test_backend::VT100Backend;
@@ -5455,7 +5056,7 @@ index 6c9b78e3..7693e550 100644
  use codex_core::protocol::UndoCompletedEvent;
  use codex_core::protocol::UndoStartedEvent;
  use codex_core::protocol::ViewImageToolCallEvent;
-@@ -245,6 +248,9 @@ async fn helpers_are_available_and_do_not_panic() {
+@@ -248,6 +251,9 @@ async fn helpers_are_available_and_do_not_panic() {
          enhanced_keys_supported: false,
          auth_manager,
          feedback: codex_feedback::CodexFeedback::new(),
@@ -5465,7 +5066,7 @@ index 6c9b78e3..7693e550 100644
      };
      let mut w = ChatWidget::new(init, conversation_manager);
      // Basic construction sanity.
-@@ -277,7 +283,6 @@ fn make_chatwidget_manual() -> (
+@@ -280,7 +286,6 @@ fn make_chatwidget_manual() -> (
          active_cell: None,
          config: cfg.clone(),
          auth_manager,
@@ -5473,7 +5074,7 @@ index 6c9b78e3..7693e550 100644
          initial_user_message: None,
          token_info: None,
          rate_limit_snapshot: None,
-@@ -301,6 +306,12 @@ fn make_chatwidget_manual() -> (
+@@ -304,6 +309,12 @@ fn make_chatwidget_manual() -> (
          last_rendered_width: std::cell::Cell::new(None),
          feedback: codex_feedback::CodexFeedback::new(),
          current_rollout_path: None,
@@ -5486,7 +5087,7 @@ index 6c9b78e3..7693e550 100644
      };
      (widget, rx, op_rx)
  }
-@@ -860,6 +871,73 @@ fn slash_quit_requests_exit() {
+@@ -863,6 +874,73 @@ fn slash_quit_requests_exit() {
      assert_matches!(rx.try_recv(), Ok(AppEvent::ExitRequest));
  }
  
@@ -5665,7 +5266,7 @@ index 73d61dc4..f1c70b29 100644
  
          let lines = render_lines(&cell.display_lines(80));
 diff --git a/codex-rs/tui/src/lib.rs b/codex-rs/tui/src/lib.rs
-index eb5d3ae9..ba1c9082 100644
+index 99312ec1..d770a792 100644
 --- a/codex-rs/tui/src/lib.rs
 +++ b/codex-rs/tui/src/lib.rs
 @@ -7,6 +7,7 @@ use additional_dirs::add_dir_warning_message;
@@ -5676,15 +5277,15 @@ index eb5d3ae9..ba1c9082 100644
  use codex_core::AuthManager;
  use codex_core::BUILT_IN_OSS_MODEL_PROVIDER_ID;
  use codex_core::CodexAuth;
-@@ -17,6 +18,7 @@ use codex_core::config::Config;
- use codex_core::config::ConfigOverrides;
+@@ -18,6 +19,7 @@ use codex_core::config::ConfigOverrides;
  use codex_core::find_conversation_path_by_id_str;
+ use codex_core::get_platform_sandbox;
  use codex_core::protocol::AskForApproval;
 +use codex_litellm_model_session_telemetry as session_telemetry;
  use codex_ollama::DEFAULT_OSS_MODEL;
  use codex_protocol::config_types::SandboxMode;
  use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
-@@ -24,9 +26,11 @@ use std::fs::OpenOptions;
+@@ -25,9 +27,11 @@ use std::fs::OpenOptions;
  use std::path::PathBuf;
  use tracing::error;
  use tracing_appender::non_blocking;
@@ -5697,8 +5298,8 @@ index eb5d3ae9..ba1c9082 100644
  
  mod additional_dirs;
  mod app;
-@@ -151,6 +155,13 @@ pub async fn run_main(
-         tools_web_search_request: cli.web_search.then_some(true),
+@@ -159,6 +163,13 @@ pub async fn run_main(
+         tools_web_search_request: None,
          experimental_sandbox_command_assessment: None,
          additional_writable_roots: additional_dirs,
 +        telemetry_enabled: if cli.telemetry {
@@ -5711,7 +5312,7 @@ index eb5d3ae9..ba1c9082 100644
      };
      let raw_overrides = cli.config_overrides.raw_overrides.clone();
      let overrides_cli = codex_common::CliConfigOverrides { raw_overrides };
-@@ -180,48 +191,145 @@ pub async fn run_main(
+@@ -188,48 +199,145 @@ pub async fn run_main(
      }
  
      let active_profile = config.active_profile.clone();
@@ -5892,7 +5493,7 @@ index eb5d3ae9..ba1c9082 100644
  
      if cli.oss {
          codex_ollama::ensure_oss_ready(&config)
-@@ -240,22 +348,72 @@ pub async fn run_main(
+@@ -248,22 +356,72 @@ pub async fn run_main(
          }
      };
  
@@ -5981,7 +5582,7 @@ index eb5d3ae9..ba1c9082 100644
  
      run_ratatui_app(
          cli,
-@@ -269,6 +427,47 @@ pub async fn run_main(
+@@ -277,6 +435,47 @@ pub async fn run_main(
      .map_err(|err| std::io::Error::other(err.to_string()))
  }
  
@@ -6029,7 +5630,7 @@ index eb5d3ae9..ba1c9082 100644
  async fn run_ratatui_app(
      cli: Cli,
      initial_config: Config,
-@@ -331,6 +530,17 @@ async fn run_ratatui_app(
+@@ -339,6 +538,17 @@ async fn run_ratatui_app(
          should_show_trust_screen,
          should_show_windows_wsl_screen,
      );
@@ -6047,7 +5648,7 @@ index eb5d3ae9..ba1c9082 100644
  
      let config = if should_show_onboarding {
          let onboarding_result = run_onboarding_app(
-@@ -358,12 +568,17 @@ async fn run_ratatui_app(
+@@ -366,12 +576,17 @@ async fn run_ratatui_app(
                  update_action: None,
              });
          }
@@ -6065,7 +5666,7 @@ index eb5d3ae9..ba1c9082 100644
          {
              load_config_or_exit(cli_kv_overrides, overrides).await
          } else {
-@@ -372,6 +587,33 @@ async fn run_ratatui_app(
+@@ -380,6 +595,33 @@ async fn run_ratatui_app(
      } else {
          initial_config
      };
@@ -6099,7 +5700,7 @@ index eb5d3ae9..ba1c9082 100644
  
      // Determine resume behavior: explicit id, then resume last, then picker.
      let resume_selection = if let Some(id_str) = cli.resume_session_id.as_deref() {
-@@ -448,6 +690,9 @@ async fn run_ratatui_app(
+@@ -456,6 +698,9 @@ async fn run_ratatui_app(
          images,
          resume_selection,
          feedback,
@@ -6109,7 +5710,7 @@ index eb5d3ae9..ba1c9082 100644
      )
      .await;
  
-@@ -538,12 +783,21 @@ fn should_show_onboarding(
+@@ -546,12 +791,21 @@ fn should_show_onboarding(
          return true;
      }
  
@@ -6132,10 +5733,10 @@ index eb5d3ae9..ba1c9082 100644
          return false;
      }
 diff --git a/codex-rs/tui/src/onboarding/auth.rs b/codex-rs/tui/src/onboarding/auth.rs
-index 56527ac8..ef5eb570 100644
+index 06e1c629..1f61df94 100644
 --- a/codex-rs/tui/src/onboarding/auth.rs
 +++ b/codex-rs/tui/src/onboarding/auth.rs
-@@ -1,15 +1,18 @@
+@@ -1,10 +1,12 @@
  #![allow(clippy::unwrap_used)]
  
 +use codex_common::litellm::{LITELLM_API_KEY_ENV, LITELLM_BASE_URL_ENV};
@@ -6150,13 +5751,7 @@ index 56527ac8..ef5eb570 100644
  use codex_login::ServerOptions;
  use codex_login::ShutdownHandle;
  use codex_login::run_login_server;
- use crossterm::event::KeyCode;
- use crossterm::event::KeyEvent;
-+use crossterm::event::KeyEventKind;
- use crossterm::event::KeyModifiers;
- use ratatui::buffer::Buffer;
- use ratatui::layout::Constraint;
-@@ -30,6 +33,7 @@ use ratatui::widgets::Wrap;
+@@ -31,6 +33,7 @@ use ratatui::widgets::Wrap;
  
  use codex_app_server_protocol::AuthMode;
  use codex_protocol::config_types::ForcedLoginMethod;
@@ -6164,7 +5759,7 @@ index 56527ac8..ef5eb570 100644
  use std::sync::RwLock;
  
  use crate::LoginStatus;
-@@ -45,19 +49,32 @@ use super::onboarding_screen::StepState;
+@@ -46,19 +49,32 @@ use super::onboarding_screen::StepState;
  #[derive(Clone)]
  pub(crate) enum SignInState {
      PickMode,
@@ -6200,7 +5795,7 @@ index 56527ac8..ef5eb570 100644
  }
  
  #[derive(Clone)]
-@@ -77,54 +94,26 @@ impl Drop for ContinueInBrowserState {
+@@ -78,54 +94,26 @@ impl Drop for ContinueInBrowserState {
  
  impl KeyboardHandler for AuthModeWidget {
      fn handle_key_event(&mut self, key_event: KeyEvent) {
@@ -6260,7 +5855,7 @@ index 56527ac8..ef5eb570 100644
              KeyCode::Esc => {
                  tracing::info!("Esc pressed");
                  let sign_in_state = { (*self.sign_in_state.read().unwrap()).clone() };
-@@ -149,11 +138,13 @@ pub(crate) struct AuthModeWidget {
+@@ -150,11 +138,13 @@ pub(crate) struct AuthModeWidget {
      pub error: Option<String>,
      pub sign_in_state: Arc<RwLock<SignInState>>,
      pub codex_home: PathBuf,
@@ -6275,7 +5870,7 @@ index 56527ac8..ef5eb570 100644
  }
  
  impl AuthModeWidget {
-@@ -161,12 +152,13 @@ impl AuthModeWidget {
+@@ -162,12 +152,13 @@ impl AuthModeWidget {
          !matches!(self.forced_login_method, Some(ForcedLoginMethod::Chatgpt))
      }
  
@@ -6290,7 +5885,7 @@ index 56527ac8..ef5eb570 100644
          self.error = Some(API_KEY_DISABLED_MESSAGE.to_string());
          *self.sign_in_state.write().unwrap() = SignInState::PickMode;
          self.request_frame.schedule_frame();
-@@ -176,11 +168,11 @@ impl AuthModeWidget {
+@@ -177,11 +168,11 @@ impl AuthModeWidget {
          let mut lines: Vec<Line> = vec![
              Line::from(vec![
                  "  ".into(),
@@ -6304,7 +5899,7 @@ index 56527ac8..ef5eb570 100644
              ]),
              "".into(),
          ];
-@@ -214,39 +206,23 @@ impl AuthModeWidget {
+@@ -215,39 +206,23 @@ impl AuthModeWidget {
              vec![line1, line2]
          };
  
@@ -6349,7 +5944,7 @@ index 56527ac8..ef5eb570 100644
          if let Some(err) = &self.error {
              lines.push("".into());
              lines.push(err.as_str().red().into());
-@@ -326,9 +302,9 @@ impl AuthModeWidget {
+@@ -327,9 +302,9 @@ impl AuthModeWidget {
  
      fn render_api_key_configured(&self, area: Rect, buf: &mut Buffer) {
          let lines = vec![
@@ -6361,7 +5956,7 @@ index 56527ac8..ef5eb570 100644
          ];
  
          Paragraph::new(lines)
-@@ -344,48 +320,83 @@ impl AuthModeWidget {
+@@ -345,48 +320,83 @@ impl AuthModeWidget {
          ])
          .areas(area);
  
@@ -6471,7 +6066,7 @@ index 56527ac8..ef5eb570 100644
          if let Some(error) = &self.error {
              footer_lines.push("".into());
              footer_lines.push(error.as_str().red().into());
-@@ -396,7 +407,10 @@ impl AuthModeWidget {
+@@ -397,7 +407,10 @@ impl AuthModeWidget {
      }
  
      fn handle_api_key_entry_key_event(&mut self, key_event: &KeyEvent) -> bool {
@@ -6483,7 +6078,7 @@ index 56527ac8..ef5eb570 100644
          let mut should_request_frame = false;
  
          {
-@@ -404,25 +418,59 @@ impl AuthModeWidget {
+@@ -405,25 +418,59 @@ impl AuthModeWidget {
              if let SignInState::ApiKeyEntry(state) = &mut *guard {
                  match key_event.code {
                      KeyCode::Esc => {
@@ -6557,8 +6152,8 @@ index 56527ac8..ef5eb570 100644
                          }
                          self.error = None;
                          should_request_frame = true;
-@@ -431,24 +479,34 @@ impl AuthModeWidget {
-                         if !key_event.modifiers.contains(KeyModifiers::CONTROL)
+@@ -434,24 +481,34 @@ impl AuthModeWidget {
+                             && !key_event.modifiers.contains(KeyModifiers::CONTROL)
                              && !key_event.modifiers.contains(KeyModifiers::ALT) =>
                      {
 -                        if state.prepopulated_from_env {
@@ -6599,7 +6194,7 @@ index 56527ac8..ef5eb570 100644
          } else if should_request_frame {
              self.request_frame.schedule_frame();
          }
-@@ -463,11 +521,22 @@ impl AuthModeWidget {
+@@ -466,11 +523,22 @@ impl AuthModeWidget {
  
          let mut guard = self.sign_in_state.write().unwrap();
          if let SignInState::ApiKeyEntry(state) = &mut *guard {
@@ -6627,7 +6222,7 @@ index 56527ac8..ef5eb570 100644
              }
              self.error = None;
          } else {
-@@ -479,72 +548,100 @@ impl AuthModeWidget {
+@@ -482,72 +550,100 @@ impl AuthModeWidget {
          true
      }
  
@@ -6768,7 +6363,7 @@ index 56527ac8..ef5eb570 100644
      fn start_chatgpt_login(&mut self) {
          // If we're already authenticated with ChatGPT, don't start a new login –
          // just proceed to the success message flow.
-@@ -587,7 +684,6 @@ impl AuthModeWidget {
+@@ -590,7 +686,6 @@ impl AuthModeWidget {
                          }
                          _ => {
                              *sign_in_state.write().unwrap() = SignInState::PickMode;
@@ -6776,7 +6371,7 @@ index 56527ac8..ef5eb570 100644
                              request_frame.schedule_frame();
                          }
                      }
-@@ -641,14 +737,43 @@ impl WidgetRef for AuthModeWidget {
+@@ -644,14 +739,43 @@ impl WidgetRef for AuthModeWidget {
      }
  }
  
@@ -6822,7 +6417,7 @@ index 56527ac8..ef5eb570 100644
      fn widget_forced_chatgpt() -> (AuthModeWidget, TempDir) {
          let codex_home = TempDir::new().unwrap();
          let codex_home_path = codex_home.path().to_path_buf();
-@@ -658,15 +783,15 @@ mod tests {
+@@ -661,15 +785,15 @@ mod tests {
              error: None,
              sign_in_state: Arc::new(RwLock::new(SignInState::PickMode)),
              codex_home: codex_home_path.clone(),
@@ -6840,7 +6435,7 @@ index 56527ac8..ef5eb570 100644
          };
          (widget, codex_home)
      }
-@@ -688,7 +813,8 @@ mod tests {
+@@ -691,7 +815,8 @@ mod tests {
      fn saving_api_key_is_blocked_when_chatgpt_forced() {
          let (mut widget, _tmp) = widget_forced_chatgpt();
  
@@ -6860,858 +6455,6 @@ index 6c420dae..23d79a96 100644
  pub mod onboarding_screen;
  mod trust_directory;
  pub use trust_directory::TrustDirectorySelection;
-diff --git a/codex-rs/tui/src/onboarding/model.rs b/codex-rs/tui/src/onboarding/model.rs
-new file mode 100644
-index 00000000..f206840c
---- /dev/null
-+++ b/codex-rs/tui/src/onboarding/model.rs
-@@ -0,0 +1,846 @@
-+use codex_common::model_presets::{
-+    ModelPreset, builtin_model_presets, fetch_litellm_model_presets, is_litellm_provider_id,
-+    presets_for_provider,
-+};
-+use codex_core::config::Config;
-+use codex_core::config::edit::{ConfigEdit, apply_blocking};
-+use codex_core::config::read_litellm_provider_state;
-+use codex_core::protocol_config_types::ReasoningEffort;
-+use crossterm::event::{KeyCode, KeyEvent, KeyEventKind};
-+use ratatui::buffer::Buffer;
-+use ratatui::layout::{Constraint, Layout, Rect};
-+use ratatui::style::{Color, Modifier, Style, Stylize};
-+use ratatui::text::{Line, Span};
-+use ratatui::widgets::{Block, Borders, Clear, Paragraph, Widget, WidgetRef, Wrap};
-+use std::cell::Cell;
-+
-+use super::onboarding_screen::{KeyboardHandler, StepState, StepStateProvider};
-+use crate::style::user_message_style;
-+use crate::tui::FrameRequester;
-+
-+#[derive(Clone)]
-+pub(crate) struct ModelSelectionResult {
-+    pub model: String,
-+    pub reasoning_effort: Option<ReasoningEffort>,
-+}
-+
-+#[derive(Clone)]
-+struct ReasoningOption {
-+    effort: Option<ReasoningEffort>,
-+    label: String,
-+    description: Option<String>,
-+    selected_description: Option<String>,
-+}
-+
-+struct ReasoningStageState {
-+    preset_index: usize,
-+    options: Vec<ReasoningOption>,
-+    selected_index: usize,
-+    scroll_offset: Cell<usize>,
-+    visible_capacity: Cell<usize>,
-+}
-+
-+impl ReasoningStageState {
-+    fn new(preset_index: usize, options: Vec<ReasoningOption>, selected_index: usize) -> Self {
-+        Self {
-+            preset_index,
-+            options,
-+            selected_index,
-+            scroll_offset: Cell::new(0),
-+            visible_capacity: Cell::new(0),
-+        }
-+    }
-+}
-+
-+enum SelectionStage {
-+    ModelList,
-+    Reasoning(ReasoningStageState),
-+}
-+
-+enum ModelStepStatus {
-+    Hidden,
-+    AwaitingCredentials,
-+    Loading,
-+    Ready,
-+    Saving,
-+    Complete,
-+    Error(String),
-+}
-+
-+pub(crate) struct ModelSelectionWidget {
-+    request_frame: FrameRequester,
-+    config: Config,
-+    presets: Vec<ModelPreset>,
-+    selected_index: usize,
-+    status: ModelStepStatus,
-+    selection_result: Option<ModelSelectionResult>,
-+    stage: SelectionStage,
-+    scroll_offset: Cell<usize>,
-+    visible_capacity: Cell<usize>,
-+}
-+
-+impl ModelSelectionWidget {
-+    pub(crate) fn new(request_frame: FrameRequester, config: Config) -> Self {
-+        let mut widget = Self {
-+            request_frame,
-+            config,
-+            presets: Vec::new(),
-+            selected_index: 0,
-+            status: ModelStepStatus::Hidden,
-+            selection_result: None,
-+            stage: SelectionStage::ModelList,
-+            scroll_offset: Cell::new(0),
-+            visible_capacity: Cell::new(1),
-+        };
-+
-+        if is_litellm_provider_id(&widget.config.model_provider_id) {
-+            if widget.config.litellm_setup_required {
-+                widget.status = ModelStepStatus::AwaitingCredentials;
-+            } else {
-+                widget.load_presets();
-+            }
-+        }
-+
-+        widget
-+    }
-+
-+    pub(crate) fn credentials_ready(&mut self) {
-+        if matches!(self.status, ModelStepStatus::AwaitingCredentials) {
-+            self.load_presets();
-+        }
-+    }
-+
-+    pub(crate) fn selection(&self) -> Option<ModelSelectionResult> {
-+        self.selection_result.clone()
-+    }
-+
-+    fn load_presets(&mut self) {
-+        self.status = ModelStepStatus::Loading;
-+        #[cfg(debug_assertions)]
-+        tracing::debug!(
-+            provider = %self.config.model_provider_id,
-+            "model_onboarding.load_presets:start"
-+        );
-+        tracing::info!(
-+            target: "codex_litellm_debug::onboarding",
-+            provider = %self.config.model_provider_id,
-+            "model_onboarding.load_presets:start"
-+        );
-+        self.request_frame.schedule_frame();
-+
-+        match self.fetch_presets() {
-+            Ok(presets) if !presets.is_empty() => {
-+                self.apply_loaded_presets(presets);
-+                #[cfg(debug_assertions)]
-+                tracing::debug!(
-+                    provider = %self.config.model_provider_id,
-+                    count = self.presets.len(),
-+                    "model_onboarding.load_presets:ready"
-+                );
-+                tracing::info!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    count = self.presets.len(),
-+                    "model_onboarding.load_presets:ready"
-+                );
-+            }
-+            Ok(_) => {
-+                self.status = ModelStepStatus::Error(
-+                    "LiteLLM returned no models. Use /model later to configure.".to_string(),
-+                );
-+                #[cfg(debug_assertions)]
-+                tracing::debug!("model_onboarding.load_presets:empty");
-+                tracing::warn!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    "model_onboarding.load_presets:empty"
-+                );
-+            }
-+            Err(err) => {
-+                #[cfg(debug_assertions)]
-+                tracing::debug!(error = %err, "model_onboarding.load_presets:error");
-+                tracing::warn!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    error = %err,
-+                    "model_onboarding.load_presets:error"
-+                );
-+                self.status = ModelStepStatus::Error(err);
-+            }
-+        }
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn apply_loaded_presets(&mut self, presets: Vec<ModelPreset>) {
-+        self.presets = presets;
-+        tracing::info!(
-+            target: "codex_litellm_debug::onboarding",
-+            provider = %self.config.model_provider_id,
-+            current = %self.config.model,
-+            count = self.presets.len(),
-+            "model_onboarding.apply_loaded_presets"
-+        );
-+        self.selected_index = 0;
-+        self.scroll_offset.set(0);
-+        self.visible_capacity.set(1);
-+        self.stage = SelectionStage::ModelList;
-+        self.status = ModelStepStatus::Ready;
-+        self.config.litellm_setup_required = false;
-+    }
-+
-+    fn fetch_presets(&self) -> Result<Vec<ModelPreset>, String> {
-+        if is_litellm_provider_id(&self.config.model_provider_id) {
-+            let state = read_litellm_provider_state(&self.config.codex_home)
-+                .map_err(|err| format!("Failed to read LiteLLM credentials: {err}"))?;
-+            let base_url = state.base_url.ok_or_else(|| {
-+                "LiteLLM endpoint URL is missing. Re-enter it during onboarding.".to_string()
-+            })?;
-+            return fetch_litellm_model_presets(
-+                &base_url,
-+                state.api_key.as_deref(),
-+                &self.config.model,
-+            );
-+        }
-+
-+        let mut presets =
-+            presets_for_provider(&self.config.model_provider_id, &self.config.model, None);
-+        if presets.is_empty() {
-+            presets = builtin_model_presets(None);
-+        }
-+        if presets.is_empty() {
-+            return Err("No models available for the current provider.".to_string());
-+        }
-+        for preset in presets.iter_mut() {
-+            preset.is_default = preset.model == self.config.model;
-+        }
-+        Ok(presets)
-+    }
-+
-+    fn begin_reasoning_stage(&mut self) {
-+        if self.presets.is_empty() {
-+            return;
-+        }
-+        let preset_index = self.selected_index.min(self.presets.len() - 1);
-+        let preset = self.presets[preset_index].clone();
-+        let options = self.build_reasoning_options(&preset);
-+
-+        let target_effort = if preset.model == self.config.model {
-+            self.config.model_reasoning_effort
-+        } else {
-+            Some(preset.default_reasoning_effort)
-+        };
-+        let default_effort = Some(preset.default_reasoning_effort);
-+        let selected_index = options
-+            .iter()
-+            .position(|opt| opt.effort == target_effort)
-+            .or_else(|| options.iter().position(|opt| opt.effort == default_effort))
-+            .unwrap_or(0);
-+
-+        self.stage = SelectionStage::Reasoning(ReasoningStageState::new(
-+            preset_index,
-+            options,
-+            selected_index,
-+        ));
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn build_reasoning_options(&self, preset: &ModelPreset) -> Vec<ReasoningOption> {
-+        let supported = preset.supported_reasoning_efforts;
-+        let default_effort = preset.default_reasoning_effort;
-+
-+        let mut options: Vec<ReasoningOption> = supported
-+            .iter()
-+            .map(|entry| {
-+                let mut label = entry.effort.to_string();
-+                if let Some(first) = label.get_mut(0..1) {
-+                    first.make_ascii_uppercase();
-+                }
-+                if entry.effort == default_effort {
-+                    label.push_str(" (default)");
-+                }
-+
-+                let description =
-+                    (!entry.description.is_empty()).then(|| entry.description.to_string());
-+                let warning =
-+                    if preset.model == "gpt-5-codex" && entry.effort == ReasoningEffort::High {
-+                        Some(
-+                            "⚠ High reasoning effort can quickly consume Plus plan rate limits."
-+                                .to_string(),
-+                        )
-+                    } else {
-+                        None
-+                    };
-+
-+                ReasoningOption {
-+                    effort: Some(entry.effort),
-+                    label,
-+                    description,
-+                    selected_description: warning,
-+                }
-+            })
-+            .collect();
-+
-+        if options.is_empty() {
-+            let mut label = default_effort.to_string();
-+            if let Some(first) = label.get_mut(0..1) {
-+                first.make_ascii_uppercase();
-+            }
-+
-+            options.push(ReasoningOption {
-+                effort: Some(default_effort),
-+                label,
-+                description: None,
-+                selected_description: None,
-+            });
-+        }
-+
-+        options
-+    }
-+
-+    fn confirm_reasoning_selection(&mut self) {
-+        let selection = match &self.stage {
-+            SelectionStage::Reasoning(state) => state
-+                .options
-+                .get(state.selected_index)
-+                .cloned()
-+                .map(|option| (state.preset_index, option)),
-+            _ => None,
-+        };
-+
-+        if let Some((preset_index, option)) = selection {
-+            self.save_selection(preset_index, option.effort);
-+        }
-+    }
-+
-+    fn save_selection(&mut self, preset_index: usize, selected_effort: Option<ReasoningEffort>) {
-+        let Some(selected_preset) = self.presets.get(preset_index).cloned() else {
-+            return;
-+        };
-+
-+        self.status = ModelStepStatus::Saving;
-+        self.request_frame.schedule_frame();
-+
-+        let codex_home = self.config.codex_home.clone();
-+        let active_profile = self.config.active_profile.clone();
-+        let model = selected_preset.model.clone();
-+
-+        let apply_result = apply_blocking(
-+            &codex_home,
-+            active_profile.as_deref(),
-+            &[ConfigEdit::SetModel {
-+                model: Some(model.clone()),
-+                effort: selected_effort,
-+            }],
-+        );
-+
-+        match apply_result {
-+            Ok(()) => {
-+                for (idx, preset) in self.presets.iter_mut().enumerate() {
-+                    preset.is_default = idx == preset_index;
-+                }
-+                tracing::info!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    model = %selected_preset.model,
-+                    reasoning = ?selected_effort,
-+                    "model_onboarding.save_selection:complete"
-+                );
-+                self.selected_index = preset_index;
-+                self.scroll_offset.set(0);
-+                self.visible_capacity.set(1);
-+                self.selection_result = Some(ModelSelectionResult {
-+                    model: model.clone(),
-+                    reasoning_effort: selected_effort,
-+                });
-+                self.config.model = model;
-+                self.config.model_reasoning_effort = selected_effort;
-+                self.stage = SelectionStage::ModelList;
-+                self.status = ModelStepStatus::Complete;
-+            }
-+            Err(err) => {
-+                self.status =
-+                    ModelStepStatus::Error(format!("Failed to write model selection: {err}"));
-+                tracing::warn!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    model = %selected_preset.model,
-+                    error = %err,
-+                    "model_onboarding.save_selection:error"
-+                );
-+            }
-+        }
-+
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_model_selection(&mut self, delta: isize) {
-+        if !matches!(
-+            self.status,
-+            ModelStepStatus::Ready | ModelStepStatus::Error(_)
-+        ) {
-+            return;
-+        }
-+        if !matches!(self.stage, SelectionStage::ModelList) {
-+            return;
-+        }
-+        let len = self.presets.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let next = (self.selected_index as isize + delta).rem_euclid(len as isize);
-+        self.selected_index = next as usize;
-+        self.adjust_model_scroll();
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_model_selection_page(&mut self, delta_pages: isize) {
-+        if !matches!(self.stage, SelectionStage::ModelList) {
-+            return;
-+        }
-+        let len = self.presets.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let page = self.visible_capacity.get().max(1) as isize;
-+        let mut target = self.selected_index as isize + delta_pages * page;
-+        target = target.clamp(0, len as isize - 1);
-+        self.selected_index = target as usize;
-+        self.adjust_model_scroll();
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_reasoning_selection(&mut self, delta: isize) {
-+        let SelectionStage::Reasoning(state) = &mut self.stage else {
-+            return;
-+        };
-+        let len = state.options.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let next = (state.selected_index as isize + delta).rem_euclid(len as isize);
-+        state.selected_index = next as usize;
-+        Self::adjust_reasoning_scroll(state);
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_reasoning_selection_page(&mut self, delta_pages: isize) {
-+        let SelectionStage::Reasoning(state) = &mut self.stage else {
-+            return;
-+        };
-+        let len = state.options.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let page = state.visible_capacity.get().max(1) as isize;
-+        let mut target = state.selected_index as isize + delta_pages * page;
-+        target = target.clamp(0, len as isize - 1);
-+        state.selected_index = target as usize;
-+        Self::adjust_reasoning_scroll(state);
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn adjust_model_scroll(&self) {
-+        let visible = self.visible_capacity.get().max(1);
-+        let len = self.presets.len();
-+        if len <= visible {
-+            self.scroll_offset.set(0);
-+            return;
-+        }
-+        let max_offset = len - visible;
-+        let mut offset = self.scroll_offset.get().min(max_offset);
-+        if self.selected_index < offset {
-+            offset = self.selected_index;
-+        } else if self.selected_index >= offset + visible {
-+            offset = self.selected_index + 1 - visible;
-+        }
-+        self.scroll_offset.set(offset);
-+    }
-+
-+    fn adjust_reasoning_scroll(state: &ReasoningStageState) {
-+        let visible = state.visible_capacity.get().max(1);
-+        let len = state.options.len();
-+        if len <= visible {
-+            state.scroll_offset.set(0);
-+            return;
-+        }
-+        let max_offset = len - visible;
-+        let mut offset = state.scroll_offset.get().min(max_offset);
-+        if state.selected_index < offset {
-+            offset = state.selected_index;
-+        } else if state.selected_index >= offset + visible {
-+            offset = state.selected_index + 1 - visible;
-+        }
-+        state.scroll_offset.set(offset);
-+    }
-+
-+    fn render_loading(&self, area: Rect, buf: &mut Buffer) {
-+        let lines = vec![
-+            Line::from("Connecting to LiteLLM…".bold()),
-+            Line::from("Fetching available models. This may take a moment.".dim()),
-+        ];
-+        Paragraph::new(lines)
-+            .block(Block::default().borders(Borders::ALL))
-+            .wrap(Wrap { trim: false })
-+            .render(area, buf);
-+    }
-+
-+    fn render_error(&self, area: Rect, buf: &mut Buffer, message: &str) {
-+        let lines = vec![
-+            Line::from("Model selection unavailable".bold().fg(Color::Red)),
-+            Line::from(message),
-+            Line::from(""),
-+            Line::from("Press Enter or Esc to continue without selecting a model."),
-+        ];
-+        Paragraph::new(lines)
-+            .block(Block::default().borders(Borders::ALL))
-+            .wrap(Wrap { trim: false })
-+            .render(area, buf);
-+    }
-+
-+    fn render_ready(&self, area: Rect, buf: &mut Buffer) {
-+        match &self.stage {
-+            SelectionStage::ModelList => self.render_model_stage(area, buf),
-+            SelectionStage::Reasoning(state) => self.render_reasoning_stage(area, buf, state),
-+        }
-+    }
-+
-+    fn render_model_stage(&self, area: Rect, buf: &mut Buffer) {
-+        let instructions = vec![
-+            Line::from("Select a LiteLLM model for Codex CLI.".bold()),
-+            Line::from("Use ↑/↓ (PageUp/PageDown) to browse models.".dim()),
-+            Line::from("Press Enter to choose reasoning level. Esc skips selection.".dim()),
-+        ];
-+        let instruction_height = instructions.len() as u16 + 1;
-+        let instruction_height = instruction_height.min(area.height);
-+
-+        let [instructions_area, list_area] =
-+            Layout::vertical([Constraint::Length(instruction_height), Constraint::Min(3)])
-+                .areas(area);
-+
-+        Block::default()
-+            .style(user_message_style())
-+            .render(area, buf);
-+
-+        Paragraph::new(instructions)
-+            .wrap(Wrap { trim: false })
-+            .render(instructions_area, buf);
-+
-+        if list_area.height == 0 {
-+            return;
-+        }
-+
-+        let max_visible = list_area.height.saturating_sub(2).max(1) as usize;
-+        self.visible_capacity.set(max_visible.max(1));
-+        self.adjust_model_scroll();
-+
-+        let len = self.presets.len();
-+        if len == 0 {
-+            Paragraph::new(vec![Line::from(
-+                "No models available. Configure LiteLLM and try again later.",
-+            )])
-+            .wrap(Wrap { trim: false })
-+            .render(list_area, buf);
-+            return;
-+        }
-+
-+        let offset = self.scroll_offset.get();
-+        let visible = self.visible_capacity.get().max(1);
-+        let end = (offset + visible).min(len);
-+        let mut lines: Vec<Line<'static>> = Vec::new();
-+        for (row, preset) in self.presets[offset..end].iter().enumerate() {
-+            let idx = offset + row;
-+            let is_selected = idx == self.selected_index;
-+            let prefix = if is_selected { '›' } else { ' ' };
-+            let display_index = idx + 1;
-+            let display_name = if preset.display_name.is_empty() {
-+                preset.model.as_str()
-+            } else {
-+                preset.display_name.as_str()
-+            };
-+
-+            let mut spans: Vec<Span> = vec![
-+                Span::styled(prefix.to_string(), Style::default().fg(Color::Gray)),
-+                Span::raw(" "),
-+                Span::raw(format!("{display_index}. ")),
-+                Span::raw(display_name.to_string()),
-+                Span::raw(" "),
-+                Span::styled(preset.model.to_string(), Style::default().italic().dim()),
-+            ];
-+            if preset.is_default {
-+                spans.push(Span::raw(" "));
-+                spans.push(Span::styled("(current)", Style::default().dim()));
-+            }
-+
-+            if is_selected {
-+                for span in spans.iter_mut() {
-+                    span.style = span
-+                        .style
-+                        .fg(Color::Cyan)
-+                        .add_modifier(Modifier::BOLD | Modifier::REVERSED);
-+                }
-+            }
-+            lines.push(Line::from(spans));
-+
-+            if let Some(desc) = preset.description.as_ref().filter(|d| !d.is_empty()) {
-+                let mut desc_spans = vec![
-+                    Span::raw("    "),
-+                    Span::styled(desc.to_string(), Style::default().dim()),
-+                ];
-+                if is_selected {
-+                    for span in desc_spans.iter_mut() {
-+                        span.style = span
-+                            .style
-+                            .fg(Color::Cyan)
-+                            .add_modifier(Modifier::BOLD | Modifier::REVERSED);
-+                    }
-+                }
-+                lines.push(Line::from(desc_spans));
-+            }
-+        }
-+
-+        Paragraph::new(lines)
-+            .block(
-+                Block::default()
-+                    .borders(Borders::ALL)
-+                    .style(user_message_style()),
-+            )
-+            .wrap(Wrap { trim: false })
-+            .render(list_area, buf);
-+    }
-+
-+    fn render_reasoning_stage(&self, area: Rect, buf: &mut Buffer, state: &ReasoningStageState) {
-+        let instructions = vec![
-+            Line::from("Choose how much reasoning the model should use.".bold()),
-+            Line::from(
-+                "Use ↑/↓ (PageUp/PageDown) to browse. Enter to confirm. Esc to go back.".dim(),
-+            ),
-+        ];
-+        let instruction_height = instructions.len() as u16 + 1;
-+        let instruction_height = instruction_height.min(area.height);
-+
-+        let [instructions_area, list_area] =
-+            Layout::vertical([Constraint::Length(instruction_height), Constraint::Min(3)])
-+                .areas(area);
-+
-+        Block::default()
-+            .style(user_message_style())
-+            .render(area, buf);
-+
-+        Paragraph::new(instructions)
-+            .wrap(Wrap { trim: false })
-+            .render(instructions_area, buf);
-+
-+        if list_area.height == 0 {
-+            return;
-+        }
-+
-+        let max_visible = list_area.height.saturating_sub(2).max(1) as usize;
-+        state.visible_capacity.set(max_visible.max(1));
-+        Self::adjust_reasoning_scroll(state);
-+
-+        let len = state.options.len();
-+        if len == 0 {
-+            Paragraph::new(vec![Line::from("No reasoning options available.")])
-+                .wrap(Wrap { trim: false })
-+                .render(list_area, buf);
-+            return;
-+        }
-+
-+        let offset = state.scroll_offset.get();
-+        let visible = state.visible_capacity.get().max(1);
-+        let end = (offset + visible).min(len);
-+        let mut lines: Vec<Line<'static>> = Vec::new();
-+        for (row, option) in state.options[offset..end].iter().enumerate() {
-+            let idx = offset + row;
-+            let is_selected = idx == state.selected_index;
-+            let prefix = if is_selected { '›' } else { ' ' };
-+            let mut spans: Vec<Span> = vec![
-+                Span::styled(prefix.to_string(), Style::default().fg(Color::Gray)),
-+                Span::raw(" "),
-+                Span::styled(
-+                    option.label.clone(),
-+                    if is_selected {
-+                        Style::default()
-+                            .fg(Color::Cyan)
-+                            .add_modifier(Modifier::BOLD | Modifier::REVERSED)
-+                    } else {
-+                        Style::default().add_modifier(Modifier::DIM)
-+                    },
-+                ),
-+            ];
-+            if let Some(desc) = option.description.as_ref() {
-+                spans.push(Span::raw("  "));
-+                spans.push(Span::styled(
-+                    desc.clone(),
-+                    if is_selected {
-+                        Style::default()
-+                            .fg(Color::Cyan)
-+                            .add_modifier(Modifier::ITALIC | Modifier::DIM)
-+                    } else {
-+                        Style::default().add_modifier(Modifier::DIM)
-+                    },
-+                ));
-+            }
-+
-+            lines.push(Line::from(spans));
-+
-+            if is_selected {
-+                if let Some(extra) = option.selected_description.as_ref() {
-+                    lines.push(Line::from(vec![Span::styled(
-+                        format!("    {extra}"),
-+                        Style::default()
-+                            .fg(Color::Yellow)
-+                            .add_modifier(Modifier::BOLD),
-+                    )]));
-+                }
-+            }
-+        }
-+
-+        Paragraph::new(lines)
-+            .block(
-+                Block::default()
-+                    .borders(Borders::ALL)
-+                    .style(user_message_style()),
-+            )
-+            .wrap(Wrap { trim: false })
-+            .render(list_area, buf);
-+    }
-+
-+    fn render_completion(&self, area: Rect, buf: &mut Buffer) {
-+        let result = self.selection_result.as_ref();
-+        let effort_label = result
-+            .and_then(|r| r.reasoning_effort)
-+            .map(|eff| {
-+                let mut label = eff.to_string();
-+                if let Some(first) = label.get_mut(0..1) {
-+                    first.make_ascii_uppercase();
-+                }
-+                label
-+            })
-+            .unwrap_or_else(|| "default effort".to_string());
-+
-+        let lines = vec![
-+            Line::from(
-+                format!(
-+                    "Model set to {} ({effort_label}).",
-+                    result
-+                        .as_ref()
-+                        .map(|r| r.model.as_str())
-+                        .unwrap_or("unchanged")
-+                )
-+                .bold(),
-+            ),
-+            Line::from("Press Enter to continue."),
-+        ];
-+        Paragraph::new(lines)
-+            .wrap(Wrap { trim: false })
-+            .render(area, buf);
-+    }
-+}
-+
-+impl StepStateProvider for ModelSelectionWidget {
-+    fn get_step_state(&self) -> StepState {
-+        match self.status {
-+            ModelStepStatus::Hidden | ModelStepStatus::AwaitingCredentials => StepState::Hidden,
-+            ModelStepStatus::Loading
-+            | ModelStepStatus::Ready
-+            | ModelStepStatus::Saving
-+            | ModelStepStatus::Error(_) => StepState::InProgress,
-+            ModelStepStatus::Complete => StepState::Complete,
-+        }
-+    }
-+}
-+
-+impl KeyboardHandler for ModelSelectionWidget {
-+    fn handle_key_event(&mut self, key_event: KeyEvent) {
-+        if key_event.kind != KeyEventKind::Press {
-+            return;
-+        }
-+
-+        match key_event.code {
-+            KeyCode::Up if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection(-1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection(-1),
-+            },
-+            KeyCode::Down if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection(1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection(1),
-+            },
-+            KeyCode::PageUp if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection_page(-1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection_page(-1),
-+            },
-+            KeyCode::PageDown if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection_page(1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection_page(1),
-+            },
-+            KeyCode::Home if key_event.modifiers.is_empty() => {
-+                if matches!(self.stage, SelectionStage::ModelList) && !self.presets.is_empty() {
-+                    self.selected_index = 0;
-+                    self.adjust_model_scroll();
-+                    self.request_frame.schedule_frame();
-+                }
-+            }
-+            KeyCode::End if key_event.modifiers.is_empty() => {
-+                if matches!(self.stage, SelectionStage::ModelList) && !self.presets.is_empty() {
-+                    self.selected_index = self.presets.len() - 1;
-+                    self.adjust_model_scroll();
-+                    self.request_frame.schedule_frame();
-+                }
-+            }
-+            KeyCode::Esc if key_event.modifiers.is_empty() => {
-+                if matches!(self.stage, SelectionStage::Reasoning(_)) {
-+                    self.stage = SelectionStage::ModelList;
-+                    self.request_frame.schedule_frame();
-+                } else if matches!(self.status, ModelStepStatus::Error(_)) {
-+                    self.status = ModelStepStatus::Complete;
-+                    self.request_frame.schedule_frame();
-+                }
-+            }
-+            KeyCode::Enter if key_event.modifiers.is_empty() => match &self.status {
-+                ModelStepStatus::Ready => match self.stage {
-+                    SelectionStage::ModelList => self.begin_reasoning_stage(),
-+                    SelectionStage::Reasoning(_) => self.confirm_reasoning_selection(),
-+                },
-+                ModelStepStatus::Error(_) | ModelStepStatus::Complete => {
-+                    self.status = ModelStepStatus::Complete;
-+                    self.request_frame.schedule_frame();
-+                }
-+                _ => {}
-+            },
-+            _ => {}
-+        }
-+    }
-+}
-+
-+impl WidgetRef for ModelSelectionWidget {
-+    fn render_ref(&self, area: Rect, buf: &mut Buffer) {
-+        Clear.render(area, buf);
-+
-+        match &self.status {
-+            ModelStepStatus::Hidden | ModelStepStatus::AwaitingCredentials => {
-+                let lines = vec![
-+                    Line::from("Configure LiteLLM credentials first.").dim(),
-+                    Line::from("The model selector will appear afterwards."),
-+                ];
-+                Paragraph::new(lines)
-+                    .wrap(Wrap { trim: false })
-+                    .render(area, buf);
-+            }
-+            ModelStepStatus::Loading => self.render_loading(area, buf),
-+            ModelStepStatus::Ready => self.render_ready(area, buf),
-+            ModelStepStatus::Saving => {
-+                let lines = vec![
-+                    Line::from("Saving model selection…".bold()),
-+                    Line::from("Please wait."),
-+                ];
-+                Paragraph::new(lines)
-+                    .block(Block::default().borders(Borders::ALL))
-+                    .wrap(Wrap { trim: false })
-+                    .render(area, buf);
-+            }
-+            ModelStepStatus::Complete => self.render_completion(area, buf),
-+            ModelStepStatus::Error(message) => self.render_error(area, buf, message),
-+        }
-+    }
-+}
 diff --git a/codex-rs/tui/src/onboarding/onboarding_screen.rs b/codex-rs/tui/src/onboarding/onboarding_screen.rs
 index 709f158b..f5383af2 100644
 --- a/codex-rs/tui/src/onboarding/onboarding_screen.rs
@@ -7997,20 +6740,18 @@ index 969d279b..6f7f87ab 100644
      Approvals,
      Review,
 diff --git a/codex-rs/tui/src/status/card.rs b/codex-rs/tui/src/status/card.rs
-index fdf6629a..a70717f6 100644
+index 11b723fe..372feb25 100644
 --- a/codex-rs/tui/src/status/card.rs
 +++ b/codex-rs/tui/src/status/card.rs
-@@ -31,8 +31,7 @@ use super::rate_limits::StatusRateLimitRow;
- use super::rate_limits::compose_rate_limit_data;
- use super::rate_limits::format_status_limit_summary;
+@@ -33,6 +33,7 @@ use super::rate_limits::format_status_limit_summary;
  use super::rate_limits::render_status_limit_progress_bar;
--use crate::wrapping::RtOptions;
--use crate::wrapping::word_wrap_lines;
+ use crate::wrapping::RtOptions;
+ use crate::wrapping::word_wrap_lines;
 +use codex_litellm_model_session_telemetry::SessionTelemetrySnapshot;
  
  #[derive(Debug, Clone)]
  struct StatusContextWindowData {
-@@ -60,6 +59,7 @@ struct StatusHistoryCell {
+@@ -60,6 +61,7 @@ struct StatusHistoryCell {
      account: Option<StatusAccountDisplay>,
      session_id: Option<String>,
      token_usage: StatusTokenUsageData,
@@ -8018,7 +6759,7 @@ index fdf6629a..a70717f6 100644
      rate_limits: StatusRateLimitData,
  }
  
-@@ -68,6 +68,7 @@ pub(crate) fn new_status_output(
+@@ -68,6 +70,7 @@ pub(crate) fn new_status_output(
      total_usage: &TokenUsage,
      context_usage: Option<&TokenUsage>,
      session_id: &Option<ConversationId>,
@@ -8026,7 +6767,7 @@ index fdf6629a..a70717f6 100644
      rate_limits: Option<&RateLimitSnapshotDisplay>,
      now: DateTime<Local>,
  ) -> CompositeHistoryCell {
-@@ -77,6 +78,7 @@ pub(crate) fn new_status_output(
+@@ -77,6 +80,7 @@ pub(crate) fn new_status_output(
          total_usage,
          context_usage,
          session_id,
@@ -8034,7 +6775,7 @@ index fdf6629a..a70717f6 100644
          rate_limits,
          now,
      );
-@@ -90,6 +92,7 @@ impl StatusHistoryCell {
+@@ -90,6 +94,7 @@ impl StatusHistoryCell {
          total_usage: &TokenUsage,
          context_usage: Option<&TokenUsage>,
          session_id: &Option<ConversationId>,
@@ -8042,7 +6783,7 @@ index fdf6629a..a70717f6 100644
          rate_limits: Option<&RateLimitSnapshotDisplay>,
          now: DateTime<Local>,
      ) -> Self {
-@@ -134,6 +137,7 @@ impl StatusHistoryCell {
+@@ -134,6 +139,7 @@ impl StatusHistoryCell {
              account,
              session_id,
              token_usage,
@@ -8050,7 +6791,7 @@ index fdf6629a..a70717f6 100644
              rate_limits,
          }
      }
-@@ -268,7 +272,11 @@ impl HistoryCell for StatusHistoryCell {
+@@ -268,7 +274,11 @@ impl HistoryCell for StatusHistoryCell {
              Span::from(format!("{}>_ ", FieldFormatter::INDENT)).dim(),
              Span::from("OpenAI Codex").bold(),
              Span::from(" ").dim(),
@@ -8063,7 +6804,7 @@ index fdf6629a..a70717f6 100644
          ]));
          lines.push(Line::from(Vec::<Span<'static>>::new()));
  
-@@ -306,24 +314,12 @@ impl HistoryCell for StatusHistoryCell {
+@@ -306,6 +316,7 @@ impl HistoryCell for StatusHistoryCell {
          if self.token_usage.context_window.is_some() {
              push_label(&mut labels, &mut seen, "Context window");
          }
@@ -8071,25 +6812,7 @@ index fdf6629a..a70717f6 100644
          self.collect_rate_limit_labels(&mut seen, &mut labels);
  
          let formatter = FieldFormatter::from_labels(labels.iter().map(String::as_str));
-         let value_width = formatter.value_width(available_inner_width);
- 
--        let note_first_line = Line::from(vec![
--            Span::from("Visit ").cyan(),
--            "chatgpt.com/codex/settings/usage".cyan().underlined(),
--            Span::from(" for up-to-date").cyan(),
--        ]);
--        let note_second_line = Line::from(vec![
--            Span::from("information on rate limits and credits").cyan(),
--        ]);
--        let note_lines = word_wrap_lines(
--            [note_first_line, note_second_line],
--            RtOptions::new(available_inner_width),
--        );
--        lines.extend(note_lines);
-         lines.push(Line::from(Vec::<Span<'static>>::new()));
- 
-         let mut model_spans = vec![Span::from(self.model_name.clone())];
-@@ -355,6 +351,58 @@ impl HistoryCell for StatusHistoryCell {
+@@ -357,6 +368,58 @@ impl HistoryCell for StatusHistoryCell {
              lines.push(formatter.line("Token usage", self.token_usage_spans()));
          }
  
@@ -8149,10 +6872,10 @@ index fdf6629a..a70717f6 100644
              lines.push(formatter.line("Context window", spans));
          }
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
-index cf45f3f8..4415695a 100644
+index 85e6356c..7a810ad0 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
-@@ -1,14 +1,13 @@
+@@ -1,11 +1,12 @@
  ---
  source: tui/src/status/tests.rs
 +assertion_line: 179
@@ -8164,16 +6887,13 @@ index cf45f3f8..4415695a 100644
 -│  >_ OpenAI Codex (v0.0.0)                                                  │
 +│  >_ OpenAI Codex (v0.53.0+bcf30cef+litbcf30cef)                            │
  │                                                                            │
--│ Visit chatgpt.com/codex/settings/usage for up-to-date                      │
--│ information on rate limits and credits                                     │
- │                                                                            │
- │  Model:            gpt-5-codex (reasoning none, summaries auto)            │
- │  Directory: [[workspace]]                                                  │
+ │ Visit https://chatgpt.com/codex/settings/usage for up-to-date              │
+ │ information on rate limits and credits                                     │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
-index e38a1c7c..bb72fe43 100644
+index 123547cb..33197537 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
-@@ -1,14 +1,13 @@
+@@ -1,11 +1,12 @@
  ---
  source: tui/src/status/tests.rs
 +assertion_line: 130
@@ -8185,16 +6905,13 @@ index e38a1c7c..bb72fe43 100644
 -│  >_ OpenAI Codex (v0.0.0)                                           │
 +│  >_ OpenAI Codex (v0.53.0+bcf30cef+litbcf30cef)                     │
  │                                                                     │
--│ Visit chatgpt.com/codex/settings/usage for up-to-date               │
--│ information on rate limits and credits                              │
- │                                                                     │
- │  Model:            gpt-5-codex (reasoning high, summaries detailed) │
- │  Directory: [[workspace]]                                           │
+ │ Visit https://chatgpt.com/codex/settings/usage for up-to-date       │
+ │ information on rate limits and credits                              │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_empty_limits_message.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_empty_limits_message.snap
-index 82ed8fc0..56294638 100644
+index 17862db2..b26a789b 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_empty_limits_message.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_empty_limits_message.snap
-@@ -1,14 +1,13 @@
+@@ -1,11 +1,12 @@
  ---
  source: tui/src/status/tests.rs
 +assertion_line: 335
@@ -8206,16 +6923,13 @@ index 82ed8fc0..56294638 100644
 -│  >_ OpenAI Codex (v0.0.0)                                       │
 +│  >_ OpenAI Codex (v0.53.0+bcf30cef+litbcf30cef)                 │
  │                                                                 │
--│ Visit chatgpt.com/codex/settings/usage for up-to-date           │
--│ information on rate limits and credits                          │
- │                                                                 │
- │  Model:            gpt-5-codex (reasoning none, summaries auto) │
- │  Directory: [[workspace]]                                       │
+ │ Visit https://chatgpt.com/codex/settings/usage for up-to-date   │
+ │ information on rate limits and credits                          │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
-index 82ed8fc0..2b08e53a 100644
+index 17862db2..1a7a8746 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
-@@ -1,14 +1,13 @@
+@@ -1,11 +1,12 @@
  ---
  source: tui/src/status/tests.rs
 +assertion_line: 291
@@ -8227,16 +6941,13 @@ index 82ed8fc0..2b08e53a 100644
 -│  >_ OpenAI Codex (v0.0.0)                                       │
 +│  >_ OpenAI Codex (v0.53.0+bcf30cef+litbcf30cef)                 │
  │                                                                 │
--│ Visit chatgpt.com/codex/settings/usage for up-to-date           │
--│ information on rate limits and credits                          │
- │                                                                 │
- │  Model:            gpt-5-codex (reasoning none, summaries auto) │
- │  Directory: [[workspace]]                                       │
+ │ Visit https://chatgpt.com/codex/settings/usage for up-to-date   │
+ │ information on rate limits and credits                          │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap
-index bd187197..14390401 100644
+index 3a98ce95..452e762e 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap
-@@ -1,14 +1,13 @@
+@@ -1,11 +1,12 @@
  ---
  source: tui/src/status/tests.rs
 +assertion_line: 388
@@ -8248,18 +6959,16 @@ index bd187197..14390401 100644
 -│  >_ OpenAI Codex (v0.0.0)                                           │
 +│  >_ OpenAI Codex (v0.53.0+bcf30cef+litbcf30cef)                     │
  │                                                                     │
--│ Visit chatgpt.com/codex/settings/usage for up-to-date               │
--│ information on rate limits and credits                              │
- │                                                                     │
- │  Model:            gpt-5-codex (reasoning none, summaries auto)     │
- │  Directory: [[workspace]]                                           │
+ │ Visit https://chatgpt.com/codex/settings/usage for up-to-date       │
+ │ information on rate limits and credits                              │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
-index 64e9271d..b758f188 100644
+index 5bbaaef7..eadce1cd 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
-@@ -1,15 +1,13 @@
+@@ -1,12 +1,13 @@
  ---
  source: tui/src/status/tests.rs
+ assertion_line: 257
 +assertion_line: 260
  expression: sanitized
  ---
@@ -8269,12 +6978,8 @@ index 64e9271d..b758f188 100644
 -│  >_ OpenAI Codex (v0.0.0)                  │
 +│  >_ OpenAI Codex (v0.53.0+bcf30cef+litbcf3 │
  │                                            │
--│ Visit chatgpt.com/codex/settings/usage for │
--│ up-to-date                                 │
--│ information on rate limits and credits     │
- │                                            │
- │  Model:            gpt-5-codex (reasoning  │
- │  Directory: [[workspace]]                  │
+ │ Visit https://chatgpt.com/codex/settings/  │
+ │ usage for up-to-date                       │
 diff --git a/codex-rs/tui/src/status/tests.rs b/codex-rs/tui/src/status/tests.rs
 index 4ab4a8ea..5820e8ab 100644
 --- a/codex-rs/tui/src/status/tests.rs

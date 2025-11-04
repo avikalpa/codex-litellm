@@ -92,6 +92,17 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Compute version metadata
+        id: npm-version
+        run: |
+          BASE_VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")
+          UPSTREAM_COMMIT=$(node -p "require('./package.json').codexLitellm.upstreamCommit")
+          LIT_COMMIT=$(git rev-parse --short HEAD)
+          VERSION="${BASE_VERSION}+${UPSTREAM_COMMIT}+lit${LIT_COMMIT}"
+          echo "value=$VERSION" >> "$GITHUB_OUTPUT"
+          npm pkg set version="$VERSION"
+          npm pkg set codexLitellm.releaseTag="v${VERSION}"
+
       - name: Install dependencies
         env:
           CODEX_LITELLM_SKIP_DOWNLOAD: '1'
