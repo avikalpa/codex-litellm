@@ -1,8 +1,26 @@
 diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
-index 64c83b0f..ba480b33 100644
+index 64c83b0f..8ac9f794 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
-@@ -178,7 +178,7 @@ checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
+@@ -27,17 +27,6 @@ version = "2.0.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "320119579fcad9c21884f5c4861d16174d0e06250625266f50fe6898340abefa"
+ 
+-[[package]]
+-name = "aes"
+-version = "0.8.4"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "b169f7a6d4742236a0a00c541b845991d0ac43e546831af1249753ab4c3aa3a0"
+-dependencies = [
+- "cfg-if",
+- "cipher",
+- "cpufeatures",
+-]
+-
+ [[package]]
+ name = "ahash"
+ version = "0.8.12"
+@@ -178,7 +167,7 @@ checksum = "b0674a1ddeecb70197781e945de4b3b8ffb61fa939a5597bcf48503737663100"
  
  [[package]]
  name = "app_test_support"
@@ -11,7 +29,209 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -822,7 +822,7 @@ checksum = "e9b18233253483ce2f65329a24072ec414db782531bdbb7d0bbc4bd2ce6b7e21"
+@@ -309,18 +298,6 @@ version = "1.5.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "9b34d609dfbaf33d6889b2b7106d3ca345eacad44200913df5ba02bfd31d2ba9"
+ 
+-[[package]]
+-name = "async-broadcast"
+-version = "0.7.2"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "435a87a52755b8f27fcf321ac4f04b2802e337c8c4872923137471ec39c37532"
+-dependencies = [
+- "event-listener",
+- "event-listener-strategy",
+- "futures-core",
+- "pin-project-lite",
+-]
+-
+ [[package]]
+ name = "async-channel"
+ version = "2.5.0"
+@@ -333,107 +310,6 @@ dependencies = [
+  "pin-project-lite",
+ ]
+ 
+-[[package]]
+-name = "async-executor"
+-version = "1.13.3"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "497c00e0fd83a72a79a39fcbd8e3e2f055d6f6c7e025f3b3d91f4f8e76527fb8"
+-dependencies = [
+- "async-task",
+- "concurrent-queue",
+- "fastrand",
+- "futures-lite",
+- "pin-project-lite",
+- "slab",
+-]
+-
+-[[package]]
+-name = "async-fs"
+-version = "2.2.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "8034a681df4aed8b8edbd7fbe472401ecf009251c8b40556b304567052e294c5"
+-dependencies = [
+- "async-lock",
+- "blocking",
+- "futures-lite",
+-]
+-
+-[[package]]
+-name = "async-io"
+-version = "2.6.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "456b8a8feb6f42d237746d4b3e9a178494627745c3c56c6ea55d92ba50d026fc"
+-dependencies = [
+- "autocfg",
+- "cfg-if",
+- "concurrent-queue",
+- "futures-io",
+- "futures-lite",
+- "parking",
+- "polling",
+- "rustix 1.0.8",
+- "slab",
+- "windows-sys 0.61.1",
+-]
+-
+-[[package]]
+-name = "async-lock"
+-version = "3.4.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5fd03604047cee9b6ce9de9f70c6cd540a0520c813cbd49bae61f33ab80ed1dc"
+-dependencies = [
+- "event-listener",
+- "event-listener-strategy",
+- "pin-project-lite",
+-]
+-
+-[[package]]
+-name = "async-process"
+-version = "2.5.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "fc50921ec0055cdd8a16de48773bfeec5c972598674347252c0399676be7da75"
+-dependencies = [
+- "async-channel",
+- "async-io",
+- "async-lock",
+- "async-signal",
+- "async-task",
+- "blocking",
+- "cfg-if",
+- "event-listener",
+- "futures-lite",
+- "rustix 1.0.8",
+-]
+-
+-[[package]]
+-name = "async-recursion"
+-version = "1.1.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "3b43422f69d8ff38f95f1b2bb76517c91589a924d1559a0e935d7c8ce0274c11"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "syn 2.0.104",
+-]
+-
+-[[package]]
+-name = "async-signal"
+-version = "0.2.13"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "43c070bbf59cd3570b6b2dd54cd772527c7c3620fce8be898406dd3ed6adc64c"
+-dependencies = [
+- "async-io",
+- "async-lock",
+- "atomic-waker",
+- "cfg-if",
+- "futures-core",
+- "futures-io",
+- "rustix 1.0.8",
+- "signal-hook-registry",
+- "slab",
+- "windows-sys 0.61.1",
+-]
+-
+ [[package]]
+ name = "async-stream"
+ version = "0.3.6"
+@@ -456,12 +332,6 @@ dependencies = [
+  "syn 2.0.104",
+ ]
+ 
+-[[package]]
+-name = "async-task"
+-version = "4.7.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "8b75356056920673b02621b35afd0f7dda9306d03c79a30f5c56c44cf256e3de"
+-
+ [[package]]
+ name = "async-trait"
+ version = "0.1.89"
+@@ -605,28 +475,6 @@ dependencies = [
+  "generic-array",
+ ]
+ 
+-[[package]]
+-name = "block-padding"
+-version = "0.3.3"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "a8894febbff9f758034a5b8e12d87918f56dfc64a8e1fe757d65e29041538d93"
+-dependencies = [
+- "generic-array",
+-]
+-
+-[[package]]
+-name = "blocking"
+-version = "1.6.2"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e83f8d02be6967315521be875afa792a316e28d57b5a2d401897e2a7921b7f21"
+-dependencies = [
+- "async-channel",
+- "async-task",
+- "futures-io",
+- "futures-lite",
+- "piper",
+-]
+-
+ [[package]]
+ name = "bstr"
+ version = "1.12.0"
+@@ -683,15 +531,6 @@ dependencies = [
+  "rustversion",
+ ]
+ 
+-[[package]]
+-name = "cbc"
+-version = "0.1.2"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "26b52a9543ae338f279b96b0b9fed9c8093744685043739079ce85cd58f289a6"
+-dependencies = [
+- "cipher",
+-]
+-
+ [[package]]
+ name = "cc"
+ version = "1.2.30"
+@@ -745,16 +584,6 @@ version = "1.5.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "6e4de3bc4ea267985becf712dc6d9eed8b04c953b3fcfb339ebc87acd9804901"
+ 
+-[[package]]
+-name = "cipher"
+-version = "0.4.4"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "773f3b9af64447d2ce9850330c473515014aa235e6a783b02db81ff39e4a3dad"
+-dependencies = [
+- "crypto-common",
+- "inout",
+-]
+-
+ [[package]]
+ name = "clap"
+ version = "4.5.47"
+@@ -822,7 +651,7 @@ checksum = "e9b18233253483ce2f65329a24072ec414db782531bdbb7d0bbc4bd2ce6b7e21"
  
  [[package]]
  name = "codex-ansi-escape"
@@ -20,7 +240,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "ansi-to-tui",
   "ratatui",
-@@ -831,7 +831,7 @@ dependencies = [
+@@ -831,7 +660,7 @@ dependencies = [
  
  [[package]]
  name = "codex-app-server"
@@ -29,7 +249,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "app_test_support",
-@@ -866,7 +866,7 @@ dependencies = [
+@@ -866,7 +695,7 @@ dependencies = [
  
  [[package]]
  name = "codex-app-server-protocol"
@@ -38,7 +258,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -883,7 +883,7 @@ dependencies = [
+@@ -883,7 +712,7 @@ dependencies = [
  
  [[package]]
  name = "codex-apply-patch"
@@ -47,7 +267,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -898,7 +898,7 @@ dependencies = [
+@@ -898,7 +727,7 @@ dependencies = [
  
  [[package]]
  name = "codex-arg0"
@@ -56,7 +276,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "codex-apply-patch",
-@@ -911,7 +911,7 @@ dependencies = [
+@@ -911,7 +740,7 @@ dependencies = [
  
  [[package]]
  name = "codex-async-utils"
@@ -65,7 +285,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "async-trait",
   "pretty_assertions",
-@@ -935,7 +935,7 @@ dependencies = [
+@@ -935,7 +764,7 @@ dependencies = [
  
  [[package]]
  name = "codex-backend-openapi-models"
@@ -74,7 +294,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "serde",
   "serde_json",
-@@ -943,8 +943,12 @@ dependencies = [
+@@ -943,8 +772,12 @@ dependencies = [
  ]
  
  [[package]]
@@ -88,7 +308,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -959,7 +963,7 @@ dependencies = [
+@@ -959,7 +792,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cli"
@@ -97,7 +317,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -996,7 +1000,7 @@ dependencies = [
+@@ -996,7 +829,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cloud-tasks"
@@ -106,7 +326,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1022,7 +1026,7 @@ dependencies = [
+@@ -1022,7 +855,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cloud-tasks-client"
@@ -115,7 +335,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1037,19 +1041,22 @@ dependencies = [
+@@ -1037,19 +870,22 @@ dependencies = [
  
  [[package]]
  name = "codex-common"
@@ -140,7 +360,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "askama",
-@@ -1128,7 +1135,7 @@ dependencies = [
+@@ -1128,7 +964,7 @@ dependencies = [
  
  [[package]]
  name = "codex-exec"
@@ -149,7 +369,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1161,7 +1168,7 @@ dependencies = [
+@@ -1161,7 +997,7 @@ dependencies = [
  
  [[package]]
  name = "codex-execpolicy"
@@ -158,7 +378,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "allocative",
   "anyhow",
-@@ -1181,7 +1188,7 @@ dependencies = [
+@@ -1181,7 +1017,7 @@ dependencies = [
  
  [[package]]
  name = "codex-feedback"
@@ -167,7 +387,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "codex-protocol",
-@@ -1192,7 +1199,7 @@ dependencies = [
+@@ -1192,7 +1028,7 @@ dependencies = [
  
  [[package]]
  name = "codex-file-search"
@@ -176,7 +396,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -1205,7 +1212,7 @@ dependencies = [
+@@ -1205,7 +1041,7 @@ dependencies = [
  
  [[package]]
  name = "codex-git"
@@ -185,7 +405,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "assert_matches",
   "once_cell",
-@@ -1221,7 +1228,7 @@ dependencies = [
+@@ -1221,7 +1057,7 @@ dependencies = [
  
  [[package]]
  name = "codex-keyring-store"
@@ -194,7 +414,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "keyring",
   "tracing",
-@@ -1229,7 +1236,7 @@ dependencies = [
+@@ -1229,7 +1065,7 @@ dependencies = [
  
  [[package]]
  name = "codex-linux-sandbox"
@@ -203,7 +423,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "clap",
   "codex-core",
-@@ -1240,9 +1247,20 @@ dependencies = [
+@@ -1240,9 +1076,20 @@ dependencies = [
   "tokio",
  ]
  
@@ -225,7 +445,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "base64",
-@@ -1266,7 +1284,7 @@ dependencies = [
+@@ -1266,7 +1113,7 @@ dependencies = [
  
  [[package]]
  name = "codex-mcp-server"
@@ -234,7 +454,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1293,7 +1311,7 @@ dependencies = [
+@@ -1293,7 +1140,7 @@ dependencies = [
  
  [[package]]
  name = "codex-ollama"
@@ -243,7 +463,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "assert_matches",
   "async-stream",
-@@ -1309,7 +1327,7 @@ dependencies = [
+@@ -1309,7 +1156,7 @@ dependencies = [
  
  [[package]]
  name = "codex-otel"
@@ -252,7 +472,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "chrono",
   "codex-app-server-protocol",
-@@ -1330,14 +1348,14 @@ dependencies = [
+@@ -1330,14 +1177,14 @@ dependencies = [
  
  [[package]]
  name = "codex-process-hardening"
@@ -269,7 +489,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "base64",
-@@ -1363,7 +1381,7 @@ dependencies = [
+@@ -1363,7 +1210,7 @@ dependencies = [
  
  [[package]]
  name = "codex-protocol-ts"
@@ -278,7 +498,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -1373,7 +1391,7 @@ dependencies = [
+@@ -1373,7 +1220,7 @@ dependencies = [
  
  [[package]]
  name = "codex-responses-api-proxy"
@@ -287,7 +507,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -1389,7 +1407,7 @@ dependencies = [
+@@ -1389,7 +1236,7 @@ dependencies = [
  
  [[package]]
  name = "codex-rmcp-client"
@@ -296,7 +516,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "axum",
-@@ -1418,7 +1436,7 @@ dependencies = [
+@@ -1418,7 +1265,7 @@ dependencies = [
  
  [[package]]
  name = "codex-stdio-to-uds"
@@ -305,7 +525,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1429,7 +1447,7 @@ dependencies = [
+@@ -1429,7 +1276,7 @@ dependencies = [
  
  [[package]]
  name = "codex-tui"
@@ -314,7 +534,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "arboard",
-@@ -1445,6 +1463,7 @@ dependencies = [
+@@ -1445,6 +1292,7 @@ dependencies = [
   "codex-core",
   "codex-feedback",
   "codex-file-search",
@@ -322,7 +542,7 @@ index 64c83b0f..ba480b33 100644
   "codex-login",
   "codex-ollama",
   "codex-protocol",
-@@ -1491,7 +1510,7 @@ dependencies = [
+@@ -1491,7 +1339,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-cache"
@@ -331,7 +551,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "lru",
   "sha1",
-@@ -1500,7 +1519,7 @@ dependencies = [
+@@ -1500,7 +1348,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-image"
@@ -340,7 +560,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "base64",
   "codex-utils-cache",
-@@ -1512,7 +1531,7 @@ dependencies = [
+@@ -1512,7 +1360,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-json-to-toml"
@@ -349,7 +569,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "pretty_assertions",
   "serde_json",
-@@ -1521,7 +1540,7 @@ dependencies = [
+@@ -1521,7 +1369,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-pty"
@@ -358,7 +578,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "portable-pty",
-@@ -1530,7 +1549,7 @@ dependencies = [
+@@ -1530,7 +1378,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-readiness"
@@ -367,7 +587,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "assert_matches",
   "async-trait",
-@@ -1541,11 +1560,11 @@ dependencies = [
+@@ -1541,11 +1389,11 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-string"
@@ -381,7 +601,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "pretty_assertions",
-@@ -1680,7 +1699,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+@@ -1680,7 +1528,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
  
  [[package]]
  name = "core_test_support"
@@ -390,7 +610,51 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -2208,15 +2227,6 @@ version = "1.0.0"
+@@ -1885,35 +1733,6 @@ dependencies = [
+  "syn 2.0.104",
+ ]
+ 
+-[[package]]
+-name = "dbus"
+-version = "0.9.9"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "190b6255e8ab55a7b568df5a883e9497edc3e4821c06396612048b430e5ad1e9"
+-dependencies = [
+- "libc",
+- "libdbus-sys",
+- "windows-sys 0.59.0",
+-]
+-
+-[[package]]
+-name = "dbus-secret-service"
+-version = "4.1.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "708b509edf7889e53d7efb0ffadd994cc6c2345ccb62f55cfd6b0682165e4fa6"
+-dependencies = [
+- "aes",
+- "block-padding",
+- "cbc",
+- "dbus",
+- "fastrand",
+- "hkdf",
+- "num",
+- "once_cell",
+- "sha2",
+- "zeroize",
+-]
+-
+ [[package]]
+ name = "deadpool"
+ version = "0.12.3"
+@@ -2046,7 +1865,6 @@ checksum = "9ed9a281f7bc9b7576e61468ba615a66a5c8cfdff42420a70aa82701a3b1e292"
+ dependencies = [
+  "block-buffer",
+  "crypto-common",
+- "subtle",
+ ]
+ 
+ [[package]]
+@@ -2208,21 +2026,6 @@ version = "1.0.0"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "34aa73646ffb006b8f5147f3dc182bd4bcb190227ce861fc4a4844bf8e3cb2c0"
  
@@ -403,10 +667,24 @@ index 64c83b0f..ba480b33 100644
 - "cfg-if",
 -]
 -
+-[[package]]
+-name = "endi"
+-version = "1.1.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "a3d8a32ae18130a3c84dd492d4215c3d913c3b07c6b63c2eb3eb7ff1101ab7bf"
+-
  [[package]]
- name = "endi"
- version = "1.1.0"
-@@ -2491,21 +2501,6 @@ version = "0.1.5"
+ name = "endian-type"
+ version = "0.1.2"
+@@ -2236,7 +2039,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "1027f7680c853e056ebcec683615fb6fbbc07dbaa13b4d5d9442b146ded4ecef"
+ dependencies = [
+  "enumflags2_derive",
+- "serde",
+ ]
+ 
+ [[package]]
+@@ -2491,21 +2293,6 @@ version = "0.1.5"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2"
  
@@ -428,7 +706,52 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "form_urlencoded"
  version = "1.2.1"
-@@ -2909,13 +2904,13 @@ dependencies = [
+@@ -2572,19 +2359,6 @@ version = "0.3.31"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "9e5c1b78ca4aae1ac06c48a526a655760685149f0d465d21f37abfe57ce075c6"
+ 
+-[[package]]
+-name = "futures-lite"
+-version = "2.6.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f78e10609fe0e0b3f4157ffab1876319b5b0db102a2c60dc4626306dc46b44ad"
+-dependencies = [
+- "fastrand",
+- "futures-core",
+- "futures-io",
+- "parking",
+- "pin-project-lite",
+-]
+-
+ [[package]]
+ name = "futures-macro"
+ version = "0.3.31"
+@@ -2784,24 +2558,6 @@ version = "0.4.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70"
+ 
+-[[package]]
+-name = "hkdf"
+-version = "0.12.4"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "7b5f8eb2ad728638ea2c7d47a21db23b7b58a72ed6a38256b8a1849f15fbbdf7"
+-dependencies = [
+- "hmac",
+-]
+-
+-[[package]]
+-name = "hmac"
+-version = "0.12.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "6c49c37c09c17a53d937dfbb742eb3a961d65a994e6bcdcf37e7399d0cc8ab5e"
+-dependencies = [
+- "digest",
+-]
+-
+ [[package]]
+ name = "home"
+ version = "0.5.11"
+@@ -2909,13 +2665,13 @@ dependencies = [
   "http",
   "hyper",
   "hyper-util",
@@ -444,7 +767,7 @@ index 64c83b0f..ba480b33 100644
  ]
  
  [[package]]
-@@ -2931,22 +2926,6 @@ dependencies = [
+@@ -2931,22 +2687,6 @@ dependencies = [
   "tower-service",
  ]
  
@@ -467,7 +790,7 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "hyper-util"
  version = "0.1.16"
-@@ -2966,11 +2945,9 @@ dependencies = [
+@@ -2966,11 +2706,9 @@ dependencies = [
   "percent-encoding",
   "pin-project-lite",
   "socket2 0.6.0",
@@ -479,7 +802,73 @@ index 64c83b0f..ba480b33 100644
  ]
  
  [[package]]
-@@ -3653,7 +3630,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
+@@ -3236,16 +2974,6 @@ dependencies = [
+  "libc",
+ ]
+ 
+-[[package]]
+-name = "inout"
+-version = "0.1.4"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "879f10e63c20629ecabbb64a8010319738c66a5cd0c29b02d63d272b03751d01"
+-dependencies = [
+- "block-padding",
+- "generic-array",
+-]
+-
+ [[package]]
+ name = "insta"
+ version = "1.43.2"
+@@ -3424,15 +3152,7 @@ version = "3.6.3"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "eebcc3aff044e5944a8fbaf69eb277d11986064cba30c468730e8b9909fb551c"
+ dependencies = [
+- "byteorder",
+- "dbus-secret-service",
+- "linux-keyutils",
+  "log",
+- "secret-service",
+- "security-framework 2.11.1",
+- "security-framework 3.5.1",
+- "windows-sys 0.60.2",
+- "zbus",
+  "zeroize",
+ ]
+ 
+@@ -3510,15 +3230,6 @@ version = "0.2.175"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "6a82ae493e598baaea5209805c49bbf2ea7de956d50d7da0da1164f9c6d28543"
+ 
+-[[package]]
+-name = "libdbus-sys"
+-version = "0.2.6"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5cbe856efeb50e4681f010e9aaa2bf0a644e10139e54cde10fc83a307c23bd9f"
+-dependencies = [
+- "pkg-config",
+-]
+-
+ [[package]]
+ name = "libm"
+ version = "0.2.15"
+@@ -3535,16 +3246,6 @@ dependencies = [
+  "libc",
+ ]
+ 
+-[[package]]
+-name = "linux-keyutils"
+-version = "0.2.4"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "761e49ec5fd8a5a463f9b84e877c373d888935b71c6be78f3767fe2ae6bed18e"
+-dependencies = [
+- "bitflags 2.10.0",
+- "libc",
+-]
+-
+ [[package]]
+ name = "linux-raw-sys"
+ version = "0.4.15"
+@@ -3653,7 +3354,7 @@ checksum = "47e1ffaa40ddd1f3ed91f717a33c8c0ee23fff369e3aa8772b9605cc1d22f4c3"
  
  [[package]]
  name = "mcp-types"
@@ -488,7 +877,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "schemars 0.8.22",
   "serde",
-@@ -3663,7 +3640,7 @@ dependencies = [
+@@ -3663,7 +3364,7 @@ dependencies = [
  
  [[package]]
  name = "mcp_test_support"
@@ -497,7 +886,7 @@ index 64c83b0f..ba480b33 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -3765,23 +3742,6 @@ dependencies = [
+@@ -3765,23 +3466,6 @@ dependencies = [
   "serde",
  ]
  
@@ -521,7 +910,114 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "ndk-context"
  version = "0.1.1"
-@@ -4111,32 +4071,6 @@ version = "1.70.1"
+@@ -3798,34 +3482,21 @@ checksum = "650eef8c711430f1a879fdd01d4745a7deea475becfb90269c06775983bbf086"
+ name = "nibble_vec"
+ version = "0.1.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "77a5d83df9f36fe23f0c3648c6bbb8b0298bb5f1939c8f2704431371f4b84d43"
+-dependencies = [
+- "smallvec",
+-]
+-
+-[[package]]
+-name = "nix"
+-version = "0.28.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ab2156c4fce2f8df6c499cc1c763e4394b7482525bf2a9701c9d79d215f519e4"
+-dependencies = [
+- "bitflags 2.10.0",
+- "cfg-if",
+- "cfg_aliases 0.1.1",
+- "libc",
++checksum = "77a5d83df9f36fe23f0c3648c6bbb8b0298bb5f1939c8f2704431371f4b84d43"
++dependencies = [
++ "smallvec",
+ ]
+ 
+ [[package]]
+ name = "nix"
+-version = "0.29.0"
++version = "0.28.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "71e2746dc3a24dd78b3cfcb7be93368c6de9963d30f43a6a73998a9cf4b17b46"
++checksum = "ab2156c4fce2f8df6c499cc1c763e4394b7482525bf2a9701c9d79d215f519e4"
+ dependencies = [
+  "bitflags 2.10.0",
+  "cfg-if",
+- "cfg_aliases 0.2.1",
++ "cfg_aliases 0.1.1",
+  "libc",
+- "memoffset 0.9.1",
+ ]
+ 
+ [[package]]
+@@ -3899,20 +3570,6 @@ dependencies = [
+  "unicode-segmentation",
+ ]
+ 
+-[[package]]
+-name = "num"
+-version = "0.4.3"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "35bd024e8b2ff75562e5f34e7f4905839deb4b22955ef5e73d2fea1b9813cb23"
+-dependencies = [
+- "num-bigint",
+- "num-complex",
+- "num-integer",
+- "num-iter",
+- "num-rational",
+- "num-traits",
+-]
+-
+ [[package]]
+ name = "num-bigint"
+ version = "0.4.6"
+@@ -3923,15 +3580,6 @@ dependencies = [
+  "num-traits",
+ ]
+ 
+-[[package]]
+-name = "num-complex"
+-version = "0.4.6"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "73f88a1307638156682bada9d7604135552957b7818057dcef22705b4d509495"
+-dependencies = [
+- "num-traits",
+-]
+-
+ [[package]]
+ name = "num-conv"
+ version = "0.1.0"
+@@ -3947,28 +3595,6 @@ dependencies = [
+  "num-traits",
+ ]
+ 
+-[[package]]
+-name = "num-iter"
+-version = "0.1.45"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "1429034a0490724d0075ebb2bc9e875d6503c3cf69e235a8941aa757d83ef5bf"
+-dependencies = [
+- "autocfg",
+- "num-integer",
+- "num-traits",
+-]
+-
+-[[package]]
+-name = "num-rational"
+-version = "0.4.2"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "f83d14da390562dca69fc84082e73e548e1ad308d24accdedd2720017cb37824"
+-dependencies = [
+- "num-bigint",
+- "num-integer",
+- "num-traits",
+-]
+-
+ [[package]]
+ name = "num-traits"
+ version = "0.2.19"
+@@ -4111,32 +3737,6 @@ version = "1.70.1"
  source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "a4895175b425cb1f87721b59f0f286c2092bd4af812243672510e1ac53e2e0ad"
  
@@ -554,7 +1050,79 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "openssl-probe"
  version = "0.1.6"
-@@ -4688,7 +4622,7 @@ dependencies = [
+@@ -4269,16 +3869,6 @@ version = "0.2.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "04744f49eae99ab78e0d5c0b603ab218f515ea8cfe5a456d7629ad883a3b6e7d"
+ 
+-[[package]]
+-name = "ordered-stream"
+-version = "0.2.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "9aa2b01e1d916879f73a53d01d1d6cee68adbb31d6d9177a8cfce093cced1d50"
+-dependencies = [
+- "futures-core",
+- "pin-project-lite",
+-]
+-
+ [[package]]
+ name = "os_info"
+ version = "3.12.0"
+@@ -4413,17 +4003,6 @@ version = "0.1.0"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "8b870d8c151b6f2fb93e84a13146138f05d02ed11c7e7c54f8826aaaf7c9f184"
+ 
+-[[package]]
+-name = "piper"
+-version = "0.2.4"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "96c8c490f422ef9a4efd2cb5b42b76c8613d7e7dfc1caf667b8a3350a5acc066"
+-dependencies = [
+- "atomic-waker",
+- "fastrand",
+- "futures-io",
+-]
+-
+ [[package]]
+ name = "pkg-config"
+ version = "0.3.32"
+@@ -4456,20 +4035,6 @@ dependencies = [
+  "miniz_oxide",
+ ]
+ 
+-[[package]]
+-name = "polling"
+-version = "3.11.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "5d0e4f59085d47d8241c88ead0f274e8a0cb551f3625263c05eb8dd897c34218"
+-dependencies = [
+- "cfg-if",
+- "concurrent-queue",
+- "hermit-abi",
+- "pin-project-lite",
+- "rustix 1.0.8",
+- "windows-sys 0.61.1",
+-]
+-
+ [[package]]
+ name = "portable-atomic"
+ version = "1.11.1"
+@@ -4578,15 +4143,6 @@ dependencies = [
+  "yansi",
+ ]
+ 
+-[[package]]
+-name = "proc-macro-crate"
+-version = "3.4.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "219cb19e96be00ab2e37d6e299658a0cfa83e52429179969b0f0121b4ac46983"
+-dependencies = [
+- "toml_edit",
+-]
+-
+ [[package]]
+ name = "proc-macro2"
+ version = "1.0.95"
+@@ -4688,7 +4244,7 @@ dependencies = [
   "quinn-proto",
   "quinn-udp",
   "rustc-hash 2.1.1",
@@ -563,7 +1131,7 @@ index 64c83b0f..ba480b33 100644
   "socket2 0.6.0",
   "thiserror 2.0.16",
   "tokio",
-@@ -4708,7 +4642,7 @@ dependencies = [
+@@ -4708,7 +4264,7 @@ dependencies = [
   "rand 0.9.2",
   "ring",
   "rustc-hash 2.1.1",
@@ -572,7 +1140,7 @@ index 64c83b0f..ba480b33 100644
   "rustls-pki-types",
   "slab",
   "thiserror 2.0.16",
-@@ -4944,26 +4878,21 @@ checksum = "d429f34c8092b2d42c7c93cec323bb4adeb7c67698f70839adec842ec10c7ceb"
+@@ -4944,26 +4500,21 @@ checksum = "d429f34c8092b2d42c7c93cec323bb4adeb7c67698f70839adec842ec10c7ceb"
  dependencies = [
   "base64",
   "bytes",
@@ -600,7 +1168,7 @@ index 64c83b0f..ba480b33 100644
   "rustls-native-certs",
   "rustls-pki-types",
   "serde",
-@@ -4971,7 +4900,6 @@ dependencies = [
+@@ -4971,7 +4522,6 @@ dependencies = [
   "serde_urlencoded",
   "sync_wrapper",
   "tokio",
@@ -608,7 +1176,7 @@ index 64c83b0f..ba480b33 100644
   "tokio-rustls",
   "tokio-util",
   "tower",
-@@ -4982,7 +4910,7 @@ dependencies = [
+@@ -4982,7 +4532,7 @@ dependencies = [
   "wasm-bindgen-futures",
   "wasm-streams",
   "web-sys",
@@ -617,7 +1185,7 @@ index 64c83b0f..ba480b33 100644
  ]
  
  [[package]]
-@@ -5099,16 +5027,31 @@ dependencies = [
+@@ -5099,16 +4649,31 @@ dependencies = [
   "windows-sys 0.60.2",
  ]
  
@@ -650,7 +1218,16 @@ index 64c83b0f..ba480b33 100644
   "subtle",
   "zeroize",
  ]
-@@ -5135,6 +5078,17 @@ dependencies = [
+@@ -5122,7 +4687,7 @@ dependencies = [
+  "openssl-probe",
+  "rustls-pki-types",
+  "schannel",
+- "security-framework 3.5.1",
++ "security-framework",
+ ]
+ 
+ [[package]]
+@@ -5135,6 +4700,17 @@ dependencies = [
   "zeroize",
  ]
  
@@ -668,7 +1245,46 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "rustls-webpki"
  version = "0.103.4"
-@@ -5400,8 +5354,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
+@@ -5332,38 +4908,6 @@ dependencies = [
+  "libc",
+ ]
+ 
+-[[package]]
+-name = "secret-service"
+-version = "4.0.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "e4d35ad99a181be0a60ffcbe85d680d98f87bdc4d7644ade319b87076b9dbfd4"
+-dependencies = [
+- "aes",
+- "cbc",
+- "futures-util",
+- "generic-array",
+- "hkdf",
+- "num",
+- "once_cell",
+- "rand 0.8.5",
+- "serde",
+- "sha2",
+- "zbus",
+-]
+-
+-[[package]]
+-name = "security-framework"
+-version = "2.11.1"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "897b2245f0b511c87893af39b033e5ca9cce68824c4d7e7630b5a1d339658d02"
+-dependencies = [
+- "bitflags 2.10.0",
+- "core-foundation 0.9.4",
+- "core-foundation-sys",
+- "libc",
+- "security-framework-sys",
+-]
+-
+ [[package]]
+ name = "security-framework"
+ version = "3.5.1"
+@@ -5400,8 +4944,8 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
  checksum = "5484316556650182f03b43d4c746ce0e3e48074a21e2f51244b648b6542e1066"
  dependencies = [
   "httpdate",
@@ -678,7 +1294,7 @@ index 64c83b0f..ba480b33 100644
   "sentry-backtrace",
   "sentry-contexts",
   "sentry-core",
-@@ -5410,6 +5364,7 @@ dependencies = [
+@@ -5410,6 +4954,7 @@ dependencies = [
   "sentry-tracing",
   "tokio",
   "ureq",
@@ -686,7 +1302,7 @@ index 64c83b0f..ba480b33 100644
  ]
  
  [[package]]
-@@ -6063,27 +6018,6 @@ dependencies = [
+@@ -6063,27 +5608,6 @@ dependencies = [
   "libc",
  ]
  
@@ -714,7 +1330,7 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "tempfile"
  version = "3.23.0"
-@@ -6363,23 +6297,13 @@ dependencies = [
+@@ -6363,23 +5887,13 @@ dependencies = [
   "syn 2.0.104",
  ]
  
@@ -739,7 +1355,7 @@ index 64c83b0f..ba480b33 100644
   "tokio",
  ]
  
-@@ -6821,9 +6745,11 @@ checksum = "02d1a66277ed75f640d608235660df48c8e3c19f3b4edb6a263315626cc3c01d"
+@@ -6821,9 +6335,11 @@ checksum = "02d1a66277ed75f640d608235660df48c8e3c19f3b4edb6a263315626cc3c01d"
  dependencies = [
   "base64",
   "log",
@@ -752,7 +1368,7 @@ index 64c83b0f..ba480b33 100644
  ]
  
  [[package]]
-@@ -7070,6 +6996,15 @@ dependencies = [
+@@ -7070,6 +6586,15 @@ dependencies = [
   "web-sys",
  ]
  
@@ -768,7 +1384,7 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "webpki-roots"
  version = "1.0.2"
-@@ -7224,17 +7159,6 @@ dependencies = [
+@@ -7224,17 +6749,6 @@ dependencies = [
   "windows-link 0.1.3",
  ]
  
@@ -786,6 +1402,154 @@ index 64c83b0f..ba480b33 100644
  [[package]]
  name = "windows-result"
  version = "0.3.4"
+@@ -7628,16 +7142,6 @@ version = "0.13.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ec107c4503ea0b4a98ef47356329af139c0a4f7750e621cf2973cd3385ebcb3d"
+ 
+-[[package]]
+-name = "xdg-home"
+-version = "1.3.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ec1cdab258fb55c0da61328dc52c8764709b249011b2cad0454c72f0bf10a1f6"
+-dependencies = [
+- "libc",
+- "windows-sys 0.59.0",
+-]
+-
+ [[package]]
+ name = "yansi"
+ version = "1.0.1"
+@@ -7668,68 +7172,6 @@ dependencies = [
+  "synstructure",
+ ]
+ 
+-[[package]]
+-name = "zbus"
+-version = "4.4.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "bb97012beadd29e654708a0fdb4c84bc046f537aecfde2c3ee0a9e4b4d48c725"
+-dependencies = [
+- "async-broadcast",
+- "async-executor",
+- "async-fs",
+- "async-io",
+- "async-lock",
+- "async-process",
+- "async-recursion",
+- "async-task",
+- "async-trait",
+- "blocking",
+- "enumflags2",
+- "event-listener",
+- "futures-core",
+- "futures-sink",
+- "futures-util",
+- "hex",
+- "nix 0.29.0",
+- "ordered-stream",
+- "rand 0.8.5",
+- "serde",
+- "serde_repr",
+- "sha1",
+- "static_assertions",
+- "tracing",
+- "uds_windows",
+- "windows-sys 0.52.0",
+- "xdg-home",
+- "zbus_macros",
+- "zbus_names",
+- "zvariant",
+-]
+-
+-[[package]]
+-name = "zbus_macros"
+-version = "4.4.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "267db9407081e90bbfa46d841d3cbc60f59c0351838c4bc65199ecd79ab1983e"
+-dependencies = [
+- "proc-macro-crate",
+- "proc-macro2",
+- "quote",
+- "syn 2.0.104",
+- "zvariant_utils",
+-]
+-
+-[[package]]
+-name = "zbus_names"
+-version = "3.0.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "4b9b1fef7d021261cc16cba64c351d291b715febe0fa10dc3a443ac5a5022e6c"
+-dependencies = [
+- "serde",
+- "static_assertions",
+- "zvariant",
+-]
+-
+ [[package]]
+ name = "zerocopy"
+ version = "0.8.26"
+@@ -7776,20 +7218,6 @@ name = "zeroize"
+ version = "1.8.1"
+ source = "registry+https://github.com/rust-lang/crates.io-index"
+ checksum = "ced3678a2879b30306d323f4542626697a464a97c0a07c9aebf7ebca65cd4dde"
+-dependencies = [
+- "zeroize_derive",
+-]
+-
+-[[package]]
+-name = "zeroize_derive"
+-version = "1.4.2"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "ce36e65b0d2999d2aafac989fb249189a141aee1f53c612c1f37d72631959f69"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "syn 2.0.104",
+-]
+ 
+ [[package]]
+ name = "zerotrie"
+@@ -7839,40 +7267,3 @@ checksum = "2c9e525af0a6a658e031e95f14b7f889976b74a11ba0eca5a5fc9ac8a1c43a6a"
+ dependencies = [
+  "zune-core",
+ ]
+-
+-[[package]]
+-name = "zvariant"
+-version = "4.2.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "2084290ab9a1c471c38fc524945837734fbf124487e105daec2bb57fd48c81fe"
+-dependencies = [
+- "endi",
+- "enumflags2",
+- "serde",
+- "static_assertions",
+- "zvariant_derive",
+-]
+-
+-[[package]]
+-name = "zvariant_derive"
+-version = "4.2.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "73e2ba546bda683a90652bac4a279bc146adad1386f25379cf73200d2002c449"
+-dependencies = [
+- "proc-macro-crate",
+- "proc-macro2",
+- "quote",
+- "syn 2.0.104",
+- "zvariant_utils",
+-]
+-
+-[[package]]
+-name = "zvariant_utils"
+-version = "2.1.0"
+-source = "registry+https://github.com/rust-lang/crates.io-index"
+-checksum = "c51bcff7cc3dbb5055396bcf774748c3dab426b4b8659046963523cee4808340"
+-dependencies = [
+- "proc-macro2",
+- "quote",
+- "syn 2.0.104",
+-]
 diff --git a/codex-rs/Cargo.toml b/codex-rs/Cargo.toml
 index 06fe7cba..cb013279 100644
 --- a/codex-rs/Cargo.toml
@@ -887,77 +1651,6 @@ index be47cbc2..36d3f09f 100644
          supported_reasoning_efforts: reasoning_efforts_from_preset(
              preset.supported_reasoning_efforts,
          ),
-diff --git a/codex-rs/build-info/Cargo.toml b/codex-rs/build-info/Cargo.toml
-new file mode 100644
-index 00000000..3ba70fe6
---- /dev/null
-+++ b/codex-rs/build-info/Cargo.toml
-@@ -0,0 +1,6 @@
-+[package]
-+name = "codex-build-info"
-+version = "0.0.0"
-+edition = "2021"
-+
-+[dependencies]
-diff --git a/codex-rs/build-info/build.rs b/codex-rs/build-info/build.rs
-new file mode 100644
-index 00000000..5766b67b
---- /dev/null
-+++ b/codex-rs/build-info/build.rs
-@@ -0,0 +1,27 @@
-+use std::process::Command;
-+
-+fn resolve_commit() -> String {
-+    Command::new("git")
-+        .args(["rev-parse", "--short", "HEAD"])
-+        .output()
-+        .ok()
-+        .and_then(|output| {
-+            if output.status.success() {
-+                let trimmed = String::from_utf8_lossy(&output.stdout).trim().to_string();
-+                if trimmed.is_empty() {
-+                    None
-+                } else {
-+                    Some(trimmed)
-+                }
-+            } else {
-+                None
-+            }
-+        })
-+        .unwrap_or_else(|| "unknown".to_string())
-+}
-+
-+fn main() {
-+    let commit = resolve_commit();
-+    println!("cargo:rustc-env=CODEX_LITELLM_COMMIT={commit}");
-+    println!("cargo:rustc-env=CODEX_UPSTREAM_COMMIT={commit}");
-+}
-diff --git a/codex-rs/build-info/src/lib.rs b/codex-rs/build-info/src/lib.rs
-new file mode 100644
-index 00000000..db1f6841
---- /dev/null
-+++ b/codex-rs/build-info/src/lib.rs
-@@ -0,0 +1,20 @@
-+pub const CODEX_UPSTREAM_COMMIT: &str = env!("CODEX_UPSTREAM_COMMIT");
-+pub const CODEX_LITELLM_COMMIT: &str = env!("CODEX_LITELLM_COMMIT");
-+pub const VERSION_WITH_COMMIT: &str = concat!(
-+    env!("CARGO_PKG_VERSION"),
-+    "+",
-+    env!("CODEX_UPSTREAM_COMMIT"),
-+    "+lit",
-+    env!("CODEX_LITELLM_COMMIT")
-+);
-+
-+pub fn decorate_version(base_version: &str) -> String {
-+    format!(
-+        "{base_version}+{}+lit{}",
-+        CODEX_UPSTREAM_COMMIT, CODEX_LITELLM_COMMIT
-+    )
-+}
-+
-+pub fn version_with_commit() -> String {
-+    VERSION_WITH_COMMIT.to_string()
-+}
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
 index 9b2d106c..32363ae2 100644
 --- a/codex-rs/cli/src/main.rs
@@ -970,252 +1663,6 @@ index 9b2d106c..32363ae2 100644
                      ..Default::default()
                  };
  
-diff --git a/codex-rs/codex-litellm-model-session-telemetry/Cargo.toml b/codex-rs/codex-litellm-model-session-telemetry/Cargo.toml
-new file mode 100644
-index 00000000..51d7aa59
---- /dev/null
-+++ b/codex-rs/codex-litellm-model-session-telemetry/Cargo.toml
-@@ -0,0 +1,11 @@
-+[package]
-+name = "codex-litellm-model-session-telemetry"
-+version = "0.1.0"
-+edition = "2021"
-+
-+[dependencies]
-+chrono = { workspace = true }
-+once_cell = "1.19"
-+parking_lot = "0.12"
-+serde = { workspace = true, features = ["derive"] }
-+serde_json = { workspace = true }
-diff --git a/codex-rs/codex-litellm-model-session-telemetry/src/lib.rs b/codex-rs/codex-litellm-model-session-telemetry/src/lib.rs
-new file mode 100644
-index 00000000..385ef480
---- /dev/null
-+++ b/codex-rs/codex-litellm-model-session-telemetry/src/lib.rs
-@@ -0,0 +1,223 @@
-+use chrono::{DateTime, SecondsFormat, Utc};
-+use once_cell::sync::Lazy;
-+use parking_lot::Mutex;
-+use serde::Serialize;
-+use serde_json::json;
-+use std::collections::BTreeMap;
-+use std::collections::HashMap;
-+use std::fs::{File, OpenOptions};
-+use std::io::{BufWriter, Write};
-+use std::path::PathBuf;
-+
-+const DEFAULT_SESSION_KEY: &str = "_default";
-+
-+#[derive(Debug, Clone, Default, Serialize)]
-+pub struct ModelUsageSnapshot {
-+    pub model: String,
-+    pub turns: u32,
-+    pub total_tokens: i64,
-+    pub prompt_tokens: i64,
-+    pub completion_tokens: i64,
-+    pub reasoning_tokens: i64,
-+    pub last_reasoning_effort: Option<String>,
-+    pub last_updated: DateTime<Utc>,
-+}
-+
-+#[derive(Debug, Clone, Default, Serialize)]
-+pub struct SessionTelemetrySnapshot {
-+    pub total_turns: u32,
-+    pub total_tokens: i64,
-+    pub total_prompt_tokens: i64,
-+    pub total_completion_tokens: i64,
-+    pub total_reasoning_tokens: i64,
-+    pub last_model: Option<String>,
-+    pub last_reasoning_effort: Option<String>,
-+    pub last_updated: Option<DateTime<Utc>>,
-+    pub models: Vec<ModelUsageSnapshot>,
-+}
-+
-+#[derive(Debug, Default)]
-+struct ModelUsageEntry {
-+    turns: u32,
-+    total_tokens: i64,
-+    prompt_tokens: i64,
-+    completion_tokens: i64,
-+    reasoning_tokens: i64,
-+    last_reasoning_effort: Option<String>,
-+    last_updated: DateTime<Utc>,
-+}
-+
-+#[derive(Debug, Default)]
-+struct SessionTelemetryEntry {
-+    total_turns: u32,
-+    total_tokens: i64,
-+    total_prompt_tokens: i64,
-+    total_completion_tokens: i64,
-+    total_reasoning_tokens: i64,
-+    last_model: Option<String>,
-+    last_reasoning_effort: Option<String>,
-+    last_updated: Option<DateTime<Utc>>,
-+    models: BTreeMap<String, ModelUsageEntry>,
-+}
-+
-+static TELEMETRY: Lazy<Mutex<HashMap<String, SessionTelemetryEntry>>> =
-+    Lazy::new(|| Mutex::new(HashMap::new()));
-+
-+static LOG_FILE: Lazy<Mutex<Option<LogFile>>> = Lazy::new(|| Mutex::new(None));
-+
-+struct LogFile {
-+    writer: BufWriter<File>,
-+}
-+
-+impl LogFile {
-+    fn write_turn(
-+        &mut self,
-+        session_id: Option<&str>,
-+        model: &str,
-+        reasoning_effort: Option<&str>,
-+        prompt_tokens: i64,
-+        completion_tokens: i64,
-+        reasoning_tokens: i64,
-+        total_tokens: i64,
-+    ) -> std::io::Result<()> {
-+        let record = json!({
-+            "ts": Utc::now().to_rfc3339_opts(SecondsFormat::Millis, true),
-+            "session_id": session_id,
-+            "model": model,
-+            "reasoning_effort": reasoning_effort,
-+            "prompt_tokens": prompt_tokens,
-+            "completion_tokens": completion_tokens,
-+            "reasoning_tokens": reasoning_tokens,
-+            "total_tokens": total_tokens,
-+        });
-+        serde_json::to_writer(&mut self.writer, &record)?;
-+        self.writer.write_all(b"\n")?;
-+        self.writer.flush()?;
-+        Ok(())
-+    }
-+}
-+
-+fn normalize_session_id(session_id: Option<&str>) -> String {
-+    session_id
-+        .map(|id| id.trim().to_string())
-+        .filter(|id| !id.is_empty())
-+        .unwrap_or_else(|| DEFAULT_SESSION_KEY.to_string())
-+}
-+
-+pub fn configure_log_file(path: Option<PathBuf>) -> std::io::Result<()> {
-+    let mut guard = LOG_FILE.lock();
-+    if let Some(path) = path {
-+        let mut opts = OpenOptions::new();
-+        opts.create(true).append(true).write(true);
-+        #[cfg(unix)]
-+        {
-+            use std::os::unix::fs::OpenOptionsExt;
-+            opts.mode(0o600);
-+        }
-+        let file = opts.open(path)?;
-+        *guard = Some(LogFile {
-+            writer: BufWriter::new(file),
-+        });
-+    } else {
-+        guard.take();
-+    }
-+    Ok(())
-+}
-+
-+pub fn clear_session(session_id: Option<&str>) {
-+    let key = normalize_session_id(session_id);
-+    TELEMETRY.lock().remove(&key);
-+}
-+
-+pub fn record_turn(
-+    session_id: Option<&str>,
-+    model: &str,
-+    reasoning_effort: Option<&str>,
-+    prompt_tokens: i64,
-+    completion_tokens: i64,
-+    reasoning_tokens: i64,
-+    total_tokens: i64,
-+) {
-+    let key = normalize_session_id(session_id);
-+    let mut guard = TELEMETRY.lock();
-+    let entry = guard.entry(key).or_default();
-+
-+    let now = Utc::now();
-+    let model_entry = entry
-+        .models
-+        .entry(model.to_string())
-+        .or_insert_with(ModelUsageEntry::default);
-+
-+    model_entry.turns = model_entry.turns.saturating_add(1);
-+    model_entry.total_tokens += total_tokens;
-+    model_entry.prompt_tokens += prompt_tokens;
-+    model_entry.completion_tokens += completion_tokens;
-+    model_entry.reasoning_tokens += reasoning_tokens;
-+    model_entry.last_reasoning_effort = reasoning_effort.map(|effort| effort.to_string());
-+    model_entry.last_updated = now;
-+
-+    entry.total_turns = entry.total_turns.saturating_add(1);
-+    entry.total_tokens += total_tokens;
-+    entry.total_prompt_tokens += prompt_tokens;
-+    entry.total_completion_tokens += completion_tokens;
-+    entry.total_reasoning_tokens += reasoning_tokens;
-+    entry.last_model = Some(model.to_string());
-+    entry.last_reasoning_effort = reasoning_effort.map(|effort| effort.to_string());
-+    entry.last_updated = Some(now);
-+
-+    drop(guard);
-+
-+    {
-+        let mut log_guard = LOG_FILE.lock();
-+        if let Some(log_file) = log_guard.as_mut() {
-+            if let Err(err) = log_file.write_turn(
-+                session_id,
-+                model,
-+                reasoning_effort,
-+                prompt_tokens,
-+                completion_tokens,
-+                reasoning_tokens,
-+                total_tokens,
-+            ) {
-+                eprintln!(
-+                    "[codex-litellm-model-session-telemetry] failed to write log entry: {err}"
-+                );
-+            }
-+        }
-+    }
-+}
-+
-+pub fn snapshot(session_id: Option<&str>) -> Option<SessionTelemetrySnapshot> {
-+    let key = normalize_session_id(session_id);
-+    let guard = TELEMETRY.lock();
-+    let entry = guard.get(&key)?;
-+
-+    let mut models: Vec<ModelUsageSnapshot> = entry
-+        .models
-+        .iter()
-+        .map(|(model, usage)| ModelUsageSnapshot {
-+            model: model.clone(),
-+            turns: usage.turns,
-+            total_tokens: usage.total_tokens,
-+            prompt_tokens: usage.prompt_tokens,
-+            completion_tokens: usage.completion_tokens,
-+            reasoning_tokens: usage.reasoning_tokens,
-+            last_reasoning_effort: usage.last_reasoning_effort.clone(),
-+            last_updated: usage.last_updated,
-+        })
-+        .collect();
-+
-+    models.sort_by(|a, b| b.total_tokens.cmp(&a.total_tokens));
-+
-+    Some(SessionTelemetrySnapshot {
-+        total_turns: entry.total_turns,
-+        total_tokens: entry.total_tokens,
-+        total_prompt_tokens: entry.total_prompt_tokens,
-+        total_completion_tokens: entry.total_completion_tokens,
-+        total_reasoning_tokens: entry.total_reasoning_tokens,
-+        last_model: entry.last_model.clone(),
-+        last_reasoning_effort: entry.last_reasoning_effort.clone(),
-+        last_updated: entry.last_updated,
-+        models,
-+    })
-+}
 diff --git a/codex-rs/common/Cargo.toml b/codex-rs/common/Cargo.toml
 index d8f30cc0..2c667b84 100644
 --- a/codex-rs/common/Cargo.toml
@@ -1248,89 +1695,6 @@ index 276bfca0..c445cec5 100644
  // Shared fuzzy matcher (used by TUI selection popups and other UI filtering)
  pub mod fuzzy_match;
  // Shared model presets used by TUI and MCP server
-diff --git a/codex-rs/common/src/litellm.rs b/codex-rs/common/src/litellm.rs
-new file mode 100644
-index 00000000..2c105720
---- /dev/null
-+++ b/codex-rs/common/src/litellm.rs
-@@ -0,0 +1,77 @@
-+use codex_build_info::{decorate_version as decorate_version_inner, version_with_commit};
-+use codex_core::config::{
-+    LiteLlmProviderUpdate, ensure_litellm_baseline, read_litellm_provider_state,
-+    write_litellm_provider_state,
-+};
-+use std::env;
-+use std::io;
-+use std::io::IsTerminal;
-+use std::io::Write as _;
-+use std::path::Path;
-+
-+pub const LITELLM_BASE_URL_ENV: &str = "LITELLM_BASE_URL";
-+pub const LITELLM_API_KEY_ENV: &str = "LITELLM_API_KEY";
-+
-+pub fn decorate_version(base_version: &str) -> String {
-+    decorate_version_inner(base_version)
-+}
-+
-+pub fn version_with_commit_string() -> String {
-+    version_with_commit()
-+}
-+
-+pub fn ensure_litellm_credentials(codex_home: &Path) -> io::Result<()> {
-+    ensure_litellm_baseline(codex_home)?;
-+    let state = read_litellm_provider_state(codex_home)?;
-+    let mut update = LiteLlmProviderUpdate::default();
-+
-+    if state.base_url.is_none() {
-+        let base_url = prompt_or_env("LiteLLM endpoint URL", LITELLM_BASE_URL_ENV, false)?;
-+        update.base_url = Some(base_url);
-+    }
-+
-+    if state.api_key.is_none() {
-+        let api_key = prompt_or_env("LiteLLM API key", LITELLM_API_KEY_ENV, true)?;
-+        update.api_key = Some(api_key);
-+    }
-+
-+    write_litellm_provider_state(codex_home, update)
-+}
-+
-+fn prompt_or_env(label: &str, env_var: &str, secret: bool) -> io::Result<String> {
-+    if let Ok(value) = env::var(env_var) {
-+        let trimmed = value.trim();
-+        if !trimmed.is_empty() {
-+            eprintln!("{label} sourced from ${env_var}.");
-+            return Ok(trimmed.to_string());
-+        }
-+    }
-+
-+    if !io::stdin().is_terminal() {
-+        return Err(io::Error::new(
-+            io::ErrorKind::InvalidInput,
-+            format!("{label} is not configured and ${env_var} is unset."),
-+        ));
-+    }
-+
-+    prompt_for_value(label, secret)
-+}
-+
-+fn prompt_for_value(label: &str, secret: bool) -> io::Result<String> {
-+    loop {
-+        if secret {
-+            eprint!("{label}: ");
-+        } else {
-+            eprint!("{label}: ");
-+        }
-+        io::stderr().flush()?;
-+        let mut buffer = String::new();
-+        io::stdin().read_line(&mut buffer)?;
-+        let value = buffer.trim().to_string();
-+        if value.is_empty() {
-+            eprintln!("{label} cannot be empty.");
-+            continue;
-+        }
-+        return Ok(value);
-+    }
-+}
 diff --git a/codex-rs/common/src/model_presets.rs b/codex-rs/common/src/model_presets.rs
 index b6d06438..3947ebb4 100644
 --- a/codex-rs/common/src/model_presets.rs
@@ -3231,21 +3595,37 @@ index 4e61bde0..ceb89a34 100644
  
          let cli_overrides = cli_overrides
 diff --git a/codex-rs/process-hardening/Cargo.toml b/codex-rs/process-hardening/Cargo.toml
-index 7294b6e2..54e93c82 100644
+index 7294b6e2..549d980a 100644
 --- a/codex-rs/process-hardening/Cargo.toml
 +++ b/codex-rs/process-hardening/Cargo.toml
-@@ -19,3 +19,6 @@ libc = { workspace = true }
+@@ -19,3 +19,12 @@ libc = { workspace = true }
  
  [target.'cfg(target_os = "macos")'.dependencies]
  libc = { workspace = true }
 +
 +[target.'cfg(target_os = "illumos")'.dependencies]
 +libc = { workspace = true }
++
++[target.'cfg(target_os = "freebsd")'.dependencies]
++libc = { workspace = true }
++
++[target.'cfg(target_os = "openbsd")'.dependencies]
++libc = { workspace = true }
 diff --git a/codex-rs/process-hardening/src/lib.rs b/codex-rs/process-hardening/src/lib.rs
-index a787b409..b6056ea2 100644
+index a787b409..5194db40 100644
 --- a/codex-rs/process-hardening/src/lib.rs
 +++ b/codex-rs/process-hardening/src/lib.rs
-@@ -20,7 +20,12 @@ const PRCTL_FAILED_EXIT_CODE: i32 = 5;
+@@ -10,6 +10,9 @@ pub fn pre_main_hardening() {
+     #[cfg(target_os = "macos")]
+     pre_main_hardening_macos();
+ 
++    #[cfg(any(target_os = "freebsd", target_os = "openbsd"))]
++    pre_main_hardening_bsd();
++
+     #[cfg(windows)]
+     pre_main_hardening_windows();
+ }
+@@ -20,7 +23,14 @@ const PRCTL_FAILED_EXIT_CODE: i32 = 5;
  #[cfg(target_os = "macos")]
  const PTRACE_DENY_ATTACH_FAILED_EXIT_CODE: i32 = 6;
  
@@ -3254,11 +3634,27 @@ index a787b409..b6056ea2 100644
 +    target_os = "linux",
 +    target_os = "android",
 +    target_os = "macos",
-+    target_os = "illumos"
++    target_os = "illumos",
++    target_os = "freebsd",
++    target_os = "openbsd",
 +))]
  const SET_RLIMIT_CORE_FAILED_EXIT_CODE: i32 = 7;
  
  #[cfg(any(target_os = "linux", target_os = "android"))]
+@@ -108,6 +118,13 @@ fn set_core_file_size_limit_to_zero() {
+     }
+ }
+ 
++#[cfg(any(target_os = "freebsd", target_os = "openbsd"))]
++fn pre_main_hardening_bsd() {
++    // FreeBSD/OpenBSD do not expose ptrace toggles like PR_SET_DUMPABLE,
++    // but we can still disable core dumps for consistency across targets.
++    set_core_file_size_limit_to_zero();
++}
++
+ #[cfg(windows)]
+ pub(crate) fn pre_main_hardening_windows() {
+     // TODO(mbolin): Perform the appropriate configuration for Windows.
 diff --git a/codex-rs/rmcp-client/Cargo.toml b/codex-rs/rmcp-client/Cargo.toml
 index e9f832e6..996d7ecf 100644
 --- a/codex-rs/rmcp-client/Cargo.toml
@@ -6064,858 +6460,6 @@ index 6c420dae..23d79a96 100644
  pub mod onboarding_screen;
  mod trust_directory;
  pub use trust_directory::TrustDirectorySelection;
-diff --git a/codex-rs/tui/src/onboarding/model.rs b/codex-rs/tui/src/onboarding/model.rs
-new file mode 100644
-index 00000000..f206840c
---- /dev/null
-+++ b/codex-rs/tui/src/onboarding/model.rs
-@@ -0,0 +1,846 @@
-+use codex_common::model_presets::{
-+    ModelPreset, builtin_model_presets, fetch_litellm_model_presets, is_litellm_provider_id,
-+    presets_for_provider,
-+};
-+use codex_core::config::Config;
-+use codex_core::config::edit::{ConfigEdit, apply_blocking};
-+use codex_core::config::read_litellm_provider_state;
-+use codex_core::protocol_config_types::ReasoningEffort;
-+use crossterm::event::{KeyCode, KeyEvent, KeyEventKind};
-+use ratatui::buffer::Buffer;
-+use ratatui::layout::{Constraint, Layout, Rect};
-+use ratatui::style::{Color, Modifier, Style, Stylize};
-+use ratatui::text::{Line, Span};
-+use ratatui::widgets::{Block, Borders, Clear, Paragraph, Widget, WidgetRef, Wrap};
-+use std::cell::Cell;
-+
-+use super::onboarding_screen::{KeyboardHandler, StepState, StepStateProvider};
-+use crate::style::user_message_style;
-+use crate::tui::FrameRequester;
-+
-+#[derive(Clone)]
-+pub(crate) struct ModelSelectionResult {
-+    pub model: String,
-+    pub reasoning_effort: Option<ReasoningEffort>,
-+}
-+
-+#[derive(Clone)]
-+struct ReasoningOption {
-+    effort: Option<ReasoningEffort>,
-+    label: String,
-+    description: Option<String>,
-+    selected_description: Option<String>,
-+}
-+
-+struct ReasoningStageState {
-+    preset_index: usize,
-+    options: Vec<ReasoningOption>,
-+    selected_index: usize,
-+    scroll_offset: Cell<usize>,
-+    visible_capacity: Cell<usize>,
-+}
-+
-+impl ReasoningStageState {
-+    fn new(preset_index: usize, options: Vec<ReasoningOption>, selected_index: usize) -> Self {
-+        Self {
-+            preset_index,
-+            options,
-+            selected_index,
-+            scroll_offset: Cell::new(0),
-+            visible_capacity: Cell::new(0),
-+        }
-+    }
-+}
-+
-+enum SelectionStage {
-+    ModelList,
-+    Reasoning(ReasoningStageState),
-+}
-+
-+enum ModelStepStatus {
-+    Hidden,
-+    AwaitingCredentials,
-+    Loading,
-+    Ready,
-+    Saving,
-+    Complete,
-+    Error(String),
-+}
-+
-+pub(crate) struct ModelSelectionWidget {
-+    request_frame: FrameRequester,
-+    config: Config,
-+    presets: Vec<ModelPreset>,
-+    selected_index: usize,
-+    status: ModelStepStatus,
-+    selection_result: Option<ModelSelectionResult>,
-+    stage: SelectionStage,
-+    scroll_offset: Cell<usize>,
-+    visible_capacity: Cell<usize>,
-+}
-+
-+impl ModelSelectionWidget {
-+    pub(crate) fn new(request_frame: FrameRequester, config: Config) -> Self {
-+        let mut widget = Self {
-+            request_frame,
-+            config,
-+            presets: Vec::new(),
-+            selected_index: 0,
-+            status: ModelStepStatus::Hidden,
-+            selection_result: None,
-+            stage: SelectionStage::ModelList,
-+            scroll_offset: Cell::new(0),
-+            visible_capacity: Cell::new(1),
-+        };
-+
-+        if is_litellm_provider_id(&widget.config.model_provider_id) {
-+            if widget.config.litellm_setup_required {
-+                widget.status = ModelStepStatus::AwaitingCredentials;
-+            } else {
-+                widget.load_presets();
-+            }
-+        }
-+
-+        widget
-+    }
-+
-+    pub(crate) fn credentials_ready(&mut self) {
-+        if matches!(self.status, ModelStepStatus::AwaitingCredentials) {
-+            self.load_presets();
-+        }
-+    }
-+
-+    pub(crate) fn selection(&self) -> Option<ModelSelectionResult> {
-+        self.selection_result.clone()
-+    }
-+
-+    fn load_presets(&mut self) {
-+        self.status = ModelStepStatus::Loading;
-+        #[cfg(debug_assertions)]
-+        tracing::debug!(
-+            provider = %self.config.model_provider_id,
-+            "model_onboarding.load_presets:start"
-+        );
-+        tracing::info!(
-+            target: "codex_litellm_debug::onboarding",
-+            provider = %self.config.model_provider_id,
-+            "model_onboarding.load_presets:start"
-+        );
-+        self.request_frame.schedule_frame();
-+
-+        match self.fetch_presets() {
-+            Ok(presets) if !presets.is_empty() => {
-+                self.apply_loaded_presets(presets);
-+                #[cfg(debug_assertions)]
-+                tracing::debug!(
-+                    provider = %self.config.model_provider_id,
-+                    count = self.presets.len(),
-+                    "model_onboarding.load_presets:ready"
-+                );
-+                tracing::info!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    count = self.presets.len(),
-+                    "model_onboarding.load_presets:ready"
-+                );
-+            }
-+            Ok(_) => {
-+                self.status = ModelStepStatus::Error(
-+                    "LiteLLM returned no models. Use /model later to configure.".to_string(),
-+                );
-+                #[cfg(debug_assertions)]
-+                tracing::debug!("model_onboarding.load_presets:empty");
-+                tracing::warn!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    "model_onboarding.load_presets:empty"
-+                );
-+            }
-+            Err(err) => {
-+                #[cfg(debug_assertions)]
-+                tracing::debug!(error = %err, "model_onboarding.load_presets:error");
-+                tracing::warn!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    error = %err,
-+                    "model_onboarding.load_presets:error"
-+                );
-+                self.status = ModelStepStatus::Error(err);
-+            }
-+        }
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn apply_loaded_presets(&mut self, presets: Vec<ModelPreset>) {
-+        self.presets = presets;
-+        tracing::info!(
-+            target: "codex_litellm_debug::onboarding",
-+            provider = %self.config.model_provider_id,
-+            current = %self.config.model,
-+            count = self.presets.len(),
-+            "model_onboarding.apply_loaded_presets"
-+        );
-+        self.selected_index = 0;
-+        self.scroll_offset.set(0);
-+        self.visible_capacity.set(1);
-+        self.stage = SelectionStage::ModelList;
-+        self.status = ModelStepStatus::Ready;
-+        self.config.litellm_setup_required = false;
-+    }
-+
-+    fn fetch_presets(&self) -> Result<Vec<ModelPreset>, String> {
-+        if is_litellm_provider_id(&self.config.model_provider_id) {
-+            let state = read_litellm_provider_state(&self.config.codex_home)
-+                .map_err(|err| format!("Failed to read LiteLLM credentials: {err}"))?;
-+            let base_url = state.base_url.ok_or_else(|| {
-+                "LiteLLM endpoint URL is missing. Re-enter it during onboarding.".to_string()
-+            })?;
-+            return fetch_litellm_model_presets(
-+                &base_url,
-+                state.api_key.as_deref(),
-+                &self.config.model,
-+            );
-+        }
-+
-+        let mut presets =
-+            presets_for_provider(&self.config.model_provider_id, &self.config.model, None);
-+        if presets.is_empty() {
-+            presets = builtin_model_presets(None);
-+        }
-+        if presets.is_empty() {
-+            return Err("No models available for the current provider.".to_string());
-+        }
-+        for preset in presets.iter_mut() {
-+            preset.is_default = preset.model == self.config.model;
-+        }
-+        Ok(presets)
-+    }
-+
-+    fn begin_reasoning_stage(&mut self) {
-+        if self.presets.is_empty() {
-+            return;
-+        }
-+        let preset_index = self.selected_index.min(self.presets.len() - 1);
-+        let preset = self.presets[preset_index].clone();
-+        let options = self.build_reasoning_options(&preset);
-+
-+        let target_effort = if preset.model == self.config.model {
-+            self.config.model_reasoning_effort
-+        } else {
-+            Some(preset.default_reasoning_effort)
-+        };
-+        let default_effort = Some(preset.default_reasoning_effort);
-+        let selected_index = options
-+            .iter()
-+            .position(|opt| opt.effort == target_effort)
-+            .or_else(|| options.iter().position(|opt| opt.effort == default_effort))
-+            .unwrap_or(0);
-+
-+        self.stage = SelectionStage::Reasoning(ReasoningStageState::new(
-+            preset_index,
-+            options,
-+            selected_index,
-+        ));
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn build_reasoning_options(&self, preset: &ModelPreset) -> Vec<ReasoningOption> {
-+        let supported = preset.supported_reasoning_efforts;
-+        let default_effort = preset.default_reasoning_effort;
-+
-+        let mut options: Vec<ReasoningOption> = supported
-+            .iter()
-+            .map(|entry| {
-+                let mut label = entry.effort.to_string();
-+                if let Some(first) = label.get_mut(0..1) {
-+                    first.make_ascii_uppercase();
-+                }
-+                if entry.effort == default_effort {
-+                    label.push_str(" (default)");
-+                }
-+
-+                let description =
-+                    (!entry.description.is_empty()).then(|| entry.description.to_string());
-+                let warning =
-+                    if preset.model == "gpt-5-codex" && entry.effort == ReasoningEffort::High {
-+                        Some(
-+                            "⚠ High reasoning effort can quickly consume Plus plan rate limits."
-+                                .to_string(),
-+                        )
-+                    } else {
-+                        None
-+                    };
-+
-+                ReasoningOption {
-+                    effort: Some(entry.effort),
-+                    label,
-+                    description,
-+                    selected_description: warning,
-+                }
-+            })
-+            .collect();
-+
-+        if options.is_empty() {
-+            let mut label = default_effort.to_string();
-+            if let Some(first) = label.get_mut(0..1) {
-+                first.make_ascii_uppercase();
-+            }
-+
-+            options.push(ReasoningOption {
-+                effort: Some(default_effort),
-+                label,
-+                description: None,
-+                selected_description: None,
-+            });
-+        }
-+
-+        options
-+    }
-+
-+    fn confirm_reasoning_selection(&mut self) {
-+        let selection = match &self.stage {
-+            SelectionStage::Reasoning(state) => state
-+                .options
-+                .get(state.selected_index)
-+                .cloned()
-+                .map(|option| (state.preset_index, option)),
-+            _ => None,
-+        };
-+
-+        if let Some((preset_index, option)) = selection {
-+            self.save_selection(preset_index, option.effort);
-+        }
-+    }
-+
-+    fn save_selection(&mut self, preset_index: usize, selected_effort: Option<ReasoningEffort>) {
-+        let Some(selected_preset) = self.presets.get(preset_index).cloned() else {
-+            return;
-+        };
-+
-+        self.status = ModelStepStatus::Saving;
-+        self.request_frame.schedule_frame();
-+
-+        let codex_home = self.config.codex_home.clone();
-+        let active_profile = self.config.active_profile.clone();
-+        let model = selected_preset.model.clone();
-+
-+        let apply_result = apply_blocking(
-+            &codex_home,
-+            active_profile.as_deref(),
-+            &[ConfigEdit::SetModel {
-+                model: Some(model.clone()),
-+                effort: selected_effort,
-+            }],
-+        );
-+
-+        match apply_result {
-+            Ok(()) => {
-+                for (idx, preset) in self.presets.iter_mut().enumerate() {
-+                    preset.is_default = idx == preset_index;
-+                }
-+                tracing::info!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    model = %selected_preset.model,
-+                    reasoning = ?selected_effort,
-+                    "model_onboarding.save_selection:complete"
-+                );
-+                self.selected_index = preset_index;
-+                self.scroll_offset.set(0);
-+                self.visible_capacity.set(1);
-+                self.selection_result = Some(ModelSelectionResult {
-+                    model: model.clone(),
-+                    reasoning_effort: selected_effort,
-+                });
-+                self.config.model = model;
-+                self.config.model_reasoning_effort = selected_effort;
-+                self.stage = SelectionStage::ModelList;
-+                self.status = ModelStepStatus::Complete;
-+            }
-+            Err(err) => {
-+                self.status =
-+                    ModelStepStatus::Error(format!("Failed to write model selection: {err}"));
-+                tracing::warn!(
-+                    target: "codex_litellm_debug::onboarding",
-+                    provider = %self.config.model_provider_id,
-+                    model = %selected_preset.model,
-+                    error = %err,
-+                    "model_onboarding.save_selection:error"
-+                );
-+            }
-+        }
-+
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_model_selection(&mut self, delta: isize) {
-+        if !matches!(
-+            self.status,
-+            ModelStepStatus::Ready | ModelStepStatus::Error(_)
-+        ) {
-+            return;
-+        }
-+        if !matches!(self.stage, SelectionStage::ModelList) {
-+            return;
-+        }
-+        let len = self.presets.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let next = (self.selected_index as isize + delta).rem_euclid(len as isize);
-+        self.selected_index = next as usize;
-+        self.adjust_model_scroll();
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_model_selection_page(&mut self, delta_pages: isize) {
-+        if !matches!(self.stage, SelectionStage::ModelList) {
-+            return;
-+        }
-+        let len = self.presets.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let page = self.visible_capacity.get().max(1) as isize;
-+        let mut target = self.selected_index as isize + delta_pages * page;
-+        target = target.clamp(0, len as isize - 1);
-+        self.selected_index = target as usize;
-+        self.adjust_model_scroll();
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_reasoning_selection(&mut self, delta: isize) {
-+        let SelectionStage::Reasoning(state) = &mut self.stage else {
-+            return;
-+        };
-+        let len = state.options.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let next = (state.selected_index as isize + delta).rem_euclid(len as isize);
-+        state.selected_index = next as usize;
-+        Self::adjust_reasoning_scroll(state);
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn move_reasoning_selection_page(&mut self, delta_pages: isize) {
-+        let SelectionStage::Reasoning(state) = &mut self.stage else {
-+            return;
-+        };
-+        let len = state.options.len();
-+        if len == 0 {
-+            return;
-+        }
-+        let page = state.visible_capacity.get().max(1) as isize;
-+        let mut target = state.selected_index as isize + delta_pages * page;
-+        target = target.clamp(0, len as isize - 1);
-+        state.selected_index = target as usize;
-+        Self::adjust_reasoning_scroll(state);
-+        self.request_frame.schedule_frame();
-+    }
-+
-+    fn adjust_model_scroll(&self) {
-+        let visible = self.visible_capacity.get().max(1);
-+        let len = self.presets.len();
-+        if len <= visible {
-+            self.scroll_offset.set(0);
-+            return;
-+        }
-+        let max_offset = len - visible;
-+        let mut offset = self.scroll_offset.get().min(max_offset);
-+        if self.selected_index < offset {
-+            offset = self.selected_index;
-+        } else if self.selected_index >= offset + visible {
-+            offset = self.selected_index + 1 - visible;
-+        }
-+        self.scroll_offset.set(offset);
-+    }
-+
-+    fn adjust_reasoning_scroll(state: &ReasoningStageState) {
-+        let visible = state.visible_capacity.get().max(1);
-+        let len = state.options.len();
-+        if len <= visible {
-+            state.scroll_offset.set(0);
-+            return;
-+        }
-+        let max_offset = len - visible;
-+        let mut offset = state.scroll_offset.get().min(max_offset);
-+        if state.selected_index < offset {
-+            offset = state.selected_index;
-+        } else if state.selected_index >= offset + visible {
-+            offset = state.selected_index + 1 - visible;
-+        }
-+        state.scroll_offset.set(offset);
-+    }
-+
-+    fn render_loading(&self, area: Rect, buf: &mut Buffer) {
-+        let lines = vec![
-+            Line::from("Connecting to LiteLLM…".bold()),
-+            Line::from("Fetching available models. This may take a moment.".dim()),
-+        ];
-+        Paragraph::new(lines)
-+            .block(Block::default().borders(Borders::ALL))
-+            .wrap(Wrap { trim: false })
-+            .render(area, buf);
-+    }
-+
-+    fn render_error(&self, area: Rect, buf: &mut Buffer, message: &str) {
-+        let lines = vec![
-+            Line::from("Model selection unavailable".bold().fg(Color::Red)),
-+            Line::from(message),
-+            Line::from(""),
-+            Line::from("Press Enter or Esc to continue without selecting a model."),
-+        ];
-+        Paragraph::new(lines)
-+            .block(Block::default().borders(Borders::ALL))
-+            .wrap(Wrap { trim: false })
-+            .render(area, buf);
-+    }
-+
-+    fn render_ready(&self, area: Rect, buf: &mut Buffer) {
-+        match &self.stage {
-+            SelectionStage::ModelList => self.render_model_stage(area, buf),
-+            SelectionStage::Reasoning(state) => self.render_reasoning_stage(area, buf, state),
-+        }
-+    }
-+
-+    fn render_model_stage(&self, area: Rect, buf: &mut Buffer) {
-+        let instructions = vec![
-+            Line::from("Select a LiteLLM model for Codex CLI.".bold()),
-+            Line::from("Use ↑/↓ (PageUp/PageDown) to browse models.".dim()),
-+            Line::from("Press Enter to choose reasoning level. Esc skips selection.".dim()),
-+        ];
-+        let instruction_height = instructions.len() as u16 + 1;
-+        let instruction_height = instruction_height.min(area.height);
-+
-+        let [instructions_area, list_area] =
-+            Layout::vertical([Constraint::Length(instruction_height), Constraint::Min(3)])
-+                .areas(area);
-+
-+        Block::default()
-+            .style(user_message_style())
-+            .render(area, buf);
-+
-+        Paragraph::new(instructions)
-+            .wrap(Wrap { trim: false })
-+            .render(instructions_area, buf);
-+
-+        if list_area.height == 0 {
-+            return;
-+        }
-+
-+        let max_visible = list_area.height.saturating_sub(2).max(1) as usize;
-+        self.visible_capacity.set(max_visible.max(1));
-+        self.adjust_model_scroll();
-+
-+        let len = self.presets.len();
-+        if len == 0 {
-+            Paragraph::new(vec![Line::from(
-+                "No models available. Configure LiteLLM and try again later.",
-+            )])
-+            .wrap(Wrap { trim: false })
-+            .render(list_area, buf);
-+            return;
-+        }
-+
-+        let offset = self.scroll_offset.get();
-+        let visible = self.visible_capacity.get().max(1);
-+        let end = (offset + visible).min(len);
-+        let mut lines: Vec<Line<'static>> = Vec::new();
-+        for (row, preset) in self.presets[offset..end].iter().enumerate() {
-+            let idx = offset + row;
-+            let is_selected = idx == self.selected_index;
-+            let prefix = if is_selected { '›' } else { ' ' };
-+            let display_index = idx + 1;
-+            let display_name = if preset.display_name.is_empty() {
-+                preset.model.as_str()
-+            } else {
-+                preset.display_name.as_str()
-+            };
-+
-+            let mut spans: Vec<Span> = vec![
-+                Span::styled(prefix.to_string(), Style::default().fg(Color::Gray)),
-+                Span::raw(" "),
-+                Span::raw(format!("{display_index}. ")),
-+                Span::raw(display_name.to_string()),
-+                Span::raw(" "),
-+                Span::styled(preset.model.to_string(), Style::default().italic().dim()),
-+            ];
-+            if preset.is_default {
-+                spans.push(Span::raw(" "));
-+                spans.push(Span::styled("(current)", Style::default().dim()));
-+            }
-+
-+            if is_selected {
-+                for span in spans.iter_mut() {
-+                    span.style = span
-+                        .style
-+                        .fg(Color::Cyan)
-+                        .add_modifier(Modifier::BOLD | Modifier::REVERSED);
-+                }
-+            }
-+            lines.push(Line::from(spans));
-+
-+            if let Some(desc) = preset.description.as_ref().filter(|d| !d.is_empty()) {
-+                let mut desc_spans = vec![
-+                    Span::raw("    "),
-+                    Span::styled(desc.to_string(), Style::default().dim()),
-+                ];
-+                if is_selected {
-+                    for span in desc_spans.iter_mut() {
-+                        span.style = span
-+                            .style
-+                            .fg(Color::Cyan)
-+                            .add_modifier(Modifier::BOLD | Modifier::REVERSED);
-+                    }
-+                }
-+                lines.push(Line::from(desc_spans));
-+            }
-+        }
-+
-+        Paragraph::new(lines)
-+            .block(
-+                Block::default()
-+                    .borders(Borders::ALL)
-+                    .style(user_message_style()),
-+            )
-+            .wrap(Wrap { trim: false })
-+            .render(list_area, buf);
-+    }
-+
-+    fn render_reasoning_stage(&self, area: Rect, buf: &mut Buffer, state: &ReasoningStageState) {
-+        let instructions = vec![
-+            Line::from("Choose how much reasoning the model should use.".bold()),
-+            Line::from(
-+                "Use ↑/↓ (PageUp/PageDown) to browse. Enter to confirm. Esc to go back.".dim(),
-+            ),
-+        ];
-+        let instruction_height = instructions.len() as u16 + 1;
-+        let instruction_height = instruction_height.min(area.height);
-+
-+        let [instructions_area, list_area] =
-+            Layout::vertical([Constraint::Length(instruction_height), Constraint::Min(3)])
-+                .areas(area);
-+
-+        Block::default()
-+            .style(user_message_style())
-+            .render(area, buf);
-+
-+        Paragraph::new(instructions)
-+            .wrap(Wrap { trim: false })
-+            .render(instructions_area, buf);
-+
-+        if list_area.height == 0 {
-+            return;
-+        }
-+
-+        let max_visible = list_area.height.saturating_sub(2).max(1) as usize;
-+        state.visible_capacity.set(max_visible.max(1));
-+        Self::adjust_reasoning_scroll(state);
-+
-+        let len = state.options.len();
-+        if len == 0 {
-+            Paragraph::new(vec![Line::from("No reasoning options available.")])
-+                .wrap(Wrap { trim: false })
-+                .render(list_area, buf);
-+            return;
-+        }
-+
-+        let offset = state.scroll_offset.get();
-+        let visible = state.visible_capacity.get().max(1);
-+        let end = (offset + visible).min(len);
-+        let mut lines: Vec<Line<'static>> = Vec::new();
-+        for (row, option) in state.options[offset..end].iter().enumerate() {
-+            let idx = offset + row;
-+            let is_selected = idx == state.selected_index;
-+            let prefix = if is_selected { '›' } else { ' ' };
-+            let mut spans: Vec<Span> = vec![
-+                Span::styled(prefix.to_string(), Style::default().fg(Color::Gray)),
-+                Span::raw(" "),
-+                Span::styled(
-+                    option.label.clone(),
-+                    if is_selected {
-+                        Style::default()
-+                            .fg(Color::Cyan)
-+                            .add_modifier(Modifier::BOLD | Modifier::REVERSED)
-+                    } else {
-+                        Style::default().add_modifier(Modifier::DIM)
-+                    },
-+                ),
-+            ];
-+            if let Some(desc) = option.description.as_ref() {
-+                spans.push(Span::raw("  "));
-+                spans.push(Span::styled(
-+                    desc.clone(),
-+                    if is_selected {
-+                        Style::default()
-+                            .fg(Color::Cyan)
-+                            .add_modifier(Modifier::ITALIC | Modifier::DIM)
-+                    } else {
-+                        Style::default().add_modifier(Modifier::DIM)
-+                    },
-+                ));
-+            }
-+
-+            lines.push(Line::from(spans));
-+
-+            if is_selected {
-+                if let Some(extra) = option.selected_description.as_ref() {
-+                    lines.push(Line::from(vec![Span::styled(
-+                        format!("    {extra}"),
-+                        Style::default()
-+                            .fg(Color::Yellow)
-+                            .add_modifier(Modifier::BOLD),
-+                    )]));
-+                }
-+            }
-+        }
-+
-+        Paragraph::new(lines)
-+            .block(
-+                Block::default()
-+                    .borders(Borders::ALL)
-+                    .style(user_message_style()),
-+            )
-+            .wrap(Wrap { trim: false })
-+            .render(list_area, buf);
-+    }
-+
-+    fn render_completion(&self, area: Rect, buf: &mut Buffer) {
-+        let result = self.selection_result.as_ref();
-+        let effort_label = result
-+            .and_then(|r| r.reasoning_effort)
-+            .map(|eff| {
-+                let mut label = eff.to_string();
-+                if let Some(first) = label.get_mut(0..1) {
-+                    first.make_ascii_uppercase();
-+                }
-+                label
-+            })
-+            .unwrap_or_else(|| "default effort".to_string());
-+
-+        let lines = vec![
-+            Line::from(
-+                format!(
-+                    "Model set to {} ({effort_label}).",
-+                    result
-+                        .as_ref()
-+                        .map(|r| r.model.as_str())
-+                        .unwrap_or("unchanged")
-+                )
-+                .bold(),
-+            ),
-+            Line::from("Press Enter to continue."),
-+        ];
-+        Paragraph::new(lines)
-+            .wrap(Wrap { trim: false })
-+            .render(area, buf);
-+    }
-+}
-+
-+impl StepStateProvider for ModelSelectionWidget {
-+    fn get_step_state(&self) -> StepState {
-+        match self.status {
-+            ModelStepStatus::Hidden | ModelStepStatus::AwaitingCredentials => StepState::Hidden,
-+            ModelStepStatus::Loading
-+            | ModelStepStatus::Ready
-+            | ModelStepStatus::Saving
-+            | ModelStepStatus::Error(_) => StepState::InProgress,
-+            ModelStepStatus::Complete => StepState::Complete,
-+        }
-+    }
-+}
-+
-+impl KeyboardHandler for ModelSelectionWidget {
-+    fn handle_key_event(&mut self, key_event: KeyEvent) {
-+        if key_event.kind != KeyEventKind::Press {
-+            return;
-+        }
-+
-+        match key_event.code {
-+            KeyCode::Up if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection(-1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection(-1),
-+            },
-+            KeyCode::Down if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection(1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection(1),
-+            },
-+            KeyCode::PageUp if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection_page(-1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection_page(-1),
-+            },
-+            KeyCode::PageDown if key_event.modifiers.is_empty() => match self.stage {
-+                SelectionStage::ModelList => self.move_model_selection_page(1),
-+                SelectionStage::Reasoning(_) => self.move_reasoning_selection_page(1),
-+            },
-+            KeyCode::Home if key_event.modifiers.is_empty() => {
-+                if matches!(self.stage, SelectionStage::ModelList) && !self.presets.is_empty() {
-+                    self.selected_index = 0;
-+                    self.adjust_model_scroll();
-+                    self.request_frame.schedule_frame();
-+                }
-+            }
-+            KeyCode::End if key_event.modifiers.is_empty() => {
-+                if matches!(self.stage, SelectionStage::ModelList) && !self.presets.is_empty() {
-+                    self.selected_index = self.presets.len() - 1;
-+                    self.adjust_model_scroll();
-+                    self.request_frame.schedule_frame();
-+                }
-+            }
-+            KeyCode::Esc if key_event.modifiers.is_empty() => {
-+                if matches!(self.stage, SelectionStage::Reasoning(_)) {
-+                    self.stage = SelectionStage::ModelList;
-+                    self.request_frame.schedule_frame();
-+                } else if matches!(self.status, ModelStepStatus::Error(_)) {
-+                    self.status = ModelStepStatus::Complete;
-+                    self.request_frame.schedule_frame();
-+                }
-+            }
-+            KeyCode::Enter if key_event.modifiers.is_empty() => match &self.status {
-+                ModelStepStatus::Ready => match self.stage {
-+                    SelectionStage::ModelList => self.begin_reasoning_stage(),
-+                    SelectionStage::Reasoning(_) => self.confirm_reasoning_selection(),
-+                },
-+                ModelStepStatus::Error(_) | ModelStepStatus::Complete => {
-+                    self.status = ModelStepStatus::Complete;
-+                    self.request_frame.schedule_frame();
-+                }
-+                _ => {}
-+            },
-+            _ => {}
-+        }
-+    }
-+}
-+
-+impl WidgetRef for ModelSelectionWidget {
-+    fn render_ref(&self, area: Rect, buf: &mut Buffer) {
-+        Clear.render(area, buf);
-+
-+        match &self.status {
-+            ModelStepStatus::Hidden | ModelStepStatus::AwaitingCredentials => {
-+                let lines = vec![
-+                    Line::from("Configure LiteLLM credentials first.").dim(),
-+                    Line::from("The model selector will appear afterwards."),
-+                ];
-+                Paragraph::new(lines)
-+                    .wrap(Wrap { trim: false })
-+                    .render(area, buf);
-+            }
-+            ModelStepStatus::Loading => self.render_loading(area, buf),
-+            ModelStepStatus::Ready => self.render_ready(area, buf),
-+            ModelStepStatus::Saving => {
-+                let lines = vec![
-+                    Line::from("Saving model selection…".bold()),
-+                    Line::from("Please wait."),
-+                ];
-+                Paragraph::new(lines)
-+                    .block(Block::default().borders(Borders::ALL))
-+                    .wrap(Wrap { trim: false })
-+                    .render(area, buf);
-+            }
-+            ModelStepStatus::Complete => self.render_completion(area, buf),
-+            ModelStepStatus::Error(message) => self.render_error(area, buf, message),
-+        }
-+    }
-+}
 diff --git a/codex-rs/tui/src/onboarding/onboarding_screen.rs b/codex-rs/tui/src/onboarding/onboarding_screen.rs
 index 709f158b..f5383af2 100644
 --- a/codex-rs/tui/src/onboarding/onboarding_screen.rs

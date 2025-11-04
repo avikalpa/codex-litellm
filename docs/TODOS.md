@@ -40,5 +40,5 @@
 - [x] Refresh README copy to reflect the new licensing stance and distribution notes.
 - [x] Capture our release/compliance playbook in `docs/COMPLIANCE.md`, keep it general-purpose, and link it from `AGENTS.md` so future sweeps follow the same checklist.
 - [ ] Publish the inaugural GitHub Actions release to npm under the `codex-litellm` package name.
-- [ ] Package and push OpenWrt builds targeting GL-iNET Flint-2 and OpenWrt One; add additional architectures where feasible.
-- [ ] Package and publish Termux binaries for current devices, expanding to broader architectures as tooling allows.
+- [ ] Package and push OpenWrt builds covering GL-iNET Flint-2 (`aarch64_generic`) and OpenWrt One (`x86_64`), then stage additional arches (ipq807x, mt7621) once the toolchains are reproducible.
+- [ ] Package and publish Termux binaries for `aarch64` and `x86_64`, and investigate extending support to `armv7`/`i686` after cross-build validation.
