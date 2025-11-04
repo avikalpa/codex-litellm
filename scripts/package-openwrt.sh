@@ -24,10 +24,10 @@ trap cleanup EXIT
 
 tar -C "$TMP_ROOT" -xf "$ARCHIVE"
 
-PKG_DIR="$TMP_ROOT/pkg"
-INSTALL_ROOT="$PKG_DIR/usr/bin"
-CONTROL_DIR="$PKG_DIR/CONTROL"
-LICENSE_DIR="$PKG_DIR/usr/share/licenses/codex-litellm"
+DATA_DIR="$TMP_ROOT/data"
+CONTROL_DIR="$TMP_ROOT/control"
+INSTALL_ROOT="$DATA_DIR/usr/bin"
+LICENSE_DIR="$DATA_DIR/usr/share/licenses/codex-litellm"
 mkdir -p "$INSTALL_ROOT" "$CONTROL_DIR"
 
 BIN_NAME="codex-litellm"
@@ -54,6 +54,18 @@ Description: Patched OpenAI Codex CLI with LiteLLM support
 EOF
 
 mkdir -p "$OUT_DIR"
-opkg-build -o root -g root "$PKG_DIR" "$OUT_DIR" >/dev/null
+DATA_TAR="$TMP_ROOT/data.tar.gz"
+CONTROL_TAR="$TMP_ROOT/control.tar.gz"
+(
+  cd "$DATA_DIR"
+  tar --owner=0 --group=0 -czf "$DATA_TAR" .
+)
+(
+  cd "$CONTROL_DIR"
+  tar --owner=0 --group=0 -czf "$CONTROL_TAR" .
+)
+echo "2.0" > "$TMP_ROOT/debian-binary"
+OUTPUT_IPK="$OUT_DIR/codex-litellm_${VERSION}_${ARCH}.ipk"
+ar rcs "$OUTPUT_IPK" "$TMP_ROOT/debian-binary" "$CONTROL_TAR" "$DATA_TAR"
 
 echo "OpenWrt package written to $OUT_DIR"
