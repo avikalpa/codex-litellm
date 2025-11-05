@@ -25,8 +25,17 @@ fn resolve_commit() -> String {
         .unwrap_or_else(|| "unknown".to_string())
 }
 
+fn env_or_resolve(name: &str) -> String {
+    std::env::var(name)
+        .ok()
+        .map(|value| value.trim().to_string())
+        .filter(|value| !value.is_empty())
+        .unwrap_or_else(resolve_commit)
+}
+
 fn main() {
-    let commit = resolve_commit();
-    println!("cargo:rustc-env=CODEX_LITELLM_COMMIT={commit}");
-    println!("cargo:rustc-env=CODEX_UPSTREAM_COMMIT={commit}");
+    let upstream = env_or_resolve("CODEX_UPSTREAM_COMMIT");
+    let lit = env_or_resolve("CODEX_LITELLM_COMMIT");
+    println!("cargo:rustc-env=CODEX_UPSTREAM_COMMIT={upstream}");
+    println!("cargo:rustc-env=CODEX_LITELLM_COMMIT={lit}");
 }

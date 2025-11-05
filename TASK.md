@@ -156,3 +156,9 @@ Notes:
 - Objective: rerun the `v0.55.0+2e2063ca+lita540065` release after patch overlays were added to `build.sh`, publish Linux/macOS artifacts plus the npm package, and keep OpenWrt/Termux jobs disabled until the desktop/npm path is green.
 - Prep: refreshed `docs/TODOS.md` publishing section to call out the Linux/macOS-first plan and added a TODO for the post-release npm install sanity check.
 - Next actions: run `./build.sh` locally to confirm the patch still applies, trigger the GitHub Actions release workflow, monitor until artifacts + npm publish succeed, then reinstall `@avikalpa/codex-litellm` and run the LiteLLM smoke test (`codex-litellm --model vercel/gpt-oss-120b exec "who are you"`). Update TODOs and docs once the release completes.
+
+## 2025-11-05 Sweep J
+- Restored direct LiteLLM exec support by seeding `config.toml` from `LITELLM_BASE_URL` / `LITELLM_API_KEY` during baseline creation so headless runs pick up credentials without an interactive prompt.
+- Added a `codex-build-info` helper to stamp the patched release string and taught the CLI to short-circuit `--version` with `codex-litellm <upstream>+lit<patch>`.
+- Verified the headless `codex exec --model vercel/gpt-oss-120b` flow against https://llm.gour.top using the env-seeded credentials (no more 401 loop; returns model response).
+- Preparing to regenerate `stable-tag.patch` and rerun `./build.sh` so the release artifacts + npm package carry the new version string.

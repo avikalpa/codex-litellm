@@ -37,7 +37,8 @@ previous one.
    * Set `version` to the upstream `X.Y.Z`.
    * Update `codexLitellm.baseVersion` and `codexLitellm.upstreamCommit` to the values above.
    * Set `codexLitellm.releaseTag` to `vX.Y.Z-litellm.dev` (the workflow overwrites it during
-     `npm publish`).
+     `npm publish`). The job also derives an npm-safe version by replacing `+` with `-`
+     (exposed as `codexLitellm.npmVersion`) because the registry rejects literal `+` metadata.
    * Regenerate `package-lock.json` with
      `npm install --package-lock-only --ignore-scripts`.
 3. Ensure `build.sh` still exports `CODEX_UPSTREAM_COMMIT`/`CODEX_LITELLM_COMMIT`; run
@@ -73,7 +74,8 @@ previous one.
    gh release view "$TAG" --json assets
    npm view @avikalpa/codex-litellm version
    ```
-   The npm version must match `$RELEASE`.
+   The npm version should read the hyphenated variant
+   (`${RELEASE//+/-}`) published in step 1.
 
 3. Run the manual install test from a clean environment:
    ```bash
