@@ -79,6 +79,27 @@ echo "Resetting tree and applying patch..."
 git reset --hard HEAD --quiet
 git apply --whitespace=nowarn "$PATCH_FILE"
 
+if [[ -d "${ROOT_DIR}/codex-rs/build-info" ]]; then
+  rm -rf "${CODEX_DIR}/codex-rs/build-info"
+  cp -R "${ROOT_DIR}/codex-rs/build-info" "${CODEX_DIR}/codex-rs/build-info"
+fi
+
+if [[ -d "${ROOT_DIR}/codex-rs/codex-litellm-model-session-telemetry" ]]; then
+  rm -rf "${CODEX_DIR}/codex-rs/codex-litellm-model-session-telemetry"
+  cp -R "${ROOT_DIR}/codex-rs/codex-litellm-model-session-telemetry" \
+    "${CODEX_DIR}/codex-rs/codex-litellm-model-session-telemetry"
+fi
+
+if [[ -f "${ROOT_DIR}/codex-rs/common/src/litellm.rs" ]]; then
+  cp "${ROOT_DIR}/codex-rs/common/src/litellm.rs" \
+    "${CODEX_DIR}/codex-rs/common/src/litellm.rs"
+fi
+
+if [[ -f "${ROOT_DIR}/codex-rs/tui/src/onboarding/model.rs" ]]; then
+  cp "${ROOT_DIR}/codex-rs/tui/src/onboarding/model.rs" \
+    "${CODEX_DIR}/codex-rs/tui/src/onboarding/model.rs"
+fi
+
 UPSTREAM_COMMIT=$(git rev-parse --short HEAD)
 LITELLM_COMMIT=$(cd "$ROOT_DIR" && git rev-parse --short HEAD)
 export CODEX_UPSTREAM_COMMIT="$UPSTREAM_COMMIT"

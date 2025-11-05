@@ -1,0 +1,11 @@
+[package]
+name = "codex-litellm-model-session-telemetry"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+chrono = { workspace = true }
+once_cell = "1.19"
+parking_lot = "0.12"
+serde = { workspace = true, features = ["derive"] }
+serde_json = { workspace = true }

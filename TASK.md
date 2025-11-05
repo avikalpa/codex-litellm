@@ -151,3 +151,8 @@ Notes:
 - Added a permanent `docs/COMPLIANCE.md` playbook (Apache-2.0 baseline, headers policy, release checklist) and linked it from `AGENTS.md`.
 - Marked the publishing TODO as complete now that the guidance is canonical.
 - Attempted to run `./build.sh` as a dry run; network sandbox blocked access to `github.com`, so the script bailed during the tag fetch. Re-run outside the restricted environment when release prep continues.
+
+## 2025-11-05 Sweep I
+- Objective: rerun the `v0.55.0+2e2063ca+lita540065` release after patch overlays were added to `build.sh`, publish Linux/macOS artifacts plus the npm package, and keep OpenWrt/Termux jobs disabled until the desktop/npm path is green.
+- Prep: refreshed `docs/TODOS.md` publishing section to call out the Linux/macOS-first plan and added a TODO for the post-release npm install sanity check.
+- Next actions: run `./build.sh` locally to confirm the patch still applies, trigger the GitHub Actions release workflow, monitor until artifacts + npm publish succeed, then reinstall `@avikalpa/codex-litellm` and run the LiteLLM smoke test (`codex-litellm --model vercel/gpt-oss-120b exec "who are you"`). Update TODOs and docs once the release completes.
