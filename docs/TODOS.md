@@ -25,6 +25,7 @@
   - [x] Add log rotation or size-based pruning so `$CODEX_HOME/logs` does not grow unbounded.
   - [x] Record structured markers for onboarding/model selection events to speed up future regressions.
   - [x] Consider a lightweight CLI switch (e.g. `--no-telemetry`) to disable both debug and session logging for sensitive environments.
+  - [x] Default session usage logging on, keep TUI logs opt-in, and suppress telemetry console banners in TUI/exec.
 
 ## Model Response Fixes
 - Caveats: Check for docs/PROJECT_SUMMARY.md for litellm nuances (eg. streaming responses do not work, always use non-streaming as a fix)

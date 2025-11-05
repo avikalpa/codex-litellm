@@ -1672,7 +1672,7 @@ index 041644b3..02f889c8 100644
  codex-core = { workspace = true }
  codex-exec = { workspace = true }
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
-index 929fd9e7..d5659390 100644
+index 929fd9e7..2c28d09e 100644
 --- a/codex-rs/cli/src/main.rs
 +++ b/codex-rs/cli/src/main.rs
 @@ -1,4 +1,5 @@
@@ -1706,7 +1706,7 @@ index 929fd9e7..d5659390 100644
      // If a sub‑command is given, ignore requirements of the default args.
      subcommand_negates_reqs = true,
      // The executable is sometimes invoked via a platform‑specific name like
-@@ -344,7 +348,30 @@ fn pre_main_hardening() {
+@@ -344,7 +348,32 @@ fn pre_main_hardening() {
      codex_process_hardening::pre_main_hardening();
  }
  
@@ -1722,7 +1722,9 @@ index 929fd9e7..d5659390 100644
 +    let mut args = std::env::args_os();
 +    let _ = args.next();
 +    match (args.next(), args.next()) {
-+        (Some(flag), None) if flag == OsString::from("--version") || flag == OsString::from("-V") => {
++        (Some(flag), None)
++            if flag == OsString::from("--version") || flag == OsString::from("-V") =>
++        {
 +            println!("codex-litellm {}", CODEX_LITELLM_VERSION);
 +            true
 +        }
@@ -1737,7 +1739,7 @@ index 929fd9e7..d5659390 100644
      arg0_dispatch_or_else(|codex_linux_sandbox_exe| async move {
          cli_main(codex_linux_sandbox_exe).await?;
          Ok(())
-@@ -357,7 +384,7 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
+@@ -357,7 +386,7 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
          feature_toggles,
          mut interactive,
          subcommand,
@@ -1746,7 +1748,7 @@ index 929fd9e7..d5659390 100644
  
      // Fold --enable/--disable into config overrides so they flow to all subcommands.
      let toggle_overrides = feature_toggles.to_overrides()?;
-@@ -525,6 +552,8 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
+@@ -525,6 +554,8 @@ async fn cli_main(codex_linux_sandbox_exe: Option<PathBuf>) -> anyhow::Result<()
                  // Thread through relevant top-level flags (at minimum, `--profile`).
                  let overrides = ConfigOverrides {
                      config_profile: interactive.config_profile.clone(),
@@ -2433,7 +2435,7 @@ index abb27d9b..02faab13 100644
                      // Not an assistant message – forward immediately.
                      return Poll::Ready(Some(Ok(ResponseEvent::OutputItemDone(item))));
 diff --git a/codex-rs/core/src/config/mod.rs b/codex-rs/core/src/config/mod.rs
-index 1ee48d30..0f159ec8 100644
+index 1ee48d30..a3999e34 100644
 --- a/codex-rs/core/src/config/mod.rs
 +++ b/codex-rs/core/src/config/mod.rs
 @@ -11,6 +11,8 @@ use crate::config::types::ReasoningSummaryFormat;
@@ -2463,7 +2465,7 @@ index 1ee48d30..0f159ec8 100644
  
  pub mod edit;
  pub mod profile;
-@@ -71,6 +77,455 @@ pub const GPT_5_CODEX_MEDIUM_MODEL: &str = "gpt-5-codex";
+@@ -71,6 +77,473 @@ pub const GPT_5_CODEX_MEDIUM_MODEL: &str = "gpt-5-codex";
  pub(crate) const PROJECT_DOC_MAX_BYTES: usize = 32 * 1024; // 32 KiB
  
  pub(crate) const CONFIG_TOML_FILE: &str = "config.toml";
@@ -2516,6 +2518,9 @@ index 1ee48d30..0f159ec8 100644
 +    pub dir: PathBuf,
 +    pub logs: HashMap<String, TelemetryLogConfig>,
 +    pub max_total_bytes: Option<u64>,
++    pub session_usage_enabled: bool,
++    pub tui_log_enabled: bool,
++    pub debug_log_enabled: bool,
 +}
 +
 +impl TelemetryConfig {
@@ -2531,6 +2536,9 @@ index 1ee48d30..0f159ec8 100644
 +            dir: PathBuf::new(),
 +            logs: HashMap::new(),
 +            max_total_bytes: None,
++            session_usage_enabled: true,
++            tui_log_enabled: false,
++            debug_log_enabled: cfg!(debug_assertions),
 +        }
 +    }
 +}
@@ -2666,6 +2674,18 @@ index 1ee48d30..0f159ec8 100644
 +        telemetry_table.set_implicit(false);
 +        if !telemetry_table.contains_key("dir") {
 +            telemetry_table["dir"] = value(DEFAULT_TELEMETRY_LOG_DIR);
++            changed = true;
++        }
++        if !telemetry_table.contains_key("session_usage") {
++            telemetry_table["session_usage"] = value(true);
++            changed = true;
++        }
++        if !telemetry_table.contains_key("tui") {
++            telemetry_table["tui"] = value(false);
++            changed = true;
++        }
++        if !telemetry_table.contains_key("debug") {
++            telemetry_table["debug"] = value(cfg!(debug_assertions));
 +            changed = true;
 +        }
 +        let logs_item = telemetry_table
@@ -2919,7 +2939,7 @@ index 1ee48d30..0f159ec8 100644
  
  /// Application configuration loaded from disk and merged with overrides.
  #[derive(Debug, Clone, PartialEq)]
-@@ -98,6 +553,9 @@ pub struct Config {
+@@ -98,6 +571,9 @@ pub struct Config {
      /// Info needed to make an API request to the model.
      pub model_provider: ModelProviderInfo,
  
@@ -2929,7 +2949,7 @@ index 1ee48d30..0f159ec8 100644
      /// Approval policy for executing commands.
      pub approval_policy: AskForApproval,
  
-@@ -203,6 +661,9 @@ pub struct Config {
+@@ -203,6 +679,9 @@ pub struct Config {
      /// output will be hyperlinked using the specified URI scheme.
      pub file_opener: UriBasedFileOpener,
  
@@ -2939,7 +2959,7 @@ index 1ee48d30..0f159ec8 100644
      /// Path to the `codex-linux-sandbox` executable. This must be set if
      /// [`crate::exec::SandboxType::LinuxSeccomp`] is used. Note that this
      /// cannot be set in the config file: it must be set in code via
-@@ -281,6 +742,7 @@ impl Config {
+@@ -281,6 +760,7 @@ impl Config {
          overrides: ConfigOverrides,
      ) -> std::io::Result<Self> {
          let codex_home = find_codex_home()?;
@@ -2947,7 +2967,7 @@ index 1ee48d30..0f159ec8 100644
  
          let root_value = load_resolved_config(
              &codex_home,
-@@ -519,6 +981,9 @@ pub struct ConfigToml {
+@@ -519,6 +999,9 @@ pub struct ConfigToml {
      /// Size of the context window for the model, in tokens.
      pub model_context_window: Option<i64>,
  
@@ -2957,7 +2977,7 @@ index 1ee48d30..0f159ec8 100644
      /// Maximum number of output tokens.
      pub model_max_output_tokens: Option<i64>,
  
-@@ -630,6 +1095,9 @@ pub struct ConfigToml {
+@@ -630,6 +1113,9 @@ pub struct ConfigToml {
  
      pub projects: Option<HashMap<String, ProjectConfig>>,
  
@@ -2967,7 +2987,7 @@ index 1ee48d30..0f159ec8 100644
      /// Nested tools section for feature toggles
      pub tools: Option<ToolsToml>,
  
-@@ -845,6 +1313,7 @@ pub struct ConfigOverrides {
+@@ -845,6 +1331,7 @@ pub struct ConfigOverrides {
      pub experimental_sandbox_command_assessment: Option<bool>,
      /// Additional directories that should be treated as writable roots for this session.
      pub additional_writable_roots: Vec<PathBuf>,
@@ -2975,7 +2995,7 @@ index 1ee48d30..0f159ec8 100644
  }
  
  impl Config {
-@@ -875,6 +1344,7 @@ impl Config {
+@@ -875,6 +1362,7 @@ impl Config {
              tools_web_search_request: override_tools_web_search_request,
              experimental_sandbox_command_assessment: sandbox_command_assessment_override,
              additional_writable_roots,
@@ -2983,7 +3003,7 @@ index 1ee48d30..0f159ec8 100644
          } = overrides;
  
          let active_profile_name = config_profile_key
-@@ -976,13 +1446,21 @@ impl Config {
+@@ -976,13 +1464,21 @@ impl Config {
          let mut model_providers = built_in_model_providers();
          // Merge user-defined providers into the built-in list.
          for (key, provider) in cfg.model_providers.into_iter() {
@@ -3009,7 +3029,7 @@ index 1ee48d30..0f159ec8 100644
          let model_provider = model_providers
              .get(&model_provider_id)
              .ok_or_else(|| {
-@@ -993,6 +1471,20 @@ impl Config {
+@@ -993,6 +1489,20 @@ impl Config {
              })?
              .clone();
  
@@ -3030,7 +3050,7 @@ index 1ee48d30..0f159ec8 100644
          let shell_environment_policy = cfg.shell_environment_policy.into();
  
          let history = cfg.history.unwrap_or_default();
-@@ -1020,7 +1512,16 @@ impl Config {
+@@ -1020,7 +1530,16 @@ impl Config {
          let model = model
              .or(config_profile.model)
              .or(cfg.model)
@@ -3048,7 +3068,7 @@ index 1ee48d30..0f159ec8 100644
  
          let mut model_family =
              find_family_for_model(&model).unwrap_or_else(|| derive_default_model_family(&model));
-@@ -1033,8 +1534,8 @@ impl Config {
+@@ -1033,8 +1552,8 @@ impl Config {
          }
  
          let openai_model_info = get_model_info(&model_family);
@@ -3059,12 +3079,15 @@ index 1ee48d30..0f159ec8 100644
              .or_else(|| openai_model_info.as_ref().map(|info| info.context_window));
          let model_max_output_tokens = cfg.model_max_output_tokens.or_else(|| {
              openai_model_info
-@@ -1082,6 +1583,65 @@ impl Config {
+@@ -1082,6 +1601,78 @@ impl Config {
          )?;
          let compact_prompt = compact_prompt.or(file_compact_prompt);
  
 +        let telemetry_cfg = cfg.telemetry.clone();
 +        let telemetry_enabled = telemetry_enabled.or(telemetry_cfg.enabled).unwrap_or(true);
++        let session_usage_enabled = telemetry_cfg.session_usage.unwrap_or(true);
++        let tui_log_enabled = telemetry_cfg.tui.unwrap_or(false);
++        let debug_log_enabled = telemetry_cfg.debug.unwrap_or(cfg!(debug_assertions));
 +        let telemetry_dir = match telemetry_cfg.dir {
 +            Some(path) if path.is_absolute() => path,
 +            Some(path) => codex_home.join(path),
@@ -3080,7 +3103,14 @@ index 1ee48d30..0f159ec8 100644
 +            ("debug", None, true),
 +        ] {
 +            let entry: Option<&TelemetryLogToml> = telemetry_cfg.logs.get(name);
-+            let enabled = telemetry_enabled && entry.and_then(|log| log.enabled).unwrap_or(true);
++            let base_enabled = match name {
++                "tui" => tui_log_enabled,
++                "session" => session_usage_enabled,
++                "debug" => debug_log_enabled,
++                _ => true,
++            };
++            let entry_enabled = entry.and_then(|log| log.enabled).unwrap_or(true);
++            let enabled = telemetry_enabled && base_enabled && entry_enabled;
 +            let path = if let Some(file) = entry.and_then(|log| log.file.clone()) {
 +                if file.is_absolute() {
 +                    file
@@ -3116,6 +3146,9 @@ index 1ee48d30..0f159ec8 100644
 +            dir: telemetry_dir.clone(),
 +            logs: telemetry_logs,
 +            max_total_bytes: telemetry_max_total_bytes,
++            session_usage_enabled,
++            tui_log_enabled,
++            debug_log_enabled,
 +        };
 +
 +        if telemetry.enabled {
@@ -3125,7 +3158,7 @@ index 1ee48d30..0f159ec8 100644
          // Default review model when not set in config; allow CLI override to take precedence.
          let review_model = override_review_model
              .or(cfg.review_model)
-@@ -1096,6 +1656,7 @@ impl Config {
+@@ -1096,6 +1687,7 @@ impl Config {
              model_auto_compact_token_limit,
              model_provider_id,
              model_provider,
@@ -3133,7 +3166,7 @@ index 1ee48d30..0f159ec8 100644
              cwd: resolved_cwd,
              approval_policy,
              sandbox_policy,
-@@ -1132,6 +1693,7 @@ impl Config {
+@@ -1132,6 +1724,7 @@ impl Config {
              codex_home,
              history,
              file_opener: cfg.file_opener.unwrap_or(UriBasedFileOpener::VsCode),
@@ -3141,7 +3174,7 @@ index 1ee48d30..0f159ec8 100644
              codex_linux_sandbox_exe,
  
              hide_agent_reasoning: cfg.hide_agent_reasoning.unwrap_or(false),
-@@ -1274,9 +1836,83 @@ pub fn find_codex_home() -> std::io::Result<PathBuf> {
+@@ -1274,9 +1867,83 @@ pub fn find_codex_home() -> std::io::Result<PathBuf> {
  /// Returns the path to the folder where Codex logs are stored. Does not verify
  /// that the directory exists.
  pub fn log_dir(cfg: &Config) -> std::io::Result<PathBuf> {
@@ -3228,7 +3261,7 @@ index 1ee48d30..0f159ec8 100644
  }
  
  #[cfg(test)]
-@@ -1292,6 +1928,7 @@ mod tests {
+@@ -1292,6 +1959,7 @@ mod tests {
      use super::*;
      use pretty_assertions::assert_eq;
  
@@ -3236,7 +3269,7 @@ index 1ee48d30..0f159ec8 100644
      use std::time::Duration;
      use tempfile::TempDir;
  
-@@ -2870,6 +3507,7 @@ model_verbosity = "high"
+@@ -2870,6 +3538,7 @@ model_verbosity = "high"
                  model_auto_compact_token_limit: Some(180_000),
                  model_provider_id: "openai".to_string(),
                  model_provider: fixture.openai_provider.clone(),
@@ -3244,7 +3277,7 @@ index 1ee48d30..0f159ec8 100644
                  approval_policy: AskForApproval::Never,
                  sandbox_policy: SandboxPolicy::new_read_only_policy(),
                  did_user_set_custom_approval_policy_or_sandbox_mode: true,
-@@ -2898,6 +3536,7 @@ model_verbosity = "high"
+@@ -2898,6 +3567,7 @@ model_verbosity = "high"
                  developer_instructions: None,
                  compact_prompt: None,
                  forced_chatgpt_workspace_id: None,
@@ -3252,7 +3285,7 @@ index 1ee48d30..0f159ec8 100644
                  forced_login_method: None,
                  include_apply_patch_tool: false,
                  tools_web_search_request: false,
-@@ -2942,6 +3581,7 @@ model_verbosity = "high"
+@@ -2942,6 +3612,7 @@ model_verbosity = "high"
              model_auto_compact_token_limit: Some(14_746),
              model_provider_id: "openai-chat-completions".to_string(),
              model_provider: fixture.openai_chat_completions_provider.clone(),
@@ -3260,7 +3293,7 @@ index 1ee48d30..0f159ec8 100644
              approval_policy: AskForApproval::UnlessTrusted,
              sandbox_policy: SandboxPolicy::new_read_only_policy(),
              did_user_set_custom_approval_policy_or_sandbox_mode: true,
-@@ -2970,6 +3610,7 @@ model_verbosity = "high"
+@@ -2970,6 +3641,7 @@ model_verbosity = "high"
              developer_instructions: None,
              compact_prompt: None,
              forced_chatgpt_workspace_id: None,
@@ -3268,7 +3301,7 @@ index 1ee48d30..0f159ec8 100644
              forced_login_method: None,
              include_apply_patch_tool: false,
              tools_web_search_request: false,
-@@ -3029,6 +3670,7 @@ model_verbosity = "high"
+@@ -3029,6 +3701,7 @@ model_verbosity = "high"
              model_auto_compact_token_limit: Some(180_000),
              model_provider_id: "openai".to_string(),
              model_provider: fixture.openai_provider.clone(),
@@ -3276,7 +3309,7 @@ index 1ee48d30..0f159ec8 100644
              approval_policy: AskForApproval::OnFailure,
              sandbox_policy: SandboxPolicy::new_read_only_policy(),
              did_user_set_custom_approval_policy_or_sandbox_mode: true,
-@@ -3057,6 +3699,7 @@ model_verbosity = "high"
+@@ -3057,6 +3730,7 @@ model_verbosity = "high"
              developer_instructions: None,
              compact_prompt: None,
              forced_chatgpt_workspace_id: None,
@@ -3284,7 +3317,7 @@ index 1ee48d30..0f159ec8 100644
              forced_login_method: None,
              include_apply_patch_tool: false,
              tools_web_search_request: false,
-@@ -3102,6 +3745,7 @@ model_verbosity = "high"
+@@ -3102,6 +3776,7 @@ model_verbosity = "high"
              model_auto_compact_token_limit: Some(244_800),
              model_provider_id: "openai".to_string(),
              model_provider: fixture.openai_provider.clone(),
@@ -3292,7 +3325,7 @@ index 1ee48d30..0f159ec8 100644
              approval_policy: AskForApproval::OnFailure,
              sandbox_policy: SandboxPolicy::new_read_only_policy(),
              did_user_set_custom_approval_policy_or_sandbox_mode: true,
-@@ -3130,6 +3774,7 @@ model_verbosity = "high"
+@@ -3130,6 +3805,7 @@ model_verbosity = "high"
              developer_instructions: None,
              compact_prompt: None,
              forced_chatgpt_workspace_id: None,
@@ -3300,7 +3333,7 @@ index 1ee48d30..0f159ec8 100644
              forced_login_method: None,
              include_apply_patch_tool: false,
              tools_web_search_request: false,
-@@ -3272,6 +3917,11 @@ mod notifications_tests {
+@@ -3272,6 +3948,11 @@ mod notifications_tests {
      use crate::config::types::Notifications;
      use assert_matches::assert_matches;
      use serde::Deserialize;
@@ -3312,7 +3345,7 @@ index 1ee48d30..0f159ec8 100644
  
      #[derive(Deserialize, Debug, PartialEq)]
      struct TuiTomlTest {
-@@ -3306,4 +3956,57 @@ mod notifications_tests {
+@@ -3306,4 +3987,60 @@ mod notifications_tests {
              Notifications::Custom(ref v) if v == &vec!["foo".to_string()]
          );
      }
@@ -3343,6 +3376,9 @@ index 1ee48d30..0f159ec8 100644
 +                },
 +            )]),
 +            max_total_bytes: Some(70),
++            session_usage_enabled: true,
++            tui_log_enabled: true,
++            debug_log_enabled: cfg!(debug_assertions),
 +        };
 +
 +        prune_telemetry_logs(&telemetry);
@@ -3371,10 +3407,10 @@ index 1ee48d30..0f159ec8 100644
 +    }
  }
 diff --git a/codex-rs/core/src/config/types.rs b/codex-rs/core/src/config/types.rs
-index fd93df8f..6eff1a78 100644
+index fd93df8f..d38bf5bc 100644
 --- a/codex-rs/core/src/config/types.rs
 +++ b/codex-rs/core/src/config/types.rs
-@@ -161,6 +161,22 @@ const fn default_enabled() -> bool {
+@@ -161,6 +161,25 @@ const fn default_enabled() -> bool {
      true
  }
  
@@ -3392,6 +3428,9 @@ index fd93df8f..6eff1a78 100644
 +    pub logs: HashMap<String, TelemetryLogToml>,
 +    pub enabled: Option<bool>,
 +    pub max_total_bytes: Option<u64>,
++    pub session_usage: Option<bool>,
++    pub tui: Option<bool>,
++    pub debug: Option<bool>,
 +}
 +
  #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
@@ -5420,7 +5459,7 @@ index 73d61dc4..f1c70b29 100644
  
          let lines = render_lines(&cell.display_lines(80));
 diff --git a/codex-rs/tui/src/lib.rs b/codex-rs/tui/src/lib.rs
-index 99312ec1..d770a792 100644
+index 99312ec1..717c28d8 100644
 --- a/codex-rs/tui/src/lib.rs
 +++ b/codex-rs/tui/src/lib.rs
 @@ -7,6 +7,7 @@ use additional_dirs::add_dir_warning_message;
@@ -5431,7 +5470,7 @@ index 99312ec1..d770a792 100644
  use codex_core::AuthManager;
  use codex_core::BUILT_IN_OSS_MODEL_PROVIDER_ID;
  use codex_core::CodexAuth;
-@@ -18,6 +19,7 @@ use codex_core::config::ConfigOverrides;
+@@ -18,16 +19,19 @@ use codex_core::config::ConfigOverrides;
  use codex_core::find_conversation_path_by_id_str;
  use codex_core::get_platform_sandbox;
  use codex_core::protocol::AskForApproval;
@@ -5439,9 +5478,10 @@ index 99312ec1..d770a792 100644
  use codex_ollama::DEFAULT_OSS_MODEL;
  use codex_protocol::config_types::SandboxMode;
  use opentelemetry_appender_tracing::layer::OpenTelemetryTracingBridge;
-@@ -25,9 +27,11 @@ use std::fs::OpenOptions;
+ use std::fs::OpenOptions;
  use std::path::PathBuf;
- use tracing::error;
+-use tracing::error;
++use tracing::{debug, error, warn};
  use tracing_appender::non_blocking;
 +use tracing_appender::non_blocking::{NonBlocking, WorkerGuard};
  use tracing_subscriber::EnvFilter;
@@ -5466,7 +5506,7 @@ index 99312ec1..d770a792 100644
      };
      let raw_overrides = cli.config_overrides.raw_overrides.clone();
      let overrides_cli = codex_common::CliConfigOverrides { raw_overrides };
-@@ -188,48 +199,145 @@ pub async fn run_main(
+@@ -188,48 +199,142 @@ pub async fn run_main(
      }
  
      let active_profile = config.active_profile.clone();
@@ -5488,13 +5528,10 @@ index 99312ec1..d770a792 100644
 +    let mut tracing_guards: Vec<WorkerGuard> = Vec::new();
 +    let (file_writer, debug_writer) = if config.telemetry.enabled {
 +        if let Err(err) = std::fs::create_dir_all(&config.telemetry.dir) {
-+            #[allow(clippy::print_stderr)]
-+            {
-+                eprintln!(
-+                    "telemetry: failed to create telemetry directory {}: {err}",
-+                    config.telemetry.dir.display()
-+                );
-+            }
++            warn!(
++                "telemetry: failed to create telemetry directory {}: {err}",
++                config.telemetry.dir.display()
++            );
 +        }
  
 -    let log_file = log_file_opts.open(log_dir.join("codex-tui.log"))?;
@@ -5506,7 +5543,7 @@ index 99312ec1..d770a792 100644
 +                }
 +                if let Some(parent) = log_cfg.path.parent() {
 +                    if let Err(err) = std::fs::create_dir_all(parent) {
-+                        eprintln!(
++                        warn!(
 +                            "telemetry: failed to create TUI log directory {}: {err}",
 +                            parent.display()
 +                        );
@@ -5524,14 +5561,14 @@ index 99312ec1..d770a792 100644
 +                    Ok(log_file) => {
 +                        let (writer, guard) = non_blocking(log_file);
 +                        tracing_guards.push(guard);
-+                        eprintln!(
++                        debug!(
 +                            "telemetry: writing Codex TUI log to {}",
 +                            log_cfg.path.display()
 +                        );
 +                        Some(writer)
 +                    }
 +                    Err(err) => {
-+                        eprintln!(
++                        warn!(
 +                            "telemetry: failed to open TUI log {}: {err}",
 +                            log_cfg.path.display()
 +                        );
@@ -5550,7 +5587,7 @@ index 99312ec1..d770a792 100644
 +                }
 +                if let Some(parent) = log_cfg.path.parent() {
 +                    if let Err(err) = std::fs::create_dir_all(parent) {
-+                        eprintln!(
++                        warn!(
 +                            "telemetry: failed to create debug log directory {}: {err}",
 +                            parent.display()
 +                        );
@@ -5568,14 +5605,14 @@ index 99312ec1..d770a792 100644
 +                    Ok(log_file) => {
 +                        let (writer, guard) = non_blocking(log_file);
 +                        tracing_guards.push(guard);
-+                        eprintln!(
++                        debug!(
 +                            "telemetry: recording debug events to {}",
 +                            log_cfg.path.display()
 +                        );
 +                        Some(writer)
 +                    }
 +                    Err(err) => {
-+                        eprintln!(
++                        warn!(
 +                            "telemetry: failed to open debug log {}: {err}",
 +                            log_cfg.path.display()
 +                        );
@@ -5595,33 +5632,33 @@ index 99312ec1..d770a792 100644
 +            if session_cfg.enabled {
 +                if let Some(parent) = session_cfg.path.parent() {
 +                    if let Err(err) = std::fs::create_dir_all(parent) {
-+                        eprintln!(
++                        warn!(
 +                            "telemetry: failed to create session log directory {}: {err}",
 +                            parent.display()
 +                        );
 +                    }
 +                }
 +                match session_telemetry::configure_log_file(Some(session_cfg.path.clone())) {
-+                    Ok(()) => eprintln!(
++                    Ok(()) => debug!(
 +                        "telemetry: recording LiteLLM session usage to {}",
 +                        session_cfg.path.display()
 +                    ),
-+                    Err(err) => eprintln!(
++                    Err(err) => warn!(
 +                        "telemetry: failed to open LiteLLM session log {}: {err}",
 +                        session_cfg.path.display()
 +                    ),
 +                }
 +            } else if let Err(err) = session_telemetry::configure_log_file(None) {
-+                eprintln!("telemetry: failed to disable session telemetry logging: {err}");
++                warn!("telemetry: failed to disable session telemetry logging: {err}");
 +            }
 +        } else if let Err(err) = session_telemetry::configure_log_file(None) {
-+            eprintln!("telemetry: failed to disable session telemetry logging: {err}");
++            warn!("telemetry: failed to disable session telemetry logging: {err}");
 +        }
 +
 +        (file_writer, debug_writer)
 +    } else {
 +        if let Err(err) = session_telemetry::configure_log_file(None) {
-+            eprintln!("telemetry: failed to disable session telemetry logging: {err}");
++            warn!("telemetry: failed to disable session telemetry logging: {err}");
 +        }
 +        (None, None)
      };
@@ -5647,7 +5684,7 @@ index 99312ec1..d770a792 100644
  
      if cli.oss {
          codex_ollama::ensure_oss_ready(&config)
-@@ -248,22 +356,72 @@ pub async fn run_main(
+@@ -248,22 +353,72 @@ pub async fn run_main(
          }
      };
  
@@ -5736,7 +5773,7 @@ index 99312ec1..d770a792 100644
  
      run_ratatui_app(
          cli,
-@@ -277,6 +435,47 @@ pub async fn run_main(
+@@ -277,6 +432,47 @@ pub async fn run_main(
      .map_err(|err| std::io::Error::other(err.to_string()))
  }
  
@@ -5784,7 +5821,7 @@ index 99312ec1..d770a792 100644
  async fn run_ratatui_app(
      cli: Cli,
      initial_config: Config,
-@@ -339,6 +538,17 @@ async fn run_ratatui_app(
+@@ -339,6 +535,17 @@ async fn run_ratatui_app(
          should_show_trust_screen,
          should_show_windows_wsl_screen,
      );
@@ -5802,7 +5839,7 @@ index 99312ec1..d770a792 100644
  
      let config = if should_show_onboarding {
          let onboarding_result = run_onboarding_app(
-@@ -366,12 +576,17 @@ async fn run_ratatui_app(
+@@ -366,12 +573,17 @@ async fn run_ratatui_app(
                  update_action: None,
              });
          }
@@ -5820,7 +5857,7 @@ index 99312ec1..d770a792 100644
          {
              load_config_or_exit(cli_kv_overrides, overrides).await
          } else {
-@@ -380,6 +595,33 @@ async fn run_ratatui_app(
+@@ -380,6 +592,33 @@ async fn run_ratatui_app(
      } else {
          initial_config
      };
@@ -5854,7 +5891,7 @@ index 99312ec1..d770a792 100644
  
      // Determine resume behavior: explicit id, then resume last, then picker.
      let resume_selection = if let Some(id_str) = cli.resume_session_id.as_deref() {
-@@ -456,6 +698,9 @@ async fn run_ratatui_app(
+@@ -456,6 +695,9 @@ async fn run_ratatui_app(
          images,
          resume_selection,
          feedback,
@@ -5864,7 +5901,7 @@ index 99312ec1..d770a792 100644
      )
      .await;
  
-@@ -546,12 +791,21 @@ fn should_show_onboarding(
+@@ -546,12 +788,21 @@ fn should_show_onboarding(
          return true;
      }
  

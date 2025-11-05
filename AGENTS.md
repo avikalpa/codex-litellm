@@ -39,8 +39,7 @@ This project was born out of a persistent and complex issue: making the `codex-c
 - **`config.toml`**: Canonical LiteLLM configuration. Copy this into the active CODEX_HOME during testing so runs target the correct backend.
 - **`docs/TELEMETRY.md`**: Reference for the LiteLLM-only debug and session telemetry modules.
 - **`docs/COMPLIANCE.md`**: Licensing and attribution rules (Apache-2.0 baseline, NOTICE policy, source header guidance).
-- **`docs/PUBLISHING.md`**: Release checklist covering tag naming, build validation, npm publish, and post-release verification steps.
-- **`docs/PUBLISHING.md`**: Release checklist covering tag naming, build validation, npm publish, and post-release verification steps.
+- **`docs/PUBLISHING.md`**: Release checklist covering tag naming, build validation, npm publish, and post-release verification steps. When drafting release notes, follow a VS Code-style changelog: start with a short intro paragraph followed by concise bullet highlights that compile the changes since the previous build.
 
 ---
 

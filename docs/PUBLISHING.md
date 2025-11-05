@@ -60,6 +60,7 @@ previous one.
    git push origin main
    gh release create "$TAG" --title "codex-litellm $RELEASE" --notes "<highlights>"
    ```
+   Draft the release notes in a VS Code-style changelog: open with a brief paragraph and follow with concise bullet points summarizing the key changes since the previous build.
    The publication workflow will start automatically.
 
 ## 4. CI and npm verification
