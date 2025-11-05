@@ -99,9 +99,11 @@ jobs:
           UPSTREAM_COMMIT=$(node -p "require('./package.json').codexLitellm.upstreamCommit")
           LIT_COMMIT=$(git rev-parse --short HEAD)
           VERSION="${BASE_VERSION}+${UPSTREAM_COMMIT}+lit${LIT_COMMIT}"
+          NPM_VERSION=$(echo "$VERSION" | tr '+' '-')
           echo "value=$VERSION" >> "$GITHUB_OUTPUT"
-          npm pkg set version="$VERSION"
+          npm pkg set version="$NPM_VERSION"
           npm pkg set codexLitellm.releaseTag="v${VERSION}"
+          npm pkg set codexLitellm.npmVersion="$NPM_VERSION"
 
       - name: Install dependencies
         env:
