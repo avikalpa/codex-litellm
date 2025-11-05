@@ -47,12 +47,10 @@ const checksumPath = `${archivePath}.sha256`;
 
 function download(url, dest) {
   return new Promise((resolve, reject) => {
-    const file = fs.createWriteStream(dest);
     const request = https.get(url, (res) => {
       if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        file.close(() => fs.unlink(dest, () => {}));
-        download(res.headers.location, dest).then(resolve).catch(reject);
         res.resume();
+        download(res.headers.location, dest).then(resolve).catch(reject);
         return;
       }
 
@@ -62,15 +60,20 @@ function download(url, dest) {
         return;
       }
 
+      const file = fs.createWriteStream(dest);
       res.pipe(file);
+
+      file.on('finish', () => file.close(resolve));
+      file.on('error', (err) => {
+        file.close(() => fs.unlink(dest, () => {}));
+        reject(err);
+      });
     });
 
     request.on('error', (err) => {
       reject(err);
     });
 
-    file.on('finish', () => file.close(resolve));
-    file.on('error', (err) => reject(err));
   });
 }
 
