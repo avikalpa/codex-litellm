@@ -155,9 +155,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist/openwrt
-          ARCHIVE=$(find "artifacts/${{ matrix.artifact }}" -name "codex-litellm-${{ matrix.suffix }}.tar.gz" -print -quit)
+          ARCHIVE=$(find artifacts -name "codex-litellm-${{ matrix.suffix }}.tar.gz" -print -quit)
           if [[ -z "$ARCHIVE" ]]; then
-            echo "codex-litellm-${{ matrix.suffix }}.tar.gz not found under artifacts/${{ matrix.artifact }}" >&2
+            echo "codex-litellm-${{ matrix.suffix }}.tar.gz not found under artifacts/" >&2
             exit 1
           fi
           ./scripts/package-openwrt.sh \
@@ -209,9 +209,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist/termux
-          ARCHIVE=$(find "artifacts/${{ matrix.artifact }}" -name "codex-litellm-${{ matrix.suffix }}.tar.gz" -print -quit)
+          ARCHIVE=$(find artifacts -name "codex-litellm-${{ matrix.suffix }}.tar.gz" -print -quit)
           if [[ -z "$ARCHIVE" ]]; then
-            echo "codex-litellm-${{ matrix.suffix }}.tar.gz not found under artifacts/${{ matrix.artifact }}" >&2
+            echo "codex-litellm-${{ matrix.suffix }}.tar.gz not found under artifacts/" >&2
             exit 1
           fi
           ./scripts/package-termux.sh \
