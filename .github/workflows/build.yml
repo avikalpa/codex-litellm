@@ -36,6 +36,14 @@ jobs:
             suffix: macos-arm64
             runs_on: macos-latest
             use_cross: false
+          - target: x86_64-unknown-freebsd
+            suffix: freebsd-x64
+            runs_on: ubuntu-latest
+            use_cross: true
+          - target: x86_64-unknown-illumos
+            suffix: illumos-x64
+            runs_on: ubuntu-latest
+            use_cross: true
     steps:
       - uses: actions/checkout@v4
 
@@ -64,8 +72,123 @@ jobs:
             dist/codex-litellm-${{ matrix.suffix }}.tar.gz
             dist/codex-litellm-${{ matrix.suffix }}.tar.gz.sha256
 
-  attach-release-assets:
+  package-openwrt:
     needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64_generic
+            artifact: codex-litellm-linux-arm64
+            suffix: linux-arm64
+          - arch: x86_64
+            artifact: codex-litellm-linux-x64
+            suffix: linux-x64
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: artifacts
+
+      - name: Compute release version
+        id: version
+        run: |
+          set -euo pipefail
+          VERSION=$(python3 - <<'PY'
+import json
+import subprocess
+with open('package.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+base = data['codexLitellm']['baseVersion']
+upstream = data['codexLitellm']['upstreamCommit']
+lit = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
+print(f"{base}+{upstream}+lit{lit}")
+PY
+          )
+          echo "release=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Package OpenWrt artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/openwrt
+          ./scripts/package-openwrt.sh \
+            "artifacts/${{ matrix.artifact }}/codex-litellm-${{ matrix.suffix }}.tar.gz" \
+            "${{ matrix.arch }}" \
+            "${{ steps.version.outputs.release }}" \
+            "dist/openwrt"
+
+      - name: Upload OpenWrt artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-litellm-openwrt-${{ matrix.arch }}
+          path: dist/openwrt/codex-litellm_${{ steps.version.outputs.release }}_${{ matrix.arch }}.ipk
+
+  package-termux:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    strategy:
+      matrix:
+        include:
+          - arch: aarch64
+            artifact: codex-litellm-linux-arm64
+            suffix: linux-arm64
+          - arch: x86_64
+            artifact: codex-litellm-linux-x64
+            suffix: linux-x64
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: artifacts
+
+      - name: Compute release version
+        id: version
+        run: |
+          set -euo pipefail
+          VERSION=$(python3 - <<'PY'
+import json
+import subprocess
+with open('package.json', 'r', encoding='utf-8') as f:
+    data = json.load(f)
+base = data['codexLitellm']['baseVersion']
+upstream = data['codexLitellm']['upstreamCommit']
+lit = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
+print(f"{base}+{upstream}+lit{lit}")
+PY
+          )
+          echo "release=$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Package Termux artifact
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p dist/termux
+          ./scripts/package-termux.sh \
+            "artifacts/${{ matrix.artifact }}/codex-litellm-${{ matrix.suffix }}.tar.gz" \
+            "${{ matrix.arch }}" \
+            "${{ steps.version.outputs.release }}" \
+            "dist/termux"
+
+      - name: Upload Termux artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: codex-litellm-termux-${{ matrix.arch }}
+          path: dist/termux/codex-litellm_${{ steps.version.outputs.release }}_${{ matrix.arch }}.deb
+
+  attach-release-assets:
+    needs:
+      - build
+      - package-openwrt
+      - package-termux
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
@@ -79,6 +202,8 @@ jobs:
           files: |
             dist/**/codex-litellm-*.tar.gz
             dist/**/codex-litellm-*.tar.gz.sha256
+            dist/**/codex-litellm_*.ipk
+            dist/**/codex-litellm_*.deb
 
   publish-npm:
     needs: attach-release-assets

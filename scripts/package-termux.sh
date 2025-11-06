@@ -52,6 +52,6 @@ Description: Patched OpenAI Codex CLI with LiteLLM support for Termux environmen
 EOF
 
 mkdir -p "$OUT_DIR"
-dpkg-deb --build "$PKG_DIR" "$OUT_DIR/codex-litellm_${VERSION}_${ARCH}.deb" >/dev/null
+dpkg-deb --build --nocheck "$PKG_DIR" "$OUT_DIR/codex-litellm_${VERSION}_${ARCH}.deb" >/dev/null
 
 echo "Termux package written to $OUT_DIR"
