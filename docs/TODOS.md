@@ -45,4 +45,5 @@
 - [ ] Package and push OpenWrt builds covering GL-iNET Flint-2 (`aarch64_generic`) and OpenWrt One (`x86_64`) once the desktop/npm release is verified; stage additional arches (ipq807x, mt7621) when toolchains are reproducible. Release workflow now emits `.ipk` artifacts for both arches—next tagged release should upload them and validate on hardware.
 - [ ] Package and publish Termux binaries for `aarch64` and `x86_64` after the primary release lands, then investigate extending support to `armv7`/`i686`. Release workflow now builds the `.deb` artifacts; confirm installation on-device during the follow-up sweep.
 - [ ] Confirm the FreeBSD (`freebsd-x64`) and Illumos (`illumos-x64`) tarballs from the release workflow install cleanly and capture any extra setup notes.
+- [ ] Smoke-test Windows (`windows-x64`, `windows-arm64`) builds from the release workflow on fresh environments and document any prerequisite installers (VC++ runtimes, etc.).
 - [ ] Re-run the npm install + LiteLLM exec sanity test after the `v0.55.0+...` release assets publish (`npm i -g @avikalpa/codex-litellm`; `codex-litellm --model vercel/gpt-oss-120b exec "who are you"`).
