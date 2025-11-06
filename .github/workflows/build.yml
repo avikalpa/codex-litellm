@@ -144,17 +144,10 @@ jobs:
         id: version
         run: |
           set -euo pipefail
-          VERSION=$(python3 - <<'PY'
-import json
-import subprocess
-with open('package.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
-base = data['codexLitellm']['baseVersion']
-upstream = data['codexLitellm']['upstreamCommit']
-lit = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
-print(f"{base}+{upstream}+lit{lit}")
-PY
-          )
+          BASE_VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")
+          UPSTREAM_COMMIT=$(node -p "require('./package.json').codexLitellm.upstreamCommit")
+          LIT_COMMIT=$(git rev-parse --short HEAD)
+          VERSION="${BASE_VERSION}+${UPSTREAM_COMMIT}+lit${LIT_COMMIT}"
           echo "release=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Package OpenWrt artifact
@@ -200,17 +193,10 @@ PY
         id: version
         run: |
           set -euo pipefail
-          VERSION=$(python3 - <<'PY'
-import json
-import subprocess
-with open('package.json', 'r', encoding='utf-8') as f:
-    data = json.load(f)
-base = data['codexLitellm']['baseVersion']
-upstream = data['codexLitellm']['upstreamCommit']
-lit = subprocess.check_output(['git', 'rev-parse', '--short', 'HEAD']).decode().strip()
-print(f"{base}+{upstream}+lit{lit}")
-PY
-          )
+          BASE_VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")
+          UPSTREAM_COMMIT=$(node -p "require('./package.json').codexLitellm.upstreamCommit")
+          LIT_COMMIT=$(git rev-parse --short HEAD)
+          VERSION="${BASE_VERSION}+${UPSTREAM_COMMIT}+lit${LIT_COMMIT}"
           echo "release=$VERSION" >> "$GITHUB_OUTPUT"
 
       - name: Package Termux artifact
