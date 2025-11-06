@@ -1,15 +1,2 @@
-# Upstream checkout and local sandboxes
-/codex/
-/litellm/
-/test-workspace/
-/reports/
-/logs/
-
-# Build outputs
-/dist/
-/target/
-/node_modules/
-
-# Misc
-*.log
 .DS_Store
+run_logs.zip
