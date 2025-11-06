@@ -156,7 +156,7 @@ jobs:
           set -euo pipefail
           mkdir -p dist/openwrt
           ./scripts/package-openwrt.sh \
-            "artifacts/${{ matrix.artifact }}/codex-litellm-${{ matrix.suffix }}.tar.gz" \
+            "artifacts/${{ matrix.artifact }}/dist/codex-litellm-${{ matrix.suffix }}.tar.gz" \
             "${{ matrix.arch }}" \
             "${{ steps.version.outputs.release }}" \
             "dist/openwrt"
@@ -205,7 +205,7 @@ jobs:
           set -euo pipefail
           mkdir -p dist/termux
           ./scripts/package-termux.sh \
-            "artifacts/${{ matrix.artifact }}/codex-litellm-${{ matrix.suffix }}.tar.gz" \
+            "artifacts/${{ matrix.artifact }}/dist/codex-litellm-${{ matrix.suffix }}.tar.gz" \
             "${{ matrix.arch }}" \
             "${{ steps.version.outputs.release }}" \
             "dist/termux"
