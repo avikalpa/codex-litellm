@@ -159,6 +159,26 @@ cd "$DIST_ROOT"
 ARCHIVE_NAME="codex-litellm-${SUFFIX}.tar.gz"
 
 tar -C "$SUFFIX" -czf "$ARCHIVE_NAME" .
-sha256sum "$ARCHIVE_NAME" > "${ARCHIVE_NAME}.sha256"
+if command -v sha256sum >/dev/null 2>&1; then
+  sha256sum "$ARCHIVE_NAME" > "${ARCHIVE_NAME}.sha256"
+else
+  PY_BIN=""
+  if command -v python3 >/dev/null 2>&1; then
+    PY_BIN="python3"
+  elif command -v python >/dev/null 2>&1; then
+    PY_BIN="python"
+  fi
+  if [[ -n "$PY_BIN" ]]; then
+    "$PY_BIN" - "$ARCHIVE_NAME" > "${ARCHIVE_NAME}.sha256" <<'PY'
+import hashlib, sys, pathlib
+path = pathlib.Path(sys.argv[1])
+digest = hashlib.sha256(path.read_bytes()).hexdigest()
+print(f"{digest}  {path.name}")
+PY
+  else
+    echo "sha256sum and python are unavailable; cannot compute checksum" >&2
+    exit 1
+  fi
+fi
 
 echo "Artifact ready: $DIST_ROOT/$ARCHIVE_NAME"
