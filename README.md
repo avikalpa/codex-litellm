@@ -27,7 +27,7 @@
 
 > **Note**: The project is written in Rust but distributed as an npm package. A full Node.js dev setup is **not** required for install/use.
 
-### 1) LiteLLM Backend Setup (LiteLLM only)
+### 1) LiteLLM Backend Setup (or vLLM)
 
 This fork focuses on native **LiteLLM** integration. Configure LiteLLM first; robust example configs are maintained in the **Wiki**.
 
@@ -44,9 +44,6 @@ docker run -d -p 4000:4000 \
 
 ```bash
 npm install -g @avikalpa/codex-litellm
-
-# verify
-codex-litellm --version
 ```
 
 #### OpenWrt
@@ -54,7 +51,7 @@ codex-litellm --version
 Download the `.ipk` for your architecture from the Releases page:
 
 ```bash
-opkg install codex-litellm_<version>_<arch>.ipk
+apk install codex-litellm_<version>_<arch>.ipk
 ```
 
 #### Termux (Android)

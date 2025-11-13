@@ -1,12 +1,14 @@
 # Active Task
 
-1. **Fix LiteLLM header reset during onboarding** – ensure the model header and internal config use the selected LiteLLM slug immediately after onboarding instead of defaulting back to `gpt-oss-120b-litellm` (pending verification of new pending-override logic).
-2. **Restore LiteLLM response handling** – investigate the "No assistant message" regression for LiteLLM chat/exec requests (check prior working copy in `~/git/codex-litellm` and bring over the missing logic or logging).
+1. **Debug OSS exec loops with LiteLLM logs** – trace the buffered requests for `vercel/gpt-oss-*` (button/pill repro) so we understand why follow-ups stall after reconnaissance and fix the pipeline without exposing plumbing text in the TUI.
+2. **Style interleaved reasoning output** – make the intermediate "thinking" spans for agentic LiteLLM models (start with `vercel/minimax-m2`, medium reasoning) render in the TUI using the upstream italic + gray treatment instead of normal assistant text.
+3. **Humanize docs/wiki copy** – plan the rewrites needed so `docs/` plus `~/gh/codex-litellm.wiki` read like human-written guides before we touch the actual prose.
 
 Notes:
-- Reproduce onboarding flow in TUI to verify header update.
-- Use `CODEX_HOME=/root/.codex-litell` when running local exec tests.
-- Capture findings for operational nuances once the regression fix is identified.
+- Replay the stored transcript under `logs/formatting-logs-from-another-machine/` (minimax session) to catalog every interleaved-thinking marker that currently renders like regular output.
+- Use `test-workspace` + `codex exec "change all buttons in the repository to have a gradient and pill shape"` with `vercel/gpt-oss-120b` (or `-20b`) and capture the matching LiteLLM debug log/session JSON so we can see exactly where the OSS model quits.
+- Keep `CODEX_HOME` set to `/root/.codex-litellm-debug` so every run targets `https://llm.gour.top/chat/completions` with the canonical LiteLLM creds. Sync the repo `config.toml` into that directory before testing; only fall back to a workspace-local home if the sandbox blocks writes.
+- Until the non-agentic fix is verified, skip the `vercel/minimax-m2` regression run to avoid burning time on agentic models; focus on `vercel/gpt-oss-120b` until it emits real final responses again.
 
 ## 2025-10-27 Sweep A
 - Observed: onboarding shows LiteLLM model selector with stray error bullet, session header disappears after onboarding, LiteLLM turns still return “No assistant message”.
@@ -35,6 +37,11 @@ Notes:
 - Observed: Rebase to upstream `rust-v0.53.0` is in flight; core LiteLLM modules (build-info crate, `codex_common::litellm`) are added but TUI header rendering regressed—the banner no longer draws after onboarding, even though backend model overrides succeed and telemetry emits the correct slug.
 - Hypothesis: During the rebase we dropped the upstream session header integration before wiring in the LiteLLM-specific overrides; need to reapply the header layout/reservation logic from the previous patch and adapt it to the v0.53.0 TUI structure before chasing model slug refreshes.
 - Plan: Diff old `stable-tag.patch` header changes against upstream v0.53.0, reintroduce the minimal code required to render the header (even if it still shows the stale slug), then rebuild to provide a working baseline for further refinement.
+
+## 2025-11-07 Sweep F
+- Observed: non-agentic LiteLLM models (notably `vercel/gpt-oss-120b`) stopped after the first reconnaissance toolcall because the summary follow-up path disabled tools, the LiteLLM shim emitted `{"cmd": [...]}` instead of `command`, and the TUI rendered interleaved reasoning as normal assistant text. Minimax runs still stream reasoning correctly but long turns bump into the 6½ minute exec timeout.
+- Fix: keep tools enabled whenever summary prompts are appended for follow-up-capable families, add a `cmd` alias + JSON fallback parser to the shell handler, detect read-only tool loops and inject stronger follow-up prompts, and show reasoning cells in the TUI using the dim/italic treatment. Updated `AGENTS.md` + `docs/MODEL_BEHAVIOR_TESTS.md` to mandate the debug-build workflow and manual gpt-oss/minimax checks.
+- Testing: `cargo build --locked --bin codex`, wiped `test-workspace` via `./setup-test-env.sh`, ran `codex exec ... --model vercel/gpt-oss-120b` (log: `logs/gpt-oss-20251107-182214.log`) which now applied the gradient/pill changes automatically, then reran with `vercel/minimax-m2` (log: `logs/minimax-20251107-181116.log`) which streamed reasoning but still hit the default exec timeout after ~6½ minutes. Reset `test-workspace` between runs to keep it clean.
 
 ### 2025-11-02 Follow-up
 - Build status: `cargo build --bin codex` fails because `codex_common::litellm` references `codex_core::config::{LiteLlmProviderUpdate, ensure_litellm_baseline, read_litellm_provider_state, write_litellm_provider_state}`, which have not yet been reintroduced during the v0.53.0 rebase.
@@ -162,3 +169,9 @@ Notes:
 - Added a `codex-build-info` helper to stamp the patched release string and taught the CLI to short-circuit `--version` with `codex-litellm <upstream>+lit<patch>`.
 - Verified the headless `codex exec --model vercel/gpt-oss-120b` flow against https://llm.gour.top using the env-seeded credentials (no more 401 loop; returns model response).
 - Preparing to regenerate `stable-tag.patch` and rerun `./build.sh` so the release artifacts + npm package carry the new version string.
+
+## 2025-11-06 Sweep A – Response formatting kickoff
+- Observed: Agentic LiteLLM models (session logs in `logs/formatting-logs-from-another-machine/`, recorded with minimax) stream their interleaved reasoning as normal chat text, so the TUI renders intermediate sentences (e.g., “Perfect! The libvirt network is now working…”) in the same style as final answers. Non-agentic models like `vercel/gpt-oss-120b` still drop the socket after the first toolcall when running `codex exec` with medium reasoning.
+- Hypothesis: We are bypassing the upstream “thinking” segments that route through the italic/gray text style, likely because the LiteLLM adapter labels every chunk as `assistant` content; the non-agentic drop stems from our LiteLLM fetch-and-simulate path not finalizing the tool response for models that lack interleaved thinking.
+- Plan: 1) Trace the minimax session through the patched renderer to detect the `DisplayMessage::Reasoning` (or equivalent) hook and ensure agentic chunks map there. 2) Force `vercel/gpt-oss-120b` exec runs in `test-workspace` (`codex exec "change all buttons..."`) and capture the toolcall lifecycle, then keep the channel open long enough to emit the final assistant text. 3) Outline documentation/wiki edits once the behavioural fixes are scoped.
+- Status: Scoping – cataloging reasoning markers from the stored transcript and instrumenting the LiteLLM display adapter before changing the renderer.

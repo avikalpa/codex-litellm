@@ -34,9 +34,14 @@ This project was born out of a persistent and complex issue: making the `codex-c
 - **`codex/`**: A clone of the official `codex` source code repository. This is where the code modifications will be made.
 - **Repository root** (`~/gh/codex-litellm/`): Headquarters for our patchset project.
     - **`AGENTS.md`**: Project operating manual (this document). `CLAUDE.md` remains for historical reference only.
-    - **`docs/`**: Contains detailed strategic and analytical documents. The primary roadmap for any implementation task will be located here (`docs/TODOS.md`, `docs/PROJECT_SUMMARY.md`, etc.).
+- **`docs/`**: Contains detailed strategic and analytical documents. The primary roadmap for any implementation task will be located here (`docs/TODOS.md`, `docs/PROJECT_SUMMARY.md`, etc.).
+- **`docs/CURRENT_TASK.md`**: The live hand-off note for the active debugging task. Read it at the start of every session and update it before handing off again.
+- **`docs/MODEL_BEHAVIOR.md`**: Tracks how our LiteLLM integration diverges from upstream Codex (buffered OSS fallback rules, reasoning styling, exec vs TUI expectations). Update it whenever you change the request/response pipeline.
+- **Manual model probes:** When a non-agentic model misbehaves, reproduce it outside Codex before patching. First call the LiteLLM endpoint via `curl …/chat/completions` to inspect the raw `tool_calls`. If the model stalls after a tool, use the Python harness (see `MODEL_BEHAVIOR.md`) to execute the commands and resend tool outputs—log the findings in `docs/CURRENT_TASK.md`.
+- **Observability first:** When behavior is unclear, add telemetry before attempting a fix. Instrument both the core (request/response) and the TUI so we can see what the model sent, what we forwarded, and how the UI rendered it. Never assume; capture the evidence in logs and reference it in `docs/CURRENT_TASK.md`. Use `python trace/telemetry.py …` to slice the JSONL sessions (`list`, `events`, `summary`) instead of scrolling giant logs by hand. Set `CODEX_TRACE_HOME` if you need to inspect an alternate `CODEX_HOME`. If the helper ever needs third-party deps, create `trace/venv` with `uv venv trace/venv` (preferred) or a standard virtualenv; the path is already gitignored. Legacy helpers under `scripts/` are considered deprecated—migrate any remaining use cases to the new tracing tool before touching them. Treat `trace/telemetry.py` as a living tool: whenever a new debugging scenario needs richer probes, extend the tracer first so future sweeps inherit the observability upgrade automatically.
+- **Release notes:** Keep `docs/CHANGELOG.md` up to date in VS Code–style format (Highlights + Detailed Changes). This file seeds the GitHub release notes, so update it after every notable change affecting end users.
 - **`stable-tag.patch`**: Diff generated from the `codex/` source tree after modifications are complete.
-- **`config.toml`**: Canonical LiteLLM configuration. Copy this into the active CODEX_HOME during testing so runs target the correct backend.
+- **`config.toml`**: Canonical LiteLLM configuration. Copy this into the active CODEX_HOME during testing so runs target the correct backend. (The repo copy is intentionally blank; pull from `~/.codex-litellm-debug/config.toml` whenever you need a seeded profile.)
 - **`docs/TELEMETRY.md`**: Reference for the LiteLLM-only debug and session telemetry modules.
 - **`docs/COMPLIANCE.md`**: Licensing and attribution rules (Apache-2.0 baseline, NOTICE policy, source header guidance).
 - **`docs/PUBLISHING.md`**: Release checklist covering tag naming, build validation, npm publish, and post-release verification steps. When drafting release notes, follow a VS Code-style changelog: start with a short intro paragraph followed by concise bullet highlights that compile the changes since the previous build.
@@ -59,6 +64,7 @@ This structured approach ensures that our work is methodical, well-documented, a
 3. Tackle tasks one milestone at a time. After each milestone (bug fix, feature slice, doc update), regenerate `stable-tag.patch`, then commit the root repository per the steps in `docs/COMMITTING_NOTES.md`.
 4. When telemetry, onboarding, or other sensitive flows change, record the behaviour in `docs/TELEMETRY.md` and update `docs/PROJECT_SUMMARY.md` as needed.
 5. Always run `cargo build --locked --bin codex` before handing the tree back to the user. Prefer adding focused tests (`cargo test -p codex-tui`, `cargo insta test`) when they cover the regression you are fixing.
+6. Before asking the user to run the TUI, smoke-test the change with `timeout 90s CODEX_HOME=/tmp/codex-home-oss-test ../codex/codex-rs/target/debug/codex exec "<prompt>" --model vercel/gpt-oss-20b --skip-git-repo-check`. Only request TUI validation after the exec run produces a final assistant reply plus token usage.
 
 ---
 
@@ -68,7 +74,20 @@ Due to the nature of this project, where we are patching an upstream repository,
 
 **WARNING:** The `build.sh` script is designed for automated release builds. It will destroy any manual changes in the `codex/` directory by running `git reset --hard`. Do NOT use it during development.
 
-**Environment Isolation:** Always export `CODEX_HOME` to a workspace-local directory (e.g. `export CODEX_HOME=$(pwd)/test-workspace/.codex`) before running the patched CLI. Copy `config.toml` from the repo root into `$CODEX_HOME/config.toml` so development runs target the LiteLLM backend without touching `~/.codex`.
+**Environment Isolation:** The canonical testing home is `CODEX_HOME=/root/.codex-litellm-debug`. That directory already contains the blessed `config.toml` pointing at `https://llm.gour.top/chat/completions` and the current model defaults (`vercel/gpt-oss-120b`, medium reasoning). When you edit the repo’s `config.toml`, immediately copy it into `~/.codex-litellm-debug/` so both stay in lock-step. If a sandbox blocks writes to that path, fall back to a workspace-local directory (e.g. `test-workspace/.codex`) only for that run and sync the debug profile afterward. Never point the sandbox at `https://api.openai.com/...`; all validation must target the LiteLLM gateway above.
+
+### Debug build + test-workspace loop
+
+1. `cd codex/codex-rs && cargo build --locked --bin codex` (always exercise the debug build; it enables our telemetry crates).
+2. Recreate the Calibre-Web workspace: `rm -rf test-workspace && ./setup-test-env.sh`. Re-cloning before every sweep keeps diffs deterministic.
+3. `cd test-workspace` and run every manual scenario with the debug binary:  
+   `CODEX_HOME=/root/.codex-litellm-debug ../codex/codex-rs/target/debug/codex exec "<prompt>" --model <slug> --skip-git-repo-check`
+4. Keep `/root/.codex-litellm-debug/sessions/` and `logs/` intact—those captures prove regressions. If the config changes (model slug, endpoint, telemetry), update both the repo root and the debug home in the same commit.
+5. Upstream `codex` is for A/B comparisons only. All functional testing, `/status` checks, and telemetry captures must use the patched debug binary.
+
+### Mandatory model behaviour tests
+
+Before every GitHub push or release, run the manual scenarios in `docs/MODEL_BEHAVIOR_TESTS.md` **in order**: non-agentic (`vercel/gpt-oss-120b`) first, then agentic (`vercel/minimax-m2`). Both runs use the gradient/pill prompt that ends with “Just do it. Do not ask for permission.” Each model must finish the job without disconnecting or requiring manual “continue” nudges; capture the logs under `logs/` if anything deviates and block the release until fixed.
 
 - **Stdout nuance:** `codex exec` writes assistant messages to both the streaming renderer and a final stdout flush. When viewed live this looks like a duplicated response, but redirecting stdout to a file (e.g. `codex exec "who are you?" > reply.txt`) shows only a single copy. Treat the double print in interactive runs as expected behavior, not a regression.
 
@@ -82,10 +101,10 @@ Due to the nature of this project, where we are patching an upstream repository,
     *   If `git apply` fails or the UI suddenly reverts to upstream defaults, pause and walk through the recovery checklist in `docs/COMMITTING_NOTES.md#when-the-patch-no-longer-applies` before continuing.
 
 2.  **Testing:**
-    *   Run `setup-test-env.sh` to create a `test-workspace` directory.
-    *   `cd` into `test-workspace`.
-    *   Export `CODEX_HOME="$(pwd)/.codex-litellm"` (or another workspace-local directory) and keep `config.toml` under `$CODEX_HOME/config.toml` so development runs leave `~/.codex` untouched.
-    *   Execute the debug binary directly from its build path (`codex/codex-rs/target/debug/codex`). For parity with release artifacts, you may symlink or copy it to `codex-litellm` inside the test workspace.
+    *   Recreate the Calibre-Web repo each sweep: `rm -rf test-workspace && ./setup-test-env.sh`.
+    *   `cd test-workspace`.
+    *   Run the debug binary straight from the build tree with the canonical profile:  
+        `CODEX_HOME=/root/.codex-litellm-debug ../codex/codex-rs/target/debug/codex exec "<prompt>" --model <slug> --skip-git-repo-check`
     *   Run simple commands like `../codex/codex-rs/target/debug/codex "2+2"` (or invoke the symlinked `codex-litellm`) to test basic functionality.
     *   Run complex commands like `../codex/codex-rs/target/debug/codex "List the files in the repo and make a context in AGENTS.md" --skip-git-repo-check` to test tool-calling.
 

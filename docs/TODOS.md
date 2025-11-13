@@ -1,3 +1,37 @@
+# Immediate todos
+
+- [ ] Use LiteLLM debug logs (`~/.codex-litellm-debug/logs` + session JSONL) to pinpoint why OSS buffered turns stop after reconnaissance—capture the exact request/response pair for the button/pill repro before changing more code.
+- [ ] Ensure the “Worked for …” banner replaces the final divider *before* the last assistant message so the TUI never renders a plain `────` footer (minimax still fails to emit the banner + `/quit` footer—see latest telemetry).
+- [ ] Mirror upstream "agentic-first" styling by collapsing LiteLLM reasoning chatter (see `logs/formatting-logs-from-another-machine/transcript-minimax-m2-medium.txt`) into a single grey/italic thinking block and suppressing interim "Explored" noise in the TUI.
+- [ ] Ensure OSS follow-ups reuse the previously emitted tool-call context verbatim (no re-listing) and document how we compact that history between buffered attempts.
+- [ ] Keep the non-agentic fallback text internal so the TUI only shows the final assistant summary; double-check that buffered follow-ups stay silent unless the final attempt fails.
+- [ ] Validate the retry/backoff path for buffered OSS calls (network errors, LiteLLM 5xx) and store a repro log in `logs/` once stabilized.
+- [ ] Finish the LiteLLM token-usage reconciliation so `/status` and the TUI header report identical context/tokens for minimax sessions; re-test once the scheduler work is done.
+- [ ] Restore upstream italic/gray styling for LiteLLM reasoning spans (agentic + buffered) using the minimax transcript (`logs/formatting-logs-from-another-machine/transcript-minimax-m2-medium.txt`) as the baseline; ensure exec-mode reasoning blocks also render in italics.
+
+## Interleaved Models
+- [ ] Mirror upstream italic/gray styling for agentic reasoning segments by routing LiteLLM "thinking" spans (baseline `vercel/minimax-m2`, medium reasoning) through the dedicated reasoning display element instead of standard assistant text.
+- [ ] Use the stored transcript under `logs/formatting-logs-from-another-machine/` to catalog each reasoning marker and add a regression test/fixture so future minimax-style models continue to render correctly.
+- [ ] Verify telemetry + session saving keep interleaved reasoning separate from final answers so copy/export flows no longer duplicate intermediate thoughts.
+
+## Non-Agentic Models
+- [x] Keep `vercel/gpt-oss-120b` (medium reasoning) connections alive after the first toolcall during `codex exec "change all buttons in the repository to have a gradient and pill shape"` so the final assistant reply flushes instead of dropping.
+- [ ] Instrument the LiteLLM fetch-and-simulate path to detect when non-agentic models stop streaming early, ensure forced follow-ups retain tool access, and add a retry buffer so buffered requests are automatically re-issued on transient failures.
+- [ ] Capture a minimal repro log in `logs/` once the fix lands so future regressions are easy to diff.
+
+## Documentation
+- [ ] Draft an outline for refreshing `docs/` plus `~/gh/codex-litellm.wiki` so the prose reads like human-written guidance (focus on onboarding, telemetry, and troubleshooting first).
+- [ ] Identify which doc sections depend on the upcoming formatting/output fixes so we can stage updates immediately after implementation.
+- [ ] Gather before/after snippets that showcase the new rendering + stability work for inclusion in the wiki changelog.
+
+## Economic Analysis
+
+
+## Exclusive Features
+- [ ] Design the `--web` (or equivalent) flag so codex-litellm can run inside LXC/VM sandboxes and expose curated endpoints (e.g., `codex/dev0/gpt-oss-120b`) to Open WebUI for self-hosted agentic chat.
+- [ ] Define how the CLI advertises its "listening" mode in `config.toml`, including support for multiple models, per-environment routing, and API key + salt-based token authentication.
+- [ ] Document the operational guidance for this mode so teams can reuse existing self-hosted web UIs without shipping a separate Codex web frontend.
+
 # Polish
 
 ## Model Experience
@@ -18,6 +52,7 @@
 - [x] `/status` should surface LiteLLM usage stats (tokens in/out, context consumption, rate limit notices) and handle “no data yet” cases gracefully.
 - [x] The TUI status/context indicators must reflect the correct context % and reasoning summary (no perpetually 100% bars).
 - [x] Retain the customized ASCII onboarding welcome screen with LiteLLM-specific guidance.
+- [ ] On many headers the program is called OpenAI Codex. Instead it should be called "Codex LiteLLM". This is important I think, becaue under Apache 2 this is a derivative work and quoting OpenAI directly is, I think, improper.
 
 ## Telemetry
 - Current state: telemetry logs are routed beneath `$CODEX_HOME/logs/` with per-crate toggles; session usage is recorded through `codex-litellm-model-session-telemetry` and exposed via `/status`; debug traces funnel through `codex-litellm-debug-telemetry`.
@@ -35,6 +70,7 @@
 - [x] Keep the conversation context in sync with streamed tool calls and reasoning sections across providers.
 
 ## Publishing
+- [ ] Current versioning looks like this v0.55.0+2e2063ca+lit2e2063ca. Instead it should look like v0.55.0+cdxl--2e2063ca. In other words the upstream tag+cdxl(denoting codex litellm)--[our short commit hash].
 - [x] Push to GitHub so the Actions release workflow runs (artifacts + npm/OpenWrt/Termux).
 - [x] Change the project license to Apache-2.0 to match upstream.
 - [x] Bundle `LICENSE` and `NOTICE` inside every release artifact (tarballs, OpenWrt `.ipk`, Termux `.deb`).
@@ -47,3 +83,7 @@
 - [ ] Confirm the FreeBSD (`freebsd-x64`) and Illumos (`illumos-x64`) tarballs from the release workflow install cleanly and capture any extra setup notes.
 - [ ] Smoke-test Windows (`windows-x64`, `windows-arm64`) builds from the release workflow on fresh environments and document any prerequisite installers (VC++ runtimes, etc.).
 - [ ] Re-run the npm install + LiteLLM exec sanity test after the `v0.55.0+...` release assets publish (`npm i -g @avikalpa/codex-litellm`; `codex-litellm --model vercel/gpt-oss-120b exec "who are you"`).
+- [ ] Fix openwrt build. Openwrt now uses apk like Alpine linux. opkg is deprecated.
+- [ ] Why does the debian builds have a hard dependency on termux-tools? As such on debian the package cannot be installed. If the hard dependency is necessary for termux, then we should package debian-unstable builds seperately.
+- [ ] Consider an Arch AUR script to be submitted to Arch linux.
+- [ ] Mark all releases currently as alpha builds and also add a note in README.md.
