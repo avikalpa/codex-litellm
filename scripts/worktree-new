@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if ! git rev-parse --git-dir >/dev/null 2>&1; then
+  echo "Error: run this script inside the codex-litellm repository" >&2
+  exit 1
+fi
+
+usage() {
+  echo "Usage: scripts/worktree-new <slug> [base-ref]" >&2
+  echo "Creates ../codex-litellm-<slug> and adds a git worktree from base-ref (default: main)." >&2
+}
+
+if [ $# -lt 1 ] || [ $# -gt 2 ]; then
+  usage
+  exit 1
+fi
+
+slug="$1"
+base_ref="${2:-main}"
+repo_root="$(git rev-parse --show-toplevel)"
+target_dir="${repo_root}/../codex-litellm-${slug}"
+
+if [ -e "$target_dir" ]; then
+  echo "Error: $target_dir already exists. Remove it or choose another slug." >&2
+  exit 1
+fi
+
+printf 'Creating worktree %s from %s...\n' "$target_dir" "$base_ref"
+git worktree add "$target_dir" "$base_ref"
+
+cat <<INFO
+Done.
+Next steps:
+  1. Launch a new Codex session with cwd=$target_dir.
+  2. Update docs/CURRENT_TASK.md -> Active Worktrees with this path and focus.
+  3. Keep the primary checkout clean for patch regeneration.
+INFO

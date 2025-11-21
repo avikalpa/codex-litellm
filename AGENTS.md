@@ -65,6 +65,7 @@ This structured approach ensures that our work is methodical, well-documented, a
 - **Keep naming deterministic:** Use short, descriptive suffixes (e.g., `-telemetry-sweep`, `-oss-fallback`) so `git worktree list` stays readable. Delete stale worktrees with `git worktree remove ../codex-litellm-<slug>` once the branch is merged.
 - **Main checkout stays clean:** Treat the root checkout as the staging area for regenerating `stable-tag.patch`, running release automation, and maintaining shared docs. This prevents half-finished experiments from blocking other efforts.
 - **Parallel agent sessions welcome:** Multiple Codex instances can run at once as long as each one points at its own worktree. This keeps feature development moving even while another session is deep in a tricky debug loop.
+- **Bootstrap helper:** Use `./scripts/worktree-new <slug> [base-ref]` to spin up a correctly named sibling tree and print the follow-up reminders automatically.
 
 ### Daily Operator Loop
 
