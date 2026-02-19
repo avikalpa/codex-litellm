@@ -48,6 +48,12 @@ jobs:
         if: matrix.use_cross == true
         run: cargo install cross --git https://github.com/cross-rs/cross
 
+      - name: Install Linux build deps
+        if: matrix.runs_on == 'ubuntu-latest' && matrix.use_cross == false
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libcap-dev
+
       - name: Build
         shell: bash
         env:

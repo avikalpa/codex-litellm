@@ -2,7 +2,7 @@
 pre-build = [
   "dpkg --add-architecture arm64 || true",
   "apt-get update",
-  "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends perl pkg-config make clang libssl-dev:arm64"
+  "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends perl pkg-config make clang libssl-dev:arm64 libcap-dev libcap-dev:arm64"
 ]
 
 [target.aarch64-linux-android]
@@ -17,4 +17,3 @@ passthrough = [
   "CFLAGS_x86_64_unknown_illumos",
   "TARGET_CFLAGS"
 ]
-
