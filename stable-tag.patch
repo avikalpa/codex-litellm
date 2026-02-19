@@ -776,3 +776,62 @@ index 53b33bc4e..291d08baf 100644
  
  /// Convert the client version string to a whole version string (e.g. "1.2.3-alpha.4" -> "1.2.3").
  pub fn client_version_to_whole() -> String {
+diff --git a/codex-rs/core/src/models_manager/supported_models.rs b/codex-rs/core/src/models_manager/supported_models.rs
+new file mode 100644
+index 000000000..18495634d
+--- /dev/null
++++ b/codex-rs/core/src/models_manager/supported_models.rs
+@@ -0,0 +1,53 @@
++use codex_protocol::openai_models::ModelPreset;
++
++const AGENTIC_SUPPORTED_MODELS: &[&str] = &[
++    "gpt-5.2-codex",
++    "gpt-5.1-codex-max",
++    "gpt-5.1-codex-mini",
++    "gpt-5.2",
++    "gpt-5.1",
++    "gpt-5",
++    "o3",
++    "o3-pro",
++    "o4-mini",
++    "claude-sonnet-4-6",
++    "claude-4-5-sonnet",
++    "gemini-3-pro",
++    "grok-4-1-fast-reasoning",
++    "deepseek-v3-2-reasoning",
++    "minimax-m2-5",
++    "minimax-m2",
++    "kimi-k2-5",
++    "kimi-k2.5",
++    "qwen3-5-397b-a17b",
++    "glm-5",
++];
++
++pub(crate) fn is_supported_agentic_model(model: &str) -> bool {
++    AGENTIC_SUPPORTED_MODELS.iter().any(|candidate| {
++        model == *candidate
++            || model
++                .strip_prefix(candidate)
++                .is_some_and(|suffix| suffix.starts_with(':'))
++            || model
++                .rsplit('/')
++                .next()
++                .is_some_and(|suffix| suffix == *candidate)
++            || model
++                .rsplit('/')
++                .next()
++                .and_then(|suffix| suffix.strip_prefix(candidate))
++                .is_some_and(|suffix| suffix.starts_with(':'))
++    })
++}
++
++pub(crate) fn filter_supported_agentic_models(models: Vec<ModelPreset>) -> Vec<ModelPreset> {
++    models
++        .into_iter()
++        .filter(|preset| is_supported_agentic_model(&preset.model))
++        .collect()
++}
++
++pub(crate) fn supported_agentic_models() -> &'static [&'static str] {
++    AGENTIC_SUPPORTED_MODELS
++}
