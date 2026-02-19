@@ -55,3 +55,11 @@ as normal assistant messages.
 - Because `last_token_usage` is per-turn, the context gauge reflects the **last
   streaming request**, not the cumulative total. The cumulative value is still
   shown separately as “total/input/output” for billing visibility.
+
+### LiteLLM divergence
+- `context_usage_estimate` (TokenUsage) is now attached to every `TokenCountEvent`
+  whenever we stage a prompt. The CLI/TUI prefer this estimate for the context
+  meter because LiteLLM models often return wildly inaccurate per-turn usage.
+- Total usage (`TokenUsageInfo.total_token_usage`) still mirrors whatever the
+  backend reports so `/status` can show approximate billing totals. Only the
+  context-left percentage and inline auto-compaction checks use the local estimate.

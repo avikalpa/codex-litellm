@@ -87,3 +87,4 @@
 - [ ] Why does the debian builds have a hard dependency on termux-tools? As such on debian the package cannot be installed. If the hard dependency is necessary for termux, then we should package debian-unstable builds seperately.
 - [ ] Consider an Arch AUR script to be submitted to Arch linux.
 - [ ] Mark all releases currently as alpha builds and also add a note in README.md.
+- [ ] Currently update checking during start of program hits upstream npm. It should hit our npm for npm builds. For other builds, we need to make a logic that notifies the user how to update it.

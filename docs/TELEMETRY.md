@@ -27,6 +27,11 @@ file = "codex-litellm-session.jsonl"
    - Output: session-scoped JSON files in `${CODEX_HOME}/logs/` (default file `codex-litellm-session.jsonl`).  
    - Configuration: `[telemetry] enabled` plus per-log settings in `[telemetry.logs.session]` control behaviour.  
    - Hooks: integrated within `chat_completions`, the exec runner, and TUI turn lifecycle.
+3. **`codex-litellm-debug-tui-telemetry`**  
+   - Purpose: capture exactly what the TUI renders—reasoning deltas, history cell lines, and tool output summaries—so we can replay a session without relying on copy/paste transcripts.  
+   - Output: newline-delimited JSON at `${CODEX_HOME}/logs/codex-tui-stream.jsonl` (overridable via `[telemetry.logs."tui-view"]`). Each record includes the session id, scope (`history`, `reasoning`, etc.), event kind, and the text shown to the user.  
+   - Configuration: enabled automatically when `[telemetry]` and `[telemetry.logs."tui-view"]` are enabled; disable by setting `enabled = false` under that log entry.  
+   - Hooks: wired into the TUI status/header updates, reasoning buffer, and every `InsertHistoryCell` event so tool output, warnings, and assistant replies are mirrored byte-for-byte.
 
 ### Key Behaviours
 
@@ -44,6 +49,7 @@ file = "codex-litellm-session.jsonl"
 - `history.agent_message_suppressed` when LiteLLM’s autoprompt chatter is filtered out in the TUI so we can correlate “silent” assistant turns with the buffered fallback logic.
 - `oss_buffered.request_elapsed_ms` + `oss_buffered.request_timeout` to record how long each buffered LiteLLM call waited (per-attempt 45 s cap) before returning or timing out. These entries live in `logs/oss-exec-trace.log` and make it obvious when the server stalls despite a healthy network.
 - `history.buffered_turn_complete` (background event string “Buffered turn complete after …s”) emitted the moment the buffered loop exits, allowing the TUI to drop the “Working…” indicator without waiting for user input.
+- `tui_view.history`, `tui_view.reasoning` entries now mirror the exact lines inserted into the TUI so we can diff “real” output from what the model intended. These land in `codex-tui-stream.jsonl` and are sliceable via `python trace/telemetry.py tui …`.
 - Session telemetry files are keyed by the session UUID to simplify resume flows.
 - Set `[telemetry] max_total_bytes` (default 100 MiB) to prune the oldest non-active log files when the directory grows beyond the budget. Use `0` to disable pruning entirely.
 - To disable telemetry entirely, set `[telemetry] enabled = false` (this suppresses both debug and session writers) or launch with `--no-telemetry`.
@@ -77,6 +83,7 @@ Options:
   `agent_reasoning_raw_content`, `background_event`, `response_item`).
 - `--json`: emit raw JSON for downstream tooling; otherwise we show a compact
   timestamp/type preview trimmed to `--width` columns.
+- `python trace/telemetry.py tui --limit 100 --session <uuid>` tails the new `codex-tui-stream.jsonl` log, letting you diff the rendered history lines/reasoning deltas without replaying the UI. Use `--scope history|reasoning` and `--kind <event>` to zero in on specific chunks.
 
 Because it only reads local files the tool works without network access; bake it
 into every debugging loop so we capture the “why” alongside the “what”.

@@ -16,12 +16,14 @@ import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Iterable, Iterator, List, Optional, Sequence, Tuple
+from collections import deque
 
 
 SESSION_GLOB = "sessions/*/*/*/*.jsonl"
 DEFAULT_HOME = os.environ.get("CODEX_TRACE_HOME") or os.path.expanduser(
     "~/.codex-litellm-debug"
 )
+DEFAULT_TUI_LOG = Path("logs") / "codex-tui-stream.jsonl"
 
 
 @dataclass
@@ -203,6 +205,92 @@ def summarize_events(args: argparse.Namespace) -> None:
     print(f"- assistant replies: {assistant_count}")
 
 
+def resolve_tui_log_path(home: Path, override: Optional[str]) -> Path:
+    if override:
+        return Path(override).expanduser()
+    return (home / DEFAULT_TUI_LOG).expanduser()
+
+
+def load_tui_records(path: Path, limit: Optional[int]) -> List[dict]:
+    if limit is not None and limit > 0:
+        buf: deque[dict] = deque(maxlen=limit)
+        try:
+            with path.open() as handle:
+                for line in handle:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        buf.append(json.loads(line))
+                    except json.JSONDecodeError:
+                        continue
+        except FileNotFoundError:
+            return []
+        return list(buf)
+
+    records: List[dict] = []
+    try:
+        with path.open() as handle:
+            for line in handle:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    records.append(json.loads(line))
+                except json.JSONDecodeError:
+                    continue
+    except FileNotFoundError:
+        pass
+    return records
+
+
+def format_tui_record(record: dict, width: int) -> str:
+    ts = record.get("ts", "?")
+    session_id = record.get("session_id") or "-"
+    scope = record.get("scope", "?")
+    kind = record.get("kind", "?")
+    text = record.get("text") or ""
+    metadata = record.get("metadata")
+    if not text and metadata is not None:
+        text = json.dumps(metadata, ensure_ascii=False)
+    preview = text.replace("\n", "\\n")
+    if len(preview) > width:
+        preview = preview[: width - 1] + "…"
+    return f"{ts} [{session_id}] {scope}/{kind}: {preview}"
+
+
+def show_tui_events(args: argparse.Namespace) -> None:
+    home = Path(args.home).expanduser()
+    path = resolve_tui_log_path(home, args.file)
+    records = load_tui_records(path, args.limit)
+    if not records:
+        print(f"No TUI telemetry events found under {path}", file=sys.stderr)
+        return
+
+    printed = 0
+    for record in records:
+        if args.session and record.get("session_id") != args.session:
+            continue
+        if args.scope and record.get("scope") != args.scope:
+            continue
+        if args.kind and record.get("kind") != args.kind:
+            continue
+        if args.contains:
+            haystack = (record.get("text") or "") + " " + json.dumps(
+                record.get("metadata"), ensure_ascii=False
+            )
+            if args.contains not in haystack:
+                continue
+        if args.json:
+            print(json.dumps(record, ensure_ascii=False))
+        else:
+            print(format_tui_record(record, args.width))
+        printed += 1
+
+    if printed == 0:
+        print("No matching TUI events.", file=sys.stderr)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Inspect Codex telemetry/log sessions.",
@@ -259,6 +347,36 @@ def build_parser() -> argparse.ArgumentParser:
     )
     summary_parser.add_argument("--session", required=True)
     summary_parser.set_defaults(func=summarize_events)
+
+    tui_parser = sub.add_parser(
+        "tui", help="Tail the rendered TUI telemetry log (codex-tui-stream.jsonl)."
+    )
+    tui_parser.add_argument(
+        "--file", help="Override log path (defaults to logs/codex-tui-stream.jsonl)."
+    )
+    tui_parser.add_argument(
+        "--session", help="Only show events for this session id (optional)."
+    )
+    tui_parser.add_argument(
+        "--scope", help="Filter by scope (e.g. history, reasoning)."
+    )
+    tui_parser.add_argument("--kind", help="Filter by event kind.")
+    tui_parser.add_argument(
+        "--contains", help="Only show events whose text/metadata contains this substring."
+    )
+    tui_parser.add_argument(
+        "--limit",
+        type=int,
+        default=100,
+        help="Only keep the last N entries before filtering.",
+    )
+    tui_parser.add_argument(
+        "--width", type=int, default=96, help="Preview width for rendered text."
+    )
+    tui_parser.add_argument(
+        "--json", action="store_true", help="Print raw JSON instead of formatted rows."
+    )
+    tui_parser.set_defaults(func=show_tui_events)
 
     return parser
 
