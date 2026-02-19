@@ -91,13 +91,21 @@ if [[ -d "${ROOT_DIR}/codex-rs/codex-litellm-model-session-telemetry" ]]; then
 fi
 
 if [[ -f "${ROOT_DIR}/codex-rs/common/src/litellm.rs" ]]; then
-  cp "${ROOT_DIR}/codex-rs/common/src/litellm.rs" \
-    "${CODEX_DIR}/codex-rs/common/src/litellm.rs"
+  if [[ -d "${CODEX_DIR}/codex-rs/common/src" ]]; then
+    cp "${ROOT_DIR}/codex-rs/common/src/litellm.rs" \
+      "${CODEX_DIR}/codex-rs/common/src/litellm.rs"
+  else
+    echo "Skipping legacy common overlay: codex-rs/common/src no longer exists upstream."
+  fi
 fi
 
 if [[ -f "${ROOT_DIR}/codex-rs/tui/src/onboarding/model.rs" ]]; then
-  cp "${ROOT_DIR}/codex-rs/tui/src/onboarding/model.rs" \
-    "${CODEX_DIR}/codex-rs/tui/src/onboarding/model.rs"
+  if [[ -d "${CODEX_DIR}/codex-rs/tui/src/onboarding" ]] && [[ -f "${CODEX_DIR}/codex-rs/tui/src/onboarding/model.rs" ]]; then
+    cp "${ROOT_DIR}/codex-rs/tui/src/onboarding/model.rs" \
+      "${CODEX_DIR}/codex-rs/tui/src/onboarding/model.rs"
+  else
+    echo "Skipping legacy onboarding model overlay: codex-rs/tui/src/onboarding/model.rs removed upstream."
+  fi
 fi
 
 UPSTREAM_COMMIT=$(git rev-parse --short HEAD)
