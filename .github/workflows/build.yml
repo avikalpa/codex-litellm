@@ -60,7 +60,24 @@ jobs:
           TARGET: ${{ matrix.target }}
           SUFFIX: ${{ matrix.suffix }}
           USE_CROSS: ${{ matrix.use_cross == true && '1' || '0' }}
-        run: ./build.sh
+        run: |
+          set -euo pipefail
+          attempt=1
+          max_attempts=2
+          while true; do
+            echo "Build attempt ${attempt}/${max_attempts} for ${TARGET}"
+            if ./build.sh; then
+              break
+            fi
+            rc=$?
+            if [[ "$attempt" -lt "$max_attempts" ]] && [[ "$rc" -eq 143 || "$rc" -eq 137 ]]; then
+              echo "Build terminated with exit code ${rc}; retrying once..."
+              attempt=$((attempt + 1))
+              continue
+            fi
+            echo "Build failed with exit code ${rc}"
+            exit "$rc"
+          done
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
@@ -112,7 +129,24 @@ jobs:
           TARGET: ${{ matrix.target }}
           SUFFIX: ${{ matrix.suffix }}
           USE_CROSS: ${{ matrix.use_cross == true && '1' || '0' }}
-        run: ./build.sh
+        run: |
+          set -euo pipefail
+          attempt=1
+          max_attempts=2
+          while true; do
+            echo "Build attempt ${attempt}/${max_attempts} for ${TARGET}"
+            if ./build.sh; then
+              break
+            fi
+            rc=$?
+            if [[ "$attempt" -lt "$max_attempts" ]] && [[ "$rc" -eq 143 || "$rc" -eq 137 ]]; then
+              echo "Build terminated with exit code ${rc}; retrying once..."
+              attempt=$((attempt + 1))
+              continue
+            fi
+            echo "Build failed with exit code ${rc}"
+            exit "$rc"
+          done
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
