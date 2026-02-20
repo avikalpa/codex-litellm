@@ -137,7 +137,7 @@ if [[ "$CARGO_CMD" == "cargo" ]]; then
 fi
 
 echo "Building target $TARGET using $CARGO_CMD"
-$CARGO_CMD build --release --target "$TARGET"
+$CARGO_CMD build --release --locked --target "$TARGET" -p codex-cli --bin codex
 
 ARTIFACT_DIR="$DIST_ROOT/$SUFFIX"
 mkdir -p "$ARTIFACT_DIR"
