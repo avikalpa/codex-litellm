@@ -161,7 +161,6 @@ jobs:
   package-openwrt:
     needs:
       - build
-      - build-additional
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     strategy:
