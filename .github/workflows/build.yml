@@ -322,4 +322,4 @@ jobs:
         run: npm install --ignore-scripts
 
       - name: Publish package
-        run: npm publish --access public
+        run: npm publish --access public --tag latest
