@@ -18,6 +18,7 @@ jobs:
     runs-on: ${{ matrix.runs_on }}
     strategy:
       fail-fast: false
+      max-parallel: 2
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu
@@ -102,6 +103,7 @@ jobs:
     if: github.event_name == 'release'
     strategy:
       fail-fast: false
+      max-parallel: 1
       matrix:
         include:
           - target: x86_64-unknown-freebsd
