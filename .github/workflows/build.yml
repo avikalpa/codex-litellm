@@ -307,15 +307,26 @@ jobs:
 
       - name: Compute version metadata
         id: npm-version
+        env:
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          BASE_VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")
-          UPSTREAM_COMMIT=$(node -p "require('./package.json').codexLitellm.upstreamCommit")
-          LIT_COMMIT=$(git rev-parse --short HEAD)
-          VERSION="${BASE_VERSION}+${UPSTREAM_COMMIT}+lit${LIT_COMMIT}"
+          if [[ -z "${RELEASE_TAG}" ]]; then
+            echo "github.ref_name is empty; cannot derive npm version" >&2
+            exit 1
+          fi
+          if [[ "${RELEASE_TAG}" != v* ]]; then
+            echo "release tag must start with 'v' (got: ${RELEASE_TAG})" >&2
+            exit 1
+          fi
+          VERSION="${RELEASE_TAG#v}"
+          if [[ ! "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+\+[0-9a-f]{8}\+lit[0-9a-f]{7,}$ ]]; then
+            echo "release tag format is invalid for npm publishing: ${RELEASE_TAG}" >&2
+            exit 1
+          fi
           NPM_VERSION=$(echo "$VERSION" | tr '+' '-')
           echo "value=$VERSION" >> "$GITHUB_OUTPUT"
           npm pkg set version="$NPM_VERSION"
-          npm pkg set codexLitellm.releaseTag="v${VERSION}"
+          npm pkg set codexLitellm.releaseTag="${RELEASE_TAG}"
           npm pkg set codexLitellm.npmVersion="$NPM_VERSION"
 
       - name: Install dependencies
