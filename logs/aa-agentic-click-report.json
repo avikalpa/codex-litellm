@@ -1,0 +1,23 @@
+{
+  "generatedAt": "2026-03-17T15:32:51.091Z",
+  "finalUrl": "https://artificialanalysis.ai/evaluations/gdpval-aa",
+  "steps": [
+    {
+      "step": "home",
+      "url": "https://artificialanalysis.ai/",
+      "title": "AI Model & API Providers Analysis | Artificial Analysis"
+    },
+    {
+      "step": "gdpval-aa",
+      "url": "https://artificialanalysis.ai/evaluations/gdpval-aa",
+      "title": "GDPval-AA Leaderboard | Artificial Analysis"
+    }
+  ],
+  "phraseChecks": {
+    "hasGdpval": true,
+    "hasAgentic": true,
+    "hasToolUse": true,
+    "hasCoding": true
+  },
+  "bodyExcerpt": "Stay connected with us on X, Discord, and LinkedIn to stay up to date with future analysis Artificial Analysis Models Speech, Image, Video Hardware Leaderboards Arenas AI Trends About Log in Search... ⌘K All evaluations GDPval-AA Leaderboard GDPval-AA is Artificial Analysis' evaluation framework for OpenAI's GDPval dataset. It tests AI models on real-world tasks across 44 occupations and 9 major industries. Models are given shell access and web browsing capabilities in an agentic loop via Stirrup to solve tasks, with ELO ratings derived from blind pairwise comparisons. Background The GDPval gold public dataset includes 220 tasks developed by OpenAI in collaboration with industry professionals to reflect real-world complexity. The benchmark requires models to produce diverse outputs including documents, slides, diagrams, and spreadsheets, mirroring actual work products across finance, healthcare, legal, and other professional domains. Methodology All evaluations are conducted independently by Artificial Analysis. More information can be found on our Intelligence Benchmarking Methodology page. Publication View on arXiv GDPval: Evaluating AI Model Performance on Real-World Economicall"
+}

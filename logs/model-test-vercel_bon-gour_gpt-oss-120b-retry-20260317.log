@@ -1,0 +1,43 @@
+OpenAI Codex v0.115.0 (research preview)
+--------
+workdir: /home/pi/gh/codex-litellm-upstream-aa-refresh-20260317/test-workspace
+model: vercel/bon-gour/gpt-oss-120b
+provider: litellm
+approval: never
+sandbox: workspace-write [workdir, /tmp, $TMPDIR, /home/pi/.codex-litellm-debug/memories]
+reasoning effort: medium
+reasoning summaries: none
+session id: 019cfc88-a875-74d1-b7c4-07ac0466f168
+--------
+user
+change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.
+mcp startup: no servers
+warning: Model metadata for `vercel/bon-gour/gpt-oss-120b` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
+codex
+
+exec
+/bin/bash -lc 'ls -R .' in /home/pi/gh/codex-litellm-upstream-aa-refresh-20260317/test-workspace succeeded in 0ms:
+.:
+CONTRIBUTING.md
+LICENSE
+MANIFEST.in
+README.md
+SECURITY.md
+babel.cfg
+cps
+cps.py
+exclude.txt
+library
+messages.pot
+optional-requirements.txt
+pyproject.toml
+qodana.yaml
+requirements.txt
+test
+
+./cps:
+MyLoginManager.py
+codex
+
+tokens used
+21,178

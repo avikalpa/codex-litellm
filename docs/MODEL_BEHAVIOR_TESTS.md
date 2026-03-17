@@ -18,8 +18,8 @@ matches our published artifacts.
 
 | Type | Model | Prompt | Expected Result |
 |------|-------|--------|-----------------|
-| Non-agentic (no interleaved thinking) – run **first** | `vercel/gpt-oss-120b` (medium reasoning) | `change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.` | Model must keep issuing tool calls until the repository is actually edited, then produce a final assistant message. No manual “continue” inputs, disconnects, or stuck “Re-connecting…” loops are allowed. |
-| Agentic / interleaved thinking | `vercel/minimax-m2` (medium reasoning) | Same prompt | Model emits reasoning/tool chatter plus final answer. In the TUI/exec transcript, the intermediate “thinking” logs must render italic + gray (Reasoning history cells) instead of plain assistant text. |
+| Non-agentic (no interleaved thinking) – run **first** | `vercel/bon-gour/gpt-oss-120b` (medium reasoning) | `change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.` | Model must keep issuing tool calls until the repository is actually edited, then produce a final assistant message. No manual “continue” inputs, disconnects, or stuck “Re-connecting…” loops are allowed. |
+| Agentic / interleaved thinking | `vercel/bon-gour/minimax-m2.5` (medium reasoning) | Same prompt | Model emits reasoning/tool chatter plus final answer. In the TUI/exec transcript, the intermediate “thinking” logs must render italic + gray (Reasoning history cells) instead of plain assistant text. |
 
 If either run fails, capture the rollout log inside
 `~/.codex-litellm-debug/sessions/YYYY/MM/DD/` plus terminal output and block the
@@ -29,6 +29,7 @@ release until the regression is understood.
 
 ## Current Findings
 
+- **2026-03-17:** The canonical LiteLLM gateway no longer serves the old shorthand IDs (`vercel/gpt-oss-120b`, `vercel/minimax-m2`). Use the `vercel/bon-gour/...` slugs above or refresh the endpoint inventory from `logs/litellm-models.json` before running the suite.
 - **2025‑11‑07:** `vercel/gpt-oss-120b` now keeps running tools until it can apply the gradient/pill styling (see `logs/gpt-oss-20251107-182214.log`). Keep an eye on the fallback summary to ensure it only fires after real edits land.
 - `vercel/minimax-m2` streams reasoning correctly but can exceed the default exec timeout; the latest run (`logs/minimax-20251107-181116.log`) hit the 395 s ceiling while still editing CSS, so bump `--exec-timeout` if the agent needs more time.
 

@@ -1,6 +1,16 @@
 # Current Task — OSS Auto-Followups & Minimax UI Regression
 
-Last updated: 2025-11-12
+Last updated: 2026-03-17
+
+## 2026-03-17 upstream-aa-refresh sweep
+- **Worktree:** `/home/pi/gh/codex-litellm-upstream-aa-refresh-20260317` on branch `upstream-aa-refresh-20260317`.
+- **Upstream refresh:** `codex/` now targets `rust-v0.115.0` (`f028679a`), `package.json`/`package-lock.json` are bumped to `0.115.0`, and `stable-tag.patch` was regenerated against the new tag.
+- **AA + endpoint evidence:** Added `scripts/artificialanalysis-harness.cjs`, refreshed `logs/artificialanalysis-model-slugs.json`, `logs/aa-agentic-click-report.json`, and captured the live LiteLLM inventory in `logs/litellm-models.json`.
+- **Agentic allowlist refresh:** The allowlist now tracks current AA + gateway overlap: `gpt-5.4`, `gpt-5.4-pro`, `gpt-5.3-codex`, `claude-sonnet-4.6`, `claude-opus-4.6`, `gemini-3.1-pro-preview`, `gemini-3-pro`, `gemini-3-flash`, `grok-4.1-fast-reasoning`, `deepseek-v3.2-thinking`, `kimi-k2.5`, `minimax-m2.5`.
+- **Config regression fixed:** `core/src/config/mod.rs` now lets `config.toml` providers override built-ins, restoring `[model_providers.litellm]` with `experimental_bearer_token` instead of forcing `LITELLM_API_KEY`.
+- **Important gateway slug change:** The canonical endpoint no longer accepts shorthand IDs like `vercel/gpt-oss-120b` or `vercel/minimax-m2`; current working IDs are `vercel/bon-gour/gpt-oss-120b`, `vercel/bon-gour/gpt-oss-20b`, and `vercel/bon-gour/minimax-m2.5`.
+- **Release blocker:** The live smoke suite is still failing on the refreshed upstream base. Non-agentic `vercel/bon-gour/gpt-oss-120b` exits `0` after a reconnaissance tool call with no final assistant message and no edits (`logs/model-test-vercel_bon-gour_gpt-oss-120b-retry-20260317.log`). Agentic `vercel/bon-gour/minimax-m2.5` makes edits but eventually fails with `400 invalid params, duplicate tool_call id ...` after a reconnect (`logs/model-test-vercel_bon-gour_minimax-m2.5-retry-20260317.log`).
+- **Likely root cause:** Current `main` only carries the trimmed provider/allowlist patchset. Older commits such as `d281716` still contain the larger LiteLLM runtime patch (`fetch_chat_completions_buffered`, fallback synthesis, `TaskComplete` fixes, final separator handling). Re-port that patchset onto `rust-v0.115.0` before publishing.
 
 ## TL;DR
 - **Rebase complete:** `codex/` now tracks upstream `rust-v0.58.0`, the LiteLLM crates are restored, and `cargo build --locked --bin codex` passes on the new base (pending the usual `model_migration.rs` warnings). `stable-tag.patch` is regenerated from this tag.

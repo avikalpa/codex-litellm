@@ -21,7 +21,7 @@ previous one.
        "$(npm root -g)/@avikalpa/codex-litellm/dist/linux-x64/codex-litellm"
    LITELLM_BASE_URL=https://llm.gour.top \
    LITELLM_API_KEY=<token> \
-   codex-litellm --model vercel/gpt-oss-120b exec "who are you"
+   codex-litellm --model vercel/bon-gour/gpt-oss-120b exec "who are you"
    ```
    The command should complete with a Codex response. If it fails, fix the bug before
    continuing.
@@ -84,7 +84,7 @@ previous one.
    npm install -g @avikalpa/codex-litellm
    LITELLM_BASE_URL=https://llm.gour.top \
    LITELLM_API_KEY=<token> \
-   codex-litellm --model vercel/gpt-oss-120b exec "who are you"
+   codex-litellm --model vercel/bon-gour/gpt-oss-120b exec "who are you"
    ```
 
 ## 5. Follow-up
