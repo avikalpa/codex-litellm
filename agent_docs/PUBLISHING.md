@@ -5,6 +5,7 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 ## Release Preconditions
 - `main` already contains the intended upstream refresh.
 - `codex/`, `stable-tag.patch`, `package.json`, and `package-lock.json` all point at the same upstream base.
+- The release is validated on the LiteLLM `/responses` path. That is the default path forward for `codex-litellm`.
 - The required live model checks in `agent_docs/MODEL_BEHAVIOR_TESTS.md` pass.
 - `agent_docs/CHANGELOG.md` is updated for the release.
 - The release will be built on GitHub Actions. Local release artifacts are not the publish source.

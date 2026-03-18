@@ -10,6 +10,7 @@
 
 - Keeps the upstream Codex UX and tool loop.
 - Routes model traffic through LiteLLM so one CLI can talk to many providers.
+- Uses the LiteLLM `/responses` API as the default supported runtime path.
 - Carries the extra runtime logic needed for non-OpenAI providers and models:
   - request shaping
   - retry/fallback handling
@@ -74,8 +75,16 @@ codex-litellm exec "Refactor this function" --model vercel/bon-gour/minimax-m2.5
 `codex-litellm` is agentic-first.
 
 - Primary target: models that can inspect a repo, use tools, edit files, and finalize reliably.
+- Primary runtime path: LiteLLM `/responses`, not legacy chat-completions compatibility.
 - Non-agentic models are deprecated compatibility paths.
 - Release gates should use live agentic smoke tests, not just local builds.
+
+Current known state on the `/responses` path:
+
+- green: `vercel/bon-gour/minimax-m2.5`
+- green: `vercel/bon-gour/kimi-k2.5`
+- blocked: `vercel/bon-gour/deepseek-v3.2-thinking`
+  - current failure: LiteLLM/Vercel rejects tool-use follow-up turns with missing `reasoning_content`
 
 Current release-gate details live in `agent_docs/MODEL_BEHAVIOR_TESTS.md`.
 
