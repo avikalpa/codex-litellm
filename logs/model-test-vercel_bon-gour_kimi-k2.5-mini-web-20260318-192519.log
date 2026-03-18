@@ -1,0 +1,9 @@
+ Done. All buttons in `styles.css` now have:
+- Gradient backgrounds (135° angle with light/dark variations)
+- Full pill shape (`border-radius: 9999px`)
+- Matching gradients for `.btn-primary` (teal) and `.btn-secondary` (orange)
+- Slightly enhanced hover shadow for the new rounded shape
+
+git diff --stat
+ styles.css | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)

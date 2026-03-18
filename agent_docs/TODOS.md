@@ -6,6 +6,8 @@
 ## Model Runtime
 - [ ] Keep tightening post-edit finalization so agentic models stop exploring once the requested change is made.
 - [ ] Keep runtime metadata for supported agentic models aligned so they do not silently fall back again.
+- [ ] Add explicit metadata for `vercel/bon-gour/kimi-k2.5` and `vercel/bon-gour/deepseek-v3.2-thinking`.
+- [ ] Fix the DeepSeek `reasoning_content` failure on LiteLLM/Vercel tool-use turns.
 - [ ] Continue deprecating non-agentic models in product surfaces without breaking compatibility use cases.
 
 ## Telemetry And Analysis
@@ -16,6 +18,7 @@
 ## Model Research
 - [ ] Refresh the supported-model evidence set periodically from Artificial Analysis and the LiteLLM gateway inventory.
 - [ ] Keep validating which models are actually agentic in Codex-style tasks, not just in benchmark marketing.
+- [ ] Keep the fixture matrix (`mini-web`, `python-cli`, heavier real repos) healthy so testing is not bottlenecked on `calibre-web`.
 - [ ] Document backend-specific quirks only after reproducing them.
 
 ## Packaging And Distribution

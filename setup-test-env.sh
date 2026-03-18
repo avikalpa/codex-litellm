@@ -1,16 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
-# Clone the test repository
-if [ -d "test-workspace" ]; then
-    echo "Test workspace already exists. Pulling latest changes..."
-    cd test-workspace
-    git pull
-    cd ..
-else
-    echo "Cloning test workspace..."
-    git clone --depth=1 https://github.com/janeczku/calibre-web.git test-workspace
-fi
-
-echo "Test environment is ready in the 'test-workspace' directory."
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+exec "$repo_root/scripts/setup-test-repo.sh" calibre-web "$repo_root/test-workspace"

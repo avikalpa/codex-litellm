@@ -32,6 +32,17 @@ Last updated: 2026-03-18
   - keep model metadata aligned with real provider behavior
   - keep telemetry ahead of the next regression
 
+## Research Follow-Up
+- The new fixture-based harness now covers more than `calibre-web`:
+  - `mini-web` for lightweight HTML/CSS/UI edits
+  - `python-cli` for CLI + README + test updates
+- Current live results on `mini-web`:
+  - `vercel/bon-gour/minimax-m2.5`: pass
+  - `vercel/bon-gour/kimi-k2.5`: pass, but still falls back to unknown-model metadata
+  - `vercel/bon-gour/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
+- Current live result on `python-cli`:
+  - `vercel/bon-gour/minimax-m2.5`: pass on a non-UI repo shape
+
 ## Evidence
 - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix2.log`
 - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix3.log`
@@ -46,6 +57,11 @@ Last updated: 2026-03-18
   - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix10.log`
 - current passing run after porting the post-edit guard onto the live `exec_command` path:
   - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix11.log`
+- new fixture-based research runs:
+  - `logs/model-test-vercel_bon-gour_deepseek-v3.2-thinking-mini-web-20260318-192213.log`
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-mini-web-20260318-192400.log`
+  - `logs/model-test-vercel_bon-gour_kimi-k2.5-mini-web-20260318-192519.log`
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-python-cli-20260318-192647.log`
 - Earlier non-agentic schema failure before tool normalization:
   - `logs/model-test-vercel_bon-gour_gpt-oss-120b-0.115.0-postfix.log`
 
@@ -65,9 +81,9 @@ Last updated: 2026-03-18
 - `cargo build --locked --bin codex`
 
 ## Next Step
-- Regenerate `stable-tag.patch` from the final `rust-v0.115.0` diff and commit the port.
-- Push, tag, and publish from the `0.115.0` base once the user confirms.
-- Keep the new `vercel/bon-gour/minimax-m2.5` metadata aligned if the provider’s behavior changes.
+- Add runtime metadata for `vercel/bon-gour/kimi-k2.5` and `vercel/bon-gour/deepseek-v3.2-thinking`.
+- Investigate the DeepSeek `reasoning_content` gateway failure on tool-call turns.
+- Keep using the fixture harness, not only `calibre-web`, for agentic model research.
 - Deprecated non-agentic models are not release gates anymore; only re-run them when explicitly debugging compatibility.
 
 ## Handoff Rule

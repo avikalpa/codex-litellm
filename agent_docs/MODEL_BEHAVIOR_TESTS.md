@@ -7,6 +7,8 @@ These are the required live smoke tests before push or release.
   - `cargo build --locked --bin codex`
 - Recreate the test repo for clean runs:
   - `rm -rf test-workspace && ./setup-test-env.sh`
+- For fixture-driven research runs beyond `calibre-web`:
+  - `./scripts/setup-test-repo.sh --refresh <fixture> test-workspace`
 - Run from `test-workspace` with the canonical LiteLLM profile:
   - `CODEX_HOME=/home/pi/.codex-litellm-debug ../codex/codex-rs/target/debug/codex exec "<prompt>" --model <slug> --skip-git-repo-check`
 
@@ -37,3 +39,17 @@ These are the required live smoke tests before push or release.
 - These model slugs are current working release gates, not permanent truths.
 - Refresh them when the gateway inventory or supported-model policy changes.
 - Deprecated non-agentic models are not release gates anymore. Test them only when explicitly investigating compatibility regressions.
+
+## Research Matrix
+- Do not rely only on `calibre-web`.
+- Keep at least one lightweight local fixture for each broad repo shape:
+  - `mini-web` for HTML/CSS/UI edits
+  - `python-cli` for CLI + README + test updates
+  - `calibre-web` as the heavier real-world UI repo
+- For current agentic model research, the baseline matrix is:
+  - `vercel/bon-gour/deepseek-v3.2-thinking`
+  - `vercel/bon-gour/minimax-m2.5`
+  - `vercel/bon-gour/kimi-k2.5`
+- Runner helpers:
+  - `./scripts/run-agentic-model-smoke.sh --fixture <fixture> --model <slug> --profile /home/pi/.codex-litellm-debug`
+  - `./scripts/run-agentic-matrix.sh <fixture> /home/pi/.codex-litellm-debug`

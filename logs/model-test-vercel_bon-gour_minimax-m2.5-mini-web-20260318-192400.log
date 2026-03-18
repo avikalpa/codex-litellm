@@ -1,0 +1,11 @@
+Done. Updated all buttons in the repository to have gradient backgrounds and pill shape (`border-radius: 9999px`):
+
+- **Default buttons**: Purple gradient (`#667eea` → `#764ba2`)
+- **`.btn-primary`**: Teal gradient (`#195c53` → `#2d8a7b`)
+- **`.btn-secondary`**: Orange gradient (`#d17a2d` → `#e8a54b`)
+
+The changes are in `/home/pi/gh/codex-litellm/test-workspace/styles.css`.
+
+git diff --stat
+ styles.css | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)

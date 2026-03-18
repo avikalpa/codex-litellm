@@ -1,0 +1,13 @@
+Done. Here's what I changed:
+
+- **`src/fixture_cli/cli.py`**: Added `--verbose` / `-v` flag that prints a verbose message before the greeting
+- **`README.md`**: Updated usage section with verbose examples
+- **`tests/test_cli.py`**: Added 3 new tests for the verbose flag
+
+All tests pass.
+
+git diff --stat
+ README.md              |  2 ++
+ src/fixture_cli/cli.py |  3 +++
+ tests/test_cli.py      | 15 +++++++++++++++
+ 3 files changed, 20 insertions(+)
