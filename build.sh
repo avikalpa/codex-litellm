@@ -11,6 +11,7 @@ PATCH_FILE="${ROOT_DIR}/stable-tag.patch"
 CODEX_DIR="${ROOT_DIR}/codex"
 DIST_ROOT="${ROOT_DIR}/dist"
 BINARY_NAME="codex-litellm"
+BASE_VERSION="${BASE_VERSION:-}"
 
 # Prefer vendored OpenSSL builds so cross targets like Android/illumos
 # do not depend on host-provided libssl packages.
@@ -63,17 +64,26 @@ fi
 
 cd "$CODEX_DIR"
 
-echo "Fetching tags and checking out the latest stable release..."
-git fetch --tags --quiet
-LATEST_STABLE_TAG=$(git tag | grep "^rust-v" | grep -v "alpha\|beta" | sed 's/^rust-v//' | sed 's/^\.//' | sort -V | tail -n 1)
+if [[ -z "$BASE_VERSION" ]]; then
+  BASE_VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion" 2>/dev/null || true)
+fi
 
-if [[ -z "$LATEST_STABLE_TAG" ]]; then
-  echo "Error: Could not determine latest stable tag" >&2
+if [[ -z "$BASE_VERSION" ]]; then
+  echo "Error: Could not determine codexLitellm.baseVersion from package.json" >&2
   exit 1
 fi
 
-echo "Checking out rust-v${LATEST_STABLE_TAG}"
-git checkout "rust-v${LATEST_STABLE_TAG}" --quiet
+PINNED_TAG="rust-v${BASE_VERSION}"
+
+echo "Fetching tags and checking out the pinned upstream release..."
+git fetch --tags --quiet
+if ! git rev-parse -q --verify "refs/tags/${PINNED_TAG}" >/dev/null; then
+  echo "Error: Expected upstream tag ${PINNED_TAG} was not found" >&2
+  exit 1
+fi
+
+echo "Checking out ${PINNED_TAG}"
+git checkout "${PINNED_TAG}" --quiet
 
 echo "Resetting tree and applying patch..."
 git reset --hard HEAD --quiet

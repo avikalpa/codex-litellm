@@ -11,6 +11,7 @@ Use VS Code-style headings:
 - Added agentic-first model curation workflow and documentation, including interactive Artificial Analysis benchmark verification before updating supported-model policy.
 - Hardened LiteLLM auto-followups for agentic models so they recover more reliably from tool-only or summary-only turns.
 - Non-agentic models are now deprecated in-product: explicit selection shows a warning, and fallback picker descriptions are annotated accordingly.
+- Release automation now builds the upstream tag pinned in `package.json` instead of drifting to whatever upstream stable tag was published most recently.
 
 ## Detailed Changes
 - repo: update `stable-tag.patch` against upstream tag `rust-v0.104.0` and ensure every LiteLLM crate/config tweak applies cleanly on the new base.
@@ -22,3 +23,4 @@ Use VS Code-style headings:
 - models/docs: add supported-model inventory and enforce an agentic-first maintenance loop backed by interactive Chromium checks on Artificial Analysis benchmark pages and LiteLLM `/v1/responses` capability audits.
 - core: strengthen the LiteLLM forced-followup path for agentic models so stalled tool loops get another actionable turn instead of quietly ending in reasoning-only output.
 - models: add `supported_models.rs` helpers that classify non-agentic selections as deprecated, annotate picker descriptions on fallback lists, and emit startup warnings when a deprecated model is chosen explicitly.
+- build: make `build.sh` honor `codexLitellm.baseVersion` when checking out upstream tags so CI releases stay aligned with the patch baseline in `stable-tag.patch`.

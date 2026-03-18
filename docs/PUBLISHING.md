@@ -6,7 +6,8 @@ previous one.
 
 ## 1. Prepare the working tree
 1. Ensure `stable-tag.patch` applies cleanly to the latest upstream tag (targeting
-   `rust-vX.Y.Z`). Update the patch if upstream moved (see `docs/COMMITTING_NOTES.md`).
+   the pinned `rust-vX.Y.Z` recorded in `package.json -> codexLitellm.baseVersion`.
+   Update the patch if that pinned base moves (see `docs/COMMITTING_NOTES.md`).
 2. Run local builds for the desktop targets:
    ```bash
    ./build.sh                       # linux-x64
@@ -41,7 +42,9 @@ previous one.
      (exposed as `codexLitellm.npmVersion`) because the registry rejects literal `+` metadata.
    * Regenerate `package-lock.json` with
      `npm install --package-lock-only --ignore-scripts`.
-3. Ensure `build.sh` still exports `CODEX_UPSTREAM_COMMIT`/`CODEX_LITELLM_COMMIT`; run
+3. Ensure `build.sh` still exports `CODEX_UPSTREAM_COMMIT`/`CODEX_LITELLM_COMMIT` and
+   checks out the tag pinned by `codexLitellm.baseVersion` rather than auto-upgrading to a
+   newer upstream release; run
    `./build.sh` once to verify the metadata string looks like
    `X.Y.Z+<upstream>+lit<patched>`.
 
