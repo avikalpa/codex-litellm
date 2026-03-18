@@ -142,7 +142,7 @@ jobs:
   build-additional:
     name: Build extra ${{ matrix.suffix }}
     runs-on: ${{ matrix.runs_on }}
-    if: github.event_name == 'release'
+    if: false
     needs: release-preflight
     strategy:
       fail-fast: false
