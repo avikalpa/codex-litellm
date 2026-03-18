@@ -30,6 +30,26 @@ DeepSeek is currently blocked because the LiteLLM/Vercel bridge rejects some too
 
 Non-agentic models are deprecated. They may still run, but they are not the product center and are not release gates.
 
+## Choose A Model First
+
+Start with agentic models.
+
+Best current verified starting points for `codex-litellm` are:
+- `vercel/minimax-m2.5`
+- `vercel/kimi-k2.5`
+
+Strong next models to try, if your LiteLLM gateway exposes good routes for them, are:
+- `vercel/claude-haiku-4.5`
+- `glm-5` if your LiteLLM gateway exposes an agentic GLM route
+
+Use those before trying frontier-priced models.
+
+Practical rule:
+- if you want maximum value for money inside `codex-litellm`, start with MiniMax, Kimi, Haiku, or GLM-class agentic models
+- if you intend to spend premium-tier tokens on an expensive flagship model, you may get better value from the official provider or official Codex path instead of paying bridge overhead for a generic LiteLLM route
+
+This project is optimized for good agent loops on a wide model surface, not for making the most expensive models economically attractive.
+
 ## Install
 
 ```bash
@@ -86,6 +106,8 @@ That is the path we care about most.
 
 Use a separate `CODEX_HOME` only when you are doing isolated debugging or development work.
 
+If a setup requires a special debug-only home to work, treat that as a bug, not the intended user path.
+
 ## Model Slugs
 
 The exact slugs come from your LiteLLM gateway inventory.
@@ -99,8 +121,18 @@ curl http://localhost:4000/v1/models | jq '.data[].id'
 Typical examples look like:
 - `vercel/minimax-m2.5`
 - `vercel/kimi-k2.5`
+- `vercel/claude-haiku-4.5`
 - `openrouter/claude-sonnet-4.6`
 - `openrouter/deepseek-v3.2-thinking`
+
+Do not assume a model is a good fit just because it appears on `/v1/models`.
+
+For `codex-litellm`, the important question is whether the model can:
+- use tools correctly
+- edit the repo instead of wandering
+- stop after the edit and produce a final answer
+
+That is why model selection matters more here than in a plain chat UI.
 
 ## Good First Commands
 
@@ -122,14 +154,40 @@ Use the interactive TUI:
 codex-litellm --model vercel/minimax-m2.5
 ```
 
+## Common Pitfalls
+
+- Do not start with non-agentic models. They often fail mid-loop, never finalize, or burn tokens on weak tool behavior.
+- Do not assume DeepSeek is ready just because the slug exists. It is currently a known bad path for release-grade `/responses` use.
+- Do not overpay for premium models unless you have a concrete reason. `codex-litellm` is best when paired with strong-but-efficient agentic models.
+- Do not build your workflow around a custom debug `CODEX_HOME`. The intended path is the normal `~/.codex` directory.
+
+## Semantic Cache
+
+If your LiteLLM deployment supports semantic caching, use it.
+
+LiteLLM supports semantic cache lookup with an embedding model. In practice, you should choose a cheap embedding model so cache lookup cost stays negligible relative to the main model call.
+
+If your gateway exposes a Gemini embedding route, that is usually a good default because it is materially cheaper than burning another full reasoning-model round trip for repeated prompts.
+
+Example slug shape:
+- `vercel/gemini-embedding-001`
+
+The exact cache backend and embedding model setup belongs in your LiteLLM deployment, not in `codex-litellm` itself.
+
 ## Troubleshooting
 
 If a model behaves badly:
 
 1. Check that the LiteLLM gateway is reachable.
 2. Check that the model slug exists on `/v1/models`.
-3. Retry with a known-good agentic model.
+3. Retry with a known-good agentic model like MiniMax or Kimi.
 4. If the failure is model-specific, capture logs before changing code.
+
+If a model is expensive and still underperforms:
+
+1. Stop burning tokens on it through a weak bridge path.
+2. Try a cheaper verified agentic model first.
+3. If you truly need that premium model, consider using the official harness for that provider instead.
 
 If install fails:
 
