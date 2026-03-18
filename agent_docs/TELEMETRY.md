@@ -37,6 +37,6 @@ python trace/telemetry.py tui --session <uuid> --limit 200
 ## Debugging Standard
 When behavior is unclear:
 1. reproduce with telemetry on
-2. capture session/log paths in `docs/CURRENT_TASK.md`
+2. capture session/log paths in `agent_docs/CURRENT_TASK.md`
 3. explain what the model sent, what we sent back, and what the UI rendered
 4. only then patch the code

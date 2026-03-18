@@ -9,7 +9,7 @@ This file tracks user-visible changes in `codex-litellm`.
 
 ### Detailed Changes
 - docs: rewrote `AGENTS.md` around the actual patchset workflow, upstream refresh rules, release gating, and LiteLLM-specific engineering priorities.
-- docs: replaced stale version-pinned process notes across `docs/` with current guidance for publishing, telemetry, supported models, patch maintenance, and live model validation.
+- docs: replaced stale version-pinned process notes across `agent_docs/` with current guidance for publishing, telemetry, supported models, patch maintenance, and live model validation.
 
 ## Format
 Use VS Code-style release notes:

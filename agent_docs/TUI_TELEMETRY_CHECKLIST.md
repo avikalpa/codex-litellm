@@ -27,4 +27,4 @@ Run this before handoff when a change affects rendering, reasoning display, tool
 - `trace/telemetry.py tui --session <uuid>` and session logs explain the visible UI state without relying on screenshots or pasted transcripts
 
 ## Failure Rule
-If one of these checks fails, capture the session id and log paths in `docs/CURRENT_TASK.md` before patching.
+If one of these checks fails, capture the session id and log paths in `agent_docs/CURRENT_TASK.md` before patching.

@@ -1,89 +1,43 @@
-# codex‑litellm
+# codex-litellm
 
-> **An unofficial Apache-2.0 software patchset and distribution of the OpenAI Codex CLI, with CC BY 4.0 documentation** with native LiteLLM support, multi-layer caching, and production-grade observability.
->
-> *Upstream base: `openai/codex` (Apache‑2.0). This project maintains a reproducible patch on top and ships binaries for convenience.*
+`codex-litellm` is upstream `openai/codex` plus a maintained patchset so the Codex CLI can run against a LiteLLM backend.
 
----
+- Software license: Apache-2.0
+- Documentation license: CC BY 4.0
+- Upstream base currently tracked here: `rust-v0.115.0`
 
-## Highlights
+## What It Is
 
-* **Direct LiteLLM Integration** – Talk to LiteLLM backends natively; no extra proxy needed
-* **LiteLLM‑side Caching Support** – Plays nicely with LiteLLM’s Redis/literal/semantic/provider KV caching (implemented on the LiteLLM side). See Wiki for setup
-* **Provider‑Agnostic** – Works with OpenAI, Vercel AI Gateway, xAI, Google Vertex, and more through LiteLLM
-* **Serious Observability** – Debug telemetry, session analytics, JSON logs, `/status` command
-* **Cost Controls** – Canonicalization + hashing, prompt segmentation, provider discounts, usage tracking
-* **Drop‑in Friendly** – Fully compatible with upstream `codex` UX, ships as `codex‑litellm` binary
+- Keeps the upstream Codex UX and tool loop.
+- Routes model traffic through LiteLLM so one CLI can talk to many providers.
+- Carries the extra runtime logic needed for non-OpenAI providers and models:
+  - request shaping
+  - retry/fallback handling
+  - tool-call normalization
+  - finalization nudges for weaker agentic models
+  - minimal release telemetry and richer debug telemetry
 
----
+This is not intended to become a permanent fork with its own product direction. The core job is to keep a reproducible patchset that can be moved forward to new stable upstream `rust-v*` tags.
 
-## Quick Start
-
-### Prerequisites
-
-* At least one LLM provider API key
-* A LiteLLM endpoint (self‑hosted or managed)
-* CLI access
-
-> **Note**: The project is written in Rust but distributed as an npm package. A full Node.js dev setup is **not** required for install/use.
-
-### 1) LiteLLM Backend Setup (or vLLM)
-
-This fork focuses on native **LiteLLM** integration. Configure LiteLLM first; robust example configs are maintained in the **Wiki**.
-
-**Self‑hosted example**
-
-```bash
-docker run -d -p 4000:4000 \
-  --name litellm-server \
-  litellm/litellm:latest \
-  --port 4000
-```
-
-### 2) Install `codex‑litellm`
+## Install
 
 ```bash
 npm install -g @avikalpa/codex-litellm
 ```
 
-#### OpenWrt
-
-Download the `.ipk` for your architecture from the Releases page:
+The installed command is:
 
 ```bash
-apk install codex-litellm_<version>_<arch>.ipk
+codex-litellm
 ```
 
-#### Termux (Android)
+## Minimal Setup
 
-Use the provided `.deb` artifacts:
-
-```bash
-dpkg -i codex-litellm_<version>_aarch64.deb   # or _x86_64
-```
-
-Installed at `$PREFIX/bin/codex-litellm`.
-
-#### Optional: Alias
+Point the CLI at a LiteLLM gateway and use the normal Codex home by default.
 
 ```bash
-# shell profile (~/.bashrc, ~/.zshrc)
-alias cdxl='codex-litellm'
-# To keep config isolated from upstream codex:
-alias cdxl='CODEX_HOME=~/.codex-litellm codex-litellm'
-source ~/.bashrc  # or ~/.zshrc
-```
-
-### 3) Configure
-
-Set the LiteLLM API base and key for `codex‑litellm` to talk to your LiteLLM instance. For **robust, production‑style examples**, see the **Wiki**.
-
-```bash
-export LITELLM_BASE_URL="http://localhost:4000"
-export LITELLM_API_KEY="your-litellm-api-key"
-
-mkdir -p ~/.codex-litellm
-cat > ~/.codex-litellm/config.toml << 'EOF'
+mkdir -p ~/.codex
+cat > ~/.codex/config.toml <<'EOF'
 [general]
 model_provider = "litellm"
 api_base = "http://localhost:4000"
@@ -93,218 +47,106 @@ api_key = "your-litellm-api-key"
 EOF
 ```
 
-### 4) Smoke Test
+If you need debug isolation during development, use a temporary `CODEX_HOME`. That is for debugging only. Release confidence should come from the default `.codex` path working correctly.
+
+## Basic Usage
+
+Interactive:
 
 ```bash
-codex-litellm exec "What is the capital of France?"
-codex-litellm exec "List files in current directory"
-# Interactive mode
 codex-litellm
 ```
 
-More guides: **Wiki** (Quick Start, full configs, and routing recipes).
+One-shot execution:
 
----
+```bash
+codex-litellm exec "Summarize this repository"
+```
 
-## Architecture
+Pick a model explicitly:
 
-* **Patch Philosophy** – Reproducible diff against upstream `openai/codex` (inspired by GrapheneOS approach)
-* **Dual Binary Strategy** – Ships a separate `codex‑litellm` binary; does not disturb the stock `codex` workflow
-* **LiteLLM‑Native** – Direct REST integration; graceful fallback for non‑streaming providers
+```bash
+codex-litellm exec "Refactor this function" --model vercel/bon-gour/minimax-m2.5
+```
 
-### Caching Strategy
+## Agentic Model Policy
 
-1. **Tier‑0 (Exact‑Match)** – Canonicalization + SHA‑256 on prompts
-2. **Tier‑1 (Literal)** – Redis byte‑identical request caching via LiteLLM
-3. **Tier‑2 (Semantic)** – Embedding‑based similarity caching with tunable thresholds
-4. **Tier‑3 (Provider)** – Provider KV/prompt cache utilization when available
+`codex-litellm` is agentic-first.
 
-### Observability
+- Primary target: models that can inspect a repo, use tools, edit files, and finalize reliably.
+- Non-agentic models are deprecated compatibility paths.
+- Release gates should use live agentic smoke tests, not just local builds.
 
-* **Debug Telemetry** – Onboarding, model routing, network calls
-* **Session Analytics** – Token usage, cache hit‑rates, per‑model stats
-* **Structured Logs** – JSON logs with size‑based rotation
-* **Live Status** – `/status` command shows health, usage, and routing
-
----
+Current release-gate details live in `agent_docs/MODEL_BEHAVIOR_TESTS.md`.
 
 ## Repository Layout
 
-```
-├── build.sh                  # Reproducible patch+build pipeline
-├── stable-tag.patch          # Patchset against upstream
-├── config.toml               # Sample configuration
-├── docs/                     # Project docs
-│   ├── PROJECT_SUMMARY.md
-│   ├── TODOS.md
-│   ├── EXCLUSIVE_FEATURES.md
-│   └── TELEMETRY.md
-├── scripts/                  # npm installer utilities
-├── bin/                      # launcher shim
-├── litellm/                  # LiteLLM integration modules
-├── codex/                    # Upstream checkout (excluded from VCS in releases unless noted)
-└── dist/                     # Built artifacts (gitignored)
+```text
+AGENTS.md              Operator rules for agents working in this repo
+agent_docs/            Operator-facing maintenance and release docs
+build.sh               Reproducible release build script
+stable-tag.patch       Maintained patchset against upstream Codex
+scripts/               Packaging and release helpers
+bin/                   npm launcher shim
 ```
 
----
+The checked-out upstream tree at `codex/` is a local working checkout and is not the source of truth for releases by itself. The release patchset is `stable-tag.patch`.
 
-## Configuration Notes
+## Development Workflow
 
-### LiteLLM (minimal)
-
-````toml
-[general]
-api_base = "http://your-litellm-proxy:4000"
-model_provider = "litellm"
-
-[litellm]
-api_key = "<your-litellm-api-key>"
-# Set base_url in LiteLLM itself for chosen providers.
-```toml
-[general]
-api_base = "http://your-litellm-proxy:4000"
-model_provider = "litellm"
-
-[litellm]
-# Provider endpoints are configured in your LiteLLM server; this CLI just talks to LiteLLM.
-````
-
-### Telemetry
-
-```toml
-[telemetry]
-dir = "logs"
-max_total_bytes = 104857600  # 100MB
-
-[telemetry.logs.debug]
-enabled = true
-
-[telemetry.logs.session]
-file = "codex-litellm-session.jsonl"
-```
-
-### Context Window
-
-```toml
-[general]
-context_length = 130000
-```
-
----
-
-## Local Development
-
-**Requirements**: Rust 1.70+, Node 18+, Redis (for caching features)
+Local development happens against the debug binary in the upstream checkout:
 
 ```bash
-# clone & build
-./build.sh
+cd codex/codex-rs
+cargo build --locked --bin codex
+```
 
-# Android/Termux cross‑compile
-USE_CROSS=1 TARGET=aarch64-linux-android ./build.sh
+For a fresh test repo:
 
-# Dev loop (no full build)
-export CODEX_HOME=$(pwd)/test-workspace/.codex
+```bash
+rm -rf ../../test-workspace
+cd ../..
 ./setup-test-env.sh
+```
 
+After changes under `codex/`, regenerate the release patch from the pinned upstream tag:
+
+```bash
 cd codex
-# Use the base pinned in ../package.json, e.g. rust-v0.115.0
-git checkout rust-v<baseVersion>
-git apply ../stable-tag.patch
-cargo build --bin codex
-./codex-rs/target/debug/codex exec "test prompt"
+git diff rust-v0.115.0 > ../stable-tag.patch
 ```
 
----
+Use the exact pinned upstream tag for the current base. Do not diff arbitrary local history.
 
-## CI/CD
+## Release Workflow
 
-GitHub Actions builds artifacts for:
+- Release builds are done on GitHub Actions, not by shipping local build outputs.
+- npm publishing happens from the GitHub release workflow.
+- Do not publish from an older upstream base after a request to update to latest upstream.
 
-* Linux (x64, arm64)
-* macOS (x64, arm64)
-* Windows (x64, arm64)
-* FreeBSD (x64)
-* Illumos (x64)
-* Android (arm64)
+The release/operator docs are in:
 
-Releases attach binaries and publish to npm when GitHub Release is created.
+- `AGENTS.md`
+- `agent_docs/PUBLISHING.md`
+- `agent_docs/CURRENT_TASK.md`
 
----
+## User-Facing Troubleshooting
 
-## Performance & Cost
+If a model stalls or behaves oddly:
 
-### Best Practices
-
-1. **Tier‑0 exact‑match** canonicalization + hashing
-2. **Prompt segmentation** – keep boilerplate separable
-3. **Semantic thresholds** – code: ~0.90; NL: 0.86–0.88
-4. **Provider selection** – prefer providers with KV/prompt cache discounts
-
-### Monitoring
-
-```bash
-codex-litellm /status
-export RUST_LOG=debug
-codex-litellm exec "your prompt" 2> debug.log
-```
-
-Tracks: tokens/session, cache hit‑rates per tier, latency/rate limits, cost per provider.
-
----
-
-## Troubleshooting
-
-* **"No assistant message"** – Check LiteLLM connectivity, API permissions, inspect debug logs
-* **Low cache hit‑rate** – Enable canonicalization; tune thresholds; segment prompts
-* **Context pressure** – Reduce `context_length`; use `/compact` to prune
-
-```bash
-# Deep debug mode
-export RUST_LOG=debug
-export CODEX_HOME=./debug-workspace
-codex-litellm exec "debug test" 2> debug.log
-```
-
----
-
-## Documentation
-
-**Project Docs**
-
-* `docs/EXCLUSIVE_FEATURES.md` – LiteLLM‑only extras
-* `docs/PROJECT_SUMMARY.md` – Current state & internals
-* `docs/TODOS.md` – Roadmap
-* `AGENTS.md` – Agent workflows
-**Wiki**
-
-* *An Example of LiteLLM Configuration* – production setup
-* *Model Routing Recipes* – cost/latency trade‑offs
-* *Embedding Geometry Shootout* – semantic cache tuning
-* *Agentic CLI Cost Playbook* – budgeting patterns
-
----
-
-## Contributing
-
-1. Fork and create a feature branch
-2. Check `docs/TODOS.md`
-3. Add/update telemetry where relevant
-4. Keep patches focused; regenerate `stable-tag.patch`
-5. Open a PR with clear tests and notes
-
----
+1. verify the LiteLLM gateway is reachable
+2. verify the model slug exists on the LiteLLM `/v1/models` endpoint
+3. retry with a known-good agentic model
+4. if the issue is model-specific, capture logs from a debug run before changing code
 
 ## Licensing
 
-* **Software, patches, build scripts, package metadata, and packaged artifacts:** Apache License 2.0. See [`LICENSE`](LICENSE).
-* **Documentation** (`AGENTS.md`, `docs/`, and wiki prose): Creative Commons Attribution 4.0 International. See [`LICENSE-docs-CC-BY-4.0.txt`](LICENSE-docs-CC-BY-4.0.txt).
-* **Upstream base:** `openai/codex` (Apache-2.0).
+- Software, patches, build scripts, package metadata, and shipped artifacts: `Apache-2.0`
+- Documentation and operator guidance: `CC BY 4.0`
+- Upstream base: `openai/codex` under `Apache-2.0`
 
-**Releases** built from upstream sources bundle `LICENSE` and `NOTICE` for the software distribution. The source repository also carries the separate documentation license text.
+See:
 
-> Unofficial fork, no affiliation or endorsement implied.
-
----
-
-> **Disclaimer**: This project is provided “as‑is” with no warranty. Nothing here is legal advice. For edge‑case licensing questions, consult an attorney.
+- `LICENSE`
+- `LICENSE-docs-CC-BY-4.0.txt`
+- `NOTICE`

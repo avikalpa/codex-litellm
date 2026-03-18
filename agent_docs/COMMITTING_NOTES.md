@@ -26,4 +26,4 @@ This repo tracks a reproducible patchset, not an ad hoc fork. Commits should pre
 - one logical milestone per commit
 - updated patch when required
 - updated docs when the operator workflow changed
-- evidence logs referenced in `docs/CURRENT_TASK.md` when a bug was investigated live
+- evidence logs referenced in `agent_docs/CURRENT_TASK.md` when a bug was investigated live

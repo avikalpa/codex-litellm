@@ -17,6 +17,8 @@
 - `build.sh` is release automation. Do not use it for development work inside `codex/`; it resets the upstream checkout.
 - After every milestone commit, explicitly ask the user whether to publish to npm before doing release actions.
 - Block release on live model failures. A local build is not enough.
+- Release builds happen on GitHub Actions. Do not treat local release artifacts as publishable outputs.
+- Keep the repo surface clean enough for fast pacing. Local test/build clutter should not become normal working state.
 
 ## Source Of Truth
 - Root metadata:
@@ -29,10 +31,10 @@
 - Upstream checkout:
   - `codex/`
 - Live handoff note:
-  - `docs/CURRENT_TASK.md`
+  - `agent_docs/CURRENT_TASK.md`
 
 ## Standard Work Loop
-1. Read `docs/CURRENT_TASK.md`.
+1. Read `agent_docs/CURRENT_TASK.md`.
 2. Build the debug binary in `codex/codex-rs`:
    - `cargo build --locked --bin codex`
 3. Recreate `test-workspace` when doing a fresh model sweep:
@@ -40,7 +42,7 @@
 4. Test the patched debug binary against the LiteLLM profile, not upstream Codex.
 5. When behavior is unclear, add or use telemetry before changing logic.
 6. After code changes in `codex/`, regenerate `stable-tag.patch` before committing.
-7. Before push or release, run the required live model checks in `docs/MODEL_BEHAVIOR_TESTS.md`.
+7. Before push or release, run the required live model checks in `agent_docs/MODEL_BEHAVIOR_TESTS.md`.
 
 ## Upstream Refresh Rules
 1. Fetch upstream tags in `codex/`.
@@ -64,19 +66,31 @@
 - Assume provider-specific quirks will regress over time.
 - Keep agentic models as the primary target. Non-agentic models are compatibility paths, not the product center.
 - Keep telemetry and reproducible logs good enough that a future maintainer can explain a regression from artifacts alone.
+- Prefer minimal telemetry in release builds. Richer telemetry belongs in debug builds and live investigation runs.
+- Do not add custom context-handling policy on top of upstream defaults unless evidence shows a real regression.
 
 ## Validation Expectations
-- Canonical profile: `CODEX_HOME=/home/pi/.codex-litellm-debug`
-- Validation must hit the LiteLLM gateway configured there.
-- Required release smoke tests are documented in `docs/MODEL_BEHAVIOR_TESTS.md`.
+- Product confidence should include the default user path, `~/.codex`, working correctly with LiteLLM.
+- Debug investigations may use `CODEX_HOME=/home/pi/.codex-litellm-debug`.
+- Validation must hit the LiteLLM gateway configured in the chosen profile.
+- Required release smoke tests are documented in `agent_docs/MODEL_BEHAVIOR_TESTS.md`.
 - If a model misbehaves, first determine whether the bug is:
   - backend/model behavior
   - our request shaping
   - our tool execution loop
   - our rendering/finalization path
 
+## Model Evaluation Direction
+- Test models that are both:
+  - available on the LiteLLM gateway
+  - current high-signal candidates from Artificial Analysis
+- Prefer live agentic tests on real repositories over benchmark claims.
+- Use more than one test repository over time. `calibre-web` is only one probe.
+
 ## Docs Discipline
+- `README.md` is the primary user-facing documentation and should carry setup, examples, and UX guidance.
+- `agent_docs/` is operator-facing maintenance documentation.
 - Keep steering docs short, current, and opinionated.
 - Document only non-obvious project-specific guidance.
 - Remove stale history instead of layering new text on top of it.
-- `docs/CURRENT_TASK.md` is the live exception: it should contain the current blocker and the exact evidence/logs needed for handoff.
+- `agent_docs/CURRENT_TASK.md` is the live exception: it should contain the current blocker and the exact evidence/logs needed for handoff.

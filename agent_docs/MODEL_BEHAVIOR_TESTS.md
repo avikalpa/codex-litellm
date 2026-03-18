@@ -30,7 +30,7 @@ These are the required live smoke tests before push or release.
 
 ## Failure Handling
 - Save the rollout/session logs.
-- Record the exact log paths in `docs/CURRENT_TASK.md`.
+- Record the exact log paths in `agent_docs/CURRENT_TASK.md`.
 - Do not release until the failure is explained.
 
 ## Notes

@@ -5,8 +5,9 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 ## Release Preconditions
 - `main` already contains the intended upstream refresh.
 - `codex/`, `stable-tag.patch`, `package.json`, and `package-lock.json` all point at the same upstream base.
-- The required live model checks in `docs/MODEL_BEHAVIOR_TESTS.md` pass.
-- `docs/CHANGELOG.md` is updated for the release.
+- The required live model checks in `agent_docs/MODEL_BEHAVIOR_TESTS.md` pass.
+- `agent_docs/CHANGELOG.md` is updated for the release.
+- The release will be built on GitHub Actions. Local release artifacts are not the publish source.
 
 ## Versioning Rules
 - `package.json.version` and `package.json.codexLitellm.baseVersion` track the upstream Codex version.
@@ -26,7 +27,10 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 4. Run the required build/test checks:
    - `cargo build --locked --bin codex`
    - any targeted tests needed for the release
-   - required live model smokes from `docs/MODEL_BEHAVIOR_TESTS.md`
+   - required live model smokes from `agent_docs/MODEL_BEHAVIOR_TESTS.md`
+5. Make sure the intended user path is not broken:
+   - default `~/.codex` config path still works
+   - debug-only `CODEX_HOME` behavior has not become a hidden dependency
 
 ## Tagging
 1. Commit the release-ready state.
