@@ -1,24 +1,34 @@
 # codex-litellm
 
-`codex-litellm` is upstream `openai/codex` plus a maintained patchset so the Codex CLI can run against a LiteLLM backend.
+`codex-litellm` is the Codex CLI, patched to run against a LiteLLM backend.
+
+It keeps the upstream Codex agent workflow, but lets you use models from multiple providers through one gateway.
 
 - Software license: Apache-2.0
 - Documentation license: CC BY 4.0
-- Upstream base currently tracked here: `rust-v0.115.0`
+- Current upstream base: `rust-v0.115.0`
 
-## What It Is
+## Why Use It
 
-- Keeps the upstream Codex UX and tool loop.
-- Routes model traffic through LiteLLM so one CLI can talk to many providers.
-- Uses the LiteLLM `/responses` API as the default supported runtime path.
-- Carries the extra runtime logic needed for non-OpenAI providers and models:
-  - request shaping
-  - retry/fallback handling
-  - tool-call normalization
-  - finalization nudges for weaker agentic models
-  - minimal release telemetry and richer debug telemetry
+Use `codex-litellm` if you want Codex-style repo editing and tool use, but you do not want to be limited to OpenAI-hosted models.
 
-This is not intended to become a permanent fork with its own product direction. The core job is to keep a reproducible patchset that can be moved forward to new stable upstream `rust-v*` tags.
+It is built for:
+- one Codex CLI talking to many providers through LiteLLM
+- agentic coding models that can search, edit, run commands, and finish cleanly
+- staying close to upstream Codex instead of becoming a permanent fork
+
+## What Works Best Today
+
+`codex-litellm` is agentic-first and the supported path is LiteLLM `/responses`.
+
+Current known status on `/responses`:
+- green: `vercel/minimax-m2.5`
+- green: `vercel/kimi-k2.5`
+- blocked: `vercel/deepseek-v3.2-thinking`
+
+DeepSeek is currently blocked because the LiteLLM/Vercel bridge rejects some tool-use follow-up turns with missing `reasoning_content`.
+
+Non-agentic models are deprecated. They may still run, but they are not the product center and are not release gates.
 
 ## Install
 
@@ -26,33 +36,31 @@ This is not intended to become a permanent fork with its own product direction. 
 npm install -g @avikalpa/codex-litellm
 ```
 
-The installed command is:
+This installs the command:
 
 ```bash
 codex-litellm
 ```
 
-## Minimal Setup
+The npm package downloads the correct prebuilt binary for your platform from GitHub Releases.
 
-Point the CLI at a LiteLLM gateway and use the normal Codex home by default.
+## Quick Start
+
+Create the normal Codex home and point it at LiteLLM:
 
 ```bash
 mkdir -p ~/.codex
-cat > ~/.codex/config.toml <<'EOF'
+cat > ~/.codex/config.toml <<'EOF2'
 [general]
 model_provider = "litellm"
 api_base = "http://localhost:4000"
 
 [litellm]
 api_key = "your-litellm-api-key"
-EOF
+EOF2
 ```
 
-If you need debug isolation during development, use a temporary `CODEX_HOME`. That is for debugging only. Release confidence should come from the default `.codex` path working correctly.
-
-## Basic Usage
-
-Interactive:
+Then start the CLI:
 
 ```bash
 codex-litellm
@@ -70,92 +78,101 @@ Pick a model explicitly:
 codex-litellm exec "Refactor this function" --model vercel/minimax-m2.5
 ```
 
-## Agentic Model Policy
+## Recommended Setup
 
-`codex-litellm` is agentic-first.
+Default behavior should work directly with your normal `~/.codex` directory.
 
-- Primary target: models that can inspect a repo, use tools, edit files, and finalize reliably.
-- Primary runtime path: LiteLLM `/responses`, not legacy chat-completions compatibility.
-- Non-agentic models are deprecated compatibility paths.
-- Release gates should use live agentic smoke tests, not just local builds.
+That is the path we care about most.
 
-Current known state on the `/responses` path:
+Use a separate `CODEX_HOME` only when you are doing isolated debugging or development work.
 
-- green: `vercel/minimax-m2.5`
-- green: `vercel/kimi-k2.5`
-- blocked: `vercel/deepseek-v3.2-thinking`
-  - current failure: LiteLLM/Vercel rejects tool-use follow-up turns with missing `reasoning_content`
+## Model Slugs
 
-Current release-gate details live in `agent_docs/MODEL_BEHAVIOR_TESTS.md`.
+The exact slugs come from your LiteLLM gateway inventory.
 
-## Repository Layout
-
-```text
-AGENTS.md              Operator rules for agents working in this repo
-agent_docs/            Operator-facing maintenance and release docs
-build.sh               Reproducible release build script
-stable-tag.patch       Maintained patchset against upstream Codex
-scripts/               Packaging and release helpers
-bin/                   npm launcher shim
-```
-
-The checked-out upstream tree at `codex/` is a local working checkout and is not the source of truth for releases by itself. The release patchset is `stable-tag.patch`.
-
-## Development Workflow
-
-Local development happens against the debug binary in the upstream checkout:
+Check them with:
 
 ```bash
-cd codex/codex-rs
-cargo build --locked --bin codex
+curl http://localhost:4000/v1/models | jq '.data[].id'
 ```
 
-For a fresh test repo:
+Typical examples look like:
+- `vercel/minimax-m2.5`
+- `vercel/kimi-k2.5`
+- `openrouter/claude-sonnet-4.6`
+- `openrouter/deepseek-v3.2-thinking`
+
+## Good First Commands
+
+Ask for a repo change:
 
 ```bash
-rm -rf ../../test-workspace
-cd ../..
-./setup-test-env.sh
+codex-litellm exec "Change all primary buttons to pill-shaped gradient buttons" --model vercel/minimax-m2.5
 ```
 
-After changes under `codex/`, regenerate the release patch from the pinned upstream tag:
+Ask for code review:
 
 ```bash
-cd codex
-git diff rust-v0.115.0 > ../stable-tag.patch
+codex-litellm exec "Review the last set of changes for bugs and regressions" --model vercel/kimi-k2.5
 ```
 
-Use the exact pinned upstream tag for the current base. Do not diff arbitrary local history.
+Use the interactive TUI:
 
-## Release Workflow
+```bash
+codex-litellm --model vercel/minimax-m2.5
+```
 
-- Release builds are done on GitHub Actions, not by shipping local build outputs.
-- npm publishing happens from the GitHub release workflow.
-- Do not publish from an older upstream base after a request to update to latest upstream.
+## Troubleshooting
 
-The release/operator docs are in:
+If a model behaves badly:
 
+1. Check that the LiteLLM gateway is reachable.
+2. Check that the model slug exists on `/v1/models`.
+3. Retry with a known-good agentic model.
+4. If the failure is model-specific, capture logs before changing code.
+
+If install fails:
+
+1. Verify GitHub Releases is reachable from the machine.
+2. Re-run `npm install -g @avikalpa/codex-litellm`.
+3. If your platform is unsupported, build from source.
+
+If the binary is missing after install:
+
+```bash
+npm install -g @avikalpa/codex-litellm
+```
+
+## Project Direction
+
+This project is intentionally narrow.
+
+The goal is not to reinvent Codex. The goal is to keep a maintained patchset that makes upstream Codex work well with LiteLLM, provider diversity, and real agentic models.
+
+That means the project focuses on:
+- LiteLLM compatibility
+- provider and model quirks
+- agentic model validation
+- minimal release telemetry
+- keeping the patchset portable to newer upstream stable tags
+
+## For Developers
+
+The user-facing docs stop here. Operator and maintenance docs live in:
 - `AGENTS.md`
 - `agent_docs/PUBLISHING.md`
 - `agent_docs/CURRENT_TASK.md`
+- `agent_docs/MODEL_BEHAVIOR_TESTS.md`
 
-## User-Facing Troubleshooting
-
-If a model stalls or behaves oddly:
-
-1. verify the LiteLLM gateway is reachable
-2. verify the model slug exists on the LiteLLM `/v1/models` endpoint
-3. retry with a known-good agentic model
-4. if the issue is model-specific, capture logs from a debug run before changing code
+Local development uses the upstream checkout in `codex/`, but releases are built on GitHub Actions and published from CI.
 
 ## Licensing
 
 - Software, patches, build scripts, package metadata, and shipped artifacts: `Apache-2.0`
-- Documentation and operator guidance: `CC BY 4.0`
+- Documentation and maintenance docs: `CC BY 4.0`
 - Upstream base: `openai/codex` under `Apache-2.0`
 
 See:
-
 - `LICENSE`
 - `LICENSE-docs-CC-BY-4.0.txt`
 - `NOTICE`
