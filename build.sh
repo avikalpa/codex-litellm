@@ -76,6 +76,12 @@ fi
 
 PINNED_TAG="rust-v${BASE_VERSION}"
 
+if [[ "${BUILD_SH_DRY_RUN:-0}" == "1" || "${BUILD_SH_DRY_RUN:-false}" == "true" ]]; then
+  printf 'BASE_VERSION=%s\n' "$BASE_VERSION"
+  printf 'PINNED_TAG=%s\n' "$PINNED_TAG"
+  exit 0
+fi
+
 echo "Fetching tags and checking out the pinned upstream release..."
 git fetch --tags --quiet
 if ! git rev-parse -q --verify "refs/tags/${PINNED_TAG}" >/dev/null; then

@@ -13,9 +13,36 @@ permissions:
   packages: write
 
 jobs:
+  release-preflight:
+    name: Release preflight
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Verify build.sh metadata resolution
+        run: ./scripts/test-build-sh-metadata.sh
+
+      - name: Verify stable-tag.patch applies to the pinned upstream tag
+        shell: bash
+        run: |
+          set -euo pipefail
+          BASE_VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")
+          PINNED_TAG="rust-v${BASE_VERSION}"
+          TMPDIR=$(mktemp -d)
+          trap 'rm -rf "$TMPDIR"' EXIT
+          git clone --filter=blob:none https://github.com/openai/codex.git "$TMPDIR/codex"
+          git -C "$TMPDIR/codex" fetch --tags --quiet
+          git -C "$TMPDIR/codex" checkout "$PINNED_TAG" --quiet
+          git -C "$TMPDIR/codex" apply --check --whitespace=nowarn "$GITHUB_WORKSPACE/stable-tag.patch"
+
   build:
     name: Build ${{ matrix.suffix }}
     runs-on: ${{ matrix.runs_on }}
+    needs: release-preflight
     strategy:
       fail-fast: false
       max-parallel: 2
@@ -101,6 +128,7 @@ jobs:
     name: Build extra ${{ matrix.suffix }}
     runs-on: ${{ matrix.runs_on }}
     if: github.event_name == 'release'
+    needs: release-preflight
     strategy:
       fail-fast: false
       max-parallel: 1
@@ -272,8 +300,6 @@ jobs:
   attach-release-assets:
     needs:
       - build
-      - package-openwrt
-      - package-termux
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
@@ -287,6 +313,22 @@ jobs:
           files: |
             dist/**/codex-litellm-*.tar.gz
             dist/**/codex-litellm-*.tar.gz.sha256
+
+  attach-extra-release-assets:
+    needs:
+      - package-openwrt
+      - package-termux
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+
+      - name: Publish OpenWrt and Termux assets to release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
             dist/**/codex-litellm_*.ipk
             dist/**/codex-litellm_*.deb
 
