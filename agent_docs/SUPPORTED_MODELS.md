@@ -22,10 +22,10 @@
 
 ## Required Release-Gate Models
 These are not the whole allowlist. They are the current mandatory live checks before release.
-- agentic release gate: `vercel/bon-gour/minimax-m2.5`
+- agentic release gate: `vercel/minimax-m2.5`
 
 ## Deprecated Compatibility Models
-- `vercel/bon-gour/gpt-oss-120b`
+- `vercel/gpt-oss-120b`
 - Deprecated non-agentic models are not release gates. Use them only for explicit compatibility/debugging work.
 
 ## Evidence Sources

@@ -67,7 +67,7 @@ codex-litellm exec "Summarize this repository"
 Pick a model explicitly:
 
 ```bash
-codex-litellm exec "Refactor this function" --model vercel/bon-gour/minimax-m2.5
+codex-litellm exec "Refactor this function" --model vercel/minimax-m2.5
 ```
 
 ## Agentic Model Policy
@@ -81,9 +81,9 @@ codex-litellm exec "Refactor this function" --model vercel/bon-gour/minimax-m2.5
 
 Current known state on the `/responses` path:
 
-- green: `vercel/bon-gour/minimax-m2.5`
-- green: `vercel/bon-gour/kimi-k2.5`
-- blocked: `vercel/bon-gour/deepseek-v3.2-thinking`
+- green: `vercel/minimax-m2.5`
+- green: `vercel/kimi-k2.5`
+- blocked: `vercel/deepseek-v3.2-thinking`
   - current failure: LiteLLM/Vercel rejects tool-use follow-up turns with missing `reasoning_content`
 
 Current release-gate details live in `agent_docs/MODEL_BEHAVIOR_TESTS.md`.

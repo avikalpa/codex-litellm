@@ -17,7 +17,7 @@ These are the required live smoke tests before push or release.
 
 ## Required Models
 - Agentic release gate:
-  - `vercel/bon-gour/minimax-m2.5`
+  - `vercel/minimax-m2.5`
 
 ## Canonical Prompt
 `change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.`
@@ -47,9 +47,9 @@ These are the required live smoke tests before push or release.
   - `python-cli` for CLI + README + test updates
   - `calibre-web` as the heavier real-world UI repo
 - For current agentic model research, the baseline matrix is:
-  - `vercel/bon-gour/deepseek-v3.2-thinking`
-  - `vercel/bon-gour/minimax-m2.5`
-  - `vercel/bon-gour/kimi-k2.5`
+  - `vercel/deepseek-v3.2-thinking`
+  - `vercel/minimax-m2.5`
+  - `vercel/kimi-k2.5`
 - Runner helpers:
   - `./scripts/run-agentic-model-smoke.sh --fixture <fixture> --model <slug> --profile /home/pi/.codex-litellm-debug`
   - `./scripts/run-agentic-matrix.sh <fixture> /home/pi/.codex-litellm-debug`

@@ -7,7 +7,7 @@
 Notes:
 - Replay the stored transcript under `logs/formatting-logs-from-another-machine/` (minimax session) to catalog every interleaved-thinking marker that currently renders like regular output.
 - Use `test-workspace` + `codex exec "change all buttons in the repository to have a gradient and pill shape"` with `vercel/gpt-oss-120b` (or `-20b`) and capture the matching LiteLLM debug log/session JSON so we can see exactly where the OSS model quits.
-- Keep `CODEX_HOME` set to `/root/.codex-litellm-debug` so every run targets `https://llm.gour.top/chat/completions` with the canonical LiteLLM creds. Sync the repo `config.toml` into that directory before testing; only fall back to a workspace-local home if the sandbox blocks writes.
+- Keep `CODEX_HOME` set to `/root/.codex-litellm-debug` so every run targets `https://litellm.example.com/chat/completions` with the canonical LiteLLM creds. Sync the repo `config.toml` into that directory before testing; only fall back to a workspace-local home if the sandbox blocks writes.
 - Until the non-agentic fix is verified, skip the `vercel/minimax-m2` regression run to avoid burning time on agentic models; focus on `vercel/gpt-oss-120b` until it emits real final responses again.
 
 ## 2025-10-27 Sweep A
@@ -167,7 +167,7 @@ Notes:
 ## 2025-11-05 Sweep J
 - Restored direct LiteLLM exec support by seeding `config.toml` from `LITELLM_BASE_URL` / `LITELLM_API_KEY` during baseline creation so headless runs pick up credentials without an interactive prompt.
 - Added a `codex-build-info` helper to stamp the patched release string and taught the CLI to short-circuit `--version` with `codex-litellm <upstream>+lit<patch>`.
-- Verified the headless `codex exec --model vercel/gpt-oss-120b` flow against https://llm.gour.top using the env-seeded credentials (no more 401 loop; returns model response).
+- Verified the headless `codex exec --model vercel/gpt-oss-120b` flow against https://litellm.example.com using the env-seeded credentials (no more 401 loop; returns model response).
 - Preparing to regenerate `stable-tag.patch` and rerun `./build.sh` so the release artifacts + npm package carry the new version string.
 
 ## 2025-11-06 Sweep A – Response formatting kickoff

@@ -1934,7 +1934,7 @@ index be7a38d27..3278d4d2b 100644
 +    let base_url = std::env::var("LITELLM_BASE_URL")
 +        .ok()
 +        .filter(|value| !value.trim().is_empty())
-+        .unwrap_or_else(|| "https://llm.gour.top/v1".to_string());
++        .unwrap_or_else(|| "https://litellm.example.com/v1".to_string());
 +
 +    ModelProviderInfo {
 +        name: "LiteLLM".into(),
@@ -2027,7 +2027,7 @@ index 411fa83a7..ae098dab8 100644
 -        // First use the normal longest-prefix match. If that misses, allow a narrowly scoped
 -        // retry for namespaced slugs like `custom/gpt-5.3-codex`.
 +        // First use the normal longest-prefix match. If that misses, progressively strip
-+        // provider/group prefixes so LiteLLM route slugs like `vercel/bon-gour/gpt-oss-120b`
++        // provider/group prefixes so LiteLLM route slugs like `vercel/route-group/gpt-oss-120b`
 +        // can still inherit metadata from the bundled `gpt-oss-120b` entry.
          let remote = Self::find_model_by_longest_prefix(model, candidates)
              .or_else(|| Self::find_model_by_namespaced_suffix(model, candidates));
@@ -2079,7 +2079,7 @@ index 6981d6d79..dd4ee2bd3 100644
 +        .expect("load default test config");
 +    let mut broader = remote_model("gpt-image", "Broad", 1);
 +    broader.supports_image_detail_original = true;
-+    let mut narrower = remote_model("bon-gour/gpt-image", "Narrow", 0);
++    let mut narrower = remote_model("route-group/gpt-image", "Narrow", 0);
 +    narrower.supports_parallel_tool_calls = true;
 +    let auth_manager = AuthManager::from_auth_for_testing(CodexAuth::from_api_key("Test API Key"));
 +    let manager = ModelsManager::new(
@@ -2092,10 +2092,10 @@ index 6981d6d79..dd4ee2bd3 100644
 +    );
 +
 +    let model_info = manager
-+        .get_model_info("vercel/bon-gour/gpt-image", &config)
++        .get_model_info("vercel/route-group/gpt-image", &config)
 +        .await;
 +
-+    assert_eq!(model_info.slug, "vercel/bon-gour/gpt-image");
++    assert_eq!(model_info.slug, "vercel/route-group/gpt-image");
 +    assert_eq!(model_info.display_name, "Narrow");
 +    assert!(model_info.supports_parallel_tool_calls);
 +    assert!(!model_info.used_fallback_model_metadata);
@@ -2231,7 +2231,7 @@ index 27bac8d70..5817242d9 100644
 +
 +#[test]
 +fn known_minimax_model_uses_tuned_metadata_instead_of_fallback() {
-+    let model = model_info_from_slug("vercel/bon-gour/minimax-m2.5");
++    let model = model_info_from_slug("vercel/minimax-m2.5");
 +
 +    assert_eq!(model.display_name, "MiniMax M2.5");
 +    assert!(!model.used_fallback_model_metadata);
@@ -2241,7 +2241,7 @@ index 27bac8d70..5817242d9 100644
 +
 +#[test]
 +fn known_kimi_model_uses_tuned_metadata_instead_of_fallback() {
-+    let model = model_info_from_slug("vercel/bon-gour/kimi-k2.5");
++    let model = model_info_from_slug("vercel/kimi-k2.5");
 +
 +    assert_eq!(model.display_name, "Kimi K2.5");
 +    assert!(!model.used_fallback_model_metadata);
@@ -2251,7 +2251,7 @@ index 27bac8d70..5817242d9 100644
 +
 +#[test]
 +fn known_deepseek_model_uses_tuned_metadata_instead_of_fallback() {
-+    let model = model_info_from_slug("vercel/bon-gour/deepseek-v3.2-thinking");
++    let model = model_info_from_slug("vercel/deepseek-v3.2-thinking");
 +
 +    assert_eq!(model.display_name, "DeepSeek V3.2 Thinking");
 +    assert!(!model.used_fallback_model_metadata);

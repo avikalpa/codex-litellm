@@ -6,9 +6,9 @@ fixture="${1:-mini-web}"
 profile="${2:-/home/pi/.codex-litellm-debug}"
 
 models=(
-  "vercel/bon-gour/deepseek-v3.2-thinking"
-  "vercel/bon-gour/minimax-m2.5"
-  "vercel/bon-gour/kimi-k2.5"
+  "vercel/deepseek-v3.2-thinking"
+  "vercel/minimax-m2.5"
+  "vercel/kimi-k2.5"
 )
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"

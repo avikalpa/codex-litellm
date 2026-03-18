@@ -18,12 +18,12 @@ Last updated: 2026-03-18
 - stronger post-edit finalize nudges
 - a shell guard that blocks further read-only inspection once the repo already has a diff, except for `git diff --stat`
 - the same post-edit guard behavior now applies to the live `exec_command` / unified-exec path
-- explicit runtime metadata for `vercel/bon-gour/minimax-m2.5` so it no longer silently falls back
+- explicit runtime metadata for `vercel/minimax-m2.5` so it no longer silently falls back
 
 ## Current Status
 - The old LiteLLM/Vercel `"Multiple system messages..."` failure is gone.
 - The later LiteLLM duplicate-`tool_call` replay failure is also mitigated enough for the current live gate to finish.
-- `vercel/bon-gour/minimax-m2.5` now passes the canonical live gate on `0.115.0`:
+- `vercel/minimax-m2.5` now passes the canonical live gate on `0.115.0`:
   - it makes a real repo edit
   - it performs the single allowed verification step, `git diff --stat`
   - it returns a final assistant reply
@@ -37,38 +37,38 @@ Last updated: 2026-03-18
   - `mini-web` for lightweight HTML/CSS/UI edits
   - `python-cli` for CLI + README + test updates
 - Current live results on `mini-web`:
-  - `vercel/bon-gour/minimax-m2.5`: pass
-  - `vercel/bon-gour/kimi-k2.5`: pass
-  - `vercel/bon-gour/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
+  - `vercel/minimax-m2.5`: pass
+  - `vercel/kimi-k2.5`: pass
+  - `vercel/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
 - Current live result on `python-cli`:
-  - `vercel/bon-gour/minimax-m2.5`: pass on a non-UI repo shape
-- Direct backend probes against `https://llm.gour.top/v1/responses` narrowed the DeepSeek failure:
+  - `vercel/minimax-m2.5`: pass on a non-UI repo shape
+- Direct backend probes against `https://litellm.example.com/v1/responses` narrowed the DeepSeek failure:
   - replaying `reasoning + message + function_call + function_call_output` in the current Codex `/responses` shape still fails
   - replaying the exact prior `/responses` output items plus `function_call_output` still fails
   - using `previous_response_id` with only `function_call_output` still fails, with both `store=false` and `store=true`
   - conclusion: the remaining DeepSeek breakage is the LiteLLM/Vercel `/responses` bridge for thinking+tools, not missing runtime metadata
 
 ## Evidence
-- `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix2.log`
-- `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix3.log`
-- `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix4.log`
+- `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix2.log`
+- `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix3.log`
+- `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix4.log`
 - duplicate-`tool_call` failure before the retry-state reset:
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix5.log`
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix7.log`
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix8.log`
+  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix5.log`
+  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix7.log`
+  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix8.log`
 - current passing run with residual over-exploration / duplicated CSS block:
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix9.log`
+  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix9.log`
 - current passing run after explicit `minimax` metadata and stricter shell-write detection:
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix10.log`
+  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix10.log`
 - current passing run after porting the post-edit guard onto the live `exec_command` path:
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix11.log`
+  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix11.log`
 - new fixture-based research runs:
-  - `logs/model-test-vercel_bon-gour_deepseek-v3.2-thinking-mini-web-20260318-192213.log`
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-mini-web-20260318-192400.log`
-  - `logs/model-test-vercel_bon-gour_kimi-k2.5-mini-web-20260318-192519.log`
-  - `logs/model-test-vercel_bon-gour_minimax-m2.5-python-cli-20260318-192647.log`
+  - `logs/model-test-vercel_deepseek-v3.2-thinking-mini-web-20260318-192213.log`
+  - `logs/model-test-vercel_minimax-m2.5-mini-web-20260318-192400.log`
+  - `logs/model-test-vercel_kimi-k2.5-mini-web-20260318-192519.log`
+  - `logs/model-test-vercel_minimax-m2.5-python-cli-20260318-192647.log`
 - Earlier non-agentic schema failure before tool normalization:
-  - `logs/model-test-vercel_bon-gour_gpt-oss-120b-0.115.0-postfix.log`
+  - `logs/model-test-vercel_gpt-oss-120b-0.115.0-postfix.log`
 
 ## Verified So Far
 - `cargo test -p codex-core get_model_info_matches_multi_segment_namespace_suffix -- --nocapture`
@@ -86,7 +86,7 @@ Last updated: 2026-03-18
 - `cargo build --locked --bin codex`
 
 ## Next Step
-- Keep runtime metadata for `vercel/bon-gour/kimi-k2.5` and `vercel/bon-gour/deepseek-v3.2-thinking` in-tree so they do not silently fall back.
+- Keep runtime metadata for `vercel/kimi-k2.5` and `vercel/deepseek-v3.2-thinking` in-tree so they do not silently fall back.
 - Decide whether to:
   - port the old LiteLLM chat-completions fallback for DeepSeek thinking+tools, or
   - keep DeepSeek marked as known-broken on the LiteLLM `/responses` path until upstream fixes the bridge.
