@@ -1,535 +1,589 @@
 diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
-index 189d9468d..f62ca5341 100644
+index f6d648c00..37d9adf81 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
-@@ -380,7 +380,7 @@ checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
+@@ -402,7 +402,7 @@ checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
  
  [[package]]
  name = "app_test_support"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "base64 0.22.1",
-@@ -1301,7 +1301,7 @@ checksum = "e9b18233253483ce2f65329a24072ec414db782531bdbb7d0bbc4bd2ce6b7e21"
+@@ -1373,7 +1373,7 @@ checksum = "e9b18233253483ce2f65329a24072ec414db782531bdbb7d0bbc4bd2ce6b7e21"
  
  [[package]]
  name = "codex-ansi-escape"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "ansi-to-tui",
   "ratatui",
-@@ -1310,7 +1310,7 @@ dependencies = [
+@@ -1382,7 +1382,7 @@ dependencies = [
  
  [[package]]
  name = "codex-api"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "assert_matches",
-@@ -1340,7 +1340,7 @@ dependencies = [
+@@ -1412,7 +1412,7 @@ dependencies = [
  
  [[package]]
  name = "codex-app-server"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "app_test_support",
-@@ -1388,7 +1388,7 @@ dependencies = [
+@@ -1468,7 +1468,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-app-server-client"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "codex-app-server",
+  "codex-app-server-protocol",
+@@ -1486,7 +1486,7 @@ dependencies = [
  
  [[package]]
  name = "codex-app-server-protocol"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1412,7 +1412,7 @@ dependencies = [
+@@ -1513,7 +1513,7 @@ dependencies = [
  
  [[package]]
  name = "codex-app-server-test-client"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1427,7 +1427,7 @@ dependencies = [
+@@ -1534,7 +1534,7 @@ dependencies = [
  
  [[package]]
  name = "codex-apply-patch"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1443,7 +1443,7 @@ dependencies = [
+@@ -1550,7 +1550,7 @@ dependencies = [
  
  [[package]]
  name = "codex-arg0"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "codex-apply-patch",
-@@ -1456,7 +1456,7 @@ dependencies = [
+@@ -1564,7 +1564,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-artifacts"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "codex-package-manager",
+  "pretty_assertions",
+@@ -1583,7 +1583,7 @@ dependencies = [
  
  [[package]]
  name = "codex-async-utils"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "async-trait",
   "pretty_assertions",
-@@ -1466,7 +1466,7 @@ dependencies = [
+@@ -1593,7 +1593,7 @@ dependencies = [
  
  [[package]]
  name = "codex-backend-client"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "codex-backend-openapi-models",
-@@ -1480,7 +1480,7 @@ dependencies = [
+@@ -1608,7 +1608,7 @@ dependencies = [
  
  [[package]]
  name = "codex-backend-openapi-models"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "serde",
   "serde_json",
-@@ -1489,7 +1489,7 @@ dependencies = [
+@@ -1617,7 +1617,7 @@ dependencies = [
  
  [[package]]
  name = "codex-chatgpt"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1507,7 +1507,7 @@ dependencies = [
+@@ -1635,7 +1635,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cli"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1548,7 +1548,7 @@ dependencies = [
+@@ -1681,7 +1681,7 @@ dependencies = [
  
  [[package]]
  name = "codex-client"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "async-trait",
   "bytes",
-@@ -1571,7 +1571,7 @@ dependencies = [
+@@ -1711,7 +1711,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cloud-requirements"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "async-trait",
   "base64 0.22.1",
-@@ -1594,7 +1594,7 @@ dependencies = [
+@@ -1734,7 +1734,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cloud-tasks"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1623,7 +1623,7 @@ dependencies = [
+@@ -1764,7 +1764,7 @@ dependencies = [
  
  [[package]]
  name = "codex-cloud-tasks-client"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1638,7 +1638,7 @@ dependencies = [
+@@ -1779,7 +1779,7 @@ dependencies = [
  
  [[package]]
  name = "codex-config"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "codex-app-server-protocol",
-@@ -1658,7 +1658,7 @@ dependencies = [
+@@ -1802,7 +1802,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-connectors"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "anyhow",
+  "codex-app-server-protocol",
+@@ -1814,7 +1814,7 @@ dependencies = [
  
  [[package]]
  name = "codex-core"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "arc-swap",
-@@ -1765,7 +1765,7 @@ dependencies = [
+@@ -1930,7 +1930,7 @@ dependencies = [
  
  [[package]]
  name = "codex-debug-client"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1777,7 +1777,7 @@ dependencies = [
+@@ -1942,7 +1942,7 @@ dependencies = [
  
  [[package]]
  name = "codex-exec"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1814,7 +1814,7 @@ dependencies = [
- 
- [[package]]
- name = "codex-exec-server"
--version = "0.0.0"
-+version = "0.104.0"
- dependencies = [
-  "anyhow",
-  "async-trait",
-@@ -1841,7 +1841,7 @@ dependencies = [
+@@ -1987,7 +1987,7 @@ dependencies = [
  
  [[package]]
  name = "codex-execpolicy"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1857,7 +1857,7 @@ dependencies = [
+@@ -2004,7 +2004,7 @@ dependencies = [
  
  [[package]]
  name = "codex-execpolicy-legacy"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "allocative",
   "anyhow",
-@@ -1877,7 +1877,7 @@ dependencies = [
+@@ -2024,7 +2024,7 @@ dependencies = [
  
  [[package]]
  name = "codex-experimental-api-macros"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "proc-macro2",
   "quote",
-@@ -1886,7 +1886,7 @@ dependencies = [
+@@ -2033,7 +2033,7 @@ dependencies = [
  
  [[package]]
  name = "codex-feedback"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "codex-protocol",
-@@ -1898,7 +1898,7 @@ dependencies = [
+@@ -2045,7 +2045,7 @@ dependencies = [
  
  [[package]]
  name = "codex-file-search"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -1914,7 +1914,7 @@ dependencies = [
+@@ -2061,7 +2061,7 @@ dependencies = [
  
  [[package]]
  name = "codex-git"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "assert_matches",
   "once_cell",
-@@ -1930,7 +1930,7 @@ dependencies = [
+@@ -2077,7 +2077,7 @@ dependencies = [
  
  [[package]]
  name = "codex-hooks"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "chrono",
-@@ -1945,7 +1945,7 @@ dependencies = [
+@@ -2095,7 +2095,7 @@ dependencies = [
  
  [[package]]
  name = "codex-keyring-store"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "keyring",
   "tracing",
-@@ -1953,7 +1953,7 @@ dependencies = [
+@@ -2103,7 +2103,7 @@ dependencies = [
  
  [[package]]
  name = "codex-linux-sandbox"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "cc",
   "clap",
-@@ -1971,7 +1971,7 @@ dependencies = [
+@@ -2124,7 +2124,7 @@ dependencies = [
  
  [[package]]
  name = "codex-lmstudio"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "codex-core",
   "reqwest",
-@@ -1984,7 +1984,7 @@ dependencies = [
+@@ -2137,7 +2137,7 @@ dependencies = [
  
  [[package]]
  name = "codex-login"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "base64 0.22.1",
-@@ -2008,7 +2008,7 @@ dependencies = [
+@@ -2164,7 +2164,7 @@ dependencies = [
  
  [[package]]
  name = "codex-mcp-server"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "codex-arg0",
-@@ -2034,7 +2034,7 @@ dependencies = [
+@@ -2191,7 +2191,7 @@ dependencies = [
  
  [[package]]
  name = "codex-network-proxy"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -2064,7 +2064,7 @@ dependencies = [
+@@ -2222,7 +2222,7 @@ dependencies = [
  
  [[package]]
  name = "codex-ollama"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "assert_matches",
   "async-stream",
-@@ -2082,7 +2082,7 @@ dependencies = [
+@@ -2240,7 +2240,7 @@ dependencies = [
  
  [[package]]
  name = "codex-otel"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "chrono",
   "codex-api",
-@@ -2112,7 +2112,7 @@ dependencies = [
+@@ -2271,7 +2271,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-package-manager"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "fd-lock",
+  "flate2",
+@@ -2291,7 +2291,7 @@ dependencies = [
  
  [[package]]
  name = "codex-process-hardening"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "libc",
   "pretty_assertions",
-@@ -2120,7 +2120,7 @@ dependencies = [
+@@ -2299,7 +2299,7 @@ dependencies = [
  
  [[package]]
  name = "codex-protocol"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "codex-execpolicy",
-@@ -2147,7 +2147,7 @@ dependencies = [
+@@ -2326,7 +2326,7 @@ dependencies = [
  
  [[package]]
  name = "codex-responses-api-proxy"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "clap",
-@@ -2163,7 +2163,7 @@ dependencies = [
+@@ -2342,7 +2342,7 @@ dependencies = [
  
  [[package]]
  name = "codex-rmcp-client"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "axum",
-@@ -2194,7 +2194,7 @@ dependencies = [
+@@ -2376,7 +2376,7 @@ dependencies = [
  
  [[package]]
  name = "codex-secrets"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "age",
   "anyhow",
-@@ -2213,7 +2213,7 @@ dependencies = [
+@@ -2396,7 +2396,7 @@ dependencies = [
  
  [[package]]
  name = "codex-shell-command"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "base64 0.22.1",
-@@ -2233,7 +2233,7 @@ dependencies = [
+@@ -2416,7 +2416,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-shell-escalation"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "anyhow",
+  "async-trait",
+@@ -2437,7 +2437,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-skills"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "codex-utils-absolute-path",
+  "include_dir",
+@@ -2446,7 +2446,7 @@ dependencies = [
  
  [[package]]
  name = "codex-state"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "chrono",
-@@ -2255,7 +2255,7 @@ dependencies = [
+@@ -2467,7 +2467,7 @@ dependencies = [
  
  [[package]]
  name = "codex-stdio-to-uds"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
-  "assert_cmd",
-@@ -2267,7 +2267,7 @@ dependencies = [
+  "codex-utils-cargo-bin",
+@@ -2478,7 +2478,7 @@ dependencies = [
+ 
+ [[package]]
+ name = "codex-test-macros"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "proc-macro2",
+  "quote",
+@@ -2487,7 +2487,7 @@ dependencies = [
  
  [[package]]
  name = "codex-tui"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "arboard",
-@@ -2352,7 +2352,7 @@ dependencies = [
+@@ -2578,7 +2578,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-absolute-path"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "dirs",
   "path-absolutize",
-@@ -2366,14 +2366,14 @@ dependencies = [
+@@ -2592,14 +2592,14 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-approval-presets"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
-  "codex-core",
+  "codex-protocol",
  ]
  
  [[package]]
  name = "codex-utils-cache"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "lru 0.16.3",
   "sha1",
-@@ -2382,7 +2382,7 @@ dependencies = [
+@@ -2608,7 +2608,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-cargo-bin"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "assert_cmd",
   "runfiles",
-@@ -2391,7 +2391,7 @@ dependencies = [
+@@ -2617,7 +2617,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-cli"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "clap",
-  "codex-core",
-@@ -2403,15 +2403,15 @@ dependencies = [
+  "codex-protocol",
+@@ -2628,15 +2628,15 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-elapsed"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  
  [[package]]
  name = "codex-utils-fuzzy-match"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  
  [[package]]
  name = "codex-utils-home-dir"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "dirs",
   "pretty_assertions",
-@@ -2420,7 +2420,7 @@ dependencies = [
+@@ -2645,7 +2645,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-image"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "base64 0.22.1",
   "codex-utils-cache",
-@@ -2432,7 +2432,7 @@ dependencies = [
+@@ -2657,7 +2657,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-json-to-toml"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "pretty_assertions",
   "serde_json",
-@@ -2441,7 +2441,7 @@ dependencies = [
+@@ -2666,7 +2666,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-oss"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "codex-core",
   "codex-lmstudio",
-@@ -2450,7 +2450,7 @@ dependencies = [
+@@ -2675,7 +2675,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-pty"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "filedescriptor",
-@@ -2466,7 +2466,7 @@ dependencies = [
+@@ -2691,7 +2691,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-readiness"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "assert_matches",
   "async-trait",
-@@ -2477,14 +2477,14 @@ dependencies = [
+@@ -2702,14 +2702,14 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-rustls-provider"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "rustls",
  ]
@@ -537,73 +591,65 @@ index 189d9468d..f62ca5341 100644
  [[package]]
  name = "codex-utils-sandbox-summary"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "codex-core",
-  "codex-utils-absolute-path",
-@@ -2493,14 +2493,14 @@ dependencies = [
- 
- [[package]]
- name = "codex-utils-sanitizer"
--version = "0.0.0"
-+version = "0.104.0"
- dependencies = [
-  "regex",
- ]
+  "codex-protocol",
+@@ -2719,7 +2719,7 @@ dependencies = [
  
  [[package]]
  name = "codex-utils-sleep-inhibitor"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "core-foundation 0.9.4",
   "libc",
-@@ -2509,14 +2509,14 @@ dependencies = [
+@@ -2729,14 +2729,14 @@ dependencies = [
  
  [[package]]
- name = "codex-utils-string"
+ name = "codex-utils-stream-parser"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "pretty_assertions",
  ]
  
  [[package]]
+ name = "codex-utils-string"
+-version = "0.0.0"
++version = "0.115.0"
+ dependencies = [
+  "pretty_assertions",
+  "regex-lite",
+@@ -2744,7 +2744,7 @@ dependencies = [
+ 
+ [[package]]
  name = "codex-windows-sandbox"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "base64 0.22.1",
-@@ -2719,7 +2719,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+@@ -2947,7 +2947,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
  
  [[package]]
  name = "core_test_support"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -3592,7 +3592,7 @@ dependencies = [
- 
- [[package]]
- name = "exec_server_test_support"
--version = "0.0.0"
-+version = "0.104.0"
- dependencies = [
-  "anyhow",
-  "codex-core",
-@@ -5369,7 +5369,7 @@ checksum = "b3eede3bdf92f3b4f9dc04072a9ce5ab557d5ec9038773bf9ffcd5588b3cc05b"
+@@ -5682,7 +5682,7 @@ checksum = "b3eede3bdf92f3b4f9dc04072a9ce5ab557d5ec9038773bf9ffcd5588b3cc05b"
  
  [[package]]
  name = "mcp_test_support"
 -version = "0.0.0"
-+version = "0.104.0"
++version = "0.115.0"
  dependencies = [
   "anyhow",
   "codex-core",
 diff --git a/codex-rs/cli/Cargo.toml b/codex-rs/cli/Cargo.toml
-index fd15f8791..b0532edcf 100644
+index 7c51f84bd..65dbb4fc2 100644
 --- a/codex-rs/cli/Cargo.toml
 +++ b/codex-rs/cli/Cargo.toml
 @@ -8,6 +8,10 @@ license.workspace = true
@@ -617,38 +663,802 @@ index fd15f8791..b0532edcf 100644
  [lib]
  name = "codex_cli"
  path = "src/lib.rs"
+diff --git a/codex-rs/core/src/client.rs b/codex-rs/core/src/client.rs
+index c438d7274..ae9664092 100644
+--- a/codex-rs/core/src/client.rs
++++ b/codex-rs/core/src/client.rs
+@@ -92,6 +92,9 @@ use crate::auth::RefreshTokenError;
+ use crate::client_common::Prompt;
+ use crate::client_common::ResponseEvent;
+ use crate::client_common::ResponseStream;
++use crate::client_common::tools::FreeformTool;
++use crate::client_common::tools::ResponsesApiTool;
++use crate::client_common::tools::ToolSpec;
+ use crate::config::Config;
+ use crate::default_client::build_reqwest_client;
+ use crate::error::CodexErr;
+@@ -103,6 +106,7 @@ use crate::response_debug_context::extract_response_debug_context;
+ use crate::response_debug_context::extract_response_debug_context_from_api_error;
+ use crate::response_debug_context::telemetry_api_error_message;
+ use crate::response_debug_context::telemetry_transport_error_message;
++use crate::tools::spec::JsonSchema;
+ use crate::tools::spec::create_tools_json_for_responses_api;
+ use crate::util::FeedbackRequestTags;
+ use crate::util::emit_feedback_auth_recovery_tags;
+@@ -117,6 +121,120 @@ const RESPONSES_WEBSOCKETS_V2_BETA_HEADER_VALUE: &str = "responses_websockets=20
+ const RESPONSES_ENDPOINT: &str = "/responses";
+ const RESPONSES_COMPACT_ENDPOINT: &str = "/responses/compact";
+ const MEMORIES_SUMMARIZE_ENDPOINT: &str = "/memories/trace_summarize";
++
++fn create_tools_json_for_provider(
++    provider: &codex_api::Provider,
++    tools: &[ToolSpec],
++) -> crate::error::Result<Vec<serde_json::Value>> {
++    if ModelClientSession::is_litellm_provider(provider) {
++        create_litellm_tools_json(tools)
++    } else {
++        create_tools_json_for_responses_api(tools)
++    }
++}
++
++fn create_litellm_tools_json(tools: &[ToolSpec]) -> crate::error::Result<Vec<serde_json::Value>> {
++    let mut tools_json = Vec::new();
++
++    for tool in tools {
++        match normalize_tool_spec_for_litellm(tool) {
++            Some(normalized) => tools_json.push(serde_json::to_value(normalized)?),
++            None => warn!(
++                tool_name = %tool.name(),
++                "omitting unsupported non-function tool from LiteLLM responses request"
++            ),
++        }
++    }
++
++    Ok(tools_json)
++}
++
++fn normalize_tool_spec_for_litellm(tool: &ToolSpec) -> Option<ToolSpec> {
++    match tool {
++        ToolSpec::Function(tool) => Some(ToolSpec::Function(tool.clone())),
++        ToolSpec::ToolSearch {
++            description,
++            parameters,
++            ..
++        } => Some(function_tool_spec(
++            "tool_search",
++            description.clone(),
++            parameters.clone(),
++        )),
++        ToolSpec::LocalShell {} => Some(function_tool_spec(
++            "local_shell",
++            "Runs a shell command and returns its output. Always set `workdir` when possible."
++                .to_string(),
++            JsonSchema::Object {
++                properties: std::collections::BTreeMap::from([
++                    (
++                        "command".to_string(),
++                        JsonSchema::Array {
++                            items: Box::new(JsonSchema::String { description: None }),
++                            description: Some("The command to execute.".to_string()),
++                        },
++                    ),
++                    (
++                        "workdir".to_string(),
++                        JsonSchema::String {
++                            description: Some(
++                                "The working directory to execute the command in.".to_string(),
++                            ),
++                        },
++                    ),
++                    (
++                        "timeout_ms".to_string(),
++                        JsonSchema::Number {
++                            description: Some(
++                                "Maximum time in milliseconds the command may run.".to_string(),
++                            ),
++                        },
++                    ),
++                ]),
++                required: Some(vec!["command".to_string()]),
++                additional_properties: Some(false.into()),
++            },
++        )),
++        ToolSpec::Freeform(tool) => Some(normalize_freeform_tool_spec_for_litellm(tool)),
++        ToolSpec::WebSearch { .. } | ToolSpec::ImageGeneration { .. } => None,
++    }
++}
++
++fn normalize_freeform_tool_spec_for_litellm(tool: &FreeformTool) -> ToolSpec {
++    function_tool_spec(
++        tool.name.clone(),
++        format!(
++            "{} Pass the raw tool input string as the JSON field `input`.",
++            tool.description
++        ),
++        JsonSchema::Object {
++            properties: std::collections::BTreeMap::from([(
++                "input".to_string(),
++                JsonSchema::String {
++                    description: Some("Raw input string for this tool.".to_string()),
++                },
++            )]),
++            required: Some(vec!["input".to_string()]),
++            additional_properties: Some(false.into()),
++        },
++    )
++}
++
++fn function_tool_spec(
++    name: impl Into<String>,
++    description: String,
++    parameters: JsonSchema,
++) -> ToolSpec {
++    ToolSpec::Function(ResponsesApiTool {
++        name: name.into(),
++        description,
++        strict: false,
++        defer_loading: None,
++        parameters,
++        output_schema: None,
++    })
++}
++
+ pub fn ws_version_from_features(config: &Config) -> bool {
+     config
+         .features
+@@ -339,13 +457,9 @@ impl ModelClient {
+             ),
+             RequestRouteTelemetry::for_endpoint(RESPONSES_COMPACT_ENDPOINT),
+         );
+-        let client =
+-            ApiCompactClient::new(transport, client_setup.api_provider, client_setup.api_auth)
+-                .with_telemetry(Some(request_telemetry));
+-
+         let instructions = prompt.base_instructions.text.clone();
+         let input = prompt.get_formatted_input();
+-        let tools = create_tools_json_for_responses_api(&prompt.tools)?;
++        let tools = create_tools_json_for_provider(&client_setup.api_provider, &prompt.tools)?;
+         let reasoning = Self::build_reasoning(model_info, effort, summary);
+         let verbosity = if model_info.support_verbosity {
+             self.state.model_verbosity.or(model_info.default_verbosity)
+@@ -368,6 +482,9 @@ impl ModelClient {
+             reasoning,
+             text,
+         };
++        let client =
++            ApiCompactClient::new(transport, client_setup.api_provider, client_setup.api_auth)
++                .with_telemetry(Some(request_telemetry));
+ 
+         let mut extra_headers = self.build_subagent_headers();
+         extra_headers.extend(build_conversation_headers(Some(
+@@ -637,6 +754,41 @@ impl Drop for ModelClientSession {
+ }
+ 
+ impl ModelClientSession {
++    fn is_litellm_provider(provider: &codex_api::Provider) -> bool {
++        provider.name.to_ascii_lowercase().contains("litellm")
++    }
++
++    pub(crate) fn should_reset_state_after_retryable_stream_error(&self) -> bool {
++        self.client
++            .state
++            .provider
++            .name
++            .to_ascii_lowercase()
++            .contains("litellm")
++    }
++
++    pub(crate) fn should_prefer_http_after_retryable_stream_error(
++        &self,
++        model_info: &ModelInfo,
++    ) -> bool {
++        self.client.responses_websocket_enabled(model_info)
++            && self
++                .client
++                .state
++                .provider
++                .name
++                .to_ascii_lowercase()
++                .contains("litellm")
++    }
++
++    pub(crate) fn reset_state_after_retryable_stream_error(&mut self) {
++        self.turn_state = Arc::new(OnceLock::new());
++        self.websocket_session.connection = None;
++        self.websocket_session.last_request = None;
++        self.websocket_session.last_response_rx = None;
++        self.websocket_session.set_connection_reused(false);
++    }
++
+     fn activate_http_fallback(&self, websocket_enabled: bool) -> bool {
+         websocket_enabled
+             && !self
+@@ -655,9 +807,9 @@ impl ModelClientSession {
+         summary: ReasoningSummaryConfig,
+         service_tier: Option<ServiceTier>,
+     ) -> Result<ResponsesApiRequest> {
+-        let instructions = &prompt.base_instructions.text;
++        let instructions = prompt.formatted_instructions();
+         let input = prompt.get_formatted_input();
+-        let tools = create_tools_json_for_responses_api(&prompt.tools)?;
++        let tools = create_tools_json_for_provider(provider, &prompt.tools)?;
+         let default_reasoning_effort = model_info.default_reasoning_level;
+         let reasoning = if model_info.supports_reasoning_summaries {
+             Some(Reasoning {
+@@ -694,7 +846,7 @@ impl ModelClientSession {
+         let prompt_cache_key = Some(self.client.state.conversation_id.to_string());
+         let request = ResponsesApiRequest {
+             model: model_info.slug.clone(),
+-            instructions: instructions.clone(),
++            instructions,
+             input,
+             tools,
+             tool_choice: "auto".to_string(),
+@@ -714,6 +866,31 @@ impl ModelClientSession {
+         Ok(request)
+     }
+ 
++    fn strip_reasoning_from_responses_request(request: &mut ResponsesApiRequest) {
++        request.reasoning = None;
++        request
++            .include
++            .retain(|field| field != "reasoning.encrypted_content");
++    }
++
++    fn should_retry_without_reasoning(
++        provider: &codex_api::Provider,
++        request: &ResponsesApiRequest,
++        err: &ApiError,
++    ) -> bool {
++        request.reasoning.is_some()
++            && Self::is_litellm_provider(provider)
++            && matches!(
++                err,
++                ApiError::Transport(TransportError::Http {
++                    status,
++                    body: Some(body),
++                    ..
++                }) if *status == StatusCode::BAD_REQUEST
++                    && reasoning_effort_rejected(body)
++            )
++    }
++
+     #[allow(clippy::too_many_arguments)]
+     /// Builds shared Responses API transport options and request-body options.
+     ///
+@@ -974,23 +1151,10 @@ impl ModelClientSession {
+             .as_ref()
+             .map(super::auth::AuthManager::unauthorized_recovery);
+         let mut pending_retry = PendingUnauthorizedRetry::default();
+-        loop {
++        'auth: loop {
+             let client_setup = self.client.current_client_setup().await?;
+-            let transport = ReqwestTransport::new(build_reqwest_client());
+-            let request_auth_context = AuthRequestTelemetryContext::new(
+-                client_setup.auth.as_ref().map(CodexAuth::auth_mode),
+-                &client_setup.api_auth,
+-                pending_retry,
+-            );
+-            let (request_telemetry, sse_telemetry) = Self::build_streaming_telemetry(
+-                session_telemetry,
+-                request_auth_context,
+-                RequestRouteTelemetry::for_endpoint(RESPONSES_ENDPOINT),
+-            );
+             let compression = self.responses_request_compression(client_setup.auth.as_ref());
+-            let options = self.build_responses_options(turn_metadata_header, compression);
+-
+-            let request = self.build_responses_request(
++            let mut request = self.build_responses_request(
+                 &client_setup.api_provider,
+                 prompt,
+                 model_info,
+@@ -998,33 +1162,66 @@ impl ModelClientSession {
+                 summary,
+                 service_tier,
+             )?;
+-            let client = ApiResponsesClient::new(
+-                transport,
+-                client_setup.api_provider,
+-                client_setup.api_auth,
+-            )
+-            .with_telemetry(Some(request_telemetry), Some(sse_telemetry));
+-            let stream_result = client.stream_request(request, options).await;
++            let mut reasoning_retry_available = request.reasoning.is_some();
++
++            loop {
++                let transport = ReqwestTransport::new(build_reqwest_client());
++                let request_auth_context = AuthRequestTelemetryContext::new(
++                    client_setup.auth.as_ref().map(CodexAuth::auth_mode),
++                    &client_setup.api_auth,
++                    pending_retry,
++                );
++                let (request_telemetry, sse_telemetry) = Self::build_streaming_telemetry(
++                    session_telemetry,
++                    request_auth_context,
++                    RequestRouteTelemetry::for_endpoint(RESPONSES_ENDPOINT),
++                );
++                let options = self.build_responses_options(turn_metadata_header, compression);
++                let client = ApiResponsesClient::new(
++                    transport,
++                    client_setup.api_provider.clone(),
++                    client_setup.api_auth.clone(),
++                )
++                .with_telemetry(Some(request_telemetry), Some(sse_telemetry));
++                let stream_result = client.stream_request(request.clone(), options).await;
+ 
+-            match stream_result {
+-                Ok(stream) => {
+-                    let (stream, _) = map_response_stream(stream, session_telemetry.clone());
+-                    return Ok(stream);
+-                }
+-                Err(ApiError::Transport(
+-                    unauthorized_transport @ TransportError::Http { status, .. },
+-                )) if status == StatusCode::UNAUTHORIZED => {
+-                    pending_retry = PendingUnauthorizedRetry::from_recovery(
+-                        handle_unauthorized(
+-                            unauthorized_transport,
+-                            &mut auth_recovery,
+-                            session_telemetry,
+-                        )
+-                        .await?,
+-                    );
+-                    continue;
++                match stream_result {
++                    Ok(stream) => {
++                        let (stream, _) = map_response_stream(stream, session_telemetry.clone());
++                        return Ok(stream);
++                    }
++                    Err(ApiError::Transport(
++                        unauthorized_transport @ TransportError::Http { status, .. },
++                    )) if status == StatusCode::UNAUTHORIZED => {
++                        pending_retry = PendingUnauthorizedRetry::from_recovery(
++                            handle_unauthorized(
++                                unauthorized_transport,
++                                &mut auth_recovery,
++                                session_telemetry,
++                            )
++                            .await?,
++                        );
++                        continue 'auth;
++                    }
++                    Err(err)
++                        if reasoning_retry_available
++                            && Self::should_retry_without_reasoning(
++                                &client_setup.api_provider,
++                                &request,
++                                &err,
++                            ) =>
++                    {
++                        warn!(
++                            model = %model_info.slug,
++                            provider = %client_setup.api_provider.name,
++                            "retrying response request without reasoning after provider rejected reasoning_effort"
++                        );
++                        Self::strip_reasoning_from_responses_request(&mut request);
++                        reasoning_retry_available = false;
++                        continue;
++                    }
++                    Err(err) => return Err(map_api_error(err)),
+                 }
+-                Err(err) => return Err(map_api_error(err)),
+             }
+         }
+     }
+@@ -1318,6 +1515,12 @@ fn parse_turn_metadata_header(turn_metadata_header: Option<&str>) -> Option<Head
+     turn_metadata_header.and_then(|value| HeaderValue::from_str(value).ok())
+ }
+ 
++fn reasoning_effort_rejected(body: &str) -> bool {
++    let body = body.to_ascii_lowercase();
++    body.contains("reasoning_effort")
++        && (body.contains("unsupportedparamserror") || body.contains("does not support parameters"))
++}
++
+ fn build_ws_client_metadata(turn_metadata_header: Option<&str>) -> Option<HashMap<String, String>> {
+     let turn_metadata_header = parse_turn_metadata_header(turn_metadata_header)?;
+     let turn_metadata = turn_metadata_header.to_str().ok()?.to_string();
+diff --git a/codex-rs/core/src/client_common.rs b/codex-rs/core/src/client_common.rs
+index e88e1af12..2dd9c0758 100644
+--- a/codex-rs/core/src/client_common.rs
++++ b/codex-rs/core/src/client_common.rs
+@@ -37,6 +37,11 @@ pub struct Prompt {
+ 
+     pub base_instructions: BaseInstructions,
+ 
++    /// Ephemeral request-only instruction sections appended to the base
++    /// `instructions` field for the next provider request. These are not
++    /// persisted in conversation history.
++    pub additional_instructions: Vec<String>,
++
+     /// Optionally specify the personality of the model.
+     pub personality: Option<Personality>,
+ 
+@@ -45,6 +50,18 @@ pub struct Prompt {
+ }
+ 
+ impl Prompt {
++    pub(crate) fn formatted_instructions(&self) -> String {
++        let mut sections = Vec::with_capacity(1 + self.additional_instructions.len());
++        sections.push(self.base_instructions.text.clone());
++        sections.extend(
++            self.additional_instructions
++                .iter()
++                .filter(|section| !section.trim().is_empty())
++                .cloned(),
++        );
++        sections.join("\n\n")
++    }
++
+     pub(crate) fn get_formatted_input(&self) -> Vec<ResponseItem> {
+         let mut input = self.input.clone();
+ 
+diff --git a/codex-rs/core/src/client_tests.rs b/codex-rs/core/src/client_tests.rs
+index 441a34864..b271da270 100644
+--- a/codex-rs/core/src/client_tests.rs
++++ b/codex-rs/core/src/client_tests.rs
+@@ -1,12 +1,25 @@
+ use super::AuthRequestTelemetryContext;
+ use super::ModelClient;
++use super::ModelClientSession;
+ use super::PendingUnauthorizedRetry;
+ use super::UnauthorizedRecoveryExecution;
++use super::reasoning_effort_rejected;
++use crate::client_common::Prompt;
++use crate::client_common::tools::FreeformTool;
++use crate::client_common::tools::FreeformToolFormat;
++use crate::client_common::tools::ToolSpec;
++use crate::model_provider_info::ModelProviderInfo;
++use crate::model_provider_info::WireApi;
++use crate::tools::spec::JsonSchema;
++use codex_api::ResponsesApiRequest;
++use codex_api::TransportError;
+ use codex_otel::SessionTelemetry;
+ use codex_protocol::ThreadId;
++use codex_protocol::config_types::ReasoningSummary as ReasoningSummaryConfig;
+ use codex_protocol::openai_models::ModelInfo;
+ use codex_protocol::protocol::SessionSource;
+ use codex_protocol::protocol::SubAgentSource;
++use http::StatusCode;
+ use pretty_assertions::assert_eq;
+ use serde_json::json;
+ 
+@@ -28,6 +41,24 @@ fn test_model_client(session_source: SessionSource) -> ModelClient {
+     )
+ }
+ 
++fn test_model_client_with_provider(
++    session_source: SessionSource,
++    provider: ModelProviderInfo,
++    responses_websockets_enabled_by_feature: bool,
++) -> ModelClient {
++    ModelClient::new(
++        None,
++        ThreadId::new(),
++        provider,
++        session_source,
++        None,
++        responses_websockets_enabled_by_feature,
++        false,
++        false,
++        None,
++    )
++}
++
+ fn test_model_info() -> ModelInfo {
+     serde_json::from_value(json!({
+         "slug": "gpt-test",
+@@ -58,6 +89,71 @@ fn test_model_info() -> ModelInfo {
+     .expect("deserialize test model info")
+ }
+ 
++fn test_reasoning_model_info() -> ModelInfo {
++    let mut model_info = test_model_info();
++    model_info.supports_reasoning_summaries = true;
++    model_info
++}
++
++fn test_litellm_provider() -> codex_api::Provider {
++    ModelProviderInfo {
++        name: "LiteLLM Direct".to_string(),
++        base_url: Some("https://example.com/v1".to_string()),
++        env_key: None,
++        env_key_instructions: None,
++        experimental_bearer_token: None,
++        wire_api: WireApi::Responses,
++        query_params: None,
++        http_headers: None,
++        env_http_headers: None,
++        request_max_retries: Some(0),
++        stream_max_retries: Some(0),
++        stream_idle_timeout_ms: Some(5_000),
++        requires_openai_auth: false,
++        supports_websockets: false,
++    }
++    .to_api_provider(None)
++    .expect("litellm provider")
++}
++
++fn test_litellm_provider_info(supports_websockets: bool) -> ModelProviderInfo {
++    ModelProviderInfo {
++        name: "LiteLLM Direct".to_string(),
++        base_url: Some("https://example.com/v1".to_string()),
++        env_key: None,
++        env_key_instructions: None,
++        experimental_bearer_token: None,
++        wire_api: WireApi::Responses,
++        query_params: None,
++        http_headers: None,
++        env_http_headers: None,
++        request_max_retries: Some(0),
++        stream_max_retries: Some(0),
++        stream_idle_timeout_ms: Some(5_000),
++        requires_openai_auth: false,
++        supports_websockets,
++    }
++}
++
++fn test_non_litellm_provider_info(supports_websockets: bool) -> ModelProviderInfo {
++    ModelProviderInfo {
++        name: "OpenAI Responses".to_string(),
++        base_url: Some("https://example.com/v1".to_string()),
++        env_key: None,
++        env_key_instructions: None,
++        experimental_bearer_token: None,
++        wire_api: WireApi::Responses,
++        query_params: None,
++        http_headers: None,
++        env_http_headers: None,
++        request_max_retries: Some(0),
++        stream_max_retries: Some(0),
++        stream_idle_timeout_ms: Some(5_000),
++        requires_openai_auth: false,
++        supports_websockets,
++    }
++}
++
+ fn test_session_telemetry() -> SessionTelemetry {
+     SessionTelemetry::new(
+         ThreadId::new(),
+@@ -98,6 +194,226 @@ async fn summarize_memories_returns_empty_for_empty_input() {
+     assert_eq!(output.len(), 0);
+ }
+ 
++#[test]
++fn reasoning_effort_rejected_matches_litellm_gateway_error() {
++    let body = r#"{"error":{"message":"litellm.UnsupportedParamsError: vercel_ai_gateway does not support parameters: ['reasoning_effort'], for model=openai/gpt-oss-120b.","code":"400"}}"#;
++    assert!(reasoning_effort_rejected(body));
++}
++
++#[test]
++fn should_retry_without_reasoning_only_for_litellm_400s() {
++    let client = test_model_client(SessionSource::Cli);
++    let session = client.new_session();
++    let model_info = test_reasoning_model_info();
++    let prompt = Prompt::default();
++    let provider = test_litellm_provider();
++    let mut request = session
++        .build_responses_request(
++            &provider,
++            &prompt,
++            &model_info,
++            None,
++            ReasoningSummaryConfig::None,
++            None,
++        )
++        .expect("request");
++    let err = codex_api::error::ApiError::Transport(TransportError::Http {
++        status: StatusCode::BAD_REQUEST,
++        url: Some("https://example.com/v1/responses".to_string()),
++        headers: None,
++        body: Some(
++            "litellm.UnsupportedParamsError: does not support parameters: ['reasoning_effort']"
++                .to_string(),
++        ),
++    });
++
++    assert!(ModelClientSession::should_retry_without_reasoning(
++        &provider, &request, &err
++    ));
++
++    ModelClientSession::strip_reasoning_from_responses_request(&mut request);
++    assert!(request.reasoning.is_none());
++    assert!(request.include.is_empty());
++}
++
++#[test]
++fn build_responses_request_normalizes_litellm_tools_to_function_only() {
++    let client = test_model_client(SessionSource::Cli);
++    let session = client.new_session();
++    let model_info = test_model_info();
++    let provider = test_litellm_provider();
++    let prompt = Prompt {
++        tools: vec![
++            ToolSpec::ToolSearch {
++                execution: "client".to_string(),
++                description: "Search installed tools".to_string(),
++                parameters: JsonSchema::Object {
++                    properties: std::collections::BTreeMap::new(),
++                    required: Some(vec![]),
++                    additional_properties: Some(false.into()),
++                },
++            },
++            ToolSpec::LocalShell {},
++            ToolSpec::Freeform(FreeformTool {
++                name: "apply_patch".to_string(),
++                description: "Apply a patch".to_string(),
++                format: FreeformToolFormat {
++                    r#type: "grammar".to_string(),
++                    syntax: "lark".to_string(),
++                    definition: "start: /[\\s\\S]+/".to_string(),
++                },
++            }),
++            ToolSpec::WebSearch {
++                external_web_access: Some(false),
++                filters: None,
++                user_location: None,
++                search_context_size: None,
++                search_content_types: None,
++            },
++            ToolSpec::ImageGeneration {
++                output_format: "png".to_string(),
++            },
++        ],
++        ..Prompt::default()
++    };
++
++    let request = session
++        .build_responses_request(
++            &provider,
++            &prompt,
++            &model_info,
++            None,
++            ReasoningSummaryConfig::None,
++            None,
++        )
++        .expect("request");
++
++    assert_eq!(request.tools.len(), 3);
++    assert!(request.tools.iter().all(|tool| tool["type"] == "function"));
++    assert_eq!(request.tools[0]["name"], "tool_search");
++    assert_eq!(request.tools[1]["name"], "local_shell");
++    assert_eq!(request.tools[2]["name"], "apply_patch");
++    assert_eq!(request.tools[2]["parameters"]["required"], json!(["input"]));
++}
++
++#[test]
++fn prefer_http_after_retryable_stream_error_only_for_litellm_websockets() {
++    let model_info = test_model_info();
++
++    let litellm_client = test_model_client_with_provider(
++        SessionSource::Cli,
++        test_litellm_provider_info(true),
++        true,
++    );
++    let litellm_session = litellm_client.new_session();
++    assert!(litellm_session.should_prefer_http_after_retryable_stream_error(&model_info));
++
++    let non_litellm_client = test_model_client_with_provider(
++        SessionSource::Cli,
++        test_non_litellm_provider_info(true),
++        true,
++    );
++    let non_litellm_session = non_litellm_client.new_session();
++    assert!(!non_litellm_session.should_prefer_http_after_retryable_stream_error(&model_info));
++
++    let no_ws_client = test_model_client_with_provider(
++        SessionSource::Cli,
++        test_litellm_provider_info(false),
++        true,
++    );
++    let no_ws_session = no_ws_client.new_session();
++    assert!(!no_ws_session.should_prefer_http_after_retryable_stream_error(&model_info));
++}
++
++#[test]
++fn reset_state_after_retryable_stream_error_only_for_litellm() {
++    let litellm_client = test_model_client_with_provider(
++        SessionSource::Cli,
++        test_litellm_provider_info(false),
++        true,
++    );
++    let litellm_session = litellm_client.new_session();
++    assert!(litellm_session.should_reset_state_after_retryable_stream_error());
++
++    let non_litellm_client = test_model_client_with_provider(
++        SessionSource::Cli,
++        test_non_litellm_provider_info(false),
++        true,
++    );
++    let non_litellm_session = non_litellm_client.new_session();
++    assert!(!non_litellm_session.should_reset_state_after_retryable_stream_error());
++}
++
++#[test]
++fn reset_state_after_retryable_stream_error_clears_turn_state_and_request_cache() {
++    let client = test_model_client_with_provider(
++        SessionSource::Cli,
++        test_litellm_provider_info(true),
++        true,
++    );
++    let mut session = client.new_session();
++
++    session
++        .turn_state
++        .set("turn-state-token".to_string())
++        .expect("turn state should be empty in a fresh session");
++    session.websocket_session.last_request = Some(ResponsesApiRequest {
++        model: "test-model".to_string(),
++        input: vec![],
++        instructions: String::new(),
++        tools: vec![],
++        tool_choice: "auto".to_string(),
++        parallel_tool_calls: false,
++        reasoning: None,
++        store: false,
++        stream: true,
++        include: vec![],
++        prompt_cache_key: None,
++        service_tier: None,
++        text: None,
++    });
++    session.reset_state_after_retryable_stream_error();
++
++    assert!(session.turn_state.get().is_none());
++    assert!(session.websocket_session.last_request.is_none());
++    assert!(session.websocket_session.last_response_rx.is_none());
++    assert!(!session.websocket_session.connection_reused());
++}
++
++#[test]
++fn build_responses_request_appends_additional_instructions() {
++    let client = test_model_client(SessionSource::Cli);
++    let session = client.new_session();
++    let model_info = test_model_info();
++    let provider = test_litellm_provider();
++    let prompt = Prompt {
++        base_instructions: codex_protocol::models::BaseInstructions {
++            text: "base instructions".to_string(),
++        },
++        additional_instructions: vec![
++            "Follow-up instruction one.".to_string(),
++            "Follow-up instruction two.".to_string(),
++        ],
++        ..Prompt::default()
++    };
++
++    let request = session
++        .build_responses_request(
++            &provider,
++            &prompt,
++            &model_info,
++            None,
++            ReasoningSummaryConfig::None,
++            None,
++        )
++        .expect("request");
++
++    assert_eq!(
++        request.instructions,
++        "base instructions\n\nFollow-up instruction one.\n\nFollow-up instruction two."
++    );
++}
++
+ #[test]
+ fn auth_request_telemetry_context_tracks_attached_auth_and_retry_phase() {
+     let auth_context = AuthRequestTelemetryContext::new(
 diff --git a/codex-rs/core/src/codex.rs b/codex-rs/core/src/codex.rs
-index 7744480ab..dc8b68c07 100644
+index d30e5a3ea..8af57b886 100644
 --- a/codex-rs/core/src/codex.rs
 +++ b/codex-rs/core/src/codex.rs
-@@ -29,6 +29,7 @@ use crate::features::Feature;
- use crate::features::Features;
- use crate::features::maybe_push_unstable_features_warning;
- use crate::models_manager::manager::ModelsManager;
-+use crate::models_manager::supported_models::deprecated_non_agentic_model_warning;
- use crate::parse_command::parse_command;
- use crate::parse_turn_item;
- use crate::rollout::session_index;
-@@ -328,7 +329,6 @@ impl Codex {
-             .await
-             .map_err(|err| CodexErr::Fatal(format!("failed to load rules: {err}")))?;
- 
--        let config = Arc::new(config);
-         let _ = models_manager
-             .list_models(crate::models_manager::manager::RefreshStrategy::OnlineIfUncached)
-             .await;
-@@ -338,6 +338,10 @@ impl Codex {
-                 crate::models_manager::manager::RefreshStrategy::OnlineIfUncached,
-             )
-             .await;
-+        if let Some(message) = deprecated_non_agentic_model_warning(&model) {
-+            config.startup_warnings.push(message);
-+        }
-+        let config = Arc::new(config);
- 
-         // Resolve base instructions for the session. Priority order:
-         // 1. config.base_instructions override
-@@ -4249,7 +4253,11 @@ pub(crate) async fn run_turn(
+@@ -2460,6 +2460,7 @@ impl Session {
+             BaseInstructions {
+                 text: base_instructions,
+             },
++            Vec::new(),
+         );
+         let startup_turn_metadata_header = startup_turn_context
+             .turn_metadata_state
+@@ -5470,7 +5471,11 @@ pub(crate) async fn run_turn(
      }
  
      let model_info = turn_context.model_info.clone();
@@ -661,7 +1471,86 @@ index 7744480ab..dc8b68c07 100644
  
      let event = EventMsg::TurnStarted(TurnStartedEvent {
          turn_id: turn_context.sub_id.clone(),
-@@ -4585,6 +4593,9 @@ async fn run_pre_sampling_compact(
+@@ -5664,6 +5669,8 @@ pub(crate) async fn run_turn(
+         .await;
+     let mut last_agent_message: Option<String> = None;
+     let mut stop_hook_active = false;
++    let mut post_edit_finalize_prompt_count = 0u32;
++    let mut additional_request_instructions = Vec::<String>::new();
+     // Although from the perspective of codex.rs, TurnDiffTracker has the lifecycle of a Task which contains
+     // many turns, from the perspective of the user, it is a single turn.
+     let turn_diff_tracker = Arc::new(tokio::sync::Mutex::new(TurnDiffTracker::new()));
+@@ -5714,13 +5721,7 @@ pub(crate) async fn run_turn(
+                 break;
+             }
+             if let Some(additional_context) = session_start_outcome.additional_context {
+-                let developer_message: ResponseItem =
+-                    DeveloperInstructions::new(additional_context).into();
+-                sess.record_conversation_items(
+-                    &turn_context,
+-                    std::slice::from_ref(&developer_message),
+-                )
+-                .await;
++                additional_request_instructions.push(additional_context);
+             }
+         }
+ 
+@@ -5777,6 +5778,7 @@ pub(crate) async fn run_turn(
+             &mut client_session,
+             turn_metadata_header.as_deref(),
+             sampling_request_input,
++            additional_request_instructions.clone(),
+             &turn_enabled_connectors,
+             skills_outcome,
+             &mut server_model_warning_emitted_for_turn,
+@@ -5788,7 +5790,9 @@ pub(crate) async fn run_turn(
+                 let SamplingRequestResult {
+                     needs_follow_up,
+                     last_agent_message: sampling_request_last_agent_message,
++                    follow_up_instructions,
+                 } = sampling_request_output;
++                additional_request_instructions.extend(follow_up_instructions);
+                 let total_usage_tokens = sess.get_total_token_usage().await;
+                 let token_limit_reached = total_usage_tokens >= auto_compact_limit;
+ 
+@@ -5858,13 +5862,7 @@ pub(crate) async fn run_turn(
+                     if stop_outcome.should_block {
+                         if let Some(continuation_prompt) = stop_outcome.continuation_prompt.clone()
+                         {
+-                            let developer_message: ResponseItem =
+-                                DeveloperInstructions::new(continuation_prompt).into();
+-                            sess.record_conversation_items(
+-                                &turn_context,
+-                                std::slice::from_ref(&developer_message),
+-                            )
+-                            .await;
++                            additional_request_instructions.push(continuation_prompt);
+                             stop_hook_active = true;
+                             continue;
+                         } else {
+@@ -5940,6 +5938,21 @@ pub(crate) async fn run_turn(
+                     }
+                     break;
+                 }
++                if sampling_request_last_agent_message.is_none() {
++                    let has_turn_diff = {
++                        let mut tracker = turn_diff_tracker.lock().await;
++                        tracker.get_unified_diff().ok().flatten().is_some()
++                    };
++                    if has_turn_diff {
++                        post_edit_finalize_prompt_count += 1;
++                        let finalize_instruction = if post_edit_finalize_prompt_count == 1 {
++                            "The workspace already contains your successful edits. Do not call apply_patch again, do not repeat the same change, and do not spend more time inspecting files with read-only commands like grep, cat, tail, find, or ls. If you need a single verification step, run `git diff --stat` once. Otherwise send the final assistant response now."
++                        } else {
++                            "Stop exploring. The task already has repo edits. Do not run any more tool calls. Respond to the user now with the final assistant message based on the current diff."
++                        };
++                        additional_request_instructions.push(finalize_instruction.to_string());
++                    }
++                }
+                 continue;
+             }
+             Err(CodexErr::TurnAborted) => {
+@@ -5979,6 +5992,9 @@ async fn run_pre_sampling_compact(
      sess: &Arc<Session>,
      turn_context: &Arc<TurnContext>,
  ) -> CodexResult<()> {
@@ -671,9 +1560,9 @@ index 7744480ab..dc8b68c07 100644
      let total_usage_tokens_before_compaction = sess.get_total_token_usage().await;
      maybe_run_previous_model_inline_compact(
          sess,
-@@ -4630,10 +4641,14 @@ async fn maybe_run_previous_model_inline_compact(
+@@ -6024,10 +6040,14 @@ async fn maybe_run_previous_model_inline_compact(
      let Some(new_context_window) = turn_context.model_context_window() else {
-         return Ok(());
+         return Ok(false);
      };
 -    let new_auto_compact_limit = turn_context
 -        .model_info
@@ -688,9 +1577,9 @@ index 7744480ab..dc8b68c07 100644
 +            .unwrap_or(i64::MAX)
 +    };
      let should_run = total_usage_tokens > new_auto_compact_limit
-         && previous_turn_context.model_info.slug != turn_context.model_info.slug
+         && previous_model_turn_context.model_info.slug != turn_context.model_info.slug
          && old_context_window > new_context_window;
-@@ -4652,6 +4667,10 @@ async fn run_auto_compact(sess: &Arc<Session>, turn_context: &Arc<TurnContext>)
+@@ -6066,6 +6086,10 @@ async fn run_auto_compact(
      Ok(())
  }
  
@@ -701,34 +1590,350 @@ index 7744480ab..dc8b68c07 100644
  fn collect_explicit_app_ids_from_skill_items(
      skill_items: &[ResponseItem],
      connectors: &[connectors::AppInfo],
+@@ -6227,6 +6251,7 @@ fn build_prompt(
+     router: &ToolRouter,
+     turn_context: &TurnContext,
+     base_instructions: BaseInstructions,
++    additional_instructions: Vec<String>,
+ ) -> Prompt {
+     let deferred_dynamic_tools = turn_context
+         .dynamic_tools
+@@ -6249,6 +6274,7 @@ fn build_prompt(
+         tools,
+         parallel_tool_calls: turn_context.model_info.supports_parallel_tool_calls,
+         base_instructions,
++        additional_instructions,
+         personality: turn_context.personality,
+         output_schema: turn_context.final_output_json_schema.clone(),
+     }
+@@ -6269,6 +6295,7 @@ async fn run_sampling_request(
+     client_session: &mut ModelClientSession,
+     turn_metadata_header: Option<&str>,
+     input: Vec<ResponseItem>,
++    additional_instructions: Vec<String>,
+     explicitly_enabled_connectors: &HashSet<String>,
+     skills_outcome: Option<&SkillLoadOutcome>,
+     server_model_warning_emitted_for_turn: &mut bool,
+@@ -6291,6 +6318,7 @@ async fn run_sampling_request(
+         router.as_ref(),
+         turn_context.as_ref(),
+         base_instructions,
++        additional_instructions,
+     );
+     let tool_runtime = ToolCallRuntime::new(
+         Arc::clone(&router),
+@@ -6309,6 +6337,7 @@ async fn run_sampling_request(
+         )
+         .await;
+     let mut retries = 0;
++    let mut litellm_retry_state_reset_attempted = false;
+     loop {
+         let err = match try_run_sampling_request(
+             tool_runtime.clone(),
+@@ -6344,6 +6373,57 @@ async fn run_sampling_request(
+             return Err(err);
+         }
+ 
++        if !litellm_retry_state_reset_attempted
++            && client_session.should_reset_state_after_retryable_stream_error()
++        {
++            litellm_retry_state_reset_attempted = true;
++            let preferred_http = client_session.should_prefer_http_after_retryable_stream_error(
++                &turn_context.model_info,
++            );
++            client_session.reset_state_after_retryable_stream_error();
++            let switched_transport = preferred_http
++                && client_session.try_switch_fallback_transport(
++                    &turn_context.session_telemetry,
++                    &turn_context.model_info,
++                );
++            let message = if switched_transport {
++                format!(
++                    "LiteLLM stream disconnected; cleared turn state and retrying this turn over HTTPS transport. {err:#}"
++                )
++            } else {
++                format!(
++                    "LiteLLM stream disconnected; cleared turn state and retrying this turn with a fresh request. {err:#}"
++                )
++            };
++            sess.send_event(
++                &turn_context,
++                EventMsg::Warning(WarningEvent { message }),
++            )
++            .await;
++            continue;
++        }
++
++        if retries == 0
++            && client_session.should_prefer_http_after_retryable_stream_error(
++                &turn_context.model_info,
++            )
++            && client_session.try_switch_fallback_transport(
++                &turn_context.session_telemetry,
++                &turn_context.model_info,
++            )
++        {
++            sess.send_event(
++                &turn_context,
++                EventMsg::Warning(WarningEvent {
++                    message: format!(
++                        "WebSocket stream disconnected on LiteLLM; retrying this turn over HTTPS transport instead. {err:#}"
++                    ),
++                }),
++            )
++            .await;
++            continue;
++        }
++
+         // Use the configured provider-specific stream retry budget.
+         let max_retries = turn_context.provider.stream_max_retries();
+         if retries >= max_retries
+@@ -6532,6 +6612,7 @@ pub(crate) async fn built_tools(
+ struct SamplingRequestResult {
+     needs_follow_up: bool,
+     last_agent_message: Option<String>,
++    follow_up_instructions: Vec<String>,
+ }
+ 
+ /// Ephemeral per-response state for streaming a single proposed plan.
+@@ -7115,6 +7196,7 @@ async fn try_run_sampling_request(
+         FuturesOrdered::new();
+     let mut needs_follow_up = false;
+     let mut last_agent_message: Option<String> = None;
++    let mut follow_up_instructions = Vec::<String>::new();
+     let mut active_item: Option<TurnItem> = None;
+     let mut should_emit_turn_diff = false;
+     let plan_mode = turn_context.collaboration_mode.mode == ModeKind::Plan;
+@@ -7202,6 +7284,7 @@ async fn try_run_sampling_request(
+                 if let Some(agent_message) = output_result.last_agent_message {
+                     last_agent_message = Some(agent_message);
+                 }
++                follow_up_instructions.extend(output_result.follow_up_instructions);
+                 needs_follow_up |= output_result.needs_follow_up;
+             }
+             ResponseEvent::OutputItemAdded(item) => {
+@@ -7303,6 +7386,7 @@ async fn try_run_sampling_request(
+                 break Ok(SamplingRequestResult {
+                     needs_follow_up,
+                     last_agent_message,
++                    follow_up_instructions,
+                 });
+             }
+             ResponseEvent::OutputTextDelta(delta) => {
+diff --git a/codex-rs/core/src/codex_tests.rs b/codex-rs/core/src/codex_tests.rs
+index fd1bb576b..2598e4ef5 100644
+--- a/codex-rs/core/src/codex_tests.rs
++++ b/codex-rs/core/src/codex_tests.rs
+@@ -3667,6 +3667,39 @@ async fn handle_output_item_done_skips_image_save_message_when_save_fails() {
+     assert!(!expected_saved_path.exists());
+ }
+ 
++#[tokio::test]
++async fn handle_output_item_done_requests_follow_up_for_blank_assistant_message() {
++    let (session, turn_context) = make_session_and_context().await;
++    let session = Arc::new(session);
++    let turn_context = Arc::new(turn_context);
++    let item = ResponseItem::Message {
++        id: Some("msg-blank".to_string()),
++        role: "assistant".to_string(),
++        content: vec![ContentItem::OutputText {
++            text: String::new(),
++        }],
++        end_turn: Some(true),
++        phase: None,
++    };
++
++    let mut ctx = HandleOutputCtx {
++        sess: Arc::clone(&session),
++        turn_context: Arc::clone(&turn_context),
++        tool_runtime: test_tool_runtime(Arc::clone(&session), Arc::clone(&turn_context)),
++        cancellation_token: CancellationToken::new(),
++    };
++    let output = handle_output_item_done(&mut ctx, item, None)
++        .await
++        .expect("blank assistant message should still be handled");
++
++    assert!(output.needs_follow_up);
++    assert_eq!(output.last_agent_message, None);
++    assert_eq!(output.follow_up_instructions.len(), 1);
++    assert!(output.follow_up_instructions[0].contains("previous assistant message was empty"));
++    let history = session.clone_history().await;
++    assert_eq!(history.raw_items().len(), 1);
++}
++
+ #[tokio::test]
+ async fn build_initial_context_uses_previous_turn_settings_for_realtime_end() {
+     let (session, turn_context) = make_session_and_context().await;
+diff --git a/codex-rs/core/src/compact_remote.rs b/codex-rs/core/src/compact_remote.rs
+index 339065f72..34f13c1fd 100644
+--- a/codex-rs/core/src/compact_remote.rs
++++ b/codex-rs/core/src/compact_remote.rs
+@@ -110,6 +110,7 @@ async fn run_remote_compact_task_inner_impl(
+         tools: tool_router.model_visible_specs(),
+         parallel_tool_calls: turn_context.model_info.supports_parallel_tool_calls,
+         base_instructions,
++        additional_instructions: Vec::new(),
+         personality: turn_context.personality,
+         output_schema: None,
+     };
+diff --git a/codex-rs/core/src/config/mod.rs b/codex-rs/core/src/config/mod.rs
+index 04c06ca8d..88ccd4305 100644
+--- a/codex-rs/core/src/config/mod.rs
++++ b/codex-rs/core/src/config/mod.rs
+@@ -2327,9 +2327,10 @@ impl Config {
+         let effective_openai_base_url = openai_base_url.or(openai_base_url_from_env);
+ 
+         let mut model_providers = built_in_model_providers(effective_openai_base_url);
+-        // Merge user-defined providers into the built-in list.
++        // Let config.toml override built-in providers so local auth/base_url
++        // customizations for reserved IDs such as `litellm` take effect.
+         for (key, provider) in cfg.model_providers.into_iter() {
+-            model_providers.entry(key).or_insert(provider);
++            model_providers.insert(key, provider);
+         }
+ 
+         let model_provider_id = model_provider
+diff --git a/codex-rs/core/src/context_manager/history.rs b/codex-rs/core/src/context_manager/history.rs
+index 19dbcf729..1d4762f03 100644
+--- a/codex-rs/core/src/context_manager/history.rs
++++ b/codex-rs/core/src/context_manager/history.rs
+@@ -338,6 +338,9 @@ impl ContextManager {
+     /// 2. every output has a corresponding call entry
+     /// 3. when images are unsupported, image content is stripped from messages and tool outputs
+     fn normalize_history(&mut self, input_modalities: &[InputModality]) {
++        // Retry/replay glitches can duplicate tool-call items with the same call_id.
++        normalize::remove_duplicate_call_entries(&mut self.items);
++
+         // all function/tool calls must have a corresponding output
+         normalize::ensure_call_outputs_present(&mut self.items);
+ 
+diff --git a/codex-rs/core/src/context_manager/history_tests.rs b/codex-rs/core/src/context_manager/history_tests.rs
+index 066272748..79afe402f 100644
+--- a/codex-rs/core/src/context_manager/history_tests.rs
++++ b/codex-rs/core/src/context_manager/history_tests.rs
+@@ -1280,6 +1280,48 @@ fn normalize_adds_missing_output_for_function_call_inserts_output() {
+     );
+ }
+ 
++#[test]
++fn normalize_removes_duplicate_function_calls_with_same_call_id() {
++    let items = vec![
++        ResponseItem::FunctionCall {
++            id: None,
++            name: "exec_command".to_string(),
++            namespace: None,
++            arguments: "{\"cmd\":\"pwd\"}".to_string(),
++            call_id: "call-dup".to_string(),
++        },
++        ResponseItem::FunctionCall {
++            id: None,
++            name: "exec_command".to_string(),
++            namespace: None,
++            arguments: "{\"cmd\":\"pwd\"}".to_string(),
++            call_id: "call-dup".to_string(),
++        },
++        ResponseItem::FunctionCallOutput {
++            call_id: "call-dup".to_string(),
++            output: FunctionCallOutputPayload::from_text("ok".to_string()),
++        },
++    ];
++    let mut h = create_history_with_items(items);
++    h.normalize_history(&default_input_modalities());
++    assert_eq!(
++        h.raw_items(),
++        vec![
++            ResponseItem::FunctionCall {
++                id: None,
++                name: "exec_command".to_string(),
++                namespace: None,
++                arguments: "{\"cmd\":\"pwd\"}".to_string(),
++                call_id: "call-dup".to_string(),
++            },
++            ResponseItem::FunctionCallOutput {
++                call_id: "call-dup".to_string(),
++                output: FunctionCallOutputPayload::from_text("ok".to_string()),
++            },
++        ]
++    );
++}
++
+ #[test]
+ fn normalize_adds_missing_output_for_tool_search_call() {
+     let items = vec![ResponseItem::ToolSearchCall {
+diff --git a/codex-rs/core/src/context_manager/normalize.rs b/codex-rs/core/src/context_manager/normalize.rs
+index c217e0939..16bbf866d 100644
+--- a/codex-rs/core/src/context_manager/normalize.rs
++++ b/codex-rs/core/src/context_manager/normalize.rs
+@@ -11,6 +11,29 @@ use tracing::info;
+ const IMAGE_CONTENT_OMITTED_PLACEHOLDER: &str =
+     "image content omitted because you do not support image input";
+ 
++pub(crate) fn remove_duplicate_call_entries(items: &mut Vec<ResponseItem>) {
++    let mut seen_function_call_ids = HashSet::new();
++    let mut seen_tool_search_call_ids = HashSet::new();
++    let mut seen_local_shell_call_ids = HashSet::new();
++    let mut seen_custom_tool_call_ids = HashSet::new();
++
++    items.retain(|item| match item {
++        ResponseItem::FunctionCall { call_id, .. } => seen_function_call_ids.insert(call_id.clone()),
++        ResponseItem::ToolSearchCall {
++            call_id: Some(call_id),
++            ..
++        } => seen_tool_search_call_ids.insert(call_id.clone()),
++        ResponseItem::LocalShellCall {
++            call_id: Some(call_id),
++            ..
++        } => seen_local_shell_call_ids.insert(call_id.clone()),
++        ResponseItem::CustomToolCall { call_id, .. } => {
++            seen_custom_tool_call_ids.insert(call_id.clone())
++        }
++        _ => true,
++    });
++}
++
+ pub(crate) fn ensure_call_outputs_present(items: &mut Vec<ResponseItem>) {
+     // Collect synthetic outputs to insert immediately after their calls.
+     // Store the insertion position (index of call) alongside the item so
+diff --git a/codex-rs/core/src/memories/phase1.rs b/codex-rs/core/src/memories/phase1.rs
+index c7e88f07e..8f4b2fb2f 100644
+--- a/codex-rs/core/src/memories/phase1.rs
++++ b/codex-rs/core/src/memories/phase1.rs
+@@ -338,6 +338,7 @@ mod job {
+             base_instructions: BaseInstructions {
+                 text: phase_one::PROMPT.to_string(),
+             },
++            additional_instructions: Vec::new(),
+             personality: None,
+             output_schema: Some(output_schema()),
+         };
 diff --git a/codex-rs/core/src/model_provider_info.rs b/codex-rs/core/src/model_provider_info.rs
-index 5d5ee3669..b3cbf78df 100644
+index be7a38d27..3278d4d2b 100644
 --- a/codex-rs/core/src/model_provider_info.rs
 +++ b/codex-rs/core/src/model_provider_info.rs
-@@ -266,6 +266,7 @@ pub const DEFAULT_OLLAMA_PORT: u16 = 11434;
+@@ -271,6 +271,7 @@ pub const DEFAULT_OLLAMA_PORT: u16 = 11434;
  
  pub const LMSTUDIO_OSS_PROVIDER_ID: &str = "lmstudio";
  pub const OLLAMA_OSS_PROVIDER_ID: &str = "ollama";
 +pub const LITELLM_PROVIDER_ID: &str = "litellm";
  
  /// Built-in default provider list.
- pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
-@@ -277,6 +278,7 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+ pub fn built_in_model_providers(
+@@ -285,6 +286,7 @@ pub fn built_in_model_providers(
      // `model_providers` in config.toml to add their own providers.
      [
-         ("openai", P::create_openai_provider()),
+         (OPENAI_PROVIDER_ID, openai_provider),
 +        (LITELLM_PROVIDER_ID, create_litellm_provider()),
          (
              OLLAMA_OSS_PROVIDER_ID,
              create_oss_provider(DEFAULT_OLLAMA_PORT, WireApi::Responses),
-@@ -291,6 +293,30 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+@@ -299,6 +301,30 @@ pub fn built_in_model_providers(
      .collect()
  }
  
 +fn create_litellm_provider() -> ModelProviderInfo {
 +    let base_url = std::env::var("LITELLM_BASE_URL")
 +        .ok()
-+        .filter(|v| !v.trim().is_empty())
++        .filter(|value| !value.trim().is_empty())
 +        .unwrap_or_else(|| "https://llm.gour.top/v1".to_string());
 +
 +    ModelProviderInfo {
@@ -753,54 +1958,150 @@ index 5d5ee3669..b3cbf78df 100644
      // These CODEX_OSS_ environment variables are experimental: we may
      // switch to reading values from config.toml instead.
 diff --git a/codex-rs/core/src/models_manager/manager.rs b/codex-rs/core/src/models_manager/manager.rs
-index 457351995..30ab0edec 100644
+index 411fa83a7..ae098dab8 100644
 --- a/codex-rs/core/src/models_manager/manager.rs
 +++ b/codex-rs/core/src/models_manager/manager.rs
-@@ -11,6 +11,9 @@ use crate::model_provider_info::ModelProviderInfo;
+@@ -12,6 +12,8 @@ use crate::model_provider_info::ModelProviderInfo;
+ use crate::models_manager::collaboration_mode_presets::CollaborationModesConfig;
  use crate::models_manager::collaboration_mode_presets::builtin_collaboration_mode_presets;
  use crate::models_manager::model_info;
- use crate::models_manager::model_presets::builtin_model_presets;
-+use crate::models_manager::supported_models::annotate_non_agentic_model_preset;
 +use crate::models_manager::supported_models::filter_supported_agentic_models;
 +use crate::models_manager::supported_models::supported_agentic_models;
- use codex_api::ModelsClient;
- use codex_api::ReqwestTransport;
- use codex_protocol::config_types::CollaborationModeMask;
-@@ -26,6 +29,7 @@ use tokio::sync::TryLockError;
- use tokio::time::timeout;
+ use crate::response_debug_context::extract_response_debug_context;
+ use crate::response_debug_context::telemetry_transport_error_message;
+ use crate::util::FeedbackRequestTags;
+@@ -36,6 +38,7 @@ use tokio::time::timeout;
  use tracing::error;
  use tracing::info;
+ use tracing::instrument;
 +use tracing::warn;
  
  const MODEL_CACHE_FILE: &str = "models_cache.json";
  const DEFAULT_MODEL_CACHE_TTL: Duration = Duration::from_secs(300);
-@@ -292,6 +296,15 @@ impl ModelsManager {
-         let mut merged_presets = ModelPreset::merge(remote_presets, existing_presets);
+@@ -316,22 +319,27 @@ impl ModelsManager {
+         best
+     }
+ 
+-    /// Retry metadata lookup for a single namespaced slug like `namespace/model-name`.
+-    ///
+-    /// This only strips one leading namespace segment and only when the namespace is ASCII
+-    /// alphanumeric/underscore (`\\w+`) to avoid broadly matching arbitrary aliases.
+     fn find_model_by_namespaced_suffix(model: &str, candidates: &[ModelInfo]) -> Option<ModelInfo> {
+-        let (namespace, suffix) = model.split_once('/')?;
+-        if suffix.contains('/') {
+-            return None;
+-        }
+-        if !namespace
+-            .chars()
+-            .all(|c| c.is_ascii_alphanumeric() || c == '_')
+-        {
+-            return None;
++        let mut best: Option<ModelInfo> = None;
++        let mut suffix = model;
++
++        while let Some((_, remaining)) = suffix.split_once('/') {
++            suffix = remaining;
++            let Some(candidate) = Self::find_model_by_longest_prefix(suffix, candidates) else {
++                continue;
++            };
++
++            let is_better_match = if let Some(current) = best.as_ref() {
++                candidate.slug.len() > current.slug.len()
++            } else {
++                true
++            };
++            if is_better_match {
++                best = Some(candidate);
++            }
+         }
+-        Self::find_model_by_longest_prefix(suffix, candidates)
++
++        best
+     }
+ 
+     fn construct_model_info_from_candidates(
+@@ -339,8 +347,9 @@ impl ModelsManager {
+         candidates: &[ModelInfo],
+         config: &Config,
+     ) -> ModelInfo {
+-        // First use the normal longest-prefix match. If that misses, allow a narrowly scoped
+-        // retry for namespaced slugs like `custom/gpt-5.3-codex`.
++        // First use the normal longest-prefix match. If that misses, progressively strip
++        // provider/group prefixes so LiteLLM route slugs like `vercel/bon-gour/gpt-oss-120b`
++        // can still inherit metadata from the bundled `gpt-oss-120b` entry.
+         let remote = Self::find_model_by_longest_prefix(model, candidates)
+             .or_else(|| Self::find_model_by_namespaced_suffix(model, candidates));
+         let model_info = if let Some(remote) = remote {
+@@ -500,6 +509,15 @@ impl ModelsManager {
+         let mut presets: Vec<ModelPreset> = remote_models.into_iter().map(Into::into).collect();
          let chatgpt_mode = matches!(self.auth_manager.auth_mode(), Some(AuthMode::Chatgpt));
-         merged_presets = ModelPreset::filter_by_auth(merged_presets, chatgpt_mode);
-+        let filtered_presets = filter_supported_agentic_models(merged_presets.clone());
+         presets = ModelPreset::filter_by_auth(presets, chatgpt_mode);
++        let filtered_presets = filter_supported_agentic_models(presets.clone());
 +        if filtered_presets.is_empty() {
 +            warn!(
 +                supported_models = ?supported_agentic_models(),
 +                "agentic model allowlist produced no models; falling back to upstream model set"
 +            );
 +        } else {
-+            merged_presets = filtered_presets;
++            presets = filtered_presets;
 +        }
  
-         for preset in &mut merged_presets {
-             preset.is_default = false;
-@@ -305,6 +318,10 @@ impl ModelsManager {
-             default.is_default = true;
-         }
+         ModelPreset::mark_default_by_picker_visibility(&mut presets);
  
-+        for preset in &mut merged_presets {
-+            annotate_non_agentic_model_preset(preset);
-+        }
+diff --git a/codex-rs/core/src/models_manager/manager_tests.rs b/codex-rs/core/src/models_manager/manager_tests.rs
+index 6981d6d79..dd4ee2bd3 100644
+--- a/codex-rs/core/src/models_manager/manager_tests.rs
++++ b/codex-rs/core/src/models_manager/manager_tests.rs
+@@ -172,7 +172,7 @@ async fn get_model_info_matches_namespaced_suffix() {
+ }
+ 
+ #[tokio::test]
+-async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
++async fn get_model_info_matches_multi_segment_namespace_suffix() {
+     let codex_home = tempdir().expect("temp dir");
+     let config = ConfigBuilder::default()
+         .codex_home(codex_home.path().to_path_buf())
+@@ -198,7 +198,39 @@ async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
+     let model_info = manager.get_model_info(&namespaced_model, &config).await;
+ 
+     assert_eq!(model_info.slug, namespaced_model);
+-    assert!(model_info.used_fallback_model_metadata);
++    assert!(!model_info.used_fallback_model_metadata);
++}
 +
-         merged_presets
-     }
++#[tokio::test]
++async fn get_model_info_prefers_longest_namespaced_suffix_match() {
++    let codex_home = tempdir().expect("temp dir");
++    let config = ConfigBuilder::default()
++        .codex_home(codex_home.path().to_path_buf())
++        .build()
++        .await
++        .expect("load default test config");
++    let mut broader = remote_model("gpt-image", "Broad", 1);
++    broader.supports_image_detail_original = true;
++    let mut narrower = remote_model("bon-gour/gpt-image", "Narrow", 0);
++    narrower.supports_parallel_tool_calls = true;
++    let auth_manager = AuthManager::from_auth_for_testing(CodexAuth::from_api_key("Test API Key"));
++    let manager = ModelsManager::new(
++        codex_home.path().to_path_buf(),
++        auth_manager,
++        Some(ModelsResponse {
++            models: vec![broader, narrower],
++        }),
++        CollaborationModesConfig::default(),
++    );
++
++    let model_info = manager
++        .get_model_info("vercel/bon-gour/gpt-image", &config)
++        .await;
++
++    assert_eq!(model_info.slug, "vercel/bon-gour/gpt-image");
++    assert_eq!(model_info.display_name, "Narrow");
++    assert!(model_info.supports_parallel_tool_calls);
++    assert!(!model_info.used_fallback_model_metadata);
+ }
  
+ #[tokio::test]
 diff --git a/codex-rs/core/src/models_manager/mod.rs b/codex-rs/core/src/models_manager/mod.rs
 index 53b33bc4e..291d08baf 100644
 --- a/codex-rs/core/src/models_manager/mod.rs
@@ -813,83 +2114,154 @@ index 53b33bc4e..291d08baf 100644
  
  /// Convert the client version string to a whole version string (e.g. "1.2.3-alpha.4" -> "1.2.3").
  pub fn client_version_to_whole() -> String {
+diff --git a/codex-rs/core/src/models_manager/model_info.rs b/codex-rs/core/src/models_manager/model_info.rs
+index adf82b8e8..c89815f68 100644
+--- a/codex-rs/core/src/models_manager/model_info.rs
++++ b/codex-rs/core/src/models_manager/model_info.rs
+@@ -4,6 +4,8 @@ use codex_protocol::openai_models::ModelInfo;
+ use codex_protocol::openai_models::ModelInstructionsVariables;
+ use codex_protocol::openai_models::ModelMessages;
+ use codex_protocol::openai_models::ModelVisibility;
++use codex_protocol::openai_models::ReasoningEffort;
++use codex_protocol::openai_models::ReasoningEffortPreset;
+ use codex_protocol::openai_models::TruncationMode;
+ use codex_protocol::openai_models::TruncationPolicyConfig;
+ use codex_protocol::openai_models::WebSearchToolType;
+@@ -59,6 +61,10 @@ pub(crate) fn with_config_overrides(mut model: ModelInfo, config: &Config) -> Mo
+ 
+ /// Build a minimal fallback model descriptor for missing/unknown slugs.
+ pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
++    if let Some(model_info) = known_agentic_model_info(slug) {
++        return model_info;
++    }
++
+     warn!("Unknown model {slug} is used. This will use fallback model metadata.");
+     ModelInfo {
+         slug: slug.to_string(),
+@@ -94,6 +100,57 @@ pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
+     }
+ }
+ 
++fn known_agentic_model_info(slug: &str) -> Option<ModelInfo> {
++    let normalized = slug.rsplit('/').next().unwrap_or(slug);
++
++    match normalized {
++        "minimax-m2.5" => Some(ModelInfo {
++            slug: slug.to_string(),
++            display_name: "MiniMax M2.5".to_string(),
++            description: Some(
++                "Agentic MiniMax reasoning model tuned for tool-using coding tasks.".to_string(),
++            ),
++            default_reasoning_level: Some(ReasoningEffort::Medium),
++            supported_reasoning_levels: vec![
++                ReasoningEffortPreset {
++                    effort: ReasoningEffort::Medium,
++                    description: "Balanced default reasoning.".to_string(),
++                },
++                ReasoningEffortPreset {
++                    effort: ReasoningEffort::High,
++                    description: "Deeper reasoning for harder tasks.".to_string(),
++                },
++            ],
++            shell_type: ConfigShellToolType::Default,
++            visibility: ModelVisibility::List,
++            supported_in_api: true,
++            priority: 20,
++            availability_nux: None,
++            upgrade: None,
++            base_instructions: BASE_INSTRUCTIONS.to_string(),
++            model_messages: None,
++            supports_reasoning_summaries: false,
++            default_reasoning_summary: ReasoningSummary::Auto,
++            support_verbosity: false,
++            default_verbosity: None,
++            apply_patch_tool_type: None,
++            web_search_tool_type: WebSearchToolType::Text,
++            truncation_policy: TruncationPolicyConfig::bytes(10_000),
++            supports_parallel_tool_calls: false,
++            supports_image_detail_original: false,
++            context_window: Some(272_000),
++            auto_compact_token_limit: None,
++            effective_context_window_percent: 95,
++            experimental_supported_tools: Vec::new(),
++            input_modalities: default_input_modalities(),
++            prefer_websockets: false,
++            used_fallback_model_metadata: false,
++            supports_search_tool: false,
++        }),
++        _ => None,
++    }
++}
++
+ fn local_personality_messages_for_slug(slug: &str) -> Option<ModelMessages> {
+     match slug {
+         "gpt-5.2-codex" | "exp-codex-personality" => Some(ModelMessages {
+diff --git a/codex-rs/core/src/models_manager/model_info_tests.rs b/codex-rs/core/src/models_manager/model_info_tests.rs
+index 27bac8d70..e901e51f4 100644
+--- a/codex-rs/core/src/models_manager/model_info_tests.rs
++++ b/codex-rs/core/src/models_manager/model_info_tests.rs
+@@ -37,3 +37,13 @@ fn reasoning_summaries_override_false_is_noop_when_model_is_false() {
+ 
+     assert_eq!(updated, model);
+ }
++
++#[test]
++fn known_minimax_model_uses_tuned_metadata_instead_of_fallback() {
++    let model = model_info_from_slug("vercel/bon-gour/minimax-m2.5");
++
++    assert_eq!(model.display_name, "MiniMax M2.5");
++    assert!(!model.used_fallback_model_metadata);
++    assert_eq!(model.default_reasoning_level, Some(ReasoningEffort::Medium));
++    assert_eq!(model.visibility, ModelVisibility::List);
++}
 diff --git a/codex-rs/core/src/models_manager/supported_models.rs b/codex-rs/core/src/models_manager/supported_models.rs
 new file mode 100644
-index 000000000..53e53243e
+index 000000000..b086eb61a
 --- /dev/null
 +++ b/codex-rs/core/src/models_manager/supported_models.rs
-@@ -0,0 +1,141 @@
+@@ -0,0 +1,54 @@
 +use codex_protocol::openai_models::ModelPreset;
 +
 +const AGENTIC_SUPPORTED_MODELS: &[&str] = &[
-+    "gpt-5.2-codex",
-+    "gpt-5.1-codex-max",
-+    "gpt-5.1-codex-mini",
-+    "gpt-5.2",
-+    "gpt-5.1",
-+    "gpt-5",
-+    "o3",
-+    "o3-pro",
-+    "o4-mini",
-+    "claude-sonnet-4-6",
-+    "claude-4-5-sonnet",
++    "gpt-5.4",
++    "gpt-5.4-pro",
++    "gpt-5.3-codex",
++    "claude-sonnet-4.6",
++    "claude-opus-4.6",
++    "gemini-3.1-pro-preview",
 +    "gemini-3-pro",
-+    "grok-4-1-fast-reasoning",
-+    "deepseek-v3-2-reasoning",
-+    "minimax-m2-5",
-+    "minimax-m2",
-+    "kimi-k2-5",
++    "gemini-3-flash",
++    "grok-4.1-fast-reasoning",
++    "deepseek-v3.2-thinking",
 +    "kimi-k2.5",
-+    "qwen3-5-397b-a17b",
-+    "glm-5",
++    "minimax-m2.5",
 +];
 +
-+const NON_AGENTIC_DEPRECATION_PREFIX: &str = "Deprecated: non-agentic.";
-+const NON_AGENTIC_DEPRECATION_EXPLANATION: &str = "This model is deprecated because it is not agentic. It may fail to complete tool-using Codex tasks reliably. Prefer a supported agentic model.";
++fn normalize_model_token(model: &str) -> String {
++    model.replace('.', "-")
++}
++
++fn model_candidates(model: &str) -> impl Iterator<Item = &str> {
++    std::iter::once(model)
++        .chain(model.rsplit('/').next())
++        .chain(model.rsplit(':').next())
++}
 +
 +pub(crate) fn is_supported_agentic_model(model: &str) -> bool {
++    let normalized_candidates = model_candidates(model)
++        .map(normalize_model_token)
++        .collect::<Vec<_>>();
++
 +    AGENTIC_SUPPORTED_MODELS.iter().any(|candidate| {
-+        model == *candidate
-+            || model
-+                .strip_prefix(candidate)
-+                .is_some_and(|suffix| suffix.starts_with(':'))
-+            || model
-+                .rsplit('/')
-+                .next()
-+                .is_some_and(|suffix| suffix == *candidate)
-+            || model
-+                .rsplit('/')
-+                .next()
-+                .and_then(|suffix| suffix.strip_prefix(candidate))
-+                .is_some_and(|suffix| suffix.starts_with(':'))
++        let normalized_candidate = normalize_model_token(candidate);
++        normalized_candidates.iter().any(|value| {
++            value == candidate
++                || value == &normalized_candidate
++                || value
++                    .strip_prefix(&normalized_candidate)
++                    .is_some_and(|suffix| suffix.starts_with('-'))
++        })
 +    })
-+}
-+
-+pub(crate) fn is_deprecated_non_agentic_model(model: &str) -> bool {
-+    !model.trim().is_empty() && !is_supported_agentic_model(model)
-+}
-+
-+pub(crate) fn deprecated_non_agentic_model_warning(model: &str) -> Option<String> {
-+    is_deprecated_non_agentic_model(model).then(|| {
-+        format!(
-+            "Model `{model}` is deprecated because it is not agentic. It may fail to complete tool-using Codex tasks reliably. Prefer a supported agentic model."
-+        )
-+    })
-+}
-+
-+pub(crate) fn annotate_non_agentic_model_preset(preset: &mut ModelPreset) {
-+    if !is_deprecated_non_agentic_model(&preset.model)
-+        || preset
-+            .description
-+            .starts_with(NON_AGENTIC_DEPRECATION_PREFIX)
-+    {
-+        return;
-+    }
-+
-+    preset.description = format!(
-+        "{NON_AGENTIC_DEPRECATION_PREFIX} {NON_AGENTIC_DEPRECATION_EXPLANATION} {}",
-+        preset.description
-+    );
 +}
 +
 +pub(crate) fn filter_supported_agentic_models(models: Vec<ModelPreset>) -> Vec<ModelPreset> {
@@ -902,61 +2274,606 @@ index 000000000..53e53243e
 +pub(crate) fn supported_agentic_models() -> &'static [&'static str] {
 +    AGENTIC_SUPPORTED_MODELS
 +}
+diff --git a/codex-rs/core/src/stream_events_utils.rs b/codex-rs/core/src/stream_events_utils.rs
+index a44bc01f5..4bb53b436 100644
+--- a/codex-rs/core/src/stream_events_utils.rs
++++ b/codex-rs/core/src/stream_events_utils.rs
+@@ -38,6 +38,11 @@ fn strip_hidden_assistant_markup(text: &str, plan_mode: bool) -> String {
+     }
+ }
+ 
++fn empty_assistant_follow_up_text() -> String {
++    "Your previous assistant message was empty. Continue from the current workspace state. Successful tool results and file edits are already recorded. Do not repeat the same tool call, reapply the same patch, or spend more time inspecting files that you already checked. If the task is complete, send the final assistant response now."
++        .to_string()
++}
 +
-+#[cfg(test)]
-+mod tests {
-+    use super::*;
-+    use codex_protocol::openai_models::ReasoningEffort;
+ pub(crate) fn raw_assistant_output_text_from_item(item: &ResponseItem) -> Option<String> {
+     if let ResponseItem::Message { role, content, .. } = item
+         && role == "assistant"
+@@ -140,6 +145,7 @@ pub(crate) type InFlightFuture<'f> =
+ pub(crate) struct OutputItemResult {
+     pub last_agent_message: Option<String>,
+     pub needs_follow_up: bool,
++    pub follow_up_instructions: Vec<String>,
+     pub tool_future: Option<InFlightFuture<'static>>,
+ }
+ 
+@@ -212,8 +218,17 @@ pub(crate) async fn handle_output_item_done(
+             }
+             record_completed_response_item(ctx.sess.as_ref(), ctx.turn_context.as_ref(), &item)
+                 .await;
++            let raw_assistant_output = raw_assistant_output_text_from_item(&item);
+             let last_agent_message = last_assistant_message_from_item(&item, plan_mode);
+-
++            if raw_assistant_output
++                .as_deref()
++                .is_some_and(|text| text.trim().is_empty())
++            {
++                output.needs_follow_up = true;
++                output
++                    .follow_up_instructions
++                    .push(empty_assistant_follow_up_text());
++            }
+             output.last_agent_message = last_agent_message;
+         }
+         // Guardrail: the model issued a LocalShellCall without an id; surface the error back into history.
+diff --git a/codex-rs/core/src/tools/code_mode/execute_handler.rs b/codex-rs/core/src/tools/code_mode/execute_handler.rs
+index 6c9009948..3246ff5c2 100644
+--- a/codex-rs/core/src/tools/code_mode/execute_handler.rs
++++ b/codex-rs/core/src/tools/code_mode/execute_handler.rs
+@@ -1,5 +1,6 @@
+ use async_trait::async_trait;
+ use serde::Deserialize;
++use serde_json::from_str;
+ 
+ use crate::codex::Session;
+ use crate::codex::TurnContext;
+@@ -38,6 +39,11 @@ struct CodeModeExecArgs {
+     max_output_tokens: Option<usize>,
+ }
+ 
++#[derive(Debug, Deserialize)]
++struct FunctionCodeModeExecArgs {
++    input: String,
++}
 +
-+    fn preset(model: &str) -> ModelPreset {
-+        ModelPreset {
-+            id: model.to_string(),
-+            model: model.to_string(),
-+            display_name: model.to_string(),
-+            description: "example".to_string(),
-+            default_reasoning_effort: ReasoningEffort::Medium,
-+            supported_reasoning_efforts: Vec::new(),
-+            supports_personality: false,
-+            is_default: false,
-+            upgrade: None,
-+            show_in_picker: true,
-+            supported_in_api: true,
-+            input_modalities: Vec::new(),
+ impl CodeModeExecuteHandler {
+     async fn execute(
+         &self,
+@@ -188,7 +194,10 @@ impl ToolHandler for CodeModeExecuteHandler {
+     }
+ 
+     fn matches_kind(&self, payload: &ToolPayload) -> bool {
+-        matches!(payload, ToolPayload::Custom { .. })
++        matches!(
++            payload,
++            ToolPayload::Function { .. } | ToolPayload::Custom { .. }
++        )
+     }
+ 
+     async fn handle(&self, invocation: ToolInvocation) -> Result<Self::Output, FunctionCallError> {
+@@ -201,11 +210,19 @@ impl ToolHandler for CodeModeExecuteHandler {
+         } = invocation;
+ 
+         match payload {
++            ToolPayload::Function { arguments } if tool_name == PUBLIC_TOOL_NAME => {
++                let args: FunctionCodeModeExecArgs = from_str(&arguments).map_err(|err| {
++                    FunctionCallError::RespondToModel(format!(
++                        "failed to parse function arguments: {err}"
++                    ))
++                })?;
++                self.execute(session, turn, args.input).await
++            }
+             ToolPayload::Custom { input } if tool_name == PUBLIC_TOOL_NAME => {
+                 self.execute(session, turn, input).await
+             }
+             _ => Err(FunctionCallError::RespondToModel(format!(
+-                "{PUBLIC_TOOL_NAME} expects raw JavaScript source text"
++                "{PUBLIC_TOOL_NAME} expects raw JavaScript source text or JSON `{{ \"input\": \"...\" }}`"
+             ))),
+         }
+     }
+diff --git a/codex-rs/core/src/tools/handlers/artifacts.rs b/codex-rs/core/src/tools/handlers/artifacts.rs
+index bbcbcd3c8..b4cfc78e2 100644
+--- a/codex-rs/core/src/tools/handlers/artifacts.rs
++++ b/codex-rs/core/src/tools/handlers/artifacts.rs
+@@ -6,6 +6,7 @@ use codex_artifacts::ArtifactRuntimeManagerConfig;
+ use codex_artifacts::ArtifactsClient;
+ use codex_artifacts::ArtifactsError;
+ use serde_json::Value as JsonValue;
++use serde_json::from_str;
+ use std::time::Duration;
+ use std::time::Instant;
+ 
+@@ -39,6 +40,11 @@ struct ArtifactsToolArgs {
+     timeout_ms: Option<u64>,
+ }
+ 
++#[derive(Debug, serde::Deserialize)]
++struct FunctionArtifactsToolArgs {
++    input: String,
++}
++
+ #[async_trait]
+ impl ToolHandler for ArtifactsHandler {
+     type Output = FunctionToolOutput;
+@@ -48,7 +54,10 @@ impl ToolHandler for ArtifactsHandler {
+     }
+ 
+     fn matches_kind(&self, payload: &ToolPayload) -> bool {
+-        matches!(payload, ToolPayload::Custom { .. })
++        matches!(
++            payload,
++            ToolPayload::Function { .. } | ToolPayload::Custom { .. }
++        )
+     }
+ 
+     async fn is_mutating(&self, _invocation: &ToolInvocation) -> bool {
+@@ -71,10 +80,18 @@ impl ToolHandler for ArtifactsHandler {
+         }
+ 
+         let args = match payload {
++            ToolPayload::Function { arguments } => {
++                let args: FunctionArtifactsToolArgs = from_str(&arguments).map_err(|err| {
++                    FunctionCallError::RespondToModel(format!(
++                        "failed to parse function arguments: {err}"
++                    ))
++                })?;
++                parse_freeform_args(&args.input)?
++            }
+             ToolPayload::Custom { input } => parse_freeform_args(&input)?,
+             _ => {
+                 return Err(FunctionCallError::RespondToModel(
+-                    "artifacts expects freeform JavaScript input authored against the preloaded @oai/artifact-tool surface".to_string(),
++                    "artifacts expects raw JavaScript source text, either as a freeform custom payload or as JSON `{ \"input\": \"...\" }`.".to_string(),
+                 ));
+             }
+         };
+diff --git a/codex-rs/core/src/tools/handlers/shell.rs b/codex-rs/core/src/tools/handlers/shell.rs
+index a3014a8ed..dc376b86a 100644
+--- a/codex-rs/core/src/tools/handlers/shell.rs
++++ b/codex-rs/core/src/tools/handlers/shell.rs
+@@ -61,6 +61,42 @@ struct RunExecLikeArgs {
+ }
+ 
+ impl ShellHandler {
++    async fn should_block_post_edit_read_only_command(
++        command: &[String],
++        tracker: &crate::tools::context::SharedTurnDiffTracker,
++    ) -> bool {
++        if !is_known_safe_command(command) || is_allowed_post_edit_read_only_command(command) {
++            return false;
 +        }
++
++        let mut tracker = tracker.lock().await;
++        tracker.saw_successful_mutating_shell_command()
++            || tracker.get_unified_diff().ok().flatten().is_some()
 +    }
 +
-+    #[test]
-+    fn supported_agentic_model_matches_provider_prefix() {
-+        assert!(is_supported_agentic_model("vercel/bon-gour/minimax-m2.5"));
++    fn shell_command_contains_output_redirection(command: &[String]) -> bool {
++        let Some(shell) = command.first().map(|value| value.as_str()) else {
++            return false;
++        };
++        let Some(script) = command.last().map(|value| value.as_str()) else {
++            return false;
++        };
++
++        let shell_name = std::path::Path::new(shell)
++            .file_name()
++            .and_then(|value| value.to_str())
++            .unwrap_or(shell);
++        let is_shell_wrapper = matches!(shell_name, "bash" | "sh" | "zsh")
++            && command.iter().skip(1).any(|arg| arg == "-c" || arg == "-lc");
++
++        is_shell_wrapper
++            && (script.contains(">>")
++                || script.contains(" >")
++                || script.contains("1>")
++                || script.contains("2>")
++                || script.contains("&>"))
 +    }
 +
-+    #[test]
-+    fn non_agentic_models_are_marked_deprecated() {
-+        assert!(is_deprecated_non_agentic_model(
-+            "vercel/bon-gour/gpt-oss-120b"
-+        ));
-+        assert!(!is_deprecated_non_agentic_model(
-+            "vercel/bon-gour/minimax-m2.5"
-+        ));
+     fn to_exec_params(
+         params: &ShellToolCallParams,
+         turn_context: &TurnContext,
+@@ -410,6 +446,14 @@ impl ShellHandler {
+             return Ok(output);
+         }
+ 
++        if Self::should_block_post_edit_read_only_command(&exec_params.command, &tracker).await {
++            return Ok(FunctionToolOutput::from_text(
++                "The workspace already contains successful edits for this task. Do not spend more time on read-only shell inspection. Do not run more grep/cat/tail/find/ls commands. If you need one verification step, run `git diff --stat` once. Otherwise send the final assistant response now."
++                    .to_string(),
++                Some(false),
++            ));
++        }
++
+         let source = ExecCommandSource::Agent;
+         let emitter = ToolEmitter::shell(
+             exec_params.command.clone(),
+@@ -478,12 +522,28 @@ impl ShellHandler {
+             )
+             .await
+             .map(|result| result.output);
++        if !is_known_safe_command(&exec_params.command)
++            || Self::shell_command_contains_output_redirection(&exec_params.command)
++        {
++            if let Ok(output) = &out {
++                if output.exit_code == 0 {
++                    let mut guard = tracker.lock().await;
++                    guard.note_successful_mutating_shell_command();
++                }
++            }
++        }
++
+         let event_ctx = ToolEventCtx::new(session.as_ref(), turn.as_ref(), &call_id, None);
+         let content = emitter.finish(event_ctx, out).await?;
+         Ok(FunctionToolOutput::from_text(content, Some(true)))
+     }
+ }
+ 
++fn is_allowed_post_edit_read_only_command(command: &[String]) -> bool {
++    let command_text = command.join(" ");
++    command_text.contains("git diff --stat")
++}
++
+ #[cfg(test)]
+ #[path = "shell_tests.rs"]
+ mod tests;
+diff --git a/codex-rs/core/src/tools/handlers/shell_tests.rs b/codex-rs/core/src/tools/handlers/shell_tests.rs
+index b69f3be23..89b1de5f8 100644
+--- a/codex-rs/core/src/tools/handlers/shell_tests.rs
++++ b/codex-rs/core/src/tools/handlers/shell_tests.rs
+@@ -14,7 +14,9 @@ use crate::shell::Shell;
+ use crate::shell::ShellType;
+ use crate::shell_snapshot::ShellSnapshot;
+ use crate::tools::handlers::ShellCommandHandler;
++use crate::turn_diff_tracker::TurnDiffTracker;
+ use tokio::sync::watch;
++use super::ShellHandler;
+ 
+ /// The logic for is_known_safe_command() has heuristics for known shells,
+ /// so we must ensure the commands generated by [ShellCommandHandler] can be
+@@ -178,3 +180,52 @@ fn shell_command_handler_rejects_login_when_disallowed() {
+         "unexpected error: {err}"
+     );
+ }
++
++#[tokio::test]
++async fn blocks_read_only_shell_commands_after_successful_mutating_shell_command() {
++    let tracker = Arc::new(tokio::sync::Mutex::new(TurnDiffTracker::new()));
++
++    assert!(
++        !ShellHandler::should_block_post_edit_read_only_command(
++            &["/bin/bash".into(), "-lc".into(), "grep -R button .".into()],
++            &tracker,
++        )
++        .await
++    );
++
++    {
++        let mut guard = tracker.lock().await;
++        guard.note_successful_mutating_shell_command();
 +    }
 +
-+    #[test]
-+    fn warning_is_only_emitted_for_non_agentic_models() {
-+        assert!(deprecated_non_agentic_model_warning("vercel/bon-gour/gpt-oss-120b").is_some());
-+        assert!(deprecated_non_agentic_model_warning("vercel/bon-gour/minimax-m2.5").is_none());
++    assert!(
++        ShellHandler::should_block_post_edit_read_only_command(
++            &["/bin/bash".into(), "-lc".into(), "grep -R button .".into()],
++            &tracker,
++        )
++        .await
++    );
++
++    assert!(
++        !ShellHandler::should_block_post_edit_read_only_command(
++            &["/bin/bash".into(), "-lc".into(), "git diff --stat".into()],
++            &tracker,
++        )
++        .await
++    );
++}
++
++#[test]
++fn output_redirection_counts_as_mutating_shell_command() {
++    assert!(ShellHandler::shell_command_contains_output_redirection(&[
++        "/bin/bash".into(),
++        "-lc".into(),
++        "cat >> cps/static/css/style.css <<'EOF'\n.button {}\nEOF".into(),
++    ]));
++
++    assert!(!ShellHandler::shell_command_contains_output_redirection(&[
++        "/bin/bash".into(),
++        "-lc".into(),
++        "cat cps/static/css/style.css".into(),
++    ]));
++}
+diff --git a/codex-rs/core/src/tools/handlers/unified_exec.rs b/codex-rs/core/src/tools/handlers/unified_exec.rs
+index c79edf305..19276f9f3 100644
+--- a/codex-rs/core/src/tools/handlers/unified_exec.rs
++++ b/codex-rs/core/src/tools/handlers/unified_exec.rs
+@@ -81,6 +81,44 @@ fn default_tty() -> bool {
+     false
+ }
+ 
++impl UnifiedExecHandler {
++    async fn should_block_post_edit_read_only_command(
++        command: &[String],
++        tracker: &crate::tools::context::SharedTurnDiffTracker,
++    ) -> bool {
++        if !is_known_safe_command(command) || is_allowed_post_edit_read_only_command(command) {
++            return false;
++        }
++
++        let mut tracker = tracker.lock().await;
++        tracker.saw_successful_mutating_shell_command()
++            || tracker.get_unified_diff().ok().flatten().is_some()
 +    }
 +
-+    #[test]
-+    fn preset_annotation_is_idempotent() {
-+        let mut preset = preset("vercel/bon-gour/gpt-oss-120b");
-+        annotate_non_agentic_model_preset(&mut preset);
-+        let once = preset.description.clone();
-+        annotate_non_agentic_model_preset(&mut preset);
-+        assert_eq!(preset.description, once);
-+        assert!(
-+            preset
-+                .description
-+                .starts_with(NON_AGENTIC_DEPRECATION_PREFIX)
-+        );
++    fn shell_command_contains_output_redirection(command: &[String]) -> bool {
++        let Some(shell) = command.first().map(|value| value.as_str()) else {
++            return false;
++        };
++        let Some(script) = command.last().map(|value| value.as_str()) else {
++            return false;
++        };
++
++        let shell_name = std::path::Path::new(shell)
++            .file_name()
++            .and_then(|value| value.to_str())
++            .unwrap_or(shell);
++        let is_shell_wrapper = matches!(shell_name, "bash" | "sh" | "zsh")
++            && command.iter().skip(1).any(|arg| arg == "-c" || arg == "-lc");
++
++        is_shell_wrapper
++            && (script.contains(">>")
++                || script.contains(" >")
++                || script.contains("1>")
++                || script.contains("2>")
++                || script.contains("&>"))
 +    }
 +}
++
+ #[async_trait]
+ impl ToolHandler for UnifiedExecHandler {
+     type Output = ExecCommandToolOutput;
+@@ -161,6 +199,7 @@ impl ToolHandler for UnifiedExecHandler {
+                 )
+                 .map_err(FunctionCallError::RespondToModel)?;
+                 let command_for_display = codex_shell_command::parse_command::shlex_join(&command);
++                let tracking_command = command.clone();
+ 
+                 let ExecCommandArgs {
+                     workdir,
+@@ -260,7 +299,22 @@ impl ToolHandler for UnifiedExecHandler {
+                     });
+                 }
+ 
+-                manager
++                if Self::should_block_post_edit_read_only_command(&command, &tracker).await {
++                    manager.release_process_id(process_id).await;
++                    return Ok(ExecCommandToolOutput {
++                        event_call_id: String::new(),
++                        chunk_id: String::new(),
++                        wall_time: std::time::Duration::ZERO,
++                        raw_output: "The workspace already contains successful edits for this task. Do not spend more time on read-only shell inspection. Do not run more grep/cat/tail/find/ls commands. If you need one verification step, run `git diff --stat` once. Otherwise send the final assistant response now.".as_bytes().to_vec(),
++                        max_output_tokens: None,
++                        process_id: None,
++                        exit_code: Some(0),
++                        original_token_count: None,
++                        session_command: None,
++                    });
++                }
++
++                let response = manager
+                     .exec_command(
+                         ExecCommandRequest {
+                             command,
+@@ -285,7 +339,17 @@ impl ToolHandler for UnifiedExecHandler {
+                         FunctionCallError::RespondToModel(format!(
+                             "exec_command failed for `{command_for_display}`: {err:?}"
+                         ))
+-                    })?
++                    })?;
++
++                if response.exit_code == Some(0)
++                    && (!is_known_safe_command(&tracking_command)
++                        || Self::shell_command_contains_output_redirection(&tracking_command))
++                {
++                    let mut guard = tracker.lock().await;
++                    guard.note_successful_mutating_shell_command();
++                }
++
++                response
+             }
+             "write_stdin" => {
+                 let args: WriteStdinArgs = parse_arguments(&arguments)?;
+@@ -357,6 +421,11 @@ pub(crate) fn get_command(
+     }
+ }
+ 
++fn is_allowed_post_edit_read_only_command(command: &[String]) -> bool {
++    let command_text = command.join(" ");
++    command_text.contains("git diff --stat")
++}
++
+ #[cfg(test)]
+ #[path = "unified_exec_tests.rs"]
+ mod tests;
+diff --git a/codex-rs/core/src/tools/handlers/unified_exec_tests.rs b/codex-rs/core/src/tools/handlers/unified_exec_tests.rs
+index fbd2cb108..6eaf371a0 100644
+--- a/codex-rs/core/src/tools/handlers/unified_exec_tests.rs
++++ b/codex-rs/core/src/tools/handlers/unified_exec_tests.rs
+@@ -3,6 +3,7 @@ use crate::shell::default_user_shell;
+ use crate::tools::handlers::parse_arguments_with_base_path;
+ use crate::tools::handlers::resolve_workdir_base_path;
+ use crate::tools::spec::ZshForkConfig;
++use crate::turn_diff_tracker::TurnDiffTracker;
+ use codex_protocol::models::FileSystemPermissions;
+ use codex_protocol::models::PermissionProfile;
+ use codex_utils_absolute_path::AbsolutePathBuf;
+@@ -182,3 +183,52 @@ fn exec_command_args_resolve_relative_additional_permissions_against_workdir() -
+     );
+     Ok(())
+ }
++
++#[tokio::test]
++async fn blocks_read_only_exec_commands_after_successful_mutating_exec_command() {
++    let tracker = Arc::new(tokio::sync::Mutex::new(TurnDiffTracker::new()));
++
++    assert!(
++        !UnifiedExecHandler::should_block_post_edit_read_only_command(
++            &["/bin/bash".into(), "-lc".into(), "grep -R button .".into()],
++            &tracker,
++        )
++        .await
++    );
++
++    {
++        let mut guard = tracker.lock().await;
++        guard.note_successful_mutating_shell_command();
++    }
++
++    assert!(
++        UnifiedExecHandler::should_block_post_edit_read_only_command(
++            &["/bin/bash".into(), "-lc".into(), "grep -R button .".into()],
++            &tracker,
++        )
++        .await
++    );
++
++    assert!(
++        !UnifiedExecHandler::should_block_post_edit_read_only_command(
++            &["/bin/bash".into(), "-lc".into(), "git diff --stat".into()],
++            &tracker,
++        )
++        .await
++    );
++}
++
++#[test]
++fn exec_output_redirection_counts_as_mutating_shell_command() {
++    assert!(UnifiedExecHandler::shell_command_contains_output_redirection(&[
++        "/bin/bash".into(),
++        "-lc".into(),
++        "cat >> cps/static/css/style.css <<'EOF'\n.button {}\nEOF".into(),
++    ]));
++
++    assert!(!UnifiedExecHandler::shell_command_contains_output_redirection(&[
++        "/bin/bash".into(),
++        "-lc".into(),
++        "cat cps/static/css/style.css".into(),
++    ]));
++}
+diff --git a/codex-rs/core/src/tools/router.rs b/codex-rs/core/src/tools/router.rs
+index b41c59ef9..f75feaf0a 100644
+--- a/codex-rs/core/src/tools/router.rs
++++ b/codex-rs/core/src/tools/router.rs
+@@ -11,6 +11,7 @@ use crate::tools::context::ToolInvocation;
+ use crate::tools::context::ToolPayload;
+ use crate::tools::context::ToolSearchOutput;
+ use crate::tools::discoverable::DiscoverableTool;
++use crate::tools::handlers::TOOL_SEARCH_TOOL_NAME;
+ use crate::tools::registry::AnyToolResult;
+ use crate::tools::registry::ConfiguredToolSpec;
+ use crate::tools::registry::ToolRegistry;
+@@ -140,6 +141,19 @@ impl ToolRouter {
+                             raw_arguments: arguments,
+                         },
+                     }))
++                } else if name == TOOL_SEARCH_TOOL_NAME && namespace.is_none() {
++                    let arguments: SearchToolCallParams = serde_json::from_str(&arguments)
++                        .map_err(|err| {
++                            FunctionCallError::RespondToModel(format!(
++                                "failed to parse tool_search arguments: {err}"
++                            ))
++                        })?;
++                    Ok(Some(ToolCall {
++                        tool_name: name,
++                        tool_namespace: None,
++                        call_id,
++                        payload: ToolPayload::ToolSearch { arguments },
++                    }))
+                 } else {
+                     Ok(Some(ToolCall {
+                         tool_name: name,
+diff --git a/codex-rs/core/src/tools/router_tests.rs b/codex-rs/core/src/tools/router_tests.rs
+index 6350323d1..dcfb747f5 100644
+--- a/codex-rs/core/src/tools/router_tests.rs
++++ b/codex-rs/core/src/tools/router_tests.rs
+@@ -5,6 +5,7 @@ use crate::tools::context::ToolPayload;
+ use crate::turn_diff_tracker::TurnDiffTracker;
+ use codex_protocol::models::ResponseInputItem;
+ use codex_protocol::models::ResponseItem;
++use codex_protocol::models::SearchToolCallParams;
+ 
+ use super::ToolCall;
+ use super::ToolCallSource;
+@@ -159,3 +160,40 @@ async fn build_tool_call_uses_namespace_for_registry_name() -> anyhow::Result<()
+ 
+     Ok(())
+ }
++
++#[tokio::test]
++async fn build_tool_call_maps_function_tool_search_to_tool_search_payload() -> anyhow::Result<()> {
++    let (session, _) = make_session_and_context().await;
++    let session = Arc::new(session);
++
++    let call = ToolRouter::build_tool_call(
++        &session,
++        ResponseItem::FunctionCall {
++            id: None,
++            name: "tool_search".to_string(),
++            namespace: None,
++            arguments: r#"{"query":"calendar","limit":2}"#.to_string(),
++            call_id: "call-tool-search".to_string(),
++        },
++    )
++    .await?
++    .expect("function tool_search should produce a tool call");
++
++    assert_eq!(call.tool_name, "tool_search");
++    assert_eq!(call.tool_namespace, None);
++    assert_eq!(call.call_id, "call-tool-search");
++    match call.payload {
++        ToolPayload::ToolSearch { arguments } => {
++            assert_eq!(
++                arguments,
++                SearchToolCallParams {
++                    query: "calendar".to_string(),
++                    limit: Some(2),
++                }
++            );
++        }
++        other => panic!("expected tool_search payload, got {other:?}"),
++    }
++
++    Ok(())
++}
+diff --git a/codex-rs/core/src/turn_diff_tracker.rs b/codex-rs/core/src/turn_diff_tracker.rs
+index 3568c915a..aee57c410 100644
+--- a/codex-rs/core/src/turn_diff_tracker.rs
++++ b/codex-rs/core/src/turn_diff_tracker.rs
+@@ -40,6 +40,8 @@ pub struct TurnDiffTracker {
+     temp_name_to_current_path: HashMap<String, PathBuf>,
+     /// Cache of known git worktree roots to avoid repeated filesystem walks.
+     git_root_cache: Vec<PathBuf>,
++    /// True once a mutating shell command has completed successfully in this turn.
++    saw_successful_mutating_shell_command: bool,
+ }
+ 
+ impl TurnDiffTracker {
+@@ -47,6 +49,14 @@ impl TurnDiffTracker {
+         Self::default()
+     }
+ 
++    pub fn note_successful_mutating_shell_command(&mut self) {
++        self.saw_successful_mutating_shell_command = true;
++    }
++
++    pub fn saw_successful_mutating_shell_command(&self) -> bool {
++        self.saw_successful_mutating_shell_command
++    }
++
+     /// Front-run apply patch calls to track the starting contents of any modified files.
+     /// - Creates an in-memory baseline snapshot for files that already exist on disk when first seen.
+     /// - For additions, we intentionally do not create a baseline snapshot so that diffs are proper additions.

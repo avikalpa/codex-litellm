@@ -208,7 +208,8 @@ export CODEX_HOME=$(pwd)/test-workspace/.codex
 ./setup-test-env.sh
 
 cd codex
-git checkout rust-v0.53.0
+# Use the base pinned in ../package.json, e.g. rust-v0.115.0
+git checkout rust-v<baseVersion>
 git apply ../stable-tag.patch
 cargo build --bin codex
 ./codex-rs/target/debug/codex exec "test prompt"

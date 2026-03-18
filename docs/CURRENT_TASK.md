@@ -17,16 +17,35 @@ Last updated: 2026-03-18
 - transient follow-up instructions instead of polluting persisted conversation history
 - stronger post-edit finalize nudges
 - a shell guard that blocks further read-only inspection once the repo already has a diff, except for `git diff --stat`
+- the same post-edit guard behavior now applies to the live `exec_command` / unified-exec path
+- explicit runtime metadata for `vercel/bon-gour/minimax-m2.5` so it no longer silently falls back
 
-## Current Release Blocker
+## Current Status
 - The old LiteLLM/Vercel `"Multiple system messages..."` failure is gone.
-- `vercel/bon-gour/minimax-m2.5` now makes real repo edits.
-- The release blocker is finalization: after editing successfully, the model can still continue with extra read-only shell exploration instead of sending the final assistant reply.
+- The later LiteLLM duplicate-`tool_call` replay failure is also mitigated enough for the current live gate to finish.
+- `vercel/bon-gour/minimax-m2.5` now passes the canonical live gate on `0.115.0`:
+  - it makes a real repo edit
+  - it performs the single allowed verification step, `git diff --stat`
+  - it returns a final assistant reply
+- Remaining work is no longer a release blocker. It is quality follow-up:
+  - keep reducing low-value exploration on weaker agentic models
+  - keep model metadata aligned with real provider behavior
+  - keep telemetry ahead of the next regression
 
 ## Evidence
 - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix2.log`
 - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix3.log`
 - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix4.log`
+- duplicate-`tool_call` failure before the retry-state reset:
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix5.log`
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix7.log`
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix8.log`
+- current passing run with residual over-exploration / duplicated CSS block:
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix9.log`
+- current passing run after explicit `minimax` metadata and stricter shell-write detection:
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix10.log`
+- current passing run after porting the post-edit guard onto the live `exec_command` path:
+  - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix11.log`
 - Earlier non-agentic schema failure before tool normalization:
   - `logs/model-test-vercel_bon-gour_gpt-oss-120b-0.115.0-postfix.log`
 
@@ -36,12 +55,20 @@ Last updated: 2026-03-18
 - `cargo test -p codex-core should_retry_without_reasoning_only_for_litellm_400s -- --nocapture`
 - `cargo test -p codex-core build_responses_request_normalizes_litellm_tools_to_function_only -- --nocapture`
 - `cargo test -p codex-core build_tool_call_maps_function_tool_search_to_tool_search_payload -- --nocapture`
+- `cargo test -p codex-core prefer_http_after_retryable_stream_error_only_for_litellm_websockets -- --nocapture`
+- `cargo test -p codex-core reset_state_after_retryable_stream_error_ -- --nocapture`
+- `cargo test -p codex-core normalize_removes_duplicate_function_calls_with_same_call_id -- --nocapture`
+- `cargo test -p codex-core output_redirection_counts_as_mutating_shell_command -- --nocapture`
+- `cargo test -p codex-core blocks_read_only_exec_commands_after_successful_mutating_exec_command -- --nocapture`
+- `cargo test -p codex-core exec_output_redirection_counts_as_mutating_shell_command -- --nocapture`
+- `cargo test -p codex-core known_minimax_model_uses_tuned_metadata_instead_of_fallback -- --nocapture`
 - `cargo build --locked --bin codex`
 
 ## Next Step
-- Make `vercel/bon-gour/minimax-m2.5` terminate cleanly after successful edits.
-- Re-run `vercel/bon-gour/gpt-oss-120b` after that.
-- Then regenerate `stable-tag.patch`, update release notes if needed, commit, push, tag, and publish from the `0.115.0` base.
+- Regenerate `stable-tag.patch` from the final `rust-v0.115.0` diff and commit the port.
+- Push, tag, and publish from the `0.115.0` base once the user confirms.
+- Keep the new `vercel/bon-gour/minimax-m2.5` metadata aligned if the provider’s behavior changes.
+- Deprecated non-agentic models are not release gates anymore; only re-run them when explicitly debugging compatibility.
 
 ## Handoff Rule
 Do not release or publish from any older base.

@@ -1,0 +1,7 @@
+Done! I've added gradient and pill-shaped button styling to all buttons in the repository by appending CSS rules to `cps/static/css/style.css`.
+
+The changes include:
+- **Pill shape**: `border-radius: 50px !important` on all buttons
+- **Gradient**: Purple-blue gradient (`linear-gradient(135deg, #667eea 0%, #764ba2 100%)`)
+- **Hover effects**: Subtle lift with enhanced shadow and reversed gradient
+- **Applied to**: `.btn`, `.btn-default`, `.btn-primary`, `.btn-success`, `.btn-info`, `.btn-warning`, `.btn-danger`, `.btn-secondary`, plus `<button>`, `<input type="button">`, `<input type="submit">`, and `<input type="reset">` elements

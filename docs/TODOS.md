@@ -1,13 +1,11 @@
 # TODOs
 
 ## Release-Critical
-- [ ] Make the `0.115.0` agentic gate (`vercel/bon-gour/minimax-m2.5`) terminate cleanly after successful edits.
-- [ ] Re-run the non-agentic compatibility check on `vercel/bon-gour/gpt-oss-120b` after the agentic finalize path is stable.
 - [ ] Regenerate `stable-tag.patch` from the final `0.115.0` state before the release commit.
 
 ## Model Runtime
 - [ ] Keep tightening post-edit finalization so agentic models stop exploring once the requested change is made.
-- [ ] Add or refine runtime metadata for supported agentic models when fallback metadata causes avoidable mistakes.
+- [ ] Keep runtime metadata for supported agentic models aligned so they do not silently fall back again.
 - [ ] Continue deprecating non-agentic models in product surfaces without breaking compatibility use cases.
 
 ## Telemetry And Analysis

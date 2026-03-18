@@ -11,12 +11,9 @@ These are the required live smoke tests before push or release.
   - `CODEX_HOME=/home/pi/.codex-litellm-debug ../codex/codex-rs/target/debug/codex exec "<prompt>" --model <slug> --skip-git-repo-check`
 
 ## Required Order
-1. Non-agentic compatibility check
-2. Agentic release gate
+1. Agentic release gate
 
 ## Required Models
-- Non-agentic compatibility check:
-  - `vercel/bon-gour/gpt-oss-120b`
 - Agentic release gate:
   - `vercel/bon-gour/minimax-m2.5`
 
@@ -24,12 +21,6 @@ These are the required live smoke tests before push or release.
 `change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.`
 
 ## Pass Criteria
-### Non-agentic compatibility check
-- The model can inspect the repo, make a real edit, and produce a final assistant reply.
-- No manual continue nudges.
-- No stuck reconnect loop.
-- No transport/schema failure.
-
 ### Agentic release gate
 - The model uses tools and/or reasoning normally.
 - The model makes a real repo edit.
@@ -45,3 +36,4 @@ These are the required live smoke tests before push or release.
 ## Notes
 - These model slugs are current working release gates, not permanent truths.
 - Refresh them when the gateway inventory or supported-model policy changes.
+- Deprecated non-agentic models are not release gates anymore. Test them only when explicitly investigating compatibility regressions.
