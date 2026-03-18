@@ -1,5 +1,9 @@
 name: Build and Release
 
+concurrency:
+  group: ${{ github.event_name == 'release' && format('{0}-release', github.workflow) || format('{0}-{1}', github.workflow, github.ref) }}
+  cancel-in-progress: true
+
 on:
   push:
     branches:
@@ -25,6 +29,11 @@ jobs:
 
       - name: Verify build.sh metadata resolution
         run: ./scripts/test-build-sh-metadata.sh
+
+      - name: Verify npm version derivation for release tags
+        env:
+          RELEASE_TAG: ${{ github.event_name == 'release' && github.ref_name || '' }}
+        run: ./scripts/test-npm-release-version.sh
 
       - name: Verify stable-tag.patch applies to the pinned upstream tag
         shell: bash
@@ -297,7 +306,7 @@ jobs:
           name: codex-litellm-termux-${{ matrix.arch }}
           path: dist/termux/codex-litellm_${{ steps.version.outputs.release }}_${{ matrix.arch }}.deb
 
-  attach-release-assets:
+  attach-npm-release-assets:
     needs:
       - build
     runs-on: ubuntu-latest
@@ -333,7 +342,7 @@ jobs:
             dist/**/codex-litellm_*.deb
 
   publish-npm:
-    needs: attach-release-assets
+    needs: attach-npm-release-assets
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     permissions:
