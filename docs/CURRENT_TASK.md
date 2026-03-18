@@ -1,27 +1,47 @@
-# Current Task — 0.104.0 Release Candidate
+# Current Task — 0.115.0 Upstream Refresh
 
 Last updated: 2026-03-18
 
 ## TL;DR
-- `codex/` is aligned to upstream `rust-v0.104.0` at commit `74d1f7b2`.
-- The LiteLLM follow-up loop in `codex-rs/core/src/codex.rs` remains patched so agentic models can recover from tool-only and summary-only turns instead of stalling.
-- Non-agentic models are now deprecated in-product: when a user explicitly selects one, startup shows a warning, and picker descriptions are annotated if we ever fall back to the broader upstream model list.
-- `stable-tag.patch` must be regenerated from `git -C codex diff rust-v0.104.0` before every release commit so the root repo stays reproducible.
+- `codex/` is aligned to upstream `rust-v0.115.0` at commit `f028679a`.
+- Root metadata is already aligned to the same base:
+  - `package.json.version = 0.115.0`
+  - `package.json.codexLitellm.baseVersion = 0.115.0`
+  - `package.json.codexLitellm.upstreamCommit = f028679a`
+- `cargo build --locked --bin codex` currently passes on this tree.
 
-## Validation
-- Final release validation for this sweep is:
-  - `cargo test -p codex-core preset_annotation_is_idempotent --lib`
-  - `cargo build --locked --bin codex`
-- Existing agentic evidence for the button-edit prompt is preserved in `logs/minimax-final.log`.
-- Older mandatory-model probes under `logs/model-test-vercel_bon_minimax-m2.log` and `logs/model-test-vercel_bon_gpt-oss-120b.log` still show LiteLLM gateway instability (`502` / high-demand errors). Treat those as backend evidence, not compile regressions in this checkout.
+## What Already Landed In The 0.115.0 Port
+- retry-away handling for LiteLLM `400 UnsupportedParamsError` tied to unsupported reasoning-effort fields
+- model-suffix matching fixes for namespaced/custom slugs
+- tool normalization so LiteLLM/Vercel accepts function-call tool payloads where upstream request shapes were rejected
+- transient follow-up instructions instead of polluting persisted conversation history
+- stronger post-edit finalize nudges
+- a shell guard that blocks further read-only inspection once the repo already has a diff, except for `git diff --stat`
 
-## Release Notes For This Milestone
-- Hardened LiteLLM turn recovery for agentic models in `codex-rs/core/src/codex.rs`.
-- Added explicit non-agentic model deprecation handling in:
-  - `codex-rs/core/src/models_manager/supported_models.rs`
-  - `codex-rs/core/src/models_manager/manager.rs`
-  - `codex-rs/core/src/codex.rs`
-- Root package metadata remains `0.104.0` with npm prerelease identifiers derived during publish.
+## Current Release Blocker
+- The old LiteLLM/Vercel `"Multiple system messages..."` failure is gone.
+- `vercel/bon-gour/minimax-m2.5` now makes real repo edits.
+- The release blocker is finalization: after editing successfully, the model can still continue with extra read-only shell exploration instead of sending the final assistant reply.
 
-## Handoff
-- After regenerating `stable-tag.patch`, commit the root repo, push `main`, cut the GitHub release tag, and verify the `publish-npm` workflow plus `npm view @avikalpa/codex-litellm version`.
+## Evidence
+- `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix2.log`
+- `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix3.log`
+- `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix4.log`
+- Earlier non-agentic schema failure before tool normalization:
+  - `logs/model-test-vercel_bon-gour_gpt-oss-120b-0.115.0-postfix.log`
+
+## Verified So Far
+- `cargo test -p codex-core get_model_info_matches_multi_segment_namespace_suffix -- --nocapture`
+- `cargo test -p codex-core get_model_info_prefers_longest_namespaced_suffix_match -- --nocapture`
+- `cargo test -p codex-core should_retry_without_reasoning_only_for_litellm_400s -- --nocapture`
+- `cargo test -p codex-core build_responses_request_normalizes_litellm_tools_to_function_only -- --nocapture`
+- `cargo test -p codex-core build_tool_call_maps_function_tool_search_to_tool_search_payload -- --nocapture`
+- `cargo build --locked --bin codex`
+
+## Next Step
+- Make `vercel/bon-gour/minimax-m2.5` terminate cleanly after successful edits.
+- Re-run `vercel/bon-gour/gpt-oss-120b` after that.
+- Then regenerate `stable-tag.patch`, update release notes if needed, commit, push, tag, and publish from the `0.115.0` base.
+
+## Handoff Rule
+Do not release or publish from any older base.

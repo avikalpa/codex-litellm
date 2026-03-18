@@ -1,7 +1,10 @@
-# --web flag
+# Features In Incubation
 
-Tracked in `docs/TODOS.md` under the "Exclusive Features" section.
+This file is for ideas that are plausible but not committed.
 
-# auto litellm spawning with $CODEX_HOME/litellm.yaml
+## Current Candidates
+- a user-friendly self-hosted/web-facing mode for exposing curated LiteLLM-backed Codex agents
+- stronger model capability probes that can be run automatically before allowlist changes
+- richer comparative telemetry for provider-specific caching and finalization behavior
 
-This will make codex-litellm more user friendly and plug and play for the non-programming population.
+Do not treat items here as roadmap promises.

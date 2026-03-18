@@ -1,36 +1,47 @@
-# Model Behavior Smoke Tests
+# Model Behavior Tests
 
-Manual validation is required for both LiteLLM model families before every
-pushed release. These tests use the debug Codex binary and the canonical
-`~/.codex-litellm-debug` configuration so telemetry stays enabled and the run
-matches our published artifacts.
+These are the required live smoke tests before push or release.
 
-## Test Setup
+## Environment
+- Build from `codex/codex-rs`:
+  - `cargo build --locked --bin codex`
+- Recreate the test repo for clean runs:
+  - `rm -rf test-workspace && ./setup-test-env.sh`
+- Run from `test-workspace` with the canonical LiteLLM profile:
+  - `CODEX_HOME=/home/pi/.codex-litellm-debug ../codex/codex-rs/target/debug/codex exec "<prompt>" --model <slug> --skip-git-repo-check`
 
-1. `cargo build --locked --bin codex` inside `codex/codex-rs`.
-2. Recreate the Calibre-Web workspace so the repo state is deterministic:  
-   `rm -rf test-workspace && ./setup-test-env.sh`
-3. `cd test-workspace`
-4. Run each scenario with  
-   `CODEX_HOME=/root/.codex-litellm-debug ../codex/codex-rs/target/debug/codex exec "<prompt>" --model <slug> --skip-git-repo-check`
+## Required Order
+1. Non-agentic compatibility check
+2. Agentic release gate
 
-## Required Scenarios
+## Required Models
+- Non-agentic compatibility check:
+  - `vercel/bon-gour/gpt-oss-120b`
+- Agentic release gate:
+  - `vercel/bon-gour/minimax-m2.5`
 
-| Type | Model | Prompt | Expected Result |
-|------|-------|--------|-----------------|
-| Non-agentic (no interleaved thinking) – run **first** | `vercel/gpt-oss-120b` (medium reasoning) | `change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.` | Model must keep issuing tool calls until the repository is actually edited, then produce a final assistant message. No manual “continue” inputs, disconnects, or stuck “Re-connecting…” loops are allowed. |
-| Agentic / interleaved thinking | `vercel/minimax-m2` (medium reasoning) | Same prompt | Model emits reasoning/tool chatter plus final answer. In the TUI/exec transcript, the intermediate “thinking” logs must render italic + gray (Reasoning history cells) instead of plain assistant text. |
+## Canonical Prompt
+`change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.`
 
-If either run fails, capture the rollout log inside
-`~/.codex-litellm-debug/sessions/YYYY/MM/DD/` plus terminal output and block the
-release until the regression is understood.
+## Pass Criteria
+### Non-agentic compatibility check
+- The model can inspect the repo, make a real edit, and produce a final assistant reply.
+- No manual continue nudges.
+- No stuck reconnect loop.
+- No transport/schema failure.
 
-> **Note:** Minimax-style runs often exceed the default exec timeout (~6½ min). If the turn times out mid-edit, capture the log, rerun with a higher timeout, and do not ship the release until the agent can finish.
+### Agentic release gate
+- The model uses tools and/or reasoning normally.
+- The model makes a real repo edit.
+- After the edit, it terminates with a final assistant reply.
+- Reasoning should render as reasoning, not as plain assistant chatter.
+- Endless post-edit read-only exploration is a failure.
 
-## Current Findings
+## Failure Handling
+- Save the rollout/session logs.
+- Record the exact log paths in `docs/CURRENT_TASK.md`.
+- Do not release until the failure is explained.
 
-- **2025‑11‑07:** `vercel/gpt-oss-120b` now keeps running tools until it can apply the gradient/pill styling (see `logs/gpt-oss-20251107-182214.log`). Keep an eye on the fallback summary to ensure it only fires after real edits land.
-- `vercel/minimax-m2` streams reasoning correctly but can exceed the default exec timeout; the latest run (`logs/minimax-20251107-181116.log`) hit the 395 s ceiling while still editing CSS, so bump `--exec-timeout` if the agent needs more time.
-
-Document new findings here as tests evolve so release drivers know the exact
-behaviour to look for.
+## Notes
+- These model slugs are current working release gates, not permanent truths.
+- Refresh them when the gateway inventory or supported-model policy changes.

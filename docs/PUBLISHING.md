@@ -1,100 +1,53 @@
-# Publishing codex-litellm
+# Publishing
 
-This note tracks the exact checklist for turning a passing patch into a release that ships
-prebuilt binaries and the npm package. Follow every step in order; each depends on the
-previous one.
+This is the release checklist for `codex-litellm`. If any step fails, stop and fix the release inputs before retrying.
 
-## 1. Prepare the working tree
-1. Ensure `stable-tag.patch` applies cleanly to the latest upstream tag (targeting
-   the pinned `rust-vX.Y.Z` recorded in `package.json -> codexLitellm.baseVersion`.
-   Update the patch if that pinned base moves (see `docs/COMMITTING_NOTES.md`).
-2. Run local builds for the desktop targets:
-   ```bash
-   ./build.sh                       # linux-x64
-   TARGET=aarch64-unknown-linux-gnu USE_CROSS=1 ./build.sh  # linux-arm64 if cross set up
-   ```
-   For mac targets, rely on CI cross-builds.
-3. Run the smoke test against the LiteLLM backend (requires valid credentials):
-   ```bash
-   npm install --package-lock-only --ignore-scripts
-   CODEX_LITELLM_SKIP_DOWNLOAD=1 npm install -g .
-   install -D dist/linux-x64/codex-litellm \
-       "$(npm root -g)/@avikalpa/codex-litellm/dist/linux-x64/codex-litellm"
-   LITELLM_BASE_URL=https://llm.gour.top \
-   LITELLM_API_KEY=<token> \
-   codex-litellm --model vercel/gpt-oss-120b exec "who are you"
-   ```
-   The command should complete with a Codex response. If it fails, fix the bug before
-   continuing.
+## Release Preconditions
+- `main` already contains the intended upstream refresh.
+- `codex/`, `stable-tag.patch`, `package.json`, and `package-lock.json` all point at the same upstream base.
+- The required live model checks in `docs/MODEL_BEHAVIOR_TESTS.md` pass.
+- `docs/CHANGELOG.md` is updated for the release.
 
-## 2. Version stamping
-1. Determine the upstream and patch commits:
-   ```bash
-   UPSTREAM=$(cd codex && git rev-parse --short HEAD)
-   LIT=$(git rev-parse --short HEAD)
-   echo "Upstream: $UPSTREAM   Patched: $LIT"
-   ```
-2. Update `package.json`:
-   * Set `version` to the upstream `X.Y.Z`.
-   * Update `codexLitellm.baseVersion` and `codexLitellm.upstreamCommit` to the values above.
-   * Set `codexLitellm.releaseTag` to `vX.Y.Z-litellm.dev` (the workflow overwrites it during
-     `npm publish`). The job also derives an npm-safe version by replacing `+` with `-`
-     (exposed as `codexLitellm.npmVersion`) because the registry rejects literal `+` metadata.
-   * Regenerate `package-lock.json` with
-     `npm install --package-lock-only --ignore-scripts`.
-3. Ensure `build.sh` still exports `CODEX_UPSTREAM_COMMIT`/`CODEX_LITELLM_COMMIT` and
-   checks out the tag pinned by `codexLitellm.baseVersion` rather than auto-upgrading to a
-   newer upstream release; run
-   `./build.sh` once to verify the metadata string looks like
-   `X.Y.Z+<upstream>+lit<patched>`.
+## Versioning Rules
+- `package.json.version` and `package.json.codexLitellm.baseVersion` track the upstream Codex version.
+- `package.json.codexLitellm.upstreamCommit` tracks the exact upstream commit we are patching.
+- `package.json.codexLitellm.releaseTag` is the human-facing release seed.
+- The published npm version is derived from the GitHub release tag by replacing `+` with `-`.
 
-## 3. Commit and tag
-1. Commit all updated files, including `stable-tag.patch`, docs, workflow, and npm metadata.
-2. Create the release version string for tagging and npm publish:
-   ```bash
-   VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")
-   UPSTREAM=$(node -p "require('./package.json').codexLitellm.upstreamCommit")
-   LIT=$(git rev-parse --short HEAD)
-   RELEASE="${VERSION}+${UPSTREAM}+lit${LIT}"
-   TAG="v${RELEASE}"
-   ```
-3. Push `main`, then create the GitHub release:
-   ```bash
-   git push origin main
-   gh release create "$TAG" --title "codex-litellm $RELEASE" --notes "<highlights>"
-   ```
-   Draft the release notes in a VS Code-style changelog: open with a brief paragraph and follow with concise bullet points summarizing the key changes since the previous build.
-   The publication workflow will start automatically.
+## Local Release Prep
+1. Confirm the pinned upstream base:
+   - `node -p "require('./package.json').codexLitellm.baseVersion"`
+   - `git -C codex describe --tags --exact-match HEAD`
+2. Regenerate `package-lock.json`:
+   - `npm install --package-lock-only --ignore-scripts`
+3. Run the metadata checks:
+   - `./scripts/test-build-sh-metadata.sh`
+   - `./scripts/test-npm-release-version.sh`
+4. Run the required build/test checks:
+   - `cargo build --locked --bin codex`
+   - any targeted tests needed for the release
+   - required live model smokes from `docs/MODEL_BEHAVIOR_TESTS.md`
 
-## 4. CI and npm verification
-1. Wait for workflow `Build and Release` to finish. It should:
-   * Build linux/macos artifacts.
-   * Attach `.tar.gz` + `.sha256` files to the release.
-   * Publish `@avikalpa/codex-litellm@$RELEASE` to npm (see
-     `Actions → Build and Release → publish-npm`).
+## Tagging
+1. Commit the release-ready state.
+2. Ask the user whether to publish now.
+3. Push `main`.
+4. Create the release tag from the current committed state:
+   - `VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")`
+   - `UPSTREAM=$(node -p "require('./package.json').codexLitellm.upstreamCommit")`
+   - `LIT=$(git rev-parse --short HEAD)`
+   - `TAG="v${VERSION}+${UPSTREAM}+lit${LIT}"`
+5. Create the GitHub release for that tag.
 
-2. Verify outputs:
-   ```bash
-   gh release view "$TAG" --json assets
-   npm view @avikalpa/codex-litellm version
-   ```
-   The npm version should read the hyphenated variant
-   (`${RELEASE//+/-}`) published in step 1.
+## Post-Tag Verification
+- Verify the GitHub workflow starts.
+- Verify `Release preflight` passes.
+- Verify core build jobs succeed.
+- Verify release assets attach.
+- Verify `publish-npm` succeeds.
+- Verify npm output explicitly:
+  - `npm view @avikalpa/codex-litellm version`
+  - `npm dist-tag ls @avikalpa/codex-litellm`
 
-3. Run the manual install test from a clean environment:
-   ```bash
-   npm uninstall -g @avikalpa/codex-litellm
-   npm install -g @avikalpa/codex-litellm
-   LITELLM_BASE_URL=https://llm.gour.top \
-   LITELLM_API_KEY=<token> \
-   codex-litellm --model vercel/gpt-oss-120b exec "who are you"
-   ```
-
-## 5. Follow-up
-- Update `docs/TODOS.md` (mark install test complete, plan for OpenWrt/Termux if queued).
-- Announce the release (internal channel, blog, etc.).
-- Queue the “phase 2” release once OpenWrt/Termux packaging is ready (re-enable the
-  workflow jobs before tagging).
-
-Keep this document current: every release should either follow these steps or update them
-when the process changes.
+## Release Gate
+Do not call a release complete until npm and GitHub both show the intended version.

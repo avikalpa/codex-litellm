@@ -1,6 +1,6 @@
 # codex‑litellm
 
-> **An unofficial, Apache‑2.0‑licensed patch set and distribution of the OpenAI Codex CLI** with native LiteLLM support, multi‑layer caching, and production‑grade observability.
+> **An unofficial Apache-2.0 software patchset and distribution of the OpenAI Codex CLI, with CC BY 4.0 documentation** with native LiteLLM support, multi-layer caching, and production-grade observability.
 >
 > *Upstream base: `openai/codex` (Apache‑2.0). This project maintains a reproducible patch on top and ships binaries for convenience.*
 
@@ -275,8 +275,6 @@ codex-litellm exec "debug test" 2> debug.log
 * `docs/PROJECT_SUMMARY.md` – Current state & internals
 * `docs/TODOS.md` – Roadmap
 * `AGENTS.md` – Agent workflows
-* `TASK.md` – Daily dev notes
-
 **Wiki**
 
 * *An Example of LiteLLM Configuration* – production setup
@@ -298,10 +296,11 @@ codex-litellm exec "debug test" 2> debug.log
 
 ## Licensing
 
-* **Repository contents:** Apache License 2.0. See [`LICENSE`](LICENSE).
-* **Upstream base:** `openai/codex` (Apache‑2.0).
+* **Software, patches, build scripts, package metadata, and packaged artifacts:** Apache License 2.0. See [`LICENSE`](LICENSE).
+* **Documentation** (`AGENTS.md`, `docs/`, and wiki prose): Creative Commons Attribution 4.0 International. See [`LICENSE-docs-CC-BY-4.0.txt`](LICENSE-docs-CC-BY-4.0.txt).
+* **Upstream base:** `openai/codex` (Apache-2.0).
 
-**Releases** built from upstream sources bundle both `LICENSE` and `NOTICE` so downstream redistributors have the required notices.
+**Releases** built from upstream sources bundle `LICENSE` and `NOTICE` for the software distribution. The source repository also carries the separate documentation license text.
 
 > Unofficial fork, no affiliation or endorsement implied.
 

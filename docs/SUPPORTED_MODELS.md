@@ -1,32 +1,37 @@
-# Supported Models (Agentic-First)
-
-This project now prioritizes agentic models and treats non-agentic models as deprecated for `codex-litellm`.
-
-## Active allowlist (agentic-first)
-
-- `gpt-5.2-codex`
-- `gpt-5.2`
-- `gpt-5.1-codex-max`
-- `gpt-5.1-codex-mini`
-- `gpt-5.1`
-- `gpt-5`
-- `o3`, `o3-pro`, `o4-mini`
-- `claude-sonnet-4-6`, `claude-4-5-sonnet`
-- `gemini-3-pro`
-- `grok-4-1-fast-reasoning`
-- `deepseek-v3-2-reasoning`
-- `minimax-m2-5`, `minimax-m2`
-- `kimi-k2-5`, `kimi-k2.5`
-- `qwen3-5-397b-a17b`
-- `glm-5`
+# Supported Models
 
 ## Policy
+- `codex-litellm` is agentic-first.
+- Supported models should be able to inspect a repo, use tools, edit files, and finalize reliably in Codex-style tasks.
+- Non-agentic models are deprecated for primary use. They remain compatibility paths, not the design center.
+- The allowlist is a policy filter, not a claim that every listed model works perfectly under every provider.
 
-- New model additions must be agentic-first.
-- Non-agentic models (including `gpt-oss-*`) are not included in the picker allowlist for `codex-litellm`.
-- If no allowlisted model is available from the backend, the CLI falls back to upstream model discovery to avoid hard failure.
+## Current Agentic Allowlist
+- `gpt-5.4`
+- `gpt-5.4-pro`
+- `gpt-5.3-codex`
+- `claude-sonnet-4.6`
+- `claude-opus-4.6`
+- `gemini-3.1-pro-preview`
+- `gemini-3-pro`
+- `gemini-3-flash`
+- `grok-4.1-fast-reasoning`
+- `deepseek-v3.2-thinking`
+- `minimax-m2.5`
+- `kimi-k2.5`
 
-## Source of truth
+## Required Release-Gate Models
+These are not the whole allowlist. They are the current mandatory live checks before release.
+- non-agentic compatibility: `vercel/bon-gour/gpt-oss-120b`
+- agentic release gate: `vercel/bon-gour/minimax-m2.5`
 
-- Candidate modern model names are discovered via Chromium automation against `https://artificialanalysis.ai/`.
-- Latest captured slug sweep (Playwright/Chromium): `logs/artificialanalysis-model-slugs.json`.
+## Evidence Sources
+- Artificial Analysis model inventory
+- Artificial Analysis agentic benchmark pages
+- LiteLLM gateway `/v1/models` inventory
+- real `codex-litellm` smoke tests
+
+## Refresh Rules
+- Refresh evidence before changing the allowlist.
+- Prefer gateway-canonical slugs when they differ from benchmark naming.
+- Remove or downgrade models that stop behaving agentically in real runs.
