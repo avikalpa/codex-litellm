@@ -65,7 +65,8 @@ fi
 cd "$CODEX_DIR"
 
 if [[ -z "$BASE_VERSION" ]]; then
-  BASE_VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion" 2>/dev/null || true)
+  BASE_VERSION=$(node -p "require(process.argv[1]).codexLitellm.baseVersion" \
+    "${ROOT_DIR}/package.json" 2>/dev/null || true)
 fi
 
 if [[ -z "$BASE_VERSION" ]]; then
