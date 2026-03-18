@@ -618,10 +618,37 @@ index fd15f8791..b0532edcf 100644
  name = "codex_cli"
  path = "src/lib.rs"
 diff --git a/codex-rs/core/src/codex.rs b/codex-rs/core/src/codex.rs
-index 7744480ab..8cf581ff9 100644
+index 7744480ab..dc8b68c07 100644
 --- a/codex-rs/core/src/codex.rs
 +++ b/codex-rs/core/src/codex.rs
-@@ -4249,7 +4249,11 @@ pub(crate) async fn run_turn(
+@@ -29,6 +29,7 @@ use crate::features::Feature;
+ use crate::features::Features;
+ use crate::features::maybe_push_unstable_features_warning;
+ use crate::models_manager::manager::ModelsManager;
++use crate::models_manager::supported_models::deprecated_non_agentic_model_warning;
+ use crate::parse_command::parse_command;
+ use crate::parse_turn_item;
+ use crate::rollout::session_index;
+@@ -328,7 +329,6 @@ impl Codex {
+             .await
+             .map_err(|err| CodexErr::Fatal(format!("failed to load rules: {err}")))?;
+ 
+-        let config = Arc::new(config);
+         let _ = models_manager
+             .list_models(crate::models_manager::manager::RefreshStrategy::OnlineIfUncached)
+             .await;
+@@ -338,6 +338,10 @@ impl Codex {
+                 crate::models_manager::manager::RefreshStrategy::OnlineIfUncached,
+             )
+             .await;
++        if let Some(message) = deprecated_non_agentic_model_warning(&model) {
++            config.startup_warnings.push(message);
++        }
++        let config = Arc::new(config);
+ 
+         // Resolve base instructions for the session. Priority order:
+         // 1. config.base_instructions override
+@@ -4249,7 +4253,11 @@ pub(crate) async fn run_turn(
      }
  
      let model_info = turn_context.model_info.clone();
@@ -634,7 +661,7 @@ index 7744480ab..8cf581ff9 100644
  
      let event = EventMsg::TurnStarted(TurnStartedEvent {
          turn_id: turn_context.sub_id.clone(),
-@@ -4585,6 +4589,9 @@ async fn run_pre_sampling_compact(
+@@ -4585,6 +4593,9 @@ async fn run_pre_sampling_compact(
      sess: &Arc<Session>,
      turn_context: &Arc<TurnContext>,
  ) -> CodexResult<()> {
@@ -644,7 +671,7 @@ index 7744480ab..8cf581ff9 100644
      let total_usage_tokens_before_compaction = sess.get_total_token_usage().await;
      maybe_run_previous_model_inline_compact(
          sess,
-@@ -4630,10 +4637,14 @@ async fn maybe_run_previous_model_inline_compact(
+@@ -4630,10 +4641,14 @@ async fn maybe_run_previous_model_inline_compact(
      let Some(new_context_window) = turn_context.model_context_window() else {
          return Ok(());
      };
@@ -663,7 +690,7 @@ index 7744480ab..8cf581ff9 100644
      let should_run = total_usage_tokens > new_auto_compact_limit
          && previous_turn_context.model_info.slug != turn_context.model_info.slug
          && old_context_window > new_context_window;
-@@ -4652,6 +4663,10 @@ async fn run_auto_compact(sess: &Arc<Session>, turn_context: &Arc<TurnContext>)
+@@ -4652,6 +4667,10 @@ async fn run_auto_compact(sess: &Arc<Session>, turn_context: &Arc<TurnContext>)
      Ok(())
  }
  
@@ -675,7 +702,7 @@ index 7744480ab..8cf581ff9 100644
      skill_items: &[ResponseItem],
      connectors: &[connectors::AppInfo],
 diff --git a/codex-rs/core/src/model_provider_info.rs b/codex-rs/core/src/model_provider_info.rs
-index 5d5ee3669..2c371a5ae 100644
+index 5d5ee3669..b3cbf78df 100644
 --- a/codex-rs/core/src/model_provider_info.rs
 +++ b/codex-rs/core/src/model_provider_info.rs
 @@ -266,6 +266,7 @@ pub const DEFAULT_OLLAMA_PORT: u16 = 11434;
@@ -694,7 +721,7 @@ index 5d5ee3669..2c371a5ae 100644
          (
              OLLAMA_OSS_PROVIDER_ID,
              create_oss_provider(DEFAULT_OLLAMA_PORT, WireApi::Responses),
-@@ -291,6 +293,32 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
+@@ -291,6 +293,30 @@ pub fn built_in_model_providers() -> HashMap<String, ModelProviderInfo> {
      .collect()
  }
  
@@ -708,9 +735,7 @@ index 5d5ee3669..2c371a5ae 100644
 +        name: "LiteLLM".into(),
 +        base_url: Some(base_url),
 +        env_key: Some("LITELLM_API_KEY".into()),
-+        env_key_instructions: Some(
-+            "Set LITELLM_API_KEY to your LiteLLM gateway key.".to_string(),
-+        ),
++        env_key_instructions: Some("Set LITELLM_API_KEY to your LiteLLM gateway key.".to_string()),
 +        experimental_bearer_token: None,
 +        wire_api: WireApi::Responses,
 +        query_params: None,
@@ -728,19 +753,20 @@ index 5d5ee3669..2c371a5ae 100644
      // These CODEX_OSS_ environment variables are experimental: we may
      // switch to reading values from config.toml instead.
 diff --git a/codex-rs/core/src/models_manager/manager.rs b/codex-rs/core/src/models_manager/manager.rs
-index 457351995..28bd48b16 100644
+index 457351995..30ab0edec 100644
 --- a/codex-rs/core/src/models_manager/manager.rs
 +++ b/codex-rs/core/src/models_manager/manager.rs
-@@ -11,6 +11,8 @@ use crate::model_provider_info::ModelProviderInfo;
+@@ -11,6 +11,9 @@ use crate::model_provider_info::ModelProviderInfo;
  use crate::models_manager::collaboration_mode_presets::builtin_collaboration_mode_presets;
  use crate::models_manager::model_info;
  use crate::models_manager::model_presets::builtin_model_presets;
++use crate::models_manager::supported_models::annotate_non_agentic_model_preset;
 +use crate::models_manager::supported_models::filter_supported_agentic_models;
 +use crate::models_manager::supported_models::supported_agentic_models;
  use codex_api::ModelsClient;
  use codex_api::ReqwestTransport;
  use codex_protocol::config_types::CollaborationModeMask;
-@@ -26,6 +28,7 @@ use tokio::sync::TryLockError;
+@@ -26,6 +29,7 @@ use tokio::sync::TryLockError;
  use tokio::time::timeout;
  use tracing::error;
  use tracing::info;
@@ -748,7 +774,7 @@ index 457351995..28bd48b16 100644
  
  const MODEL_CACHE_FILE: &str = "models_cache.json";
  const DEFAULT_MODEL_CACHE_TTL: Duration = Duration::from_secs(300);
-@@ -292,6 +295,15 @@ impl ModelsManager {
+@@ -292,6 +296,15 @@ impl ModelsManager {
          let mut merged_presets = ModelPreset::merge(remote_presets, existing_presets);
          let chatgpt_mode = matches!(self.auth_manager.auth_mode(), Some(AuthMode::Chatgpt));
          merged_presets = ModelPreset::filter_by_auth(merged_presets, chatgpt_mode);
@@ -764,6 +790,17 @@ index 457351995..28bd48b16 100644
  
          for preset in &mut merged_presets {
              preset.is_default = false;
+@@ -305,6 +318,10 @@ impl ModelsManager {
+             default.is_default = true;
+         }
+ 
++        for preset in &mut merged_presets {
++            annotate_non_agentic_model_preset(preset);
++        }
++
+         merged_presets
+     }
+ 
 diff --git a/codex-rs/core/src/models_manager/mod.rs b/codex-rs/core/src/models_manager/mod.rs
 index 53b33bc4e..291d08baf 100644
 --- a/codex-rs/core/src/models_manager/mod.rs
@@ -778,10 +815,10 @@ index 53b33bc4e..291d08baf 100644
  pub fn client_version_to_whole() -> String {
 diff --git a/codex-rs/core/src/models_manager/supported_models.rs b/codex-rs/core/src/models_manager/supported_models.rs
 new file mode 100644
-index 000000000..18495634d
+index 000000000..53e53243e
 --- /dev/null
 +++ b/codex-rs/core/src/models_manager/supported_models.rs
-@@ -0,0 +1,53 @@
+@@ -0,0 +1,141 @@
 +use codex_protocol::openai_models::ModelPreset;
 +
 +const AGENTIC_SUPPORTED_MODELS: &[&str] = &[
@@ -807,6 +844,9 @@ index 000000000..18495634d
 +    "glm-5",
 +];
 +
++const NON_AGENTIC_DEPRECATION_PREFIX: &str = "Deprecated: non-agentic.";
++const NON_AGENTIC_DEPRECATION_EXPLANATION: &str = "This model is deprecated because it is not agentic. It may fail to complete tool-using Codex tasks reliably. Prefer a supported agentic model.";
++
 +pub(crate) fn is_supported_agentic_model(model: &str) -> bool {
 +    AGENTIC_SUPPORTED_MODELS.iter().any(|candidate| {
 +        model == *candidate
@@ -825,6 +865,33 @@ index 000000000..18495634d
 +    })
 +}
 +
++pub(crate) fn is_deprecated_non_agentic_model(model: &str) -> bool {
++    !model.trim().is_empty() && !is_supported_agentic_model(model)
++}
++
++pub(crate) fn deprecated_non_agentic_model_warning(model: &str) -> Option<String> {
++    is_deprecated_non_agentic_model(model).then(|| {
++        format!(
++            "Model `{model}` is deprecated because it is not agentic. It may fail to complete tool-using Codex tasks reliably. Prefer a supported agentic model."
++        )
++    })
++}
++
++pub(crate) fn annotate_non_agentic_model_preset(preset: &mut ModelPreset) {
++    if !is_deprecated_non_agentic_model(&preset.model)
++        || preset
++            .description
++            .starts_with(NON_AGENTIC_DEPRECATION_PREFIX)
++    {
++        return;
++    }
++
++    preset.description = format!(
++        "{NON_AGENTIC_DEPRECATION_PREFIX} {NON_AGENTIC_DEPRECATION_EXPLANATION} {}",
++        preset.description
++    );
++}
++
 +pub(crate) fn filter_supported_agentic_models(models: Vec<ModelPreset>) -> Vec<ModelPreset> {
 +    models
 +        .into_iter()
@@ -834,4 +901,62 @@ index 000000000..18495634d
 +
 +pub(crate) fn supported_agentic_models() -> &'static [&'static str] {
 +    AGENTIC_SUPPORTED_MODELS
++}
++
++#[cfg(test)]
++mod tests {
++    use super::*;
++    use codex_protocol::openai_models::ReasoningEffort;
++
++    fn preset(model: &str) -> ModelPreset {
++        ModelPreset {
++            id: model.to_string(),
++            model: model.to_string(),
++            display_name: model.to_string(),
++            description: "example".to_string(),
++            default_reasoning_effort: ReasoningEffort::Medium,
++            supported_reasoning_efforts: Vec::new(),
++            supports_personality: false,
++            is_default: false,
++            upgrade: None,
++            show_in_picker: true,
++            supported_in_api: true,
++            input_modalities: Vec::new(),
++        }
++    }
++
++    #[test]
++    fn supported_agentic_model_matches_provider_prefix() {
++        assert!(is_supported_agentic_model("vercel/bon-gour/minimax-m2.5"));
++    }
++
++    #[test]
++    fn non_agentic_models_are_marked_deprecated() {
++        assert!(is_deprecated_non_agentic_model(
++            "vercel/bon-gour/gpt-oss-120b"
++        ));
++        assert!(!is_deprecated_non_agentic_model(
++            "vercel/bon-gour/minimax-m2.5"
++        ));
++    }
++
++    #[test]
++    fn warning_is_only_emitted_for_non_agentic_models() {
++        assert!(deprecated_non_agentic_model_warning("vercel/bon-gour/gpt-oss-120b").is_some());
++        assert!(deprecated_non_agentic_model_warning("vercel/bon-gour/minimax-m2.5").is_none());
++    }
++
++    #[test]
++    fn preset_annotation_is_idempotent() {
++        let mut preset = preset("vercel/bon-gour/gpt-oss-120b");
++        annotate_non_agentic_model_preset(&mut preset);
++        let once = preset.description.clone();
++        annotate_non_agentic_model_preset(&mut preset);
++        assert_eq!(preset.description, once);
++        assert!(
++            preset
++                .description
++                .starts_with(NON_AGENTIC_DEPRECATION_PREFIX)
++        );
++    }
 +}

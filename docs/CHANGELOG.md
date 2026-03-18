@@ -9,6 +9,8 @@ Use VS Code-style headings:
 - OSS status cards once again show the signed-in account info thanks to the new AuthManager plumbing, and the rate-limit switch prompt respects/persists the user’s choice.
 - Added a dedicated TUI telemetry log (`codex-tui-stream.jsonl`) plus a helper CLI so every reasoning chunk and history line can be replayed without copy/paste.
 - Added agentic-first model curation workflow and documentation, including interactive Artificial Analysis benchmark verification before updating supported-model policy.
+- Hardened LiteLLM auto-followups for agentic models so they recover more reliably from tool-only or summary-only turns.
+- Non-agentic models are now deprecated in-product: explicit selection shows a warning, and fallback picker descriptions are annotated accordingly.
 
 ## Detailed Changes
 - repo: update `stable-tag.patch` against upstream tag `rust-v0.104.0` and ensure every LiteLLM crate/config tweak applies cleanly on the new base.
@@ -18,3 +20,5 @@ Use VS Code-style headings:
 - tui: reintroduce `should_exit` handling in onboarding, rewire `/status` to accept the auth manager so ChatGPT account info renders, and add AppEvents + config writes so the rate-limit switch prompt can be dismissed permanently.
 - telemetry: new `codex-litellm-debug-tui-telemetry` crate captures reasoning deltas and rendered history lines, exposes a `[telemetry.logs."tui-view"]` config knob, and extends `trace/telemetry.py` with a `tui` sub-command to inspect the new JSONL stream.
 - models/docs: add supported-model inventory and enforce an agentic-first maintenance loop backed by interactive Chromium checks on Artificial Analysis benchmark pages and LiteLLM `/v1/responses` capability audits.
+- core: strengthen the LiteLLM forced-followup path for agentic models so stalled tool loops get another actionable turn instead of quietly ending in reasoning-only output.
+- models: add `supported_models.rs` helpers that classify non-agentic selections as deprecated, annotate picker descriptions on fallback lists, and emit startup warnings when a deprecated model is chosen explicitly.
