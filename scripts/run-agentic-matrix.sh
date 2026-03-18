@@ -5,14 +5,13 @@ set -euo pipefail
 fixture="${1:-mini-web}"
 profile="${2:-/home/pi/.codex-litellm-debug}"
 
-models=(
-  "vercel/deepseek-v3.2-thinking"
-  "vercel/minimax-m2.5"
-  "vercel/kimi-k2.5"
-)
-
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 failures=()
+mapfile -t models < <(
+  "$repo_root/scripts/discover-agentic-models.sh" \
+    --profile "$profile" \
+    deepseek minimax kimi
+)
 
 for model in "${models[@]}"; do
   echo

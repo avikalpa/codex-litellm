@@ -39,7 +39,11 @@ make_git_fixture_repo() {
 reset_dest() {
   local repo_dir="$1"
   if [[ -e "$repo_dir" && "$refresh" -eq 1 ]]; then
-    mv "$repo_dir" "${repo_dir}.bak.$(date +%s)"
+    local backup_dir="${repo_dir}.bak.$(date +%s)"
+    while [[ -e "$backup_dir" ]]; do
+      backup_dir="${repo_dir}.bak.$(date +%s%N)"
+    done
+    mv "$repo_dir" "$backup_dir"
   fi
 }
 
