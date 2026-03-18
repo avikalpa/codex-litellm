@@ -25,12 +25,13 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 3. Run the metadata checks:
    - `./scripts/test-build-sh-metadata.sh`
    - `./scripts/test-npm-release-version.sh`
+   - `./scripts/test-default-codex-home.sh`
 4. Run the required build/test checks:
    - `cargo build --locked --bin codex`
    - any targeted tests needed for the release
    - required live model smokes from `agent_docs/MODEL_BEHAVIOR_TESTS.md`
 5. Make sure the intended user path is not broken:
-   - default `~/.codex` config path still works
+   - `./scripts/test-default-codex-home.sh` passes
    - debug-only `CODEX_HOME` behavior has not become a hidden dependency
 
 ## Tagging

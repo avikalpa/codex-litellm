@@ -66,17 +66,29 @@ The npm package downloads the correct prebuilt binary for your platform from Git
 
 ## Quick Start
 
-Create the normal Codex home and point it at LiteLLM:
+Use the normal Codex home.
+
+Over plain upstream Codex, `codex-litellm` should only need two extra inputs:
+- your LiteLLM `/v1` base URL
+- your LiteLLM API key
+
+The intended default is to keep those in `~/.codex/.env`:
 
 ```bash
 mkdir -p ~/.codex
-cat > ~/.codex/config.toml <<'EOF2'
-[general]
-model_provider = "litellm"
-api_base = "http://localhost:4000"
+cat > ~/.codex/.env <<'EOF2'
+LITELLM_BASE_URL=http://localhost:4000/v1
+LITELLM_API_KEY=your-litellm-api-key
+EOF2
+```
 
-[litellm]
-api_key = "your-litellm-api-key"
+If you want a default model for `codex-litellm`, add it under its dedicated
+profile so plain `codex` does not get its model selection overwritten:
+
+```bash
+cat > ~/.codex/config.toml <<'EOF2'
+[profiles.codex-litellm]
+model = "vercel/minimax-m2.5"
 EOF2
 ```
 
@@ -103,6 +115,25 @@ codex-litellm exec "Refactor this function" --model vercel/minimax-m2.5
 Default behavior should work directly with your normal `~/.codex` directory.
 
 That is the path we care about most.
+
+`codex-litellm` automatically uses the hidden `codex-litellm` profile for its
+remembered model state, so it does not clobber plain `codex` model state in
+the same home directory.
+
+If you prefer storing the LiteLLM endpoint in `config.toml` instead of
+`~/.codex/.env`, use the built-in provider override shape:
+
+```toml
+[model_providers.litellm]
+name = "LiteLLM"
+base_url = "http://localhost:4000/v1"
+env_key = "LITELLM_API_KEY"
+wire_api = "responses"
+```
+
+Keep the API key in `~/.codex/.env` as `LITELLM_API_KEY` unless you have a very
+specific reason not to. That keeps the shared config file cleaner and avoids
+teaching users to commit secrets to TOML.
 
 Use a separate `CODEX_HOME` only when you are doing isolated debugging or development work.
 
