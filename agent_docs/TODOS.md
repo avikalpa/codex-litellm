@@ -6,8 +6,8 @@
 ## Model Runtime
 - [ ] Keep tightening post-edit finalization so agentic models stop exploring once the requested change is made.
 - [ ] Keep runtime metadata for supported agentic models aligned so they do not silently fall back again.
-- [ ] Add explicit metadata for `vercel/bon-gour/kimi-k2.5` and `vercel/bon-gour/deepseek-v3.2-thinking`.
-- [ ] Fix the DeepSeek `reasoning_content` failure on LiteLLM/Vercel tool-use turns.
+- [x] Add explicit metadata for `vercel/bon-gour/kimi-k2.5` and `vercel/bon-gour/deepseek-v3.2-thinking`.
+- [ ] Fix or route around the DeepSeek `reasoning_content` failure on LiteLLM/Vercel tool-use turns.
 - [ ] Continue deprecating non-agentic models in product surfaces without breaking compatibility use cases.
 
 ## Telemetry And Analysis

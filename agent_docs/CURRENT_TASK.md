@@ -38,10 +38,15 @@ Last updated: 2026-03-18
   - `python-cli` for CLI + README + test updates
 - Current live results on `mini-web`:
   - `vercel/bon-gour/minimax-m2.5`: pass
-  - `vercel/bon-gour/kimi-k2.5`: pass, but still falls back to unknown-model metadata
+  - `vercel/bon-gour/kimi-k2.5`: pass
   - `vercel/bon-gour/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
 - Current live result on `python-cli`:
   - `vercel/bon-gour/minimax-m2.5`: pass on a non-UI repo shape
+- Direct backend probes against `https://llm.gour.top/v1/responses` narrowed the DeepSeek failure:
+  - replaying `reasoning + message + function_call + function_call_output` in the current Codex `/responses` shape still fails
+  - replaying the exact prior `/responses` output items plus `function_call_output` still fails
+  - using `previous_response_id` with only `function_call_output` still fails, with both `store=false` and `store=true`
+  - conclusion: the remaining DeepSeek breakage is the LiteLLM/Vercel `/responses` bridge for thinking+tools, not missing runtime metadata
 
 ## Evidence
 - `logs/model-test-vercel_bon-gour_minimax-m2.5-0.115.0-postfix2.log`
@@ -81,8 +86,10 @@ Last updated: 2026-03-18
 - `cargo build --locked --bin codex`
 
 ## Next Step
-- Add runtime metadata for `vercel/bon-gour/kimi-k2.5` and `vercel/bon-gour/deepseek-v3.2-thinking`.
-- Investigate the DeepSeek `reasoning_content` gateway failure on tool-call turns.
+- Keep runtime metadata for `vercel/bon-gour/kimi-k2.5` and `vercel/bon-gour/deepseek-v3.2-thinking` in-tree so they do not silently fall back.
+- Decide whether to:
+  - port the old LiteLLM chat-completions fallback for DeepSeek thinking+tools, or
+  - keep DeepSeek marked as known-broken on the LiteLLM `/responses` path until upstream fixes the bridge.
 - Keep using the fixture harness, not only `calibre-web`, for agentic model research.
 - Deprecated non-agentic models are not release gates anymore; only re-run them when explicitly debugging compatibility.
 

@@ -2115,7 +2115,7 @@ index 53b33bc4e..291d08baf 100644
  /// Convert the client version string to a whole version string (e.g. "1.2.3-alpha.4" -> "1.2.3").
  pub fn client_version_to_whole() -> String {
 diff --git a/codex-rs/core/src/models_manager/model_info.rs b/codex-rs/core/src/models_manager/model_info.rs
-index adf82b8e8..c89815f68 100644
+index adf82b8e8..6245580c6 100644
 --- a/codex-rs/core/src/models_manager/model_info.rs
 +++ b/codex-rs/core/src/models_manager/model_info.rs
 @@ -4,6 +4,8 @@ use codex_protocol::openai_models::ModelInfo;
@@ -2138,7 +2138,7 @@ index adf82b8e8..c89815f68 100644
      warn!("Unknown model {slug} is used. This will use fallback model metadata.");
      ModelInfo {
          slug: slug.to_string(),
-@@ -94,6 +100,57 @@ pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
+@@ -94,6 +100,81 @@ pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
      }
  }
  
@@ -2146,50 +2146,74 @@ index adf82b8e8..c89815f68 100644
 +    let normalized = slug.rsplit('/').next().unwrap_or(slug);
 +
 +    match normalized {
-+        "minimax-m2.5" => Some(ModelInfo {
-+            slug: slug.to_string(),
-+            display_name: "MiniMax M2.5".to_string(),
-+            description: Some(
-+                "Agentic MiniMax reasoning model tuned for tool-using coding tasks.".to_string(),
-+            ),
-+            default_reasoning_level: Some(ReasoningEffort::Medium),
-+            supported_reasoning_levels: vec![
-+                ReasoningEffortPreset {
-+                    effort: ReasoningEffort::Medium,
-+                    description: "Balanced default reasoning.".to_string(),
-+                },
-+                ReasoningEffortPreset {
-+                    effort: ReasoningEffort::High,
-+                    description: "Deeper reasoning for harder tasks.".to_string(),
-+                },
-+            ],
-+            shell_type: ConfigShellToolType::Default,
-+            visibility: ModelVisibility::List,
-+            supported_in_api: true,
-+            priority: 20,
-+            availability_nux: None,
-+            upgrade: None,
-+            base_instructions: BASE_INSTRUCTIONS.to_string(),
-+            model_messages: None,
-+            supports_reasoning_summaries: false,
-+            default_reasoning_summary: ReasoningSummary::Auto,
-+            support_verbosity: false,
-+            default_verbosity: None,
-+            apply_patch_tool_type: None,
-+            web_search_tool_type: WebSearchToolType::Text,
-+            truncation_policy: TruncationPolicyConfig::bytes(10_000),
-+            supports_parallel_tool_calls: false,
-+            supports_image_detail_original: false,
-+            context_window: Some(272_000),
-+            auto_compact_token_limit: None,
-+            effective_context_window_percent: 95,
-+            experimental_supported_tools: Vec::new(),
-+            input_modalities: default_input_modalities(),
-+            prefer_websockets: false,
-+            used_fallback_model_metadata: false,
-+            supports_search_tool: false,
-+        }),
++        "deepseek-v3.2-thinking" => Some(known_agentic_model(
++            slug,
++            "DeepSeek V3.2 Thinking",
++            "Agentic DeepSeek reasoning model with interleaved thinking and tool use.",
++            18,
++        )),
++        "kimi-k2.5" => Some(known_agentic_model(
++            slug,
++            "Kimi K2.5",
++            "Agentic Kimi reasoning model tuned for multi-step coding tasks.",
++            19,
++        )),
++        "minimax-m2.5" => Some(known_agentic_model(
++            slug,
++            "MiniMax M2.5",
++            "Agentic MiniMax reasoning model tuned for tool-using coding tasks.",
++            20,
++        )),
 +        _ => None,
++    }
++}
++
++fn known_agentic_model(
++    slug: &str,
++    display_name: &str,
++    description: &str,
++    priority: i32,
++) -> ModelInfo {
++    ModelInfo {
++        slug: slug.to_string(),
++        display_name: display_name.to_string(),
++        description: Some(description.to_string()),
++        default_reasoning_level: Some(ReasoningEffort::Medium),
++        supported_reasoning_levels: vec![
++            ReasoningEffortPreset {
++                effort: ReasoningEffort::Medium,
++                description: "Balanced default reasoning.".to_string(),
++            },
++            ReasoningEffortPreset {
++                effort: ReasoningEffort::High,
++                description: "Deeper reasoning for harder tasks.".to_string(),
++            },
++        ],
++        shell_type: ConfigShellToolType::Default,
++        visibility: ModelVisibility::List,
++        supported_in_api: true,
++        priority,
++        availability_nux: None,
++        upgrade: None,
++        base_instructions: BASE_INSTRUCTIONS.to_string(),
++        model_messages: None,
++        supports_reasoning_summaries: false,
++        default_reasoning_summary: ReasoningSummary::Auto,
++        support_verbosity: false,
++        default_verbosity: None,
++        apply_patch_tool_type: None,
++        web_search_tool_type: WebSearchToolType::Text,
++        truncation_policy: TruncationPolicyConfig::bytes(10_000),
++        supports_parallel_tool_calls: false,
++        supports_image_detail_original: false,
++        context_window: Some(272_000),
++        auto_compact_token_limit: None,
++        effective_context_window_percent: 95,
++        experimental_supported_tools: Vec::new(),
++        input_modalities: default_input_modalities(),
++        prefer_websockets: false,
++        used_fallback_model_metadata: false,
++        supports_search_tool: false,
 +    }
 +}
 +
@@ -2197,10 +2221,10 @@ index adf82b8e8..c89815f68 100644
      match slug {
          "gpt-5.2-codex" | "exp-codex-personality" => Some(ModelMessages {
 diff --git a/codex-rs/core/src/models_manager/model_info_tests.rs b/codex-rs/core/src/models_manager/model_info_tests.rs
-index 27bac8d70..e901e51f4 100644
+index 27bac8d70..5817242d9 100644
 --- a/codex-rs/core/src/models_manager/model_info_tests.rs
 +++ b/codex-rs/core/src/models_manager/model_info_tests.rs
-@@ -37,3 +37,13 @@ fn reasoning_summaries_override_false_is_noop_when_model_is_false() {
+@@ -37,3 +37,33 @@ fn reasoning_summaries_override_false_is_noop_when_model_is_false() {
  
      assert_eq!(updated, model);
  }
@@ -2210,6 +2234,26 @@ index 27bac8d70..e901e51f4 100644
 +    let model = model_info_from_slug("vercel/bon-gour/minimax-m2.5");
 +
 +    assert_eq!(model.display_name, "MiniMax M2.5");
++    assert!(!model.used_fallback_model_metadata);
++    assert_eq!(model.default_reasoning_level, Some(ReasoningEffort::Medium));
++    assert_eq!(model.visibility, ModelVisibility::List);
++}
++
++#[test]
++fn known_kimi_model_uses_tuned_metadata_instead_of_fallback() {
++    let model = model_info_from_slug("vercel/bon-gour/kimi-k2.5");
++
++    assert_eq!(model.display_name, "Kimi K2.5");
++    assert!(!model.used_fallback_model_metadata);
++    assert_eq!(model.default_reasoning_level, Some(ReasoningEffort::Medium));
++    assert_eq!(model.visibility, ModelVisibility::List);
++}
++
++#[test]
++fn known_deepseek_model_uses_tuned_metadata_instead_of_fallback() {
++    let model = model_info_from_slug("vercel/bon-gour/deepseek-v3.2-thinking");
++
++    assert_eq!(model.display_name, "DeepSeek V3.2 Thinking");
 +    assert!(!model.used_fallback_model_metadata);
 +    assert_eq!(model.default_reasoning_level, Some(ReasoningEffort::Medium));
 +    assert_eq!(model.visibility, ModelVisibility::List);
