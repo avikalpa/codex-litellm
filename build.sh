@@ -49,15 +49,27 @@ if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
   fi
 fi
 
+needs_lighter_release_profile=0
 if [[ "$TARGET" == "aarch64-unknown-linux-gnu" ]] && [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
+  needs_lighter_release_profile=1
+fi
+case "$TARGET" in
+  x86_64-apple-darwin|aarch64-apple-darwin|x86_64-pc-windows-msvc|aarch64-pc-windows-msvc)
+    needs_lighter_release_profile=1
+    ;;
+esac
+if [[ "$needs_lighter_release_profile" == "1" ]]; then
   # The upstream release profile is tuned for size, but fat LTO + single-codegen
-  # cross-builds routinely get SIGKILLed on GitHub's linux-arm64 runner path.
+  # is too slow for several GitHub-hosted release runners. Use a lighter profile
+  # for prebuilt artifacts so releases finish reliably.
   export CARGO_PROFILE_RELEASE_LTO="${CARGO_PROFILE_RELEASE_LTO:-thin}"
   export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="${CARGO_PROFILE_RELEASE_CODEGEN_UNITS:-4}"
-  if [[ -n "${CROSS_CONTAINER_INHERITS:-}" ]]; then
-    export CROSS_CONTAINER_INHERITS="${CROSS_CONTAINER_INHERITS},CARGO_PROFILE_RELEASE_LTO,CARGO_PROFILE_RELEASE_CODEGEN_UNITS"
-  else
-    export CROSS_CONTAINER_INHERITS="CARGO_PROFILE_RELEASE_LTO,CARGO_PROFILE_RELEASE_CODEGEN_UNITS"
+  if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
+    if [[ -n "${CROSS_CONTAINER_INHERITS:-}" ]]; then
+      export CROSS_CONTAINER_INHERITS="${CROSS_CONTAINER_INHERITS},CARGO_PROFILE_RELEASE_LTO,CARGO_PROFILE_RELEASE_CODEGEN_UNITS"
+    else
+      export CROSS_CONTAINER_INHERITS="CARGO_PROFILE_RELEASE_LTO,CARGO_PROFILE_RELEASE_CODEGEN_UNITS"
+    fi
   fi
 fi
 
