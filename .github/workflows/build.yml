@@ -30,6 +30,11 @@ jobs:
         with:
           node-version: '24'
 
+      - name: Install Linux build deps for preflight
+        run: |
+          sudo apt-get update
+          sudo DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends pkg-config libcap-dev
+
       - name: Verify build.sh metadata resolution
         run: ./scripts/test-build-sh-metadata.sh
 
