@@ -9,63 +9,163 @@ It keeps the Codex agent loop, but lets you run it against agentic models from m
 - Current upstream base: `rust-v0.115.0`
 - Default runtime path: LiteLLM `/responses`
 
+## Executive Summary
+
+This project exists for one question:
+
+Can Codex-style repo editing work well over LiteLLM with real non-OpenAI models?
+
+Current answer:
+- yes, but model choice matters a lot
+- benchmark strength is not enough
+- live repo-edit behavior matters more than leaderboard placement
+
+On the current public smoke bench, the best default is:
+- `vercel/minimax-m2.7-highspeed`
+
+The most interesting but still risky route is:
+- `vercel/gemini-3.1-pro-preview`
+
+Models currently failing the bench on this endpoint are:
+- `vercel/glm-5-turbo`
+- `vercel/kimi-k2.5`
+- `vercel/deepseek-v3.2-thinking`
+- `vercel/grok-4.20-reasoning-beta`
+
 ## Why This Exists
 
-Official Codex is the right path when you want the official OpenAI-hosted harness.
+Official Codex is the right path when you want the official hosted harness.
 
-`codex-litellm` exists for a different use case:
+`codex-litellm` is for a different use case:
 - one Codex CLI talking to many providers through LiteLLM
 - agentic coding models that can inspect a repo, use tools, edit files, and stop cleanly
 - cheaper model experimentation without giving up the Codex workflow
 - a maintained patchset that stays close to upstream instead of becoming a permanent fork
 
-## What Changed Recently
+## Research Question
 
-This is the user-facing changelog for the current line.
+For a public audience, the real question is not:
+- which model is smartest in a benchmark chart?
 
-### `0.115.0` line
-- LiteLLM `/responses` is now the default and intended path forward.
-- `codex-litellm` uses the normal `~/.codex` home and keeps its remembered model state under a dedicated hidden profile so plain `codex` does not get clobbered.
-- The smoke harness is stricter now: a model does not pass unless it makes a real repo edit and then finalizes.
-- The public smoke bench is now part of the repo so you can run the same basic checks against your own endpoint.
-- DeepSeek remains a known blocker on `/responses` because some tool-use follow-up turns still fail with missing `reasoning_content`.
+The real question is:
+- which model actually completes a Codex-style edit loop in a real repo?
 
-## What Works Best Today
+That means a model must:
+- inspect the repo
+- use tools without breaking
+- make a real file edit
+- stop after the edit
+- return a usable final answer
 
-`codex-litellm` is agentic-first. Non-agentic models are deprecated for primary use.
+Anything less is not a real pass.
 
-The practical recommendation today is:
-- start with MiniMax M2.7 highspeed
-- treat Gemini 3.1 Pro Preview as powerful-but-risky, not a clean default
-- keep GLM-5, Kimi, DeepSeek, and Grok 4.20 on the smoke bench until your own endpoint proves them
-- do not spend premium-model money through a weak bridge path if the official provider path is available
+## Method
 
-Why this matters:
-- the public cares about benchmark screenshots
-- the real product question is whether the model can finish Codex-style repo work
-- the project optimizes for agent loops, not for making every expensive flagship model a good buy through LiteLLM
+We keep a public smoke bench in this repository.
 
-## Current Live Smoke Status
+It does four things:
+1. resolves live model IDs from your LiteLLM `/v1/models` inventory
+2. runs a real Codex-style edit task on a small fixture repo
+3. requires a non-empty repo diff before calling a run a pass
+4. publishes sanitized output without exposing private gateway route segments
 
-These statuses come from the repo's basic smoke bench on a LiteLLM `/responses` gateway.
+The current fixture is intentionally simple:
+- task: change all buttons to have a gradient and pill shape
+- repo shape: small HTML/CSS/JS project
+- outcome required: real edit plus final answer
 
-- green: `vercel/minimax-m2.7-highspeed`
-- amber: `vercel/gemini-3.1-pro-preview`
-- red: `vercel/glm-5-turbo`
-- red: `vercel/kimi-k2.5`
-- red: `vercel/deepseek-v3.2-thinking`
-- red: `vercel/grok-4.20-reasoning-beta`
+Public bench files:
+- `benchmarks/public-smoke-results.md`
+- `benchmarks/public-smoke-results.json`
 
-Interpretation:
-- MiniMax M2.7 highspeed is the current best default on this endpoint.
-- Gemini 3.1 Pro Preview did finish the smoke, but leaked internal planning chatter and is not a clean default.
-- GLM-5 timed out before a valid completion on this endpoint.
-- Kimi K2.5 falsely declared success without producing a repo diff on this endpoint.
-- DeepSeek is still blocked on the current LiteLLM `/responses` bridge with missing `reasoning_content`.
-- Grok 4.20 is attractive on cost/speed, but on this endpoint it rate-limited before producing a repo edit.
-- Claude Haiku 4.5 remains a decent low-cost side option, but it is not part of the current focus bench.
+## Current Findings
 
-See the committed public bench output in `benchmarks/public-smoke-results.md`.
+### Green
+- `vercel/minimax-m2.7-highspeed`
+
+Why it is green:
+- it made a real repo edit
+- it recovered from a stream retry and still finalized
+- it is the best current value/default route on this endpoint
+
+### Amber
+- `vercel/gemini-3.1-pro-preview`
+
+Why it is not a clean default:
+- it passed the smoke
+- but it leaked internal planning chatter into the assistant stream
+- that makes it interesting, not trustworthy enough to be the first recommendation
+
+### Red
+- `vercel/glm-5-turbo`
+  - timed out before valid completion
+- `vercel/kimi-k2.5`
+  - confidently claimed success without producing a repo diff
+- `vercel/deepseek-v3.2-thinking`
+  - still fails on the LiteLLM `/responses` bridge with missing `reasoning_content`
+- `vercel/grok-4.20-reasoning-beta`
+  - rate-limited before producing a repo edit
+
+## Public Takeaway
+
+If you only want one answer right now:
+- start with MiniMax
+
+If you want one more model to test because benchmarks are too compelling to ignore:
+- test Gemini 3.1 Pro Preview, but do not trust it blindly
+
+If you care about price/performance:
+- MiniMax is the current practical winner here
+- Grok is still interesting economically, but it is not working cleanly enough yet
+
+If you care about raw benchmark prestige:
+- use that as a shortlist, not as proof
+- Codex-style editing is stricter than chat or reasoning benchmarks
+
+## Artificial Analysis Cross-Check
+
+We cross-check the current target families against Artificial Analysis before refreshing our bench.
+
+Current takeaways:
+- Gemini 3.1 Pro Preview is the intelligence headline model right now, which is why it stays on the bench despite messy tool behavior.
+- GLM-5, Kimi K2.5, DeepSeek V3.2, and Grok 4.20 all remain relevant current families and all are already wired into this LiteLLM gateway.
+- MiniMax naming is ahead of the public benchmark naming cadence: this gateway exposes newer `M2.7` routes while public benchmark references still often center on `M2.5`.
+
+Practical conclusion:
+- none of the model families we care about are missing from the current LiteLLM stack
+- the current work is quality and behavior, not missing routes
+
+## Model Selection Guide
+
+### Recommended Default
+- `vercel/minimax-m2.7-highspeed`
+
+Use this if you want:
+- the best current chance of a clean first experience
+- strong value for money
+- a route that actually finishes Codex tasks on this endpoint
+
+### Experimental Frontier Option
+- `vercel/gemini-3.1-pro-preview`
+
+Use this if you want:
+- a high-intelligence route that may improve quickly
+- to test the edge of what the harness can tolerate
+
+Do not use this as your default yet if you care about clean tool behavior.
+
+### Keep On The Bench
+- `vercel/glm-5-turbo`
+- `vercel/kimi-k2.5`
+- `vercel/deepseek-v3.2-thinking`
+- `vercel/grok-4.20-reasoning-beta`
+
+Use these only if you are actively testing or debugging the route.
+
+### Side Option
+- `vercel/claude-haiku-4.5`
+
+This remains a reasonable low-cost side option, but it is not part of the current focus bench run.
 
 ## Install
 
@@ -83,7 +183,9 @@ The npm package downloads a prebuilt binary from GitHub Releases for your platfo
 
 ## Quick Start
 
-Use the normal Codex home. `codex-litellm` should only need two extra inputs over plain Codex:
+Use the normal Codex home.
+
+`codex-litellm` should only need two extra inputs over plain Codex:
 - your LiteLLM `/v1` base URL
 - your LiteLLM API key
 
@@ -123,53 +225,13 @@ codex-litellm exec "Summarize this repository"
 codex-litellm exec "Refactor this function" --model vercel/minimax-m2.7-highspeed
 ```
 
-## Model Selection
-
-If you want the best chance of a clean first experience right now:
-- `vercel/minimax-m2.7-highspeed`
-
-If you want to experiment after MiniMax works:
-- `vercel/gemini-3.1-pro-preview`
-- `vercel/claude-haiku-4.5`
-- `vercel/glm-5-turbo`
-- `vercel/kimi-k2.5`
-- `vercel/grok-4.20-reasoning-beta`
-
-If you want a warning before wasting money:
-- do not assume expensive frontier models are automatically the best value through LiteLLM
-- do not assume the highest AA score gives you the cleanest Codex loop; Gemini is the live example of that tradeoff
-- do not assume a strong open-weights model automatically finishes well in Codex; Kimi and GLM still need current-bench proof on this endpoint
-- if you are about to run a premium model through a bridge layer only to get generic tool behavior, you are often better off with the official provider harness
-- `codex-litellm` shines when paired with strong, efficient, agentic models
-
-## Artificial Analysis Cross-Check
-
-We cross-check our current target model families against Artificial Analysis before refreshing the public smoke bench.
-
-Current takeaways:
-- Gemini 3.1 Pro Preview is currently the AA intelligence leader, which is why it stays on our bench even though Gemini tool behavior is still risky here.
-- GLM-5, Kimi K2.5, DeepSeek V3.2, and Grok 4.20 all have current AA model pages and all are already wired into this LiteLLM gateway.
-- MiniMax is the only naming mismatch right now: AA's public MiniMax pages still center on `M2.5`, while this gateway already exposes newer `M2.7` routes.
-
-That means the current reminder state is simple: none of the model families we care about are missing from your LiteLLM inventory right now.
-
 ## Run The Same Smoke Bench We Use
-
-The repository now includes a public smoke bench so anyone can test their own LiteLLM endpoint.
-
-What it does:
-- resolves live model IDs from your gateway inventory
-- runs a basic Codex-style edit task on a small fixture repo
-- requires a real repo diff before calling the run a pass
-- publishes sanitized results without exposing private route segments
-
-Run it:
 
 ```bash
 scripts/run-public-smoke-bench.sh --profile ~/.codex
 ```
 
-Current focus models in that bench:
+Current focus models in the public bench:
 - MiniMax
 - GLM
 - Kimi
@@ -177,11 +239,7 @@ Current focus models in that bench:
 - Gemini 3.1 Pro
 - Grok 4.20 reasoning
 
-Public result files:
-- `benchmarks/public-smoke-results.md`
-- `benchmarks/public-smoke-results.json`
-
-The exact route chosen for each family is discovered from your LiteLLM `/v1/models` inventory at runtime.
+The exact route for each family is discovered from your LiteLLM `/v1/models` inventory at runtime.
 
 ## Good First Commands
 
@@ -194,7 +252,7 @@ codex-litellm exec "Change all primary buttons to pill-shaped gradient buttons" 
 Code review:
 
 ```bash
-codex-litellm exec "Review the last set of changes for bugs and regressions" --model vercel/kimi-k2.5
+codex-litellm exec "Review the last set of changes for bugs and regressions" --model vercel/minimax-m2.7-highspeed
 ```
 
 Bugfix plus test:
@@ -203,28 +261,24 @@ Bugfix plus test:
 codex-litellm exec "Find why this test is failing, fix it, and update the test if needed" --model vercel/minimax-m2.7-highspeed
 ```
 
-CLI change:
+Experimental frontier test:
 
 ```bash
-codex-litellm exec "Add a --verbose flag, update README usage, and add a test" --model vercel/grok-4.20-reasoning-beta
-```
-
-Interactive session:
-
-```bash
-codex-litellm --model vercel/minimax-m2.7-highspeed
+codex-litellm exec "Refactor this module and explain the tradeoffs" --model vercel/gemini-3.1-pro-preview
 ```
 
 ## Semantic Cache
 
 If your LiteLLM deployment supports semantic cache, use it.
 
-The cheap way to do this is to back the cache lookup with a low-cost embedding model. That keeps cache lookup cost close to zero relative to a full reasoning-model turn.
+The practical version is simple:
+- back cache lookup with a cheap embedding model
+- keep cache lookup cost near zero relative to a full reasoning-model turn
 
 A good example shape is:
 - `vercel/gemini-embedding-001`
 
-The cache backend belongs in your LiteLLM deployment, not in `codex-litellm`, but the user outcome is simple:
+The cache backend belongs in LiteLLM, not in `codex-litellm`, but the user outcome is straightforward:
 - lower repeat-call cost
 - better economics for iterative Codex loops
 - almost-zero marginal cost for cache probes when the embedding route is cheap
@@ -232,24 +286,21 @@ The cache backend belongs in your LiteLLM deployment, not in `codex-litellm`, bu
 ## Common Pitfalls
 
 - Do not start with non-agentic models.
-- Do not assume `/v1/models` means a route is release-ready for Codex-style tasks.
+- Do not assume `/v1/models` means a route is ready for Codex-style tasks.
+- Do not assume the top benchmark model will give the cleanest tool loop.
 - Do not assume DeepSeek is safe on `/responses` yet.
-- Do not assume Gemini will behave cleanly just because it leads AA on intelligence.
-- Do not assume Kimi or GLM are still green for your endpoint without rerunning the smoke bench.
-- Do not build your workflow around a custom debug `CODEX_HOME`; the intended path is normal `~/.codex`.
-- Do not keep burning tokens on premium models through a weak bridge path if the official harness would be better.
+- Do not assume Kimi or GLM are green just because they are strong models in other contexts.
+- Do not keep burning money on premium routes through a weak bridge path if the official harness would be better.
 
 ## Troubleshooting
 
 If a model behaves badly:
-
 1. Check that your LiteLLM gateway is reachable.
 2. Check that the slug exists on `/v1/models`.
 3. Run `scripts/run-public-smoke-bench.sh --profile ~/.codex`.
-4. Retry with MiniMax or Kimi before blaming the Codex patchset.
+4. Retry with MiniMax before blaming the patchset.
 
 If install fails:
-
 1. Verify GitHub Releases is reachable.
 2. Re-run `npm install -g @avikalpa/codex-litellm`.
 3. If your platform is unsupported, build from source.
