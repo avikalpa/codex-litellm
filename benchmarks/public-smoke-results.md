@@ -8,11 +8,12 @@ Latest live smoke run against a LiteLLM /responses endpoint using the public fix
 
 | Model family | Public slug | Status | Notes |
 | --- | --- | --- | --- |
-| minimax | `vercel/minimax-m2.5` | pass | Best current value path for Codex-style editing. |
-| glm | `vercel/glm-5-turbo` | pass | Rechecked after gateway fix. |
-| claude-haiku | `vercel/claude-haiku-4.5` | pass | Cheap fast route; verify reliability on your own endpoint. |
-| deepseek | `vercel/deepseek-v3.2-thinking` | fail | Known /responses bridge risk around reasoning follow-up turns. |
-| grok-fast | `vercel/grok-4.1-fast-reasoning` | fail | Economics-oriented Grok fast reasoning route. |
+| minimax | `vercel/minimax-m2.7-highspeed` | pass | Best current value path for Codex-style editing. Passed after a stream retry. |
+| glm | `vercel/glm-5-turbo` | fail | Strong model family, but this run timed out before a valid completion. |
+| kimi | `vercel/kimi-k2.5` | fail | Strong AA model, but this run falsely declared success without a repo diff. |
+| deepseek | `vercel/deepseek-v3.2-thinking` | fail | Current /responses bridge still fails with missing reasoning_content. |
+| gemini-pro | `vercel/gemini-3.1-pro-preview` | pass | Passed, but leaked internal planning chatter; not a clean default. |
+| grok-fast | `vercel/grok-4.20-reasoning-beta` | fail | Rate-limited on this endpoint before producing a repo edit. |
 
 Regenerate with:
 

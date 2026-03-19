@@ -11,6 +11,7 @@ Options:
   --profile <dir>     Codex profile directory (default: ~/.codex)
   --output <file>     Markdown output file
   --json <file>       JSON output file
+  --timeout <secs>    Per-model timeout in seconds (default: 180)
 
 This script resolves live model IDs from the configured LiteLLM gateway, runs
 the basic smoke bench sequentially, and writes sanitized public results that do
@@ -22,6 +23,7 @@ fixture="mini-web"
 profile="$HOME/.codex"
 output_file="benchmarks/public-smoke-results.md"
 json_file="benchmarks/public-smoke-results.json"
+timeout_s=180
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -41,6 +43,10 @@ while [[ $# -gt 0 ]]; do
       json_file="$2"
       shift 2
       ;;
+    --timeout)
+      timeout_s="$2"
+      shift 2
+      ;;
     -h|--help)
       usage
       exit 0
@@ -58,8 +64,9 @@ mkdir -p "$(dirname "$output_file")" "$(dirname "$json_file")"
 families=(
   minimax
   glm
-  claude-haiku
+  kimi
   deepseek
+  gemini-pro
   grok-fast
 )
 
@@ -80,16 +87,19 @@ note_for_family() {
       printf '%s\n' "Best current value path for Codex-style editing."
       ;;
     glm)
-      printf '%s\n' "Rechecked after gateway fix."
+      printf '%s\n' "Strong model family, but it still needs a clean completion on your endpoint."
       ;;
-    claude-haiku)
-      printf '%s\n' "Cheap fast route; verify reliability on your own endpoint."
+    kimi)
+      printf '%s\n' "Strong AA model, but verify it actually edits instead of only sounding confident."
       ;;
     deepseek)
-      printf '%s\n' "Known /responses bridge risk around reasoning follow-up turns."
+      printf '%s\n' "Keep-alive watchlist model; current /responses bridge risk is still real."
+      ;;
+    gemini-pro)
+      printf '%s\n' "AA intelligence leader, but tool-call reliability still needs verification."
       ;;
     grok-fast)
-      printf '%s\n' "Economics-oriented Grok fast reasoning route."
+      printf '%s\n' "Economics-oriented Grok route; keep it on the bench until it finishes cleanly."
       ;;
   esac
 }
@@ -114,17 +124,30 @@ for i in "${!families[@]}"; do
   echo "=== Running ${family} (${public_slug}) on ${fixture} ==="
 
   set +e
-  "$repo_root/scripts/run-agentic-model-smoke.sh" \
-    --fixture "$fixture" \
-    --workspace "$workspace" \
-    --model "$resolved" \
-    --profile "$profile"
+  if command -v timeout >/dev/null 2>&1; then
+    timeout --signal=TERM "${timeout_s}s" \
+      "$repo_root/scripts/run-agentic-model-smoke.sh" \
+      --fixture "$fixture" \
+      --workspace "$workspace" \
+      --model "$resolved" \
+      --profile "$profile"
+  else
+    "$repo_root/scripts/run-agentic-model-smoke.sh" \
+      --fixture "$fixture" \
+      --workspace "$workspace" \
+      --model "$resolved" \
+      --profile "$profile"
+  fi
   status_code=$?
   set -e
 
   status="fail"
   if [[ "$status_code" -eq 0 ]]; then
     status="pass"
+  fi
+
+  if [[ "$status_code" -eq 124 ]]; then
+    note="${note} Timed out before producing a valid completion."
   fi
 
   results_json="$(

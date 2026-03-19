@@ -6,11 +6,12 @@ This file tracks user-visible changes in `codex-litellm`.
 `codex-litellm` now treats the LiteLLM `/responses` API as the default and only forward path for current release work. The `0.115.0` line stays focused on agentic models that can complete Codex-style tool loops on `/responses`. `vercel/deepseek-v3.2-thinking` remains a known blocker on that path: the current LiteLLM/Vercel bridge still rejects tool-use follow-up turns with a missing `reasoning_content` error, so DeepSeek is documented as incompatible on `/responses` until that provider-side behavior changes or we add a deliberate fallback path.
 
 The repo now also carries a public smoke bench and published public-facing results. That bench resolves live gateway model IDs at runtime, sanitizes private route segments before writing committed output, and currently shows:
-- pass: `vercel/minimax-m2.5`
-- pass: `vercel/glm-5-turbo`
-- pass: `vercel/claude-haiku-4.5`
+- pass: `vercel/minimax-m2.7-highspeed`
+- pass: `vercel/gemini-3.1-pro-preview`
 - fail: `vercel/deepseek-v3.2-thinking`
-- fail: `vercel/grok-4.1-fast-reasoning`
+- fail: `vercel/glm-5-turbo`
+- fail: `vercel/kimi-k2.5`
+- fail: `vercel/grok-4.20-reasoning-beta`
 
 ### Highlights
 - Kept the `0.115.0` upstream refresh as the active release line and tightened the patchset around the LiteLLM `/responses` runtime.
@@ -18,6 +19,7 @@ The repo now also carries a public smoke bench and published public-facing resul
 - Documented the DeepSeek `/responses` blocker as a real provider-bridge issue, not an ambiguous model-quality failure.
 - Updated operator docs and release notes so future publishes treat `/responses` as the default path forward.
 - Added a public smoke bench and moved the README toward current live results, economics, and reproducible user-facing guidance.
+- Refreshed the bench to current live slugs on this gateway: MiniMax M2.7 highspeed, Gemini 3.1 Pro Preview, GLM-5 turbo, Kimi K2.5, DeepSeek V3.2 Thinking, and Grok 4.20 reasoning beta.
 
 ### Detailed Changes
 - runtime: added explicit model metadata for `vercel/minimax-m2.5`, `vercel/kimi-k2.5`, and `vercel/deepseek-v3.2-thinking` in the maintained `0.115.0` patchset.

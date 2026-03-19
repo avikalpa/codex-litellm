@@ -41,12 +41,12 @@ Last updated: 2026-03-19
   - `mini-web` for lightweight HTML/CSS/UI edits
   - `python-cli` for CLI + README + test updates
 - Current live results on `mini-web`:
-  - `vercel/minimax-m2.5`: pass
-  - `vercel/kimi-k2.5`: pass
-  - `vercel/glm-5-turbo`: pass after gateway fix
-  - `vercel/claude-haiku-4.5`: pass on the stricter bench
+  - `vercel/minimax-m2.7-highspeed`: pass after a stream retry
+  - `vercel/gemini-3.1-pro-preview`: pass, but leaked internal planning chatter into the assistant stream
+  - `vercel/glm-5-turbo`: fails the stricter bench by timing out before valid completion
+  - `vercel/kimi-k2.5`: fails the stricter bench by falsely declaring success without a repo diff
   - `vercel/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
-  - `vercel/grok-4.1-fast-reasoning`: fails the stricter bench on this endpoint before producing a repo edit
+  - `vercel/grok-4.20-reasoning-beta`: fails the stricter bench after rate limiting before a repo edit
 - Current live result on `python-cli`:
   - `vercel/minimax-m2.5`: pass on a non-UI repo shape
 - Direct backend probes against `https://litellm.example.com/v1/responses` narrowed the DeepSeek failure:
@@ -78,6 +78,13 @@ Last updated: 2026-03-19
 - committed public result snapshot:
   - `benchmarks/public-smoke-results.md`
   - `benchmarks/public-smoke-results.json`
+- current gateway inventory already exposes all currently tracked target families:
+  - MiniMax
+  - GLM-5
+  - Kimi
+  - DeepSeek
+  - Gemini 3.1 Pro Preview
+  - Grok 4.20
 - Earlier non-agentic schema failure before tool normalization:
   - `logs/model-test-vercel_gpt-oss-120b-0.115.0-postfix.log`
 

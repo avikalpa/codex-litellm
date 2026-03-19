@@ -12,6 +12,7 @@ Families:
   kimi
   claude-haiku
   claude-sonnet
+  gemini-pro
   glm
   grok-fast
 
@@ -179,11 +180,14 @@ resolve_family_model() {
     claude-sonnet)
       pattern='claude-sonnet'
       ;;
+    gemini-pro)
+      pattern='gemini-3\.1-pro-preview|gemini-3-pro'
+      ;;
     glm)
       pattern='(^|[/-])glm'
       ;;
     grok-fast)
-      pattern='grok.*fast.*reasoning|grok.*code.*fast'
+      pattern='grok.*fast.*reasoning|grok.*code.*fast|grok-4\.20-reasoning-beta'
       ;;
     *)
       echo "unknown family: $family" >&2
