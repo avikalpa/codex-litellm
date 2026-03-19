@@ -2295,7 +2295,7 @@ index 53b33bc4e..291d08baf 100644
  /// Convert the client version string to a whole version string (e.g. "1.2.3-alpha.4" -> "1.2.3").
  pub fn client_version_to_whole() -> String {
 diff --git a/codex-rs/core/src/models_manager/model_info.rs b/codex-rs/core/src/models_manager/model_info.rs
-index adf82b8e8..2579d822c 100644
+index adf82b8e8..9d86bb274 100644
 --- a/codex-rs/core/src/models_manager/model_info.rs
 +++ b/codex-rs/core/src/models_manager/model_info.rs
 @@ -4,6 +4,8 @@ use codex_protocol::openai_models::ModelInfo;
@@ -2318,7 +2318,7 @@ index adf82b8e8..2579d822c 100644
      warn!("Unknown model {slug} is used. This will use fallback model metadata.");
      ModelInfo {
          slug: slug.to_string(),
-@@ -94,6 +100,93 @@ pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
+@@ -94,6 +100,99 @@ pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
      }
  }
  
@@ -2342,6 +2342,12 @@ index adf82b8e8..2579d822c 100644
 +            slug,
 +            "GLM-5",
 +            "Agentic GLM-5 coding model for tool-using repository tasks.",
++            18,
++        )),
++        "grok-4.1-fast-reasoning" => Some(known_agentic_model(
++            slug,
++            "Grok 4.1 Fast Reasoning",
++            "Economical Grok fast reasoning model for Codex-style tool loops.",
 +            18,
 +        )),
 +        "kimi-k2.5" => Some(known_agentic_model(
@@ -2413,10 +2419,10 @@ index adf82b8e8..2579d822c 100644
      match slug {
          "gpt-5.2-codex" | "exp-codex-personality" => Some(ModelMessages {
 diff --git a/codex-rs/core/src/models_manager/model_info_tests.rs b/codex-rs/core/src/models_manager/model_info_tests.rs
-index 27bac8d70..959fa5226 100644
+index 27bac8d70..7db3d3d58 100644
 --- a/codex-rs/core/src/models_manager/model_info_tests.rs
 +++ b/codex-rs/core/src/models_manager/model_info_tests.rs
-@@ -37,3 +37,53 @@ fn reasoning_summaries_override_false_is_noop_when_model_is_false() {
+@@ -37,3 +37,63 @@ fn reasoning_summaries_override_false_is_noop_when_model_is_false() {
  
      assert_eq!(updated, model);
  }
@@ -2456,6 +2462,16 @@ index 27bac8d70..959fa5226 100644
 +    let model = model_info_from_slug("vercel/glm-5-turbo");
 +
 +    assert_eq!(model.display_name, "GLM-5");
++    assert!(!model.used_fallback_model_metadata);
++    assert_eq!(model.default_reasoning_level, Some(ReasoningEffort::Medium));
++    assert_eq!(model.visibility, ModelVisibility::List);
++}
++
++#[test]
++fn known_grok_fast_model_uses_tuned_metadata_instead_of_fallback() {
++    let model = model_info_from_slug("vercel/grok-4.1-fast-reasoning");
++
++    assert_eq!(model.display_name, "Grok 4.1 Fast Reasoning");
 +    assert!(!model.used_fallback_model_metadata);
 +    assert_eq!(model.default_reasoning_level, Some(ReasoningEffort::Medium));
 +    assert_eq!(model.visibility, ModelVisibility::List);

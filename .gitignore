@@ -6,6 +6,7 @@ dist/
 litellm/
 reports/
 test-workspace/
+test-workspace-*/
 test-workspace.bak.*/
 test-workspace.mini/
 test-workspace.pre-*/

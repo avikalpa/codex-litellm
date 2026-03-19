@@ -43,9 +43,10 @@ Last updated: 2026-03-19
 - Current live results on `mini-web`:
   - `vercel/minimax-m2.5`: pass
   - `vercel/kimi-k2.5`: pass
+  - `vercel/glm-5-turbo`: pass after gateway fix
+  - `vercel/claude-haiku-4.5`: pass on the stricter bench
   - `vercel/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
-  - `vercel/claude-haiku-4.5`: fails the stricter smoke gate because it still returns without a repo edit
-  - `vercel/glm-5-turbo`: fails at the gateway because the resolved backend model is missing, then retries into rate limits
+  - `vercel/grok-4.1-fast-reasoning`: fails the stricter bench on this endpoint before producing a repo edit
 - Current live result on `python-cli`:
   - `vercel/minimax-m2.5`: pass on a non-UI repo shape
 - Direct backend probes against `https://litellm.example.com/v1/responses` narrowed the DeepSeek failure:
@@ -74,6 +75,9 @@ Last updated: 2026-03-19
 - `logs/model-test-vercel_kimi-k2.5-mini-web-20260318-192519.log`
 - `logs/model-test-vercel_minimax-m2.5-python-cli-20260318-192647.log`
 - current isolated reruns on gateway-discovered model IDs are saved under `logs/`
+- committed public result snapshot:
+  - `benchmarks/public-smoke-results.md`
+  - `benchmarks/public-smoke-results.json`
 - Earlier non-agentic schema failure before tool normalization:
   - `logs/model-test-vercel_gpt-oss-120b-0.115.0-postfix.log`
 

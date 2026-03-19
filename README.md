@@ -1,54 +1,69 @@
 # codex-litellm
 
-`codex-litellm` is the Codex CLI, patched to run against a LiteLLM backend.
+`codex-litellm` is upstream Codex CLI with a maintained LiteLLM patchset.
 
-It keeps the upstream Codex agent workflow, but lets you use models from multiple providers through one gateway.
+It keeps the Codex agent loop, but lets you run it against agentic models from multiple providers through one LiteLLM gateway.
 
 - Software license: Apache-2.0
 - Documentation license: CC BY 4.0
 - Current upstream base: `rust-v0.115.0`
+- Default runtime path: LiteLLM `/responses`
 
-## Why Use It
+## Why This Exists
 
-Use `codex-litellm` if you want Codex-style repo editing and tool use, but you do not want to be limited to OpenAI-hosted models.
+Official Codex is the right path when you want the official OpenAI-hosted harness.
 
-It is built for:
+`codex-litellm` exists for a different use case:
 - one Codex CLI talking to many providers through LiteLLM
-- agentic coding models that can search, edit, run commands, and finish cleanly
-- staying close to upstream Codex instead of becoming a permanent fork
+- agentic coding models that can inspect a repo, use tools, edit files, and stop cleanly
+- cheaper model experimentation without giving up the Codex workflow
+- a maintained patchset that stays close to upstream instead of becoming a permanent fork
+
+## What Changed Recently
+
+This is the user-facing changelog for the current line.
+
+### `0.115.0` line
+- LiteLLM `/responses` is now the default and intended path forward.
+- `codex-litellm` uses the normal `~/.codex` home and keeps its remembered model state under a dedicated hidden profile so plain `codex` does not get clobbered.
+- The smoke harness is stricter now: a model does not pass unless it makes a real repo edit and then finalizes.
+- The public smoke bench is now part of the repo so you can run the same basic checks against your own endpoint.
+- DeepSeek remains a known blocker on `/responses` because some tool-use follow-up turns still fail with missing `reasoning_content`.
 
 ## What Works Best Today
 
-`codex-litellm` is agentic-first and the supported path is LiteLLM `/responses`.
+`codex-litellm` is agentic-first. Non-agentic models are deprecated for primary use.
 
-Current known status on `/responses`:
+The practical recommendation today is:
+- start with MiniMax or Kimi
+- try GLM, Claude Haiku, or Grok fast reasoning only after your own endpoint proves them on the smoke bench
+- do not spend premium-model money through a weak bridge path if the official provider path is available
+
+Why this matters:
+- the public cares about benchmark screenshots
+- the real product question is whether the model can finish Codex-style repo work
+- the project optimizes for agent loops, not for making every expensive flagship model a good buy through LiteLLM
+
+## Current Live Smoke Status
+
+These statuses come from the repo's basic smoke bench on a LiteLLM `/responses` gateway.
+
 - green: `vercel/minimax-m2.5`
 - green: `vercel/kimi-k2.5`
-- blocked: `vercel/deepseek-v3.2-thinking`
+- green on the current public bench: `vercel/glm-5-turbo`
+- green on the current public bench: `vercel/claude-haiku-4.5`
+- red: `vercel/deepseek-v3.2-thinking`
+- red on the current public bench: `vercel/grok-4.1-fast-reasoning`
 
-DeepSeek is currently blocked because the LiteLLM/Vercel bridge rejects some tool-use follow-up turns with missing `reasoning_content`.
+Interpretation:
+- MiniMax is the best current value path for Codex-style editing.
+- Kimi is also a strong verified route.
+- DeepSeek is still blocked on the current LiteLLM `/responses` bridge.
+- GLM was fixed at the gateway and now passes the current public bench on this endpoint.
+- Haiku now passes the current public bench on this endpoint.
+- Grok fast is still an economics-oriented route, but on this endpoint it failed the current smoke bench before producing a repo edit.
 
-Non-agentic models are deprecated. They may still run, but they are not the product center and are not release gates.
-
-## Choose A Model First
-
-Start with agentic models.
-
-Best current verified starting points for `codex-litellm` are:
-- `vercel/minimax-m2.5`
-- `vercel/kimi-k2.5`
-
-Strong next models to try, if your LiteLLM gateway exposes good routes for them, are:
-- `vercel/claude-haiku-4.5`
-- `glm-5` if your LiteLLM gateway exposes an agentic GLM route
-
-Use those before trying frontier-priced models.
-
-Practical rule:
-- if you want maximum value for money inside `codex-litellm`, start with MiniMax, Kimi, Haiku, or GLM-class agentic models
-- if you intend to spend premium-tier tokens on an expensive flagship model, you may get better value from the official provider or official Codex path instead of paying bridge overhead for a generic LiteLLM route
-
-This project is optimized for good agent loops on a wide model surface, not for making the most expensive models economically attractive.
+See the committed public bench output in `benchmarks/public-smoke-results.md`.
 
 ## Install
 
@@ -56,23 +71,21 @@ This project is optimized for good agent loops on a wide model surface, not for 
 npm install -g @avikalpa/codex-litellm
 ```
 
-This installs the command:
+This installs:
 
 ```bash
 codex-litellm
 ```
 
-The npm package downloads the correct prebuilt binary for your platform from GitHub Releases.
+The npm package downloads a prebuilt binary from GitHub Releases for your platform.
 
 ## Quick Start
 
-Use the normal Codex home.
-
-Over plain upstream Codex, `codex-litellm` should only need two extra inputs:
+Use the normal Codex home. `codex-litellm` should only need two extra inputs over plain Codex:
 - your LiteLLM `/v1` base URL
 - your LiteLLM API key
 
-The intended default is to keep those in `~/.codex/.env`:
+Put them in `~/.codex/.env`:
 
 ```bash
 mkdir -p ~/.codex
@@ -82,46 +95,7 @@ LITELLM_API_KEY=your-litellm-api-key
 EOF2
 ```
 
-If you want a default model for `codex-litellm`, add it under its dedicated
-profile so plain `codex` does not get its model selection overwritten:
-
-```bash
-cat > ~/.codex/config.toml <<'EOF2'
-[profiles.codex-litellm]
-model = "vercel/minimax-m2.5"
-EOF2
-```
-
-Then start the CLI:
-
-```bash
-codex-litellm
-```
-
-One-shot execution:
-
-```bash
-codex-litellm exec "Summarize this repository"
-```
-
-Pick a model explicitly:
-
-```bash
-codex-litellm exec "Refactor this function" --model vercel/minimax-m2.5
-```
-
-## Recommended Setup
-
-Default behavior should work directly with your normal `~/.codex` directory.
-
-That is the path we care about most.
-
-`codex-litellm` automatically uses the hidden `codex-litellm` profile for its
-remembered model state, so it does not clobber plain `codex` model state in
-the same home directory.
-
-If you prefer storing the LiteLLM endpoint in `config.toml` instead of
-`~/.codex/.env`, use the built-in provider override shape:
+Then point the built-in `litellm` provider at `/responses` in `~/.codex/config.toml`:
 
 ```toml
 [model_providers.litellm]
@@ -129,139 +103,159 @@ name = "LiteLLM"
 base_url = "http://localhost:4000/v1"
 env_key = "LITELLM_API_KEY"
 wire_api = "responses"
+
+[profiles.codex-litellm]
+model = "vercel/minimax-m2.5"
 ```
 
-Keep the API key in `~/.codex/.env` as `LITELLM_API_KEY` unless you have a very
-specific reason not to. That keeps the shared config file cleaner and avoids
-teaching users to commit secrets to TOML.
-
-Use a separate `CODEX_HOME` only when you are doing isolated debugging or development work.
-
-If a setup requires a special debug-only home to work, treat that as a bug, not the intended user path.
-
-## Model Slugs
-
-The exact slugs come from your LiteLLM gateway inventory.
-
-Check them with:
+Start the CLI:
 
 ```bash
-curl http://localhost:4000/v1/models | jq '.data[].id'
+codex-litellm
 ```
 
-Typical examples look like:
+Or run one-shot commands:
+
+```bash
+codex-litellm exec "Summarize this repository"
+codex-litellm exec "Refactor this function" --model vercel/minimax-m2.5
+```
+
+## Model Selection
+
+If you want the best chance of a clean first experience:
 - `vercel/minimax-m2.5`
 - `vercel/kimi-k2.5`
+
+If you want cheaper experimentation after the basics work:
 - `vercel/claude-haiku-4.5`
-- `openrouter/claude-sonnet-4.6`
-- `openrouter/deepseek-v3.2-thinking`
+- `vercel/glm-5-turbo`
+- `vercel/grok-4.1-fast-reasoning`
 
-Do not assume a model is a good fit just because it appears on `/v1/models`.
+If you want a warning before wasting money:
+- do not assume expensive frontier models are automatically the best value through LiteLLM
+- if you are about to run a premium model through a bridge layer only to get generic tool behavior, you are often better off with the official provider harness
+- `codex-litellm` shines when paired with strong, efficient, agentic models
 
-For `codex-litellm`, the important question is whether the model can:
-- use tools correctly
-- edit the repo instead of wandering
-- stop after the edit and produce a final answer
+## Run The Same Smoke Bench We Use
 
-That is why model selection matters more here than in a plain chat UI.
+The repository now includes a public smoke bench so anyone can test their own LiteLLM endpoint.
+
+What it does:
+- resolves live model IDs from your gateway inventory
+- runs a basic Codex-style edit task on a small fixture repo
+- requires a real repo diff before calling the run a pass
+- publishes sanitized results without exposing private route segments
+
+Run it:
+
+```bash
+scripts/run-public-smoke-bench.sh --profile ~/.codex
+```
+
+Current focus models in that bench:
+- MiniMax
+- GLM
+- Claude Haiku
+- DeepSeek
+- Grok fast reasoning
+
+Public result files:
+- `benchmarks/public-smoke-results.md`
+- `benchmarks/public-smoke-results.json`
+
+The exact route chosen for each family is discovered from your LiteLLM `/v1/models` inventory at runtime.
 
 ## Good First Commands
 
-Ask for a repo change:
+UI change:
 
 ```bash
 codex-litellm exec "Change all primary buttons to pill-shaped gradient buttons" --model vercel/minimax-m2.5
 ```
 
-Ask for code review:
+Code review:
 
 ```bash
 codex-litellm exec "Review the last set of changes for bugs and regressions" --model vercel/kimi-k2.5
 ```
 
-Use the interactive TUI:
+Bugfix plus test:
+
+```bash
+codex-litellm exec "Find why this test is failing, fix it, and update the test if needed" --model vercel/minimax-m2.5
+```
+
+CLI change:
+
+```bash
+codex-litellm exec "Add a --verbose flag, update README usage, and add a test" --model vercel/grok-4.1-fast-reasoning
+```
+
+Interactive session:
 
 ```bash
 codex-litellm --model vercel/minimax-m2.5
 ```
 
-## Common Pitfalls
-
-- Do not start with non-agentic models. They often fail mid-loop, never finalize, or burn tokens on weak tool behavior.
-- Do not assume DeepSeek is ready just because the slug exists. It is currently a known bad path for release-grade `/responses` use.
-- Do not overpay for premium models unless you have a concrete reason. `codex-litellm` is best when paired with strong-but-efficient agentic models.
-- Do not build your workflow around a custom debug `CODEX_HOME`. The intended path is the normal `~/.codex` directory.
-
 ## Semantic Cache
 
-If your LiteLLM deployment supports semantic caching, use it.
+If your LiteLLM deployment supports semantic cache, use it.
 
-LiteLLM supports semantic cache lookup with an embedding model. In practice, you should choose a cheap embedding model so cache lookup cost stays negligible relative to the main model call.
+The cheap way to do this is to back the cache lookup with a low-cost embedding model. That keeps cache lookup cost close to zero relative to a full reasoning-model turn.
 
-If your gateway exposes a Gemini embedding route, that is usually a good default because it is materially cheaper than burning another full reasoning-model round trip for repeated prompts.
-
-Example slug shape:
+A good example shape is:
 - `vercel/gemini-embedding-001`
 
-The exact cache backend and embedding model setup belongs in your LiteLLM deployment, not in `codex-litellm` itself.
+The cache backend belongs in your LiteLLM deployment, not in `codex-litellm`, but the user outcome is simple:
+- lower repeat-call cost
+- better economics for iterative Codex loops
+- almost-zero marginal cost for cache probes when the embedding route is cheap
+
+## Common Pitfalls
+
+- Do not start with non-agentic models.
+- Do not assume `/v1/models` means a route is release-ready for Codex-style tasks.
+- Do not assume DeepSeek is safe on `/responses` yet.
+- Do not build your workflow around a custom debug `CODEX_HOME`; the intended path is normal `~/.codex`.
+- Do not keep burning tokens on premium models through a weak bridge path if the official harness would be better.
 
 ## Troubleshooting
 
 If a model behaves badly:
 
-1. Check that the LiteLLM gateway is reachable.
-2. Check that the model slug exists on `/v1/models`.
-3. Retry with a known-good agentic model like MiniMax or Kimi.
-4. If the failure is model-specific, capture logs before changing code.
-
-If a model is expensive and still underperforms:
-
-1. Stop burning tokens on it through a weak bridge path.
-2. Try a cheaper verified agentic model first.
-3. If you truly need that premium model, consider using the official harness for that provider instead.
+1. Check that your LiteLLM gateway is reachable.
+2. Check that the slug exists on `/v1/models`.
+3. Run `scripts/run-public-smoke-bench.sh --profile ~/.codex`.
+4. Retry with MiniMax or Kimi before blaming the Codex patchset.
 
 If install fails:
 
-1. Verify GitHub Releases is reachable from the machine.
+1. Verify GitHub Releases is reachable.
 2. Re-run `npm install -g @avikalpa/codex-litellm`.
 3. If your platform is unsupported, build from source.
 
-If the binary is missing after install:
-
-```bash
-npm install -g @avikalpa/codex-litellm
-```
-
 ## Project Direction
 
-This project is intentionally narrow.
+The goal is not to outgrow Codex.
 
-The goal is not to reinvent Codex. The goal is to keep a maintained patchset that makes upstream Codex work well with LiteLLM, provider diversity, and real agentic models.
-
-That means the project focuses on:
-- LiteLLM compatibility
-- provider and model quirks
-- agentic model validation
-- minimal release telemetry
-- keeping the patchset portable to newer upstream stable tags
+The goal is to keep upstream Codex usable over LiteLLM while staying honest about:
+- provider quirks
+- model quirks
+- telemetry and reproducibility
+- benchmark claims versus actual repo-edit performance
+- portability of the patchset to the next upstream stable tag
 
 ## For Developers
 
-The user-facing docs stop here. Operator and maintenance docs live in:
+User-facing docs stop here. Operator docs live in:
 - `AGENTS.md`
 - `agent_docs/PUBLISHING.md`
 - `agent_docs/CURRENT_TASK.md`
 - `agent_docs/MODEL_BEHAVIOR_TESTS.md`
-
-Local development uses the upstream checkout in `codex/`, but releases are built on GitHub Actions and published from CI.
+- `agent_docs/CHANGELOG.md`
 
 ## Licensing
 
 - Software, patches, build scripts, package metadata, and shipped artifacts: `Apache-2.0`
-- Documentation and maintenance docs: `CC BY 4.0`
-- Upstream base: `openai/codex` under `Apache-2.0`
-
-See:
-- `LICENSE`
-- `LICENSE-docs-CC-BY-4.0.txt`
-- `NOTICE`
+- Documentation and prose in `README.md`, `AGENTS.md`, and `agent_docs/`: `CC BY 4.0`

@@ -56,3 +56,4 @@ These are the required live smoke tests before push or release.
 - Runner helpers:
   - `./scripts/run-agentic-model-smoke.sh --fixture <fixture> --model <slug> --profile /home/pi/.codex-litellm-debug`
   - `./scripts/run-agentic-matrix.sh <fixture> /home/pi/.codex-litellm-debug`
+  - `./scripts/run-public-smoke-bench.sh --profile ~/.codex`

@@ -3,7 +3,7 @@
 set -euo pipefail
 
 fixture="${1:-mini-web}"
-profile="${2:-/home/pi/.codex-litellm-debug}"
+profile="${2:-$HOME/.codex}"
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 failures=()
