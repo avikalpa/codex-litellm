@@ -83,6 +83,7 @@ echo "model=$model"
 echo "workspace=$workspace"
 echo "log=$log_path"
 
+set +e
 (
   cd "$repo_root/$workspace"
   if [[ -n "$profile" ]]; then
@@ -93,4 +94,11 @@ echo "log=$log_path"
   echo
   echo "git diff --stat"
   git diff --stat
+  if git diff --quiet --exit-code; then
+    echo "Smoke test failed: model returned without making a repo edit." >&2
+    exit 2
+  fi
 ) | tee "$log_path"
+cmd_status=${PIPESTATUS[0]}
+set -e
+exit "$cmd_status"

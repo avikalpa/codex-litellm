@@ -12,9 +12,12 @@
 - `gpt-5.3-codex`
 - `claude-sonnet-4.6`
 - `claude-opus-4.6`
+- `claude-haiku-4.5`
 - `gemini-3.1-pro-preview`
 - `gemini-3-pro`
 - `gemini-3-flash`
+- `glm-5`
+- `glm-5-turbo`
 - `grok-4.1-fast-reasoning`
 - `deepseek-v3.2-thinking`
 - `minimax-m2.5`
@@ -33,6 +36,15 @@ These are not the whole allowlist. They are the current mandatory live checks be
 - Artificial Analysis agentic benchmark pages
 - LiteLLM gateway `/v1/models` inventory
 - real `codex-litellm` smoke tests
+
+## Current `/responses` Reality
+- Green:
+  - `vercel/minimax-m2.5`
+  - `vercel/kimi-k2.5`
+- Red:
+  - `vercel/deepseek-v3.2-thinking` because the current LiteLLM `/responses` bridge still rejects some tool-use follow-up turns with missing `reasoning_content`
+  - `vercel/claude-haiku-4.5` because it still fails to produce reliable repo edits in our current smoke harness
+  - `vercel/glm-5-turbo` because the current gateway route resolves to a missing backend model and then retries into rate limits
 
 ## Refresh Rules
 - Refresh evidence before changing the allowlist.

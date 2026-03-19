@@ -49,6 +49,18 @@ if [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
   fi
 fi
 
+if [[ "$TARGET" == "aarch64-unknown-linux-gnu" ]] && [[ "$USE_CROSS" == "1" || "$USE_CROSS" == "true" ]]; then
+  # The upstream release profile is tuned for size, but fat LTO + single-codegen
+  # cross-builds routinely get SIGKILLed on GitHub's linux-arm64 runner path.
+  export CARGO_PROFILE_RELEASE_LTO="${CARGO_PROFILE_RELEASE_LTO:-thin}"
+  export CARGO_PROFILE_RELEASE_CODEGEN_UNITS="${CARGO_PROFILE_RELEASE_CODEGEN_UNITS:-4}"
+  if [[ -n "${CROSS_CONTAINER_INHERITS:-}" ]]; then
+    export CROSS_CONTAINER_INHERITS="${CROSS_CONTAINER_INHERITS},CARGO_PROFILE_RELEASE_LTO,CARGO_PROFILE_RELEASE_CODEGEN_UNITS"
+  else
+    export CROSS_CONTAINER_INHERITS="CARGO_PROFILE_RELEASE_LTO,CARGO_PROFILE_RELEASE_CODEGEN_UNITS"
+  fi
+fi
+
 if [[ "$TARGET" == "x86_64-unknown-illumos" ]]; then
   export CFLAGS_x86_64_unknown_illumos="${CFLAGS_x86_64_unknown_illumos:-} -D__illumos__"
   export CFLAGS="${CFLAGS:-} -D__illumos__"

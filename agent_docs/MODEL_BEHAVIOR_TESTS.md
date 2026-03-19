@@ -29,6 +29,7 @@ These are the required live smoke tests before push or release.
 - After the edit, it terminates with a final assistant reply.
 - Reasoning should render as reasoning, not as plain assistant chatter.
 - Endless post-edit read-only exploration is a failure.
+- A smoke run that returns a final answer without a non-empty `git diff` is a hard failure.
 
 ## Failure Handling
 - Save the rollout/session logs.
@@ -50,6 +51,8 @@ These are the required live smoke tests before push or release.
   - `vercel/deepseek-v3.2-thinking`
   - `vercel/minimax-m2.5`
   - `vercel/kimi-k2.5`
+  - `vercel/claude-haiku-4.5`
+  - `vercel/glm-5-turbo`
 - Runner helpers:
   - `./scripts/run-agentic-model-smoke.sh --fixture <fixture> --model <slug> --profile /home/pi/.codex-litellm-debug`
   - `./scripts/run-agentic-matrix.sh <fixture> /home/pi/.codex-litellm-debug`

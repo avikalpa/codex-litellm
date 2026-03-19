@@ -1,6 +1,6 @@
 # Current Task — 0.115.0 Upstream Refresh
 
-Last updated: 2026-03-18
+Last updated: 2026-03-19
 
 ## TL;DR
 - `codex/` is aligned to upstream `rust-v0.115.0` at commit `f028679a`.
@@ -31,6 +31,10 @@ Last updated: 2026-03-18
   - keep reducing low-value exploration on weaker agentic models
   - keep model metadata aligned with real provider behavior
   - keep telemetry ahead of the next regression
+- The current release blocker is operational, not behavioral:
+  - GitHub Actions `linux-arm64` release builds are getting SIGKILLed under the upstream `fat` LTO / single-codegen release profile
+  - local fix is now in `build.sh`: cross-built `aarch64-unknown-linux-gnu` releases use `thin` LTO and `codegen-units=4`
+  - that fix still needs to be released from a fresh tag because the currently running release predates it
 
 ## Research Follow-Up
 - The new fixture-based harness now covers more than `calibre-web`:
@@ -40,6 +44,8 @@ Last updated: 2026-03-18
   - `vercel/minimax-m2.5`: pass
   - `vercel/kimi-k2.5`: pass
   - `vercel/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
+  - `vercel/claude-haiku-4.5`: fails the stricter smoke gate because it still returns without a repo edit
+  - `vercel/glm-5-turbo`: fails at the gateway because the resolved backend model is missing, then retries into rate limits
 - Current live result on `python-cli`:
   - `vercel/minimax-m2.5`: pass on a non-UI repo shape
 - Direct backend probes against `https://litellm.example.com/v1/responses` narrowed the DeepSeek failure:
@@ -63,10 +69,11 @@ Last updated: 2026-03-18
 - current passing run after porting the post-edit guard onto the live `exec_command` path:
   - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix11.log`
 - new fixture-based research runs:
-  - `logs/model-test-vercel_deepseek-v3.2-thinking-mini-web-20260318-192213.log`
-  - `logs/model-test-vercel_minimax-m2.5-mini-web-20260318-192400.log`
-  - `logs/model-test-vercel_kimi-k2.5-mini-web-20260318-192519.log`
-  - `logs/model-test-vercel_minimax-m2.5-python-cli-20260318-192647.log`
+- `logs/model-test-vercel_deepseek-v3.2-thinking-mini-web-20260318-192213.log`
+- `logs/model-test-vercel_minimax-m2.5-mini-web-20260318-192400.log`
+- `logs/model-test-vercel_kimi-k2.5-mini-web-20260318-192519.log`
+- `logs/model-test-vercel_minimax-m2.5-python-cli-20260318-192647.log`
+- current isolated reruns on gateway-discovered model IDs are saved under `logs/`
 - Earlier non-agentic schema failure before tool normalization:
   - `logs/model-test-vercel_gpt-oss-120b-0.115.0-postfix.log`
 
@@ -83,14 +90,16 @@ Last updated: 2026-03-18
 - `cargo test -p codex-core blocks_read_only_exec_commands_after_successful_mutating_exec_command -- --nocapture`
 - `cargo test -p codex-core exec_output_redirection_counts_as_mutating_shell_command -- --nocapture`
 - `cargo test -p codex-core known_minimax_model_uses_tuned_metadata_instead_of_fallback -- --nocapture`
+- `cargo test -p codex-core known_claude_haiku_model_uses_tuned_metadata_instead_of_fallback -- --nocapture`
+- `cargo test -p codex-core known_glm_model_uses_tuned_metadata_instead_of_fallback -- --nocapture`
 - `cargo build --locked --bin codex`
+- `TARGET=aarch64-unknown-linux-gnu USE_CROSS=1 BUILD_SH_DRY_RUN=1 bash -x ./build.sh`
 
 ## Next Step
-- Keep runtime metadata for `vercel/kimi-k2.5` and `vercel/deepseek-v3.2-thinking` in-tree so they do not silently fall back.
-- Decide whether to:
-  - port the old LiteLLM chat-completions fallback for DeepSeek thinking+tools, or
-  - keep DeepSeek marked as known-broken on the LiteLLM `/responses` path until upstream fixes the bridge.
-- Keep using the fixture harness, not only `calibre-web`, for agentic model research.
+- Cut a fresh release from the arm64-build fix instead of waiting on the old failed run.
+- Keep runtime metadata in-tree for curated agentic routes so they do not silently fall back.
+- Keep DeepSeek marked as known-broken on the LiteLLM `/responses` path until the bridge is fixed or a fallback path is reintroduced.
+- Keep using the stricter fixture harness, not only `calibre-web`, for agentic model research.
 - Deprecated non-agentic models are not release gates anymore; only re-run them when explicitly debugging compatibility.
 
 ## Handoff Rule
