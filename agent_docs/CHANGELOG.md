@@ -25,6 +25,8 @@ Current public-facing model picture on this gateway:
 - Restored Gemini 3.1 Pro Preview and Grok 4.20 to the research/watchlist lane instead of dropping them from testing entirely.
 - Added stricter `python-cli` fixture validation so a model must change the CLI file, README, and tests to count as a pass.
 - Turned the README into a live research report with fixture methodology, model-by-model tables, and harness implications.
+- Taught the smoke helper to resolve public model slugs to the current live gateway route and to sanitize log filenames.
+- Stopped retrying hopeless `402 Payment Required` responses as if they were transient stream disconnects.
 
 ### Detailed Changes
 - upstream: rebased the maintained LiteLLM patchset onto `rust-v0.116.0` and regenerated `stable-tag.patch` from that exact tag.
@@ -43,6 +45,10 @@ Current public-facing model picture on this gateway:
 - validation: the first `calibre-web` heavy-repo probes show a different boundary than the lightweight fixtures:
   - `vercel/minimax-m2.7-highspeed` still looks like the best default route, but the latest heavy probe failed under route pressure before a clean diff
   - the larger repo amplifies retry and rate-limit behavior enough that future harness work should focus on backoff and clean post-edit finalization, not only model ranking
+- validation: the latest heavy probes also exposed a separate non-model failure class:
+  - public two-segment slugs are not always enough to hit the live route, so the smoke helper now resolves them through `/v1/models`
+  - Gemini and Kimi both hit `402 Payment Required` on the current heavy probe, so those runs are gateway-billing evidence, not model-quality evidence
+- runtime: `UnexpectedStatus` retry logic is now status-aware so `402 Payment Required` fails fast instead of consuming the whole stream retry budget.
 - validation: kept DeepSeek out of the default public bench so the active green/amber/red matrix is not diluted by a known blocked route.
 - docs: rewrote `README.md` around real user experience, current model guidance, live research findings, `/responses`, economic tradeoffs, and LiteLLM semantic cache guidance.
 

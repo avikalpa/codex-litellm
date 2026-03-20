@@ -43,7 +43,16 @@ Last updated: 2026-03-20
 - initial heavier `calibre-web` probe:
   - `vercel/minimax-m2.7-highspeed`: failed under route pressure with no clean diff on the latest heavy probe
   - `vercel/glm-5-turbo`: failed under the same class of retry or 429 pressure
-  - broader heavy-repo batch was stopped early because the route signal had already become clear enough for the current README research report
+  - `vercel/grok-4.20-reasoning-beta`: failed under retry or 429 pressure on the heavy probe once routed to the live slug
+  - `vercel/gemini-3.1-pro-preview`: latest heavy probe reached the live route, but then hit `402 Payment Required`, so that result is not model-quality evidence
+  - `vercel/kimi-k2.5`: latest heavy probe hit the same `402 Payment Required` class
+  - the current heavy-repo picture is now split between real model/harness stress and temporary gateway credit exhaustion
+- smoke helper UX:
+  - `scripts/run-agentic-model-smoke.sh` now resolves public two-segment slugs to the gateway-discovered live route before the run
+  - the helper also sanitizes log filenames so private middle route segments do not leak into tracked docs or copied outputs
+- retry classification:
+  - `CodexErr::UnexpectedStatus` no longer retries every HTTP status blindly
+  - `402 Payment Required` now fails fast instead of burning the stream retry budget on hopeless reconnects
 
 ## Release Read
 - `/responses` remains the default forward path.
@@ -56,6 +65,7 @@ Last updated: 2026-03-20
 - The bench prompt is now explicit enough to force a measurable button restyle instead of inviting “already done” false passes.
 - The `python-cli` fixture now has stricter pass criteria: CLI file, README, and test file must all change.
 - Heavy-repo evidence is now starting to show the boundary between model capability and route or harness stress, especially around retries, rate limits, and clean post-edit finalization.
+- Billing exhaustion is now clearly a separate failure class from model weakness and should not be used to downgrade a model tier.
 
 ## Evidence
 - passing MiniMax smoke on `0.116.0`: current `mini-web` run recorded in local `logs/`
@@ -69,11 +79,12 @@ Last updated: 2026-03-20
 - current GLM failure with retry/rate-limit noise: latest `mini-web` run recorded in local `logs/`
 - current GLM, Grok, and Gemini strict `python-cli` failures: current runs recorded in local `logs/`
 - current heavy-repo stress failures: current runs recorded in local `logs/`
+- current heavy-probe `402 Payment Required` failures for Gemini and Kimi: current runs recorded in local `logs/`
 
 ## Remaining Work
 - let the in-flight `0.116.0` release complete on GitHub Actions
 - keep DeepSeek tracked as a blocked `/responses` route until the bridge bug is fixed
-- finish the heavier `calibre-web` matrix cleanly for Claude Haiku, Grok, Gemini, and Kimi once route noise is lower
+- finish the heavier `calibre-web` matrix cleanly for Claude Haiku, Grok, Gemini, and Kimi once route noise and billing exhaustion are no longer masking results
 - use the heavier-repo results to decide whether the next harness work should focus on retry budgeting, stronger finalize steering, or both
 
 ## Handoff Rule

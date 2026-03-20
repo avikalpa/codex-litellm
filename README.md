@@ -82,9 +82,9 @@ Current agentic shortlist on the LiteLLM `/responses` path:
 | `vercel/minimax-m2.7-highspeed` | PASS | PASS | FAIL under route pressure, no clean diff on the latest heavy probe | larger repos currently amplify retry or 429 noise | best default |
 | `vercel/claude-haiku-4.5` | PASS | PASS | not yet cleanly completed in the latest heavy probe batch | needs more large-repo evidence | best cheaper second option |
 | `vercel/glm-5-turbo` | FAIL | FAIL | FAIL | retry and 429 noise before a useful diff | research only |
-| `vercel/gemini-3.1-pro-preview` | EDITS, THEN STALLS | TIMEOUT | incomplete probe | post-edit finalization is still too weak | watchlist only |
+| `vercel/gemini-3.1-pro-preview` | EDITS, THEN STALLS | TIMEOUT | blocked by current gateway credits on the latest heavy probe | post-edit finalization is still too weak, and heavy-repo results are currently confounded by billing state | watchlist only |
 | `vercel/grok-4.20-reasoning-beta` | PASS | FAIL | incomplete probe | can look strong on light UI work, then fail to produce a qualifying diff on procedural work | watchlist only |
-| `vercel/kimi-k2.5` | FAIL | PASS | incomplete probe | behavior is fixture-sensitive; it handles procedural edits better than broad UI hunting | research only |
+| `vercel/kimi-k2.5` | FAIL | PASS | blocked by current gateway credits on the latest heavy probe | behavior is fixture-sensitive; it handles procedural edits better than broad UI hunting | research only |
 | `vercel/deepseek-v3.2-thinking` | BLOCKED | BLOCKED | not worth probing further until bridge fix | LiteLLM `/responses` tool-follow-up incompatibility | blocked on this stack |
 
 ### What The Table Actually Means
@@ -121,6 +121,7 @@ The current frontier-model debates are less about raw intelligence and more abou
 | post-edit finalization drift | `vercel/gemini-3.1-pro-preview` | strengthen "edit once, then finalize" steering after the first qualifying diff |
 | route-pressure or retry churn on larger repos | `vercel/minimax-m2.7-highspeed`, `vercel/glm-5-turbo`, `vercel/grok-4.20-reasoning-beta` | improve retry budgeting, backoff, and possibly trim exploration pressure on large repos |
 | fixture-shape sensitivity | `vercel/kimi-k2.5` | keep testing both UI-style and procedural fixtures; do not collapse judgment from one fixture only |
+| billing or route-access exhaustion | `vercel/gemini-3.1-pro-preview`, `vercel/kimi-k2.5` on the latest heavy probe | do not mistake `402 Payment Required` for model weakness; fail fast instead of retrying |
 | bridge-level incompatibility | `vercel/deepseek-v3.2-thinking` | fix LiteLLM `/responses` follow-up handling or add a model-specific fallback path |
 
 Practical conclusion:
@@ -242,6 +243,8 @@ The repository includes a public smoke bench that:
 - sanitizes private route segments before writing public output
 - runs real Codex-harness repo-edit tasks, not toy prompt checks
 - refuses to call a run a pass unless it produces a non-empty repo diff
+
+The lower-level smoke helper also resolves public two-segment slugs like `vercel/claude-haiku-4.5` to the current live gateway route before the run starts, so research does not fail just because the gateway inserted a private middle segment.
 
 Current active bench focus:
 - `vercel/minimax-m2.7-highspeed`

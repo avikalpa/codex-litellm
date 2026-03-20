@@ -19,6 +19,77 @@ workspace="test-workspace"
 profile=""
 prompt=""
 
+slug_segment_count() {
+  awk -F/ '{print NF}' <<<"$1"
+}
+
+public_log_slug() {
+  local slug="$1"
+  IFS='/' read -r -a parts <<<"$slug"
+  if [[ "${#parts[@]}" -ge 2 ]]; then
+    printf '%s_%s\n' "${parts[0]}" "${parts[${#parts[@]}-1]}"
+  else
+    printf '%s\n' "${slug//\//_}"
+  fi
+}
+
+model_family_for_slug() {
+  local slug="$1"
+  case "$slug" in
+    */deepseek*)
+      printf '%s\n' "deepseek"
+      ;;
+    */minimax*)
+      printf '%s\n' "minimax"
+      ;;
+    */kimi*)
+      printf '%s\n' "kimi"
+      ;;
+    */claude-haiku*)
+      printf '%s\n' "claude-haiku"
+      ;;
+    */claude-sonnet*)
+      printf '%s\n' "claude-sonnet"
+      ;;
+    */gemini-3.1-pro-preview|*/gemini-3-pro|*/gemini-pro*)
+      printf '%s\n' "gemini-pro"
+      ;;
+    */glm*)
+      printf '%s\n' "glm"
+      ;;
+    */grok*)
+      printf '%s\n' "grok-fast"
+      ;;
+    *)
+      return 1
+      ;;
+  esac
+}
+
+resolve_live_model_slug() {
+  local requested="$1"
+  local repo_root="$2"
+  local profile_path="$3"
+  local family=""
+  if ! family="$(model_family_for_slug "$requested")"; then
+    printf '%s\n' "$requested"
+    return 0
+  fi
+
+  if [[ "$(slug_segment_count "$requested")" -gt 2 ]]; then
+    printf '%s\n' "$requested"
+    return 0
+  fi
+
+  local resolved
+  if [[ -n "$profile_path" ]]; then
+    resolved="$("$repo_root/scripts/discover-agentic-models.sh" --profile "$profile_path" "$family")"
+  else
+    resolved="$("$repo_root/scripts/discover-agentic-models.sh" "$family")"
+  fi
+  printf '%s\n' "$resolved"
+}
+
 while [[ $# -gt 0 ]]; do
   case "$1" in
     --fixture)
@@ -71,7 +142,12 @@ if [[ -z "$prompt" ]]; then
 fi
 
 repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-safe_model="${model//\//_}"
+resolved_model="$(resolve_live_model_slug "$model" "$repo_root" "$profile")"
+if [[ "$resolved_model" != "$model" ]]; then
+  echo "resolved model $model -> $resolved_model"
+fi
+model="$resolved_model"
+safe_model="$(public_log_slug "$model")"
 log_path="$repo_root/logs/model-test-${safe_model}-${fixture}-$(date +%Y%m%d-%H%M%S).log"
 
 "$repo_root/scripts/setup-test-repo.sh" --refresh "$fixture" "$repo_root/$workspace"

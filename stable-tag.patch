@@ -3,7 +3,7 @@ index d6a13a3d4..004615fef 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
 @@ -402,7 +402,7 @@ checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
-
+ 
  [[package]]
  name = "app_test_support"
 -version = "0.0.0"
@@ -12,7 +12,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "base64 0.22.1",
 @@ -1373,7 +1373,7 @@ checksum = "e9b18233253483ce2f65329a24072ec414db782531bdbb7d0bbc4bd2ce6b7e21"
-
+ 
  [[package]]
  name = "codex-ansi-escape"
 -version = "0.0.0"
@@ -21,7 +21,7 @@ index d6a13a3d4..004615fef 100644
   "ansi-to-tui",
   "ratatui",
 @@ -1382,7 +1382,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-api"
 -version = "0.0.0"
@@ -30,7 +30,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "assert_matches",
 @@ -1412,7 +1412,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server"
 -version = "0.0.0"
@@ -39,7 +39,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "app_test_support",
 @@ -1468,7 +1468,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server-client"
 -version = "0.0.0"
@@ -48,7 +48,7 @@ index d6a13a3d4..004615fef 100644
   "codex-app-server",
   "codex-app-server-protocol",
 @@ -1489,7 +1489,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server-protocol"
 -version = "0.0.0"
@@ -57,7 +57,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "clap",
 @@ -1516,7 +1516,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server-test-client"
 -version = "0.0.0"
@@ -66,7 +66,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "clap",
 @@ -1537,7 +1537,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-apply-patch"
 -version = "0.0.0"
@@ -75,7 +75,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "assert_cmd",
 @@ -1553,7 +1553,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-arg0"
 -version = "0.0.0"
@@ -84,7 +84,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-apply-patch",
 @@ -1567,7 +1567,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-artifacts"
 -version = "0.0.0"
@@ -93,7 +93,7 @@ index d6a13a3d4..004615fef 100644
   "codex-package-manager",
   "flate2",
 @@ -1588,7 +1588,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-async-utils"
 -version = "0.0.0"
@@ -102,7 +102,7 @@ index d6a13a3d4..004615fef 100644
   "async-trait",
   "pretty_assertions",
 @@ -1598,7 +1598,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-backend-client"
 -version = "0.0.0"
@@ -111,7 +111,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-backend-openapi-models",
 @@ -1613,7 +1613,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-backend-openapi-models"
 -version = "0.0.0"
@@ -120,7 +120,7 @@ index d6a13a3d4..004615fef 100644
   "serde",
   "serde_json",
 @@ -1622,7 +1622,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-chatgpt"
 -version = "0.0.0"
@@ -129,7 +129,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "clap",
 @@ -1640,7 +1640,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cli"
 -version = "0.0.0"
@@ -138,7 +138,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "assert_cmd",
 @@ -1687,7 +1687,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-client"
 -version = "0.0.0"
@@ -147,7 +147,7 @@ index d6a13a3d4..004615fef 100644
   "async-trait",
   "bytes",
 @@ -1717,7 +1717,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cloud-requirements"
 -version = "0.0.0"
@@ -156,7 +156,7 @@ index d6a13a3d4..004615fef 100644
   "async-trait",
   "base64 0.22.1",
 @@ -1740,7 +1740,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cloud-tasks"
 -version = "0.0.0"
@@ -165,7 +165,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "async-trait",
 @@ -1770,7 +1770,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cloud-tasks-client"
 -version = "0.0.0"
@@ -174,7 +174,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "async-trait",
 @@ -1785,7 +1785,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-config"
 -version = "0.0.0"
@@ -183,7 +183,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-app-server-protocol",
 @@ -1808,7 +1808,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-connectors"
 -version = "0.0.0"
@@ -192,7 +192,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-app-server-protocol",
 @@ -1820,7 +1820,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-core"
 -version = "0.0.0"
@@ -201,7 +201,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "arc-swap",
 @@ -1937,7 +1937,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-debug-client"
 -version = "0.0.0"
@@ -210,7 +210,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "clap",
 @@ -1949,7 +1949,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-environment"
 -version = "0.0.0"
@@ -219,7 +219,7 @@ index d6a13a3d4..004615fef 100644
   "async-trait",
   "codex-utils-absolute-path",
 @@ -1960,7 +1960,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-exec"
 -version = "0.0.0"
@@ -228,7 +228,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "assert_cmd",
 @@ -2005,7 +2005,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-execpolicy"
 -version = "0.0.0"
@@ -237,7 +237,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "clap",
 @@ -2022,7 +2022,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-execpolicy-legacy"
 -version = "0.0.0"
@@ -246,7 +246,7 @@ index d6a13a3d4..004615fef 100644
   "allocative",
   "anyhow",
 @@ -2042,7 +2042,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-experimental-api-macros"
 -version = "0.0.0"
@@ -255,7 +255,7 @@ index d6a13a3d4..004615fef 100644
   "proc-macro2",
   "quote",
 @@ -2051,7 +2051,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-feedback"
 -version = "0.0.0"
@@ -264,7 +264,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-protocol",
 @@ -2063,7 +2063,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-file-search"
 -version = "0.0.0"
@@ -273,7 +273,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "clap",
 @@ -2079,7 +2079,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-git"
 -version = "0.0.0"
@@ -282,7 +282,7 @@ index d6a13a3d4..004615fef 100644
   "assert_matches",
   "once_cell",
 @@ -2095,7 +2095,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-hooks"
 -version = "0.0.0"
@@ -291,7 +291,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "chrono",
 @@ -2113,7 +2113,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-keyring-store"
 -version = "0.0.0"
@@ -300,7 +300,7 @@ index d6a13a3d4..004615fef 100644
   "keyring",
   "tracing",
 @@ -2121,7 +2121,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-linux-sandbox"
 -version = "0.0.0"
@@ -309,7 +309,7 @@ index d6a13a3d4..004615fef 100644
   "cc",
   "clap",
 @@ -2142,7 +2142,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-lmstudio"
 -version = "0.0.0"
@@ -318,7 +318,7 @@ index d6a13a3d4..004615fef 100644
   "codex-core",
   "reqwest",
 @@ -2155,7 +2155,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-login"
 -version = "0.0.0"
@@ -327,7 +327,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "base64 0.22.1",
 @@ -2182,7 +2182,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-mcp-server"
 -version = "0.0.0"
@@ -336,7 +336,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-arg0",
 @@ -2209,7 +2209,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-network-proxy"
 -version = "0.0.0"
@@ -345,7 +345,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "async-trait",
 @@ -2240,7 +2240,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-ollama"
 -version = "0.0.0"
@@ -354,7 +354,7 @@ index d6a13a3d4..004615fef 100644
   "assert_matches",
   "async-stream",
 @@ -2258,7 +2258,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-otel"
 -version = "0.0.0"
@@ -363,7 +363,7 @@ index d6a13a3d4..004615fef 100644
   "chrono",
   "codex-api",
 @@ -2289,7 +2289,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-package-manager"
 -version = "0.0.0"
@@ -372,7 +372,7 @@ index d6a13a3d4..004615fef 100644
   "fd-lock",
   "flate2",
 @@ -2309,7 +2309,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-process-hardening"
 -version = "0.0.0"
@@ -381,7 +381,7 @@ index d6a13a3d4..004615fef 100644
   "libc",
   "pretty_assertions",
 @@ -2317,7 +2317,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-protocol"
 -version = "0.0.0"
@@ -390,7 +390,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-execpolicy",
 @@ -2344,7 +2344,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-responses-api-proxy"
 -version = "0.0.0"
@@ -399,7 +399,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "clap",
 @@ -2360,7 +2360,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-rmcp-client"
 -version = "0.0.0"
@@ -408,7 +408,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "axum",
 @@ -2394,7 +2394,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-secrets"
 -version = "0.0.0"
@@ -417,7 +417,7 @@ index d6a13a3d4..004615fef 100644
   "age",
   "anyhow",
 @@ -2414,7 +2414,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-shell-command"
 -version = "0.0.0"
@@ -426,7 +426,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "base64 0.22.1",
 @@ -2434,7 +2434,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-shell-escalation"
 -version = "0.0.0"
@@ -435,7 +435,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "async-trait",
 @@ -2455,7 +2455,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-skills"
 -version = "0.0.0"
@@ -444,7 +444,7 @@ index d6a13a3d4..004615fef 100644
   "codex-utils-absolute-path",
   "include_dir",
 @@ -2464,7 +2464,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-state"
 -version = "0.0.0"
@@ -453,7 +453,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "chrono",
 @@ -2485,7 +2485,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-stdio-to-uds"
 -version = "0.0.0"
@@ -462,7 +462,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-utils-cargo-bin",
 @@ -2496,7 +2496,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-test-macros"
 -version = "0.0.0"
@@ -471,7 +471,7 @@ index d6a13a3d4..004615fef 100644
   "proc-macro2",
   "quote",
 @@ -2505,7 +2505,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-tui"
 -version = "0.0.0"
@@ -480,7 +480,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "arboard",
 @@ -2596,7 +2596,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-tui-app-server"
 -version = "0.0.0"
@@ -489,7 +489,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "arboard",
 @@ -2686,7 +2686,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-absolute-path"
 -version = "0.0.0"
@@ -498,7 +498,7 @@ index d6a13a3d4..004615fef 100644
   "dirs",
   "path-absolutize",
 @@ -2700,14 +2700,14 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-approval-presets"
 -version = "0.0.0"
@@ -506,7 +506,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "codex-protocol",
  ]
-
+ 
  [[package]]
  name = "codex-utils-cache"
 -version = "0.0.0"
@@ -515,7 +515,7 @@ index d6a13a3d4..004615fef 100644
   "lru 0.16.3",
   "sha1",
 @@ -2716,7 +2716,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-cargo-bin"
 -version = "0.0.0"
@@ -524,7 +524,7 @@ index d6a13a3d4..004615fef 100644
   "assert_cmd",
   "runfiles",
 @@ -2725,7 +2725,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-cli"
 -version = "0.0.0"
@@ -533,17 +533,17 @@ index d6a13a3d4..004615fef 100644
   "clap",
   "codex-protocol",
 @@ -2736,15 +2736,15 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-elapsed"
 -version = "0.0.0"
 +version = "0.116.0"
-
+ 
  [[package]]
  name = "codex-utils-fuzzy-match"
 -version = "0.0.0"
 +version = "0.116.0"
-
+ 
  [[package]]
  name = "codex-utils-home-dir"
 -version = "0.0.0"
@@ -552,7 +552,7 @@ index d6a13a3d4..004615fef 100644
   "dirs",
   "pretty_assertions",
 @@ -2753,7 +2753,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-image"
 -version = "0.0.0"
@@ -561,7 +561,7 @@ index d6a13a3d4..004615fef 100644
   "base64 0.22.1",
   "codex-utils-cache",
 @@ -2764,7 +2764,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-json-to-toml"
 -version = "0.0.0"
@@ -570,7 +570,7 @@ index d6a13a3d4..004615fef 100644
   "pretty_assertions",
   "serde_json",
 @@ -2773,7 +2773,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-oss"
 -version = "0.0.0"
@@ -579,7 +579,7 @@ index d6a13a3d4..004615fef 100644
   "codex-core",
   "codex-lmstudio",
 @@ -2782,7 +2782,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-pty"
 -version = "0.0.0"
@@ -588,7 +588,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "filedescriptor",
 @@ -2798,7 +2798,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-readiness"
 -version = "0.0.0"
@@ -597,7 +597,7 @@ index d6a13a3d4..004615fef 100644
   "assert_matches",
   "async-trait",
 @@ -2809,14 +2809,14 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-rustls-provider"
 -version = "0.0.0"
@@ -605,7 +605,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "rustls",
  ]
-
+ 
  [[package]]
  name = "codex-utils-sandbox-summary"
 -version = "0.0.0"
@@ -614,7 +614,7 @@ index d6a13a3d4..004615fef 100644
   "codex-core",
   "codex-protocol",
 @@ -2826,7 +2826,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-sleep-inhibitor"
 -version = "0.0.0"
@@ -623,7 +623,7 @@ index d6a13a3d4..004615fef 100644
   "core-foundation 0.9.4",
   "libc",
 @@ -2836,14 +2836,14 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-stream-parser"
 -version = "0.0.0"
@@ -631,7 +631,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "pretty_assertions",
  ]
-
+ 
  [[package]]
  name = "codex-utils-string"
 -version = "0.0.0"
@@ -640,7 +640,7 @@ index d6a13a3d4..004615fef 100644
   "pretty_assertions",
   "regex-lite",
 @@ -2851,7 +2851,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-windows-sandbox"
 -version = "0.0.0"
@@ -649,7 +649,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "base64 0.22.1",
 @@ -3056,7 +3056,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
-
+ 
  [[package]]
  name = "core_test_support"
 -version = "0.0.0"
@@ -658,7 +658,7 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "assert_cmd",
 @@ -5791,7 +5791,7 @@ checksum = "b3eede3bdf92f3b4f9dc04072a9ce5ab557d5ec9038773bf9ffcd5588b3cc05b"
-
+ 
  [[package]]
  name = "mcp_test_support"
 -version = "0.0.0"
@@ -673,7 +673,7 @@ index a7e88cd1b..a9a0ecf23 100644
 @@ -8,6 +8,10 @@ license.workspace = true
  name = "codex"
  path = "src/main.rs"
-
+ 
 +[[bin]]
 +name = "codex-litellm"
 +path = "src/main.rs"
@@ -692,20 +692,20 @@ index 698035fea..17598b206 100644
 +use std::path::Path;
  use std::path::PathBuf;
  use supports_color::Stream;
-
+ 
 @@ -42,6 +43,8 @@ mod mcp_cmd;
  #[cfg(not(windows))]
  mod wsl_paths;
-
+ 
 +const CODEX_LITELLM_PROFILE_NAME: &str = "codex-litellm";
 +
  use crate::mcp_cmd::McpCli;
-
+ 
  use codex_core::config::Config;
 @@ -607,6 +610,11 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
          subcommand,
      } = MultitoolCli::parse();
-
+ 
 +    apply_codex_litellm_defaults(
 +        current_invocation_name().as_deref(),
 +        &mut root_config_overrides,
@@ -717,7 +717,7 @@ index 698035fea..17598b206 100644
 @@ -932,6 +940,59 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
      Ok(())
  }
-
+ 
 +fn current_invocation_name() -> Option<String> {
 +    let argv0 = std::env::args_os().next()?;
 +    let file_name = Path::new(&argv0).file_name()?.to_str()?;
@@ -963,7 +963,7 @@ index eb5cb4c08..99ed510a5 100644
 -        let client =
 -            ApiCompactClient::new(transport, client_setup.api_provider, client_setup.api_auth)
 -                .with_telemetry(Some(request_telemetry));
-
+ 
          let instructions = prompt.base_instructions.text.clone();
          let input = prompt.get_formatted_input();
 -        let tools = create_tools_json_for_responses_api(&prompt.tools)?;
@@ -978,12 +978,12 @@ index eb5cb4c08..99ed510a5 100644
 +        let client =
 +            ApiCompactClient::new(transport, client_setup.api_provider, client_setup.api_auth)
 +                .with_telemetry(Some(request_telemetry));
-
+ 
          let mut extra_headers = self.build_subagent_headers();
          extra_headers.extend(build_conversation_headers(Some(
 @@ -668,6 +785,38 @@ impl Drop for ModelClientSession {
  }
-
+ 
  impl ModelClientSession {
 +    fn is_litellm_provider(provider: &codex_api::Provider) -> bool {
 +        provider.name.to_ascii_lowercase().contains("litellm")
@@ -1044,7 +1044,7 @@ index eb5cb4c08..99ed510a5 100644
 @@ -744,6 +893,31 @@ impl ModelClientSession {
          Ok(request)
      }
-
+ 
 +    fn strip_reasoning_from_responses_request(request: &mut ResponsesApiRequest) {
 +        request.reasoning = None;
 +        request
@@ -1094,7 +1094,7 @@ index eb5cb4c08..99ed510a5 100644
 -            );
              let compression = self.responses_request_compression(client_setup.auth.as_ref());
 -            let options = self.build_responses_options(turn_metadata_header, compression);
-
+ 
 -            let request = self.build_responses_request(
 +            let mut request = self.build_responses_request(
                  &client_setup.api_provider,
@@ -1134,7 +1134,7 @@ index eb5cb4c08..99ed510a5 100644
 +                )
 +                .with_telemetry(Some(request_telemetry), Some(sse_telemetry));
 +                let stream_result = client.stream_request(request.clone(), options).await;
-
+ 
 -            match stream_result {
 -                Ok(stream) => {
 -                    let (stream, _) = map_response_stream(stream, session_telemetry.clone());
@@ -1196,7 +1196,7 @@ index eb5cb4c08..99ed510a5 100644
 @@ -1353,6 +1548,12 @@ fn parse_turn_metadata_header(turn_metadata_header: Option<&str>) -> Option<Head
      turn_metadata_header.and_then(|value| HeaderValue::from_str(value).ok())
  }
-
+ 
 +fn reasoning_effort_rejected(body: &str) -> bool {
 +    let body = body.to_ascii_lowercase();
 +    body.contains("reasoning_effort")
@@ -1211,9 +1211,9 @@ index 33a1f535c..eba135fb8 100644
 --- a/codex-rs/core/src/client_common.rs
 +++ b/codex-rs/core/src/client_common.rs
 @@ -37,6 +37,11 @@ pub struct Prompt {
-
+ 
      pub base_instructions: BaseInstructions,
-
+ 
 +    /// Ephemeral request-only instruction sections appended to the base
 +    /// `instructions` field for the next provider request. These are not
 +    /// persisted in conversation history.
@@ -1221,10 +1221,10 @@ index 33a1f535c..eba135fb8 100644
 +
      /// Optionally specify the personality of the model.
      pub personality: Option<Personality>,
-
+ 
 @@ -45,6 +50,18 @@ pub struct Prompt {
  }
-
+ 
  impl Prompt {
 +    pub(crate) fn formatted_instructions(&self) -> String {
 +        let mut sections = Vec::with_capacity(1 + self.additional_instructions.len());
@@ -1240,7 +1240,7 @@ index 33a1f535c..eba135fb8 100644
 +
      pub(crate) fn get_formatted_input(&self) -> Vec<ResponseItem> {
          let mut input = self.input.clone();
-
+ 
 diff --git a/codex-rs/core/src/client_tests.rs b/codex-rs/core/src/client_tests.rs
 index 2c07b4fd1..33307cbf4 100644
 --- a/codex-rs/core/src/client_tests.rs
@@ -1270,11 +1270,11 @@ index 2c07b4fd1..33307cbf4 100644
 +use http::StatusCode;
  use pretty_assertions::assert_eq;
  use serde_json::json;
-
+ 
 @@ -27,6 +40,24 @@ fn test_model_client(session_source: SessionSource) -> ModelClient {
      )
  }
-
+ 
 +fn test_model_client_with_provider(
 +    session_source: SessionSource,
 +    provider: ModelProviderInfo,
@@ -1299,7 +1299,7 @@ index 2c07b4fd1..33307cbf4 100644
 @@ -57,6 +88,71 @@ fn test_model_info() -> ModelInfo {
      .expect("deserialize test model info")
  }
-
+ 
 +fn test_reasoning_model_info() -> ModelInfo {
 +    let mut model_info = test_model_info();
 +    model_info.supports_reasoning_summaries = true;
@@ -1371,7 +1371,7 @@ index 2c07b4fd1..33307cbf4 100644
 @@ -97,6 +193,220 @@ async fn summarize_memories_returns_empty_for_empty_input() {
      assert_eq!(output.len(), 0);
  }
-
+ 
 +#[test]
 +fn reasoning_effort_rejected_matches_litellm_gateway_error() {
 +    let body = r#"{"error":{"message":"litellm.UnsupportedParamsError: vercel_ai_gateway does not support parameters: ['reasoning_effort'], for model=openai/gpt-oss-120b.","code":"400"}}"#;
@@ -1619,7 +1619,7 @@ index 7b947249b..cd6e8c76c 100644
 +                additional_request_instructions.extend(follow_up_instructions);
                  let total_usage_tokens = sess.get_total_token_usage().await;
                  let token_limit_reached = total_usage_tokens >= auto_compact_limit;
-
+ 
 @@ -5741,13 +5746,7 @@ pub(crate) async fn run_turn(
                      if stop_outcome.should_block {
                          if let Some(continuation_prompt) = stop_outcome.continuation_prompt.clone()
@@ -1689,7 +1689,7 @@ index 7b947249b..cd6e8c76c 100644
 @@ -5949,6 +5970,10 @@ async fn run_auto_compact(
      Ok(())
  }
-
+ 
 +fn should_disable_auto_compaction(provider: &ModelProviderInfo) -> bool {
 +    !provider.is_openai()
 +}
@@ -1740,7 +1740,7 @@ index 7b947249b..cd6e8c76c 100644
 @@ -6227,6 +6257,52 @@ async fn run_sampling_request(
              return Err(err);
          }
-
+ 
 +        if !litellm_retry_state_reset_attempted
 +            && client_session.should_reset_state_after_retryable_stream_error()
 +        {
@@ -1796,7 +1796,7 @@ index 7b947249b..cd6e8c76c 100644
      last_agent_message: Option<String>,
 +    follow_up_instructions: Vec<String>,
  }
-
+ 
  /// Ephemeral per-response state for streaming a single proposed plan.
 @@ -6998,6 +7075,7 @@ async fn try_run_sampling_request(
          FuturesOrdered::new();
@@ -1865,7 +1865,7 @@ index f767c05f4..b870186e2 100644
 @@ -3780,6 +3780,39 @@ async fn handle_output_item_done_skips_image_save_message_when_save_fails() {
      assert!(!expected_saved_path.exists());
  }
-
+ 
 +#[tokio::test]
 +async fn handle_output_item_done_requests_follow_up_for_blank_assistant_message() {
 +    let (session, turn_context) = make_session_and_context().await;
@@ -1921,7 +1921,7 @@ index ee856664d..7fda53fe3 100644
 @@ -2755,6 +2755,51 @@ async fn set_model_updates_profile() -> anyhow::Result<()> {
      Ok(())
  }
-
+ 
 +#[tokio::test]
 +async fn codex_litellm_cli_profile_keeps_persisted_model_out_of_plain_codex_defaults(
 +) -> anyhow::Result<()> {
@@ -1976,7 +1976,7 @@ index a1f270458..b075cbaaa 100644
 +++ b/codex-rs/core/src/config/mod.rs
 @@ -2375,9 +2375,10 @@ impl Config {
          let effective_openai_base_url = openai_base_url.or(openai_base_url_from_env);
-
+ 
          let mut model_providers = built_in_model_providers(effective_openai_base_url);
 -        // Merge user-defined providers into the built-in list.
 +        // Let config.toml override built-in providers so local auth/base_url
@@ -1985,7 +1985,7 @@ index a1f270458..b075cbaaa 100644
 -            model_providers.entry(key).or_insert(provider);
 +            model_providers.insert(key, provider);
          }
-
+ 
          let model_provider_id = model_provider
 diff --git a/codex-rs/core/src/context_manager/history.rs b/codex-rs/core/src/context_manager/history.rs
 index d09e100fe..febab29c1 100644
@@ -2000,7 +2000,7 @@ index d09e100fe..febab29c1 100644
 +
          // all function/tool calls must have a corresponding output
          normalize::ensure_call_outputs_present(&mut self.items);
-
+ 
 diff --git a/codex-rs/core/src/context_manager/history_tests.rs b/codex-rs/core/src/context_manager/history_tests.rs
 index 71b3aded0..415be3a0e 100644
 --- a/codex-rs/core/src/context_manager/history_tests.rs
@@ -2008,7 +2008,7 @@ index 71b3aded0..415be3a0e 100644
 @@ -1288,6 +1288,48 @@ fn normalize_adds_missing_output_for_function_call_inserts_output() {
      );
  }
-
+ 
 +#[test]
 +fn normalize_removes_duplicate_function_calls_with_same_call_id() {
 +    let items = vec![
@@ -2061,7 +2061,7 @@ index 839bae331..2e0e4ecde 100644
 @@ -11,6 +11,31 @@ use tracing::info;
  const IMAGE_CONTENT_OMITTED_PLACEHOLDER: &str =
      "image content omitted because you do not support image input";
-
+ 
 +pub(crate) fn remove_duplicate_call_entries(items: &mut Vec<ResponseItem>) {
 +    let mut seen_function_call_ids = HashSet::new();
 +    let mut seen_tool_search_call_ids = HashSet::new();
@@ -2090,6 +2090,90 @@ index 839bae331..2e0e4ecde 100644
  pub(crate) fn ensure_call_outputs_present(items: &mut Vec<ResponseItem>) {
      // Collect synthetic outputs to insert immediately after their calls.
      // Store the insertion position (index of call) alongside the item so
+diff --git a/codex-rs/core/src/error.rs b/codex-rs/core/src/error.rs
+index e8e86defc..b02a7e9c2 100644
+--- a/codex-rs/core/src/error.rs
++++ b/codex-rs/core/src/error.rs
+@@ -216,7 +216,6 @@ impl CodexErr {
+             | CodexErr::ServerOverloaded => false,
+             CodexErr::Stream(..)
+             | CodexErr::Timeout
+-            | CodexErr::UnexpectedStatus(_)
+             | CodexErr::ResponseStreamFailed(_)
+             | CodexErr::ConnectionFailed(_)
+             | CodexErr::InternalServerError
+@@ -224,6 +223,7 @@ impl CodexErr {
+             | CodexErr::Io(_)
+             | CodexErr::Json(_)
+             | CodexErr::TokioJoin(_) => true,
++            CodexErr::UnexpectedStatus(err) => err.is_retryable(),
+             #[cfg(target_os = "linux")]
+             CodexErr::LandlockRuleset(_) | CodexErr::LandlockPathFd(_) => false,
+         }
+@@ -301,6 +301,14 @@ const CLOUDFLARE_BLOCKED_MESSAGE: &str =
+ const UNEXPECTED_RESPONSE_BODY_MAX_BYTES: usize = 1000;
+ 
+ impl UnexpectedResponseError {
++    pub fn is_retryable(&self) -> bool {
++        self.status.is_server_error()
++            || matches!(
++                self.status,
++                StatusCode::REQUEST_TIMEOUT | StatusCode::TOO_MANY_REQUESTS
++            )
++    }
++
+     fn display_body(&self) -> String {
+         if let Some(message) = self.extract_error_message() {
+             return message;
+diff --git a/codex-rs/core/src/error_tests.rs b/codex-rs/core/src/error_tests.rs
+index 51cbf42dd..a8cdce121 100644
+--- a/codex-rs/core/src/error_tests.rs
++++ b/codex-rs/core/src/error_tests.rs
+@@ -38,6 +38,18 @@ fn rate_limit_snapshot() -> RateLimitSnapshot {
+     }
+ }
+ 
++fn unexpected_response_error(status: StatusCode) -> UnexpectedResponseError {
++    UnexpectedResponseError {
++        status,
++        body: "plain text error".to_string(),
++        url: Some("http://example.com/test".to_string()),
++        cf_ray: None,
++        request_id: None,
++        identity_authorization_error: None,
++        identity_error_code: None,
++    }
++}
++
+ fn with_now_override<T>(now: DateTime<Utc>, f: impl FnOnce() -> T) -> T {
+     NOW_OVERRIDE.with(|cell| {
+         *cell.borrow_mut() = Some(now);
+@@ -61,6 +73,25 @@ fn usage_limit_reached_error_formats_plus_plan() {
+     );
+ }
+ 
++#[test]
++fn unexpected_status_402_is_not_retryable() {
++    let err = CodexErr::UnexpectedStatus(unexpected_response_error(StatusCode::PAYMENT_REQUIRED));
++    assert!(!err.is_retryable());
++}
++
++#[test]
++fn unexpected_status_429_is_retryable() {
++    let err = CodexErr::UnexpectedStatus(unexpected_response_error(StatusCode::TOO_MANY_REQUESTS));
++    assert!(err.is_retryable());
++}
++
++#[test]
++fn unexpected_status_500_is_retryable() {
++    let err =
++        CodexErr::UnexpectedStatus(unexpected_response_error(StatusCode::INTERNAL_SERVER_ERROR));
++    assert!(err.is_retryable());
++}
++
+ #[test]
+ fn server_overloaded_maps_to_protocol() {
+     let err = CodexErr::ServerOverloaded;
 diff --git a/codex-rs/core/src/memories/phase1.rs b/codex-rs/core/src/memories/phase1.rs
 index 921bc9953..b84404b38 100644
 --- a/codex-rs/core/src/memories/phase1.rs
@@ -2107,11 +2191,11 @@ index 737a47780..3fc1a02a9 100644
 --- a/codex-rs/core/src/model_provider_info.rs
 +++ b/codex-rs/core/src/model_provider_info.rs
 @@ -284,6 +284,7 @@ pub const DEFAULT_OLLAMA_PORT: u16 = 11434;
-
+ 
  pub const LMSTUDIO_OSS_PROVIDER_ID: &str = "lmstudio";
  pub const OLLAMA_OSS_PROVIDER_ID: &str = "ollama";
 +pub const LITELLM_PROVIDER_ID: &str = "litellm";
-
+ 
  /// Built-in default provider list.
  pub fn built_in_model_providers(
 @@ -298,6 +299,7 @@ pub fn built_in_model_providers(
@@ -2125,7 +2209,7 @@ index 737a47780..3fc1a02a9 100644
 @@ -312,6 +314,31 @@ pub fn built_in_model_providers(
      .collect()
  }
-
+ 
 +fn create_litellm_provider() -> ModelProviderInfo {
 +    let base_url = std::env::var("LITELLM_BASE_URL")
 +        .ok()
@@ -2172,13 +2256,13 @@ index 29a1a8576..c255be2a0 100644
  use tracing::info;
  use tracing::instrument;
 +use tracing::warn;
-
+ 
  const MODEL_CACHE_FILE: &str = "models_cache.json";
  const DEFAULT_MODEL_CACHE_TTL: Duration = Duration::from_secs(300);
 @@ -334,22 +337,27 @@ impl ModelsManager {
          best
      }
-
+ 
 -    /// Retry metadata lookup for a single namespaced slug like `namespace/model-name`.
 -    ///
 -    /// This only strips one leading namespace segment and only when the namespace is ASCII
@@ -2215,7 +2299,7 @@ index 29a1a8576..c255be2a0 100644
 +
 +        best
      }
-
+ 
      fn construct_model_info_from_candidates(
 @@ -357,8 +365,9 @@ impl ModelsManager {
          candidates: &[ModelInfo],
@@ -2242,16 +2326,16 @@ index 29a1a8576..c255be2a0 100644
 +        } else {
 +            presets = filtered_presets;
 +        }
-
+ 
          ModelPreset::mark_default_by_picker_visibility(&mut presets);
-
+ 
 diff --git a/codex-rs/core/src/models_manager/manager_tests.rs b/codex-rs/core/src/models_manager/manager_tests.rs
 index 07cf4dc39..f435740a3 100644
 --- a/codex-rs/core/src/models_manager/manager_tests.rs
 +++ b/codex-rs/core/src/models_manager/manager_tests.rs
 @@ -229,7 +229,7 @@ async fn get_model_info_matches_namespaced_suffix() {
  }
-
+ 
  #[tokio::test]
 -async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
 +async fn get_model_info_matches_multi_segment_namespace_suffix() {
@@ -2260,7 +2344,7 @@ index 07cf4dc39..f435740a3 100644
          .codex_home(codex_home.path().to_path_buf())
 @@ -255,7 +255,39 @@ async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
      let model_info = manager.get_model_info(&namespaced_model, &config).await;
-
+ 
      assert_eq!(model_info.slug, namespaced_model);
 -    assert!(model_info.used_fallback_model_metadata);
 +    assert!(!model_info.used_fallback_model_metadata);
@@ -2297,7 +2381,7 @@ index 07cf4dc39..f435740a3 100644
 +    assert!(model_info.supports_parallel_tool_calls);
 +    assert!(!model_info.used_fallback_model_metadata);
  }
-
+ 
  #[tokio::test]
 diff --git a/codex-rs/core/src/models_manager/mod.rs b/codex-rs/core/src/models_manager/mod.rs
 index 53b33bc4e..291d08baf 100644
@@ -2308,7 +2392,7 @@ index 53b33bc4e..291d08baf 100644
  pub mod model_info;
  pub mod model_presets;
 +pub mod supported_models;
-
+ 
  /// Convert the client version string to a whole version string (e.g. "1.2.3-alpha.4" -> "1.2.3").
  pub fn client_version_to_whole() -> String {
 diff --git a/codex-rs/core/src/models_manager/model_info.rs b/codex-rs/core/src/models_manager/model_info.rs
@@ -2325,7 +2409,7 @@ index d4f82b223..8dcdaf0ee 100644
  use codex_protocol::openai_models::TruncationPolicyConfig;
  use codex_protocol::openai_models::WebSearchToolType;
 @@ -59,6 +61,10 @@ pub(crate) fn with_config_overrides(mut model: ModelInfo, config: &Config) -> Mo
-
+ 
  /// Build a minimal fallback model descriptor for missing/unknown slugs.
  pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
 +    if let Some(model_info) = known_agentic_model_info(slug) {
@@ -2338,7 +2422,7 @@ index d4f82b223..8dcdaf0ee 100644
 @@ -93,6 +99,116 @@ pub(crate) fn model_info_from_slug(slug: &str) -> ModelInfo {
      }
  }
-
+ 
 +fn known_agentic_model_info(slug: &str) -> Option<ModelInfo> {
 +    let normalized = slug.rsplit('/').next().unwrap_or(slug);
 +
@@ -2457,7 +2541,7 @@ index 27bac8d70..35c1e47f1 100644
 --- a/codex-rs/core/src/models_manager/model_info_tests.rs
 +++ b/codex-rs/core/src/models_manager/model_info_tests.rs
 @@ -37,3 +37,93 @@ fn reasoning_summaries_override_false_is_noop_when_model_is_false() {
-
+ 
      assert_eq!(updated, model);
  }
 +
@@ -2635,7 +2719,7 @@ index c5f784906..091d0ae8e 100644
 @@ -55,6 +55,11 @@ fn strip_hidden_assistant_markup_and_parse_memory_citation(
      (visible_text, parse_memory_citation(citations))
  }
-
+ 
 +fn empty_assistant_follow_up_text() -> String {
 +    "Your previous assistant message was empty. Continue from the current workspace state. Successful tool results and file edits are already recorded. Do not repeat the same tool call, reapply the same patch, or spend more time inspecting files that you already checked. If the task is complete, send the final assistant response now."
 +        .to_string()
@@ -2651,7 +2735,7 @@ index c5f784906..091d0ae8e 100644
 +    pub follow_up_instructions: Vec<String>,
      pub tool_future: Option<InFlightFuture<'static>>,
  }
-
+ 
 @@ -229,8 +235,17 @@ pub(crate) async fn handle_output_item_done(
              }
              record_completed_response_item(ctx.sess.as_ref(), ctx.turn_context.as_ref(), &item)
@@ -2679,13 +2763,13 @@ index 9eba126dd..468b11fda 100644
  use async_trait::async_trait;
  use serde::Deserialize;
 +use serde_json::from_str;
-
+ 
  use crate::codex::Session;
  use crate::codex::TurnContext;
 @@ -38,6 +39,11 @@ struct CodeModeExecArgs {
      max_output_tokens: Option<usize>,
  }
-
+ 
 +#[derive(Debug, Deserialize)]
 +struct FunctionCodeModeExecArgs {
 +    input: String,
@@ -2696,7 +2780,7 @@ index 9eba126dd..468b11fda 100644
          &self,
 @@ -193,7 +199,10 @@ impl ToolHandler for CodeModeExecuteHandler {
      }
-
+ 
      fn matches_kind(&self, payload: &ToolPayload) -> bool {
 -        matches!(payload, ToolPayload::Custom { .. })
 +        matches!(
@@ -2704,11 +2788,11 @@ index 9eba126dd..468b11fda 100644
 +            ToolPayload::Function { .. } | ToolPayload::Custom { .. }
 +        )
      }
-
+ 
      async fn handle(&self, invocation: ToolInvocation) -> Result<Self::Output, FunctionCallError> {
 @@ -207,11 +216,19 @@ impl ToolHandler for CodeModeExecuteHandler {
          } = invocation;
-
+ 
          match payload {
 +            ToolPayload::Function { arguments } if tool_name == PUBLIC_TOOL_NAME => {
 +                let args: FunctionCodeModeExecArgs = from_str(&arguments).map_err(|err| {
@@ -2738,11 +2822,11 @@ index 1431de0e2..277d6e541 100644
 +use serde_json::from_str;
  use std::time::Duration;
  use std::time::Instant;
-
+ 
 @@ -39,6 +40,11 @@ struct ArtifactsToolArgs {
      timeout_ms: Option<u64>,
  }
-
+ 
 +#[derive(Debug, serde::Deserialize)]
 +struct FunctionArtifactsToolArgs {
 +    input: String,
@@ -2753,7 +2837,7 @@ index 1431de0e2..277d6e541 100644
      type Output = FunctionToolOutput;
 @@ -48,7 +54,10 @@ impl ToolHandler for ArtifactsHandler {
      }
-
+ 
      fn matches_kind(&self, payload: &ToolPayload) -> bool {
 -        matches!(payload, ToolPayload::Custom { .. })
 +        matches!(
@@ -2761,11 +2845,11 @@ index 1431de0e2..277d6e541 100644
 +            ToolPayload::Function { .. } | ToolPayload::Custom { .. }
 +        )
      }
-
+ 
      async fn is_mutating(&self, _invocation: &ToolInvocation) -> bool {
 @@ -71,10 +80,18 @@ impl ToolHandler for ArtifactsHandler {
          }
-
+ 
          let args = match payload {
 +            ToolPayload::Function { arguments } => {
 +                let args: FunctionArtifactsToolArgs = from_str(&arguments).map_err(|err| {
@@ -2789,7 +2873,7 @@ index 04b5c77c3..832311e16 100644
 +++ b/codex-rs/core/src/tools/handlers/shell.rs
 @@ -61,6 +61,45 @@ struct RunExecLikeArgs {
  }
-
+ 
  impl ShellHandler {
 +    async fn should_block_post_edit_read_only_command(
 +        command: &[String],
@@ -2836,7 +2920,7 @@ index 04b5c77c3..832311e16 100644
 @@ -410,6 +449,14 @@ impl ShellHandler {
              return Ok(output);
          }
-
+ 
 +        if Self::should_block_post_edit_read_only_command(&exec_params.command, &tracker).await {
 +            return Ok(FunctionToolOutput::from_text(
 +                "The workspace already contains successful edits for this task. Do not spend more time on read-only shell inspection. Do not run more grep/cat/tail/find/ls commands. If you need one verification step, run `git diff --stat` once. Otherwise send the final assistant response now."
@@ -2868,7 +2952,7 @@ index 04b5c77c3..832311e16 100644
 @@ -494,6 +551,11 @@ impl ShellHandler {
      }
  }
-
+ 
 +fn is_allowed_post_edit_read_only_command(command: &[String]) -> bool {
 +    let command_text = command.join(" ");
 +    command_text.contains("git diff --stat")
@@ -2884,7 +2968,7 @@ index b69f3be23..ab1750e7b 100644
 @@ -4,6 +4,7 @@ use std::sync::Arc;
  use codex_protocol::models::ShellCommandToolCallParams;
  use pretty_assertions::assert_eq;
-
+ 
 +use super::ShellHandler;
  use crate::codex::make_session_and_context;
  use crate::exec_env::create_env;
@@ -2895,7 +2979,7 @@ index b69f3be23..ab1750e7b 100644
  use crate::tools::handlers::ShellCommandHandler;
 +use crate::turn_diff_tracker::TurnDiffTracker;
  use tokio::sync::watch;
-
+ 
  /// The logic for is_known_safe_command() has heuristics for known shells,
 @@ -178,3 +180,52 @@ fn shell_command_handler_rejects_login_when_disallowed() {
          "unexpected error: {err}"
@@ -2957,7 +3041,7 @@ index c79edf305..d69bbbd2a 100644
 @@ -81,6 +81,47 @@ fn default_tty() -> bool {
      false
  }
-
+ 
 +impl UnifiedExecHandler {
 +    async fn should_block_post_edit_read_only_command(
 +        command: &[String],
@@ -3007,13 +3091,13 @@ index c79edf305..d69bbbd2a 100644
                  .map_err(FunctionCallError::RespondToModel)?;
                  let command_for_display = codex_shell_command::parse_command::shlex_join(&command);
 +                let tracking_command = command.clone();
-
+ 
                  let ExecCommandArgs {
                      workdir,
 @@ -260,7 +302,22 @@ impl ToolHandler for UnifiedExecHandler {
                      });
                  }
-
+ 
 -                manager
 +                if Self::should_block_post_edit_read_only_command(&command, &tracker).await {
 +                    manager.release_process_id(process_id).await;
@@ -3056,7 +3140,7 @@ index c79edf305..d69bbbd2a 100644
 @@ -357,6 +424,11 @@ pub(crate) fn get_command(
      }
  }
-
+ 
 +fn is_allowed_post_edit_read_only_command(command: &[String]) -> bool {
 +    let command_text = command.join(" ");
 +    command_text.contains("git diff --stat")
@@ -3175,11 +3259,11 @@ index 6350323d1..dcfb747f5 100644
  use codex_protocol::models::ResponseInputItem;
  use codex_protocol::models::ResponseItem;
 +use codex_protocol::models::SearchToolCallParams;
-
+ 
  use super::ToolCall;
  use super::ToolCallSource;
 @@ -159,3 +160,40 @@ async fn build_tool_call_uses_namespace_for_registry_name() -> anyhow::Result<()
-
+ 
      Ok(())
  }
 +
@@ -3230,12 +3314,12 @@ index 3568c915a..aee57c410 100644
 +    /// True once a mutating shell command has completed successfully in this turn.
 +    saw_successful_mutating_shell_command: bool,
  }
-
+ 
  impl TurnDiffTracker {
 @@ -47,6 +49,14 @@ impl TurnDiffTracker {
          Self::default()
      }
-
+ 
 +    pub fn note_successful_mutating_shell_command(&mut self) {
 +        self.saw_successful_mutating_shell_command = true;
 +    }
@@ -3262,7 +3346,7 @@ index 767f80500..b3a14a45a 100644
 @@ -20,6 +21,16 @@ fn cli_responses_fixture() -> std::path::PathBuf {
      find_resource!("tests/cli_responses_fixture.sse").expect("failed to resolve fixture path")
  }
-
+ 
 +fn set_home_env(cmd: &mut AssertCommand, home: &Path) {
 +    cmd.env("HOME", home);
 +    #[cfg(windows)]
@@ -3279,7 +3363,7 @@ index 767f80500..b3a14a45a 100644
 @@ -329,6 +340,125 @@ async fn responses_api_stream_cli() {
      assert!(stdout.contains("fixture hello"));
  }
-
+ 
 +/// Ensures the shipped `codex-litellm` binary honors the default `~/.codex`
 +/// config path when `CODEX_HOME` is not set.
 +#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
