@@ -83,6 +83,22 @@ echo "model=$model"
 echo "workspace=$workspace"
 echo "log=$log_path"
 
+validate_fixture_result() {
+  local fixture_name="$1"
+  case "$fixture_name" in
+    python-cli)
+      local changed
+      changed="$(git diff --name-only)"
+      for required in README.md src/fixture_cli/cli.py tests/test_cli.py; do
+        if ! grep -qx "$required" <<<"$changed"; then
+          echo "Smoke test failed: python-cli fixture requires a diff in $required." >&2
+          return 3
+        fi
+      done
+      ;;
+  esac
+}
+
 set +e
 (
   cd "$repo_root/$workspace"
@@ -98,6 +114,7 @@ set +e
     echo "Smoke test failed: model returned without making a repo edit." >&2
     exit 2
   fi
+  validate_fixture_result "$fixture"
 ) | tee "$log_path"
 cmd_status=${PIPESTATUS[0]}
 set -e

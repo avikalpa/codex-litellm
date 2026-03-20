@@ -25,7 +25,8 @@
 
 ## Required Release-Gate Models
 These are not the whole allowlist. They are the current mandatory live checks before release.
-- agentic release gate: `vercel/minimax-m2.5`
+- agentic release gate: current gateway-discovered MiniMax release route
+- currently: `vercel/minimax-m2.7-highspeed`
 
 ## Deprecated Compatibility Models
 - `vercel/gpt-oss-120b`
@@ -40,12 +41,12 @@ These are not the whole allowlist. They are the current mandatory live checks be
 ## Current `/responses` Reality
 - Green:
   - `vercel/minimax-m2.7-highspeed`
-- Amber:
   - `vercel/claude-haiku-4.5`
+- Amber:
   - `vercel/glm-5-turbo`
 - Watchlist:
   - `vercel/gemini-3.1-pro-preview` because it makes the right edit on the explicit fixture prompt, but still stalls too long after the diff
-  - `vercel/grok-4.20-reasoning-beta` because it now clears the explicit fixture prompt, but still needs broader repo coverage
+  - `vercel/grok-4.20-reasoning-beta` because it clears the explicit fixture prompt, but fails the stricter `python-cli` rerun under rate-limit pressure
 - Red:
   - `vercel/kimi-k2.5` because it still finalizes without a repo diff on the focused rerun
 - Blocked:

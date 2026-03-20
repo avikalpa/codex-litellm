@@ -23,12 +23,9 @@ Official Codex is still the right answer when you want the official hosted harne
 
 Start with MiniMax.
 
-On the current `mini-web` smoke fixture, the best default route on this gateway is:
-- `vercel/minimax-m2.7-highspeed`
-
 Current agentic shortlist on the LiteLLM `/responses` path:
 - Green: `vercel/minimax-m2.7-highspeed`
-- Amber: `vercel/claude-haiku-4.5`
+- Green: `vercel/claude-haiku-4.5`
 - Amber: `vercel/glm-5-turbo`
 - Watchlist: `vercel/gemini-3.1-pro-preview`
 - Watchlist: `vercel/grok-4.20-reasoning-beta`
@@ -41,6 +38,26 @@ What those labels mean here:
 - `Watchlist`: worth continued testing, but not stable enough to recommend as a default route yet
 - `Red`: not reliable enough for Codex-style editing on this endpoint today
 - `Blocked`: failing at the LiteLLM `/responses` bridge layer rather than only at model quality
+
+## Feasibility By Model
+
+These ratings come from live `codex-litellm` runs against the current LiteLLM gateway, not benchmark claims.
+
+| Model | `mini-web` explicit restyle | `python-cli` strict multi-file task | Current recommendation |
+| --- | --- | --- | --- |
+| `vercel/minimax-m2.7-highspeed` | pass | pass | best default |
+| `vercel/claude-haiku-4.5` | pass | pass | best cheaper second option |
+| `vercel/glm-5-turbo` | edit, but noisy / retries | not yet revalidated | test carefully |
+| `vercel/gemini-3.1-pro-preview` | correct edit, then stalled | fail under rate-limit pressure | watchlist only |
+| `vercel/grok-4.20-reasoning-beta` | pass | fail under rate-limit pressure | watchlist only |
+| `vercel/kimi-k2.5` | fail, no repo diff | not worth promoting yet | avoid for now |
+| `vercel/deepseek-v3.2-thinking` | blocked | blocked by same bridge class | blocked on this stack |
+
+What this means in practice:
+- if you want the highest first-run odds, use `vercel/minimax-m2.7-highspeed`
+- if you want a cheaper serious option, try `vercel/claude-haiku-4.5`
+- if you want to experiment, keep `vercel/gemini-3.1-pro-preview` and `vercel/grok-4.20-reasoning-beta` in the bench, not as defaults
+- do not spend time debugging `vercel/deepseek-v3.2-thinking` on this stack until the LiteLLM `/responses` tool-follow-up bug is fixed
 
 ## What We Mean By “Agentic”
 
@@ -61,26 +78,33 @@ Good benchmark scores are not enough.
 Why:
 - currently the cleanest edit loop on this gateway
 - good price/performance
-- finishes the task instead of only sounding capable
+- clears both the lightweight UI fixture and the stricter multi-file CLI fixture
+
+### Best Secondary Option
+- `vercel/claude-haiku-4.5`
+
+Why:
+- now clears both the explicit `mini-web` restyle task and the stricter `python-cli` task
+- cheaper than many frontier alternatives
+- materially better current evidence than Gemini, Grok, Kimi, or DeepSeek on this stack
 
 ### Worth Testing Next
 - `vercel/glm-5-turbo`
-- `vercel/kimi-k2.5`
 - `vercel/claude-haiku-4.5`
 - `vercel/gemini-3.1-pro-preview`
 - `vercel/grok-4.20-reasoning-beta`
 
 Why they are not defaults yet:
-- Claude Haiku now clears the explicit `mini-web` restyle prompt, but it still needs broader repo coverage before it should be a default
 - GLM can edit, but the current route still shows retry/rate-limit noise on this endpoint
-- Kimi is still on the shortlist because the model family is plausible for agentic work, but the current route finalized without a repo diff
 - Gemini 3.1 Pro Preview makes the right edit on this fixture, but the current route still stalls too long after the diff
 - Grok 4.20 now passes the explicit fixture prompt, but it still belongs in the watchlist lane until it proves itself on broader repos
 
 ### Do Not Start Here
+- `vercel/kimi-k2.5`
 - `vercel/deepseek-v3.2-thinking`
 
 Why:
+- Kimi still fails to produce dependable repo diffs in the current bench
 - DeepSeek is still blocked by the current LiteLLM `/responses` tool-follow-up bridge on this endpoint
 
 ### Economics Warning
@@ -209,6 +233,10 @@ Current watchlist bench:
 - `vercel/grok-4.20-reasoning-beta`
 
 DeepSeek is tracked separately as a blocked `/responses` route, not as a default public bench candidate.
+
+The fixture gates are intentionally different:
+- `mini-web` checks whether a model can inspect, edit, and finalize a concrete UI restyle
+- `python-cli` now requires diffs in the CLI file, the README, and the test file, so partial edits do not count as a pass
 
 Run it with:
 
