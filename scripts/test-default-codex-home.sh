@@ -5,6 +5,27 @@ ROOT_DIR=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 CODEX_RS_DIR="$ROOT_DIR/codex/codex-rs"
 BIN="$CODEX_RS_DIR/target/debug/codex-litellm"
 WORKDIR="$CODEX_RS_DIR"
+TMP_UPSTREAM_DIR=""
+
+bootstrap_patched_checkout() {
+  local base_version pinned_tag
+  base_version=$(node -p "require('$ROOT_DIR/package.json').codexLitellm.baseVersion")
+  pinned_tag="rust-v${base_version}"
+
+  TMP_UPSTREAM_DIR=$(mktemp -d)
+  git clone --filter=blob:none https://github.com/openai/codex.git "$TMP_UPSTREAM_DIR/codex" >/dev/null 2>&1
+  git -C "$TMP_UPSTREAM_DIR/codex" fetch --tags --quiet
+  git -C "$TMP_UPSTREAM_DIR/codex" checkout "$pinned_tag" --quiet
+  git -C "$TMP_UPSTREAM_DIR/codex" apply --whitespace=nowarn "$ROOT_DIR/stable-tag.patch"
+
+  CODEX_RS_DIR="$TMP_UPSTREAM_DIR/codex/codex-rs"
+  BIN="$CODEX_RS_DIR/target/debug/codex-litellm"
+  WORKDIR="$CODEX_RS_DIR"
+}
+
+if ! rg -q 'name = "codex-litellm"' "$CODEX_RS_DIR/cli/Cargo.toml"; then
+  bootstrap_patched_checkout
+fi
 
 cd "$CODEX_RS_DIR"
 cargo build --bin codex-litellm >/dev/null
@@ -14,6 +35,9 @@ cleanup() {
   if [[ -n "${server_pid:-}" ]]; then
     kill "$server_pid" >/dev/null 2>&1 || true
     wait "$server_pid" 2>/dev/null || true
+  fi
+  if [[ -n "$TMP_UPSTREAM_DIR" ]]; then
+    rm -rf "$TMP_UPSTREAM_DIR"
   fi
   rm -rf "$tmpdir"
 }
