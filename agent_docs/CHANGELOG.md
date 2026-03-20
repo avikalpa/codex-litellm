@@ -9,6 +9,8 @@ Current public-facing model picture on this gateway:
 - pass: `vercel/minimax-m2.7-highspeed`
 - amber: `vercel/claude-haiku-4.5`
 - amber: `vercel/glm-5-turbo`
+- watchlist: `vercel/gemini-3.1-pro-preview`
+- watchlist: `vercel/grok-4.20-reasoning-beta`
 - fail: `vercel/kimi-k2.5`
 - blocked: `vercel/deepseek-v3.2-thinking`
 
@@ -20,6 +22,7 @@ Current public-facing model picture on this gateway:
 - Updated the README to steer users toward the current agentic routes, away from weak or expensive paths, and toward LiteLLM semantic cache with cheap embeddings.
 - Tightened the active smoke bench around MiniMax, GLM, Kimi, and Claude Haiku, with DeepSeek tracked separately as a blocked route.
 - Made the UI smoke prompt explicit enough to force a measurable restyle instead of inviting “already done” false passes.
+- Restored Gemini 3.1 Pro Preview and Grok 4.20 to the research/watchlist lane instead of dropping them from testing entirely.
 
 ### Detailed Changes
 - upstream: rebased the maintained LiteLLM patchset onto `rust-v0.116.0` and regenerated `stable-tag.patch` from that exact tag.
@@ -31,7 +34,10 @@ Current public-facing model picture on this gateway:
   - `vercel/deepseek-v3.2-thinking` is still blocked by the current LiteLLM `/responses` follow-up path
   - `vercel/glm-5-turbo` remains noisy enough under retry/rate-limit pressure to fail the focused rerun
   - `vercel/claude-haiku-4.5` now clears the explicit `mini-web` restyle prompt, but still needs broader fixture coverage before it should be treated as a default
-- validation: narrowed the default public bench to MiniMax, GLM, Kimi, and Claude Haiku so DeepSeek does not dilute the active green/amber/red matrix while it is still a known blocked route.
+- validation: restored Gemini 3.1 Pro Preview and Grok 4.20 to the research/watchlist bench:
+  - `vercel/gemini-3.1-pro-preview` makes the right edit on the explicit fixture prompt, but still stalls too long after the diff to count as clean green
+  - `vercel/grok-4.20-reasoning-beta` clears the explicit fixture prompt, but still needs broader repo coverage
+- validation: kept DeepSeek out of the default public bench so the active green/amber/red matrix is not diluted by a known blocked route.
 - docs: rewrote `README.md` around real user experience, current model guidance, `/responses`, economic tradeoffs, and LiteLLM semantic cache guidance.
 
 ## Format

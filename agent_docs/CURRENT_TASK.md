@@ -28,6 +28,9 @@ Last updated: 2026-03-20
   - `vercel/claude-haiku-4.5`: pass on the explicit restyle prompt, but still needs broader fixture coverage
   - `vercel/glm-5-turbo`: failed on the focused rerun after hitting retry/rate-limit noise before a repo diff
   - `vercel/kimi-k2.5`: failed by finalizing without a repo diff
+- current watchlist reruns:
+  - `vercel/grok-4.20-reasoning-beta`: pass on the explicit restyle prompt, but still needs broader fixture coverage
+  - `vercel/gemini-3.1-pro-preview`: made the right edit diff on the explicit prompt, but stalled too long after the edit to count as clean green
 - separately tracked blocked route:
   - `vercel/deepseek-v3.2-thinking`: failed on LiteLLM `/responses` tool-follow-up handling
 
@@ -37,11 +40,14 @@ Last updated: 2026-03-20
 - MiniMax is the current release gate and current best default route.
 - Claude Haiku has moved up into the promising bench tier on the explicit restyle prompt, but it is still not a default recommendation.
 - Kimi and GLM stay in the active bench as non-default routes that still need more work.
+- Gemini 3.1 Pro Preview and Grok 4.20 are back in the watchlist lane and should continue to be tested instead of disappearing from the bench.
 - The bench prompt is now explicit enough to force a measurable button restyle instead of inviting “already done” false passes.
 
 ## Evidence
 - passing MiniMax smoke on `0.116.0`: current `mini-web` run recorded in local `logs/`
 - passing Claude Haiku smoke on the explicit prompt: current `mini-web` run recorded in local `logs/`
+- passing Grok 4.20 smoke on the explicit prompt: current `mini-web` run recorded in local `logs/`
+- current Gemini 3.1 Pro Preview rerun with edit-but-stall behavior: current `mini-web` run recorded in local `logs/`
 - current Kimi failure: latest `mini-web` run recorded in local `logs/`
 - current DeepSeek failure: latest `mini-web` run recorded in local `logs/`
 - current GLM failure with retry/rate-limit noise: latest `mini-web` run recorded in local `logs/`
@@ -49,7 +55,7 @@ Last updated: 2026-03-20
 ## Remaining Work
 - let the in-flight `0.116.0` release complete on GitHub Actions
 - keep DeepSeek tracked as a blocked `/responses` route until the bridge bug is fixed
-- extend the refreshed explicit-prompt bench to `python-cli` and a heavier repo so Claude Haiku and MiniMax are not only validated on `mini-web`
+- extend the refreshed explicit-prompt bench to `python-cli` and a heavier repo so Claude Haiku, Grok, Gemini, and MiniMax are not only validated on `mini-web`
 
 ## Handoff Rule
 Do not release or publish from any older base.

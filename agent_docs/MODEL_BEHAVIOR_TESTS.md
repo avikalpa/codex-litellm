@@ -54,6 +54,9 @@ These are the required live smoke tests before push or release.
   - `vercel/kimi-k2.5`
   - `vercel/claude-haiku-4.5`
   - `vercel/glm-5-turbo`
+- Research watchlist that should still be re-run regularly:
+  - `vercel/gemini-3.1-pro-preview`
+  - `vercel/grok-4.20-reasoning-beta`
 - DeepSeek is tracked separately as a blocked `/responses` route, not part of the default green/amber/red research matrix.
 - Runner helpers:
   - `./scripts/run-agentic-model-smoke.sh --fixture <fixture> --model <slug> --profile /home/pi/.codex-litellm-debug`

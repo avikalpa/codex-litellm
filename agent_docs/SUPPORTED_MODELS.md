@@ -39,12 +39,17 @@ These are not the whole allowlist. They are the current mandatory live checks be
 
 ## Current `/responses` Reality
 - Green:
-  - `vercel/minimax-m2.5`
-  - `vercel/kimi-k2.5`
+  - `vercel/minimax-m2.7-highspeed`
+- Amber:
+  - `vercel/claude-haiku-4.5`
+  - `vercel/glm-5-turbo`
+- Watchlist:
+  - `vercel/gemini-3.1-pro-preview` because it makes the right edit on the explicit fixture prompt, but still stalls too long after the diff
+  - `vercel/grok-4.20-reasoning-beta` because it now clears the explicit fixture prompt, but still needs broader repo coverage
 - Red:
+  - `vercel/kimi-k2.5` because it still finalizes without a repo diff on the focused rerun
+- Blocked:
   - `vercel/deepseek-v3.2-thinking` because the current LiteLLM `/responses` bridge still rejects some tool-use follow-up turns with missing `reasoning_content`
-  - `vercel/claude-haiku-4.5` because it still fails to produce reliable repo edits in our current smoke harness
-  - `vercel/glm-5-turbo` because the current gateway route resolves to a missing backend model and then retries into rate limits
 
 ## Refresh Rules
 - Refresh evidence before changing the allowlist.

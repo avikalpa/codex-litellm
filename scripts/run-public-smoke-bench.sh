@@ -66,6 +66,8 @@ families=(
   glm
   kimi
   claude-haiku
+  gemini-pro
+  grok-fast
 )
 
 sanitize_slug() {
@@ -92,6 +94,12 @@ note_for_family() {
       ;;
     claude-haiku)
       printf '%s\n' "Low-cost candidate; keep it in the active bench until it reliably produces real repo edits."
+      ;;
+    gemini-pro)
+      printf '%s\n' "High-intelligence watchlist route; current question is whether it finalizes cleanly after the edit."
+      ;;
+    grok-fast)
+      printf '%s\n' "Economics-oriented watchlist route; keep it tested even when it is not part of the default recommendation set."
       ;;
   esac
 }
@@ -164,6 +172,7 @@ printf '%s\n' "$results_json" > "$json_file"
   echo "- fixture: \`$fixture\`"
   echo "- profile path: \`$display_profile\`"
   echo "- active agentic bench: MiniMax, GLM, Kimi, Claude Haiku"
+  echo "- watchlist bench: Gemini 3.1 Pro Preview, Grok 4.20"
   echo "- DeepSeek is tracked separately as a blocked /responses route, not a default bench candidate"
   echo "- exact gateway-specific route segments are intentionally not published"
   echo

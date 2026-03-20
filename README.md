@@ -30,12 +30,15 @@ Current agentic shortlist on the LiteLLM `/responses` path:
 - Green: `vercel/minimax-m2.7-highspeed`
 - Amber: `vercel/claude-haiku-4.5`
 - Amber: `vercel/glm-5-turbo`
+- Watchlist: `vercel/gemini-3.1-pro-preview`
+- Watchlist: `vercel/grok-4.20-reasoning-beta`
 - Red: `vercel/kimi-k2.5`
 - Blocked: `vercel/deepseek-v3.2-thinking`
 
 What those labels mean here:
 - `Green`: made a real repo edit and completed cleanly
 - `Amber`: promising, but still unstable or economically noisy on this endpoint
+- `Watchlist`: worth continued testing, but not stable enough to recommend as a default route yet
 - `Red`: not reliable enough for Codex-style editing on this endpoint today
 - `Blocked`: failing at the LiteLLM `/responses` bridge layer rather than only at model quality
 
@@ -64,11 +67,15 @@ Why:
 - `vercel/glm-5-turbo`
 - `vercel/kimi-k2.5`
 - `vercel/claude-haiku-4.5`
+- `vercel/gemini-3.1-pro-preview`
+- `vercel/grok-4.20-reasoning-beta`
 
 Why they are not defaults yet:
 - Claude Haiku now clears the explicit `mini-web` restyle prompt, but it still needs broader repo coverage before it should be a default
 - GLM can edit, but the current route still shows retry/rate-limit noise on this endpoint
 - Kimi is still on the shortlist because the model family is plausible for agentic work, but the current route finalized without a repo diff
+- Gemini 3.1 Pro Preview makes the right edit on this fixture, but the current route still stalls too long after the diff
+- Grok 4.20 now passes the explicit fixture prompt, but it still belongs in the watchlist lane until it proves itself on broader repos
 
 ### Do Not Start Here
 - `vercel/deepseek-v3.2-thinking`
@@ -197,6 +204,10 @@ Current active bench focus:
 - `vercel/kimi-k2.5`
 - `vercel/claude-haiku-4.5`
 
+Current watchlist bench:
+- `vercel/gemini-3.1-pro-preview`
+- `vercel/grok-4.20-reasoning-beta`
+
 DeepSeek is tracked separately as a blocked `/responses` route, not as a default public bench candidate.
 
 Run it with:
@@ -211,6 +222,7 @@ scripts/run-public-smoke-bench.sh --profile ~/.codex
 - Do not assume a model listed on `/v1/models` is ready for Codex-style work.
 - Do not assume benchmark rank means good tool behavior.
 - Do not assume Kimi or Claude Haiku are green just because they are strong model families.
+- Do not assume Gemini 3.1 Pro Preview or Grok 4.20 are default-safe just because they are strong frontier families.
 - Do not assume DeepSeek is usable on this LiteLLM `/responses` bridge today.
 - Do not spend premium-model money through a weak bridge path when the official harness would do the job better.
 

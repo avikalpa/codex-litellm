@@ -10,7 +10,7 @@ failures=()
 mapfile -t models < <(
   "$repo_root/scripts/discover-agentic-models.sh" \
     --profile "$profile" \
-    minimax kimi glm claude-haiku
+    minimax kimi glm claude-haiku gemini-pro grok-fast
 )
 
 for model in "${models[@]}"; do
