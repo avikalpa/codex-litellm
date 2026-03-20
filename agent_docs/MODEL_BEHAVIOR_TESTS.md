@@ -17,7 +17,8 @@ These are the required live smoke tests before push or release.
 
 ## Required Models
 - Agentic release gate:
-  - `vercel/minimax-m2.5`
+  - current gateway-discovered MiniMax release route
+  - currently: `vercel/minimax-m2.7-highspeed`
 
 ## Canonical Prompt
 `change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.`
@@ -39,6 +40,7 @@ These are the required live smoke tests before push or release.
 ## Notes
 - These model slugs are current working release gates, not permanent truths.
 - Refresh them when the gateway inventory or supported-model policy changes.
+- Use `./scripts/discover-agentic-models.sh --profile /home/pi/.codex-litellm-debug minimax kimi deepseek glm claude-haiku` before hard-coding a release gate slug after gateway changes.
 - Deprecated non-agentic models are not release gates anymore. Test them only when explicitly investigating compatibility regressions.
 
 ## Research Matrix
@@ -49,7 +51,7 @@ These are the required live smoke tests before push or release.
   - `calibre-web` as the heavier real-world UI repo
 - For current agentic model research, the baseline matrix is:
   - `vercel/deepseek-v3.2-thinking`
-  - `vercel/minimax-m2.5`
+  - `vercel/minimax-m2.7-highspeed`
   - `vercel/kimi-k2.5`
   - `vercel/claude-haiku-4.5`
   - `vercel/glm-5-turbo`

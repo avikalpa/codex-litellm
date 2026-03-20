@@ -1,117 +1,52 @@
-# Current Task — 0.115.0 Upstream Refresh
+# Current Task — 0.116.0 Upstream Refresh
 
-Last updated: 2026-03-19
+Last updated: 2026-03-20
 
 ## TL;DR
-- `codex/` is aligned to upstream `rust-v0.115.0` at commit `f028679a`.
-- Root metadata is already aligned to the same base:
-  - `package.json.version = 0.115.0`
-  - `package.json.codexLitellm.baseVersion = 0.115.0`
-  - `package.json.codexLitellm.upstreamCommit = f028679a`
-- `cargo build --locked --bin codex` currently passes on this tree.
+- `codex/` is aligned to upstream `rust-v0.116.0` at commit `38771c90`.
+- Root metadata is aligned to the same base:
+  - `package.json.version = 0.116.0`
+  - `package.json.codexLitellm.baseVersion = 0.116.0`
+  - `package.json.codexLitellm.upstreamCommit = 38771c90`
+- `stable-tag.patch` has been regenerated from `rust-v0.116.0`.
+- `cargo build --locked --bin codex` passes on this tree.
 
-## What Already Landed In The 0.115.0 Port
-- retry-away handling for LiteLLM `400 UnsupportedParamsError` tied to unsupported reasoning-effort fields
-- model-suffix matching fixes for namespaced/custom slugs
-- tool normalization so LiteLLM/Vercel accepts function-call tool payloads where upstream request shapes were rejected
-- transient follow-up instructions instead of polluting persisted conversation history
-- stronger post-edit finalize nudges
-- a shell guard that blocks further read-only inspection once the repo already has a diff, except for `git diff --stat`
-- the same post-edit guard behavior now applies to the live `exec_command` / unified-exec path
-- explicit runtime metadata for `vercel/minimax-m2.5` so it no longer silently falls back
+## What Changed In The 0.116.0 Port
+- carried forward the LiteLLM `/responses` runtime path
+- kept tool normalization for LiteLLM function-style tool payloads
+- kept transient follow-up instructions instead of persisting them into conversation history
+- kept retry-state reset / websocket-to-http recovery logic for LiteLLM stream failures
+- kept the post-edit read-only shell guard
+- kept curated agentic-model filtering and metadata tuning
+- added tolerance for out-of-order streamed deltas so debug runs no longer panic on `OutputTextDelta without active item`
 
-## Current Status
-- The old LiteLLM/Vercel `"Multiple system messages..."` failure is gone.
-- The later LiteLLM duplicate-`tool_call` replay failure is also mitigated enough for the current live gate to finish.
-- `vercel/minimax-m2.5` now passes the canonical live gate on `0.115.0`:
-  - it makes a real repo edit
-  - it performs the single allowed verification step, `git diff --stat`
-  - it returns a final assistant reply
-- Remaining work is no longer a release blocker. It is quality follow-up:
-  - keep reducing low-value exploration on weaker agentic models
-  - keep model metadata aligned with real provider behavior
-  - keep telemetry ahead of the next regression
-- The current release blocker is operational, not behavioral:
-  - GitHub Actions `linux-arm64` release builds are getting SIGKILLed under the upstream `fat` LTO / single-codegen release profile
-  - local fix is now in `build.sh`: cross-built `aarch64-unknown-linux-gnu` releases use `thin` LTO and `codegen-units=4`
-  - that fix still needs to be released from a fresh tag because the currently running release predates it
+## Current Validation State
+- required debug build: pass
+- current live `mini-web` smoke on the gateway-discovered MiniMax route: pass
+- current wider `mini-web` research matrix:
+  - `vercel/minimax-m2.7-highspeed`: pass
+  - `vercel/glm-5-turbo`: edit succeeded, but the run still hit retry/rate-limit noise
+  - `vercel/kimi-k2.5`: failed by finalizing without a repo diff
+  - `vercel/claude-haiku-4.5`: failed by ending without a repo diff after a bad local `apply_patch` assumption
+  - `vercel/deepseek-v3.2-thinking`: failed on LiteLLM `/responses` tool-follow-up handling
 
-## Research Follow-Up
-- The new fixture-based harness now covers more than `calibre-web`:
-  - `mini-web` for lightweight HTML/CSS/UI edits
-  - `python-cli` for CLI + README + test updates
-- Current live results on `mini-web`:
-  - `vercel/minimax-m2.7-highspeed`: pass after a stream retry
-  - `vercel/gemini-3.1-pro-preview`: pass, but leaked internal planning chatter into the assistant stream
-  - `vercel/glm-5-turbo`: fails the stricter bench by timing out before valid completion
-  - `vercel/kimi-k2.5`: fails the stricter bench by falsely declaring success without a repo diff
-  - `vercel/deepseek-v3.2-thinking`: fails at the gateway with missing `reasoning_content` during tool-use turns
-  - `vercel/grok-4.20-reasoning-beta`: fails the stricter bench after rate limiting before a repo edit
-- Current live result on `python-cli`:
-  - `vercel/minimax-m2.5`: pass on a non-UI repo shape
-- Direct backend probes against `https://litellm.example.com/v1/responses` narrowed the DeepSeek failure:
-  - replaying `reasoning + message + function_call + function_call_output` in the current Codex `/responses` shape still fails
-  - replaying the exact prior `/responses` output items plus `function_call_output` still fails
-  - using `previous_response_id` with only `function_call_output` still fails, with both `store=false` and `store=true`
-  - conclusion: the remaining DeepSeek breakage is the LiteLLM/Vercel `/responses` bridge for thinking+tools, not missing runtime metadata
+## Release Read
+- `/responses` remains the default forward path.
+- DeepSeek remains a known blocker on that path.
+- MiniMax is the current release gate and current best default route.
+- Kimi, Claude Haiku, and GLM should stay in the bench, not in the default recommendation set.
 
 ## Evidence
-- `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix2.log`
-- `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix3.log`
-- `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix4.log`
-- duplicate-`tool_call` failure before the retry-state reset:
-  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix5.log`
-  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix7.log`
-  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix8.log`
-- current passing run with residual over-exploration / duplicated CSS block:
-  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix9.log`
-- current passing run after explicit `minimax` metadata and stricter shell-write detection:
-  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix10.log`
-- current passing run after porting the post-edit guard onto the live `exec_command` path:
-  - `logs/model-test-vercel_minimax-m2.5-0.115.0-postfix11.log`
-- new fixture-based research runs:
-- `logs/model-test-vercel_deepseek-v3.2-thinking-mini-web-20260318-192213.log`
-- `logs/model-test-vercel_minimax-m2.5-mini-web-20260318-192400.log`
-- `logs/model-test-vercel_kimi-k2.5-mini-web-20260318-192519.log`
-- `logs/model-test-vercel_minimax-m2.5-python-cli-20260318-192647.log`
-- current isolated reruns on gateway-discovered model IDs are saved under `logs/`
-- committed public result snapshot:
-  - `benchmarks/public-smoke-results.md`
-  - `benchmarks/public-smoke-results.json`
-- current gateway inventory already exposes all currently tracked target families:
-  - MiniMax
-  - GLM-5
-  - Kimi
-  - DeepSeek
-  - Gemini 3.1 Pro Preview
-  - Grok 4.20
-- Earlier non-agentic schema failure before tool normalization:
-  - `logs/model-test-vercel_gpt-oss-120b-0.115.0-postfix.log`
+- passing MiniMax smoke on `0.116.0`: current `mini-web` run recorded in local `logs/`
+- current Kimi failure: latest `mini-web` run recorded in local `logs/`
+- current DeepSeek failure: latest `mini-web` run recorded in local `logs/`
+- current GLM run with edit + retry noise: latest `mini-web` run recorded in local `logs/`
+- current Claude Haiku failure: latest `mini-web` run recorded in local `logs/`
 
-## Verified So Far
-- `cargo test -p codex-core get_model_info_matches_multi_segment_namespace_suffix -- --nocapture`
-- `cargo test -p codex-core get_model_info_prefers_longest_namespaced_suffix_match -- --nocapture`
-- `cargo test -p codex-core should_retry_without_reasoning_only_for_litellm_400s -- --nocapture`
-- `cargo test -p codex-core build_responses_request_normalizes_litellm_tools_to_function_only -- --nocapture`
-- `cargo test -p codex-core build_tool_call_maps_function_tool_search_to_tool_search_payload -- --nocapture`
-- `cargo test -p codex-core prefer_http_after_retryable_stream_error_only_for_litellm_websockets -- --nocapture`
-- `cargo test -p codex-core reset_state_after_retryable_stream_error_ -- --nocapture`
-- `cargo test -p codex-core normalize_removes_duplicate_function_calls_with_same_call_id -- --nocapture`
-- `cargo test -p codex-core output_redirection_counts_as_mutating_shell_command -- --nocapture`
-- `cargo test -p codex-core blocks_read_only_exec_commands_after_successful_mutating_exec_command -- --nocapture`
-- `cargo test -p codex-core exec_output_redirection_counts_as_mutating_shell_command -- --nocapture`
-- `cargo test -p codex-core known_minimax_model_uses_tuned_metadata_instead_of_fallback -- --nocapture`
-- `cargo test -p codex-core known_claude_haiku_model_uses_tuned_metadata_instead_of_fallback -- --nocapture`
-- `cargo test -p codex-core known_glm_model_uses_tuned_metadata_instead_of_fallback -- --nocapture`
-- `cargo build --locked --bin codex`
-- `TARGET=aarch64-unknown-linux-gnu USE_CROSS=1 BUILD_SH_DRY_RUN=1 bash -x ./build.sh`
-
-## Next Step
-- Cut a fresh release from the arm64-build fix instead of waiting on the old failed run.
-- Keep runtime metadata in-tree for curated agentic routes so they do not silently fall back.
-- Keep DeepSeek marked as known-broken on the LiteLLM `/responses` path until the bridge is fixed or a fallback path is reintroduced.
-- Keep using the stricter fixture harness, not only `calibre-web`, for agentic model research.
-- Deprecated non-agentic models are not release gates anymore; only re-run them when explicitly debugging compatibility.
+## Remaining Work
+- finish the bounded default-`~/.codex` smoke check and record the result
+- refresh `agent_docs/CHANGELOG.md` for the `0.116.0` line
+- commit, push, tag, and publish the `0.116.0` release if the remaining release checks stay green
 
 ## Handoff Rule
 Do not release or publish from any older base.
