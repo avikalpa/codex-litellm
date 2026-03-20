@@ -28,15 +28,16 @@ On the current `mini-web` smoke fixture, the best default route on this gateway 
 
 Current agentic shortlist on the LiteLLM `/responses` path:
 - Green: `vercel/minimax-m2.7-highspeed`
+- Amber: `vercel/claude-haiku-4.5`
 - Amber: `vercel/glm-5-turbo`
 - Red: `vercel/kimi-k2.5`
-- Red: `vercel/claude-haiku-4.5`
-- Red: `vercel/deepseek-v3.2-thinking`
+- Blocked: `vercel/deepseek-v3.2-thinking`
 
 What those labels mean here:
 - `Green`: made a real repo edit and completed cleanly
 - `Amber`: promising, but still unstable or economically noisy on this endpoint
 - `Red`: not reliable enough for Codex-style editing on this endpoint today
+- `Blocked`: failing at the LiteLLM `/responses` bridge layer rather than only at model quality
 
 ## What We Mean By “Agentic”
 
@@ -65,9 +66,9 @@ Why:
 - `vercel/claude-haiku-4.5`
 
 Why they are not defaults yet:
+- Claude Haiku now clears the explicit `mini-web` restyle prompt, but it still needs broader repo coverage before it should be a default
 - GLM can edit, but the current route still shows retry/rate-limit noise on this endpoint
 - Kimi is still on the shortlist because the model family is plausible for agentic work, but the current route finalized without a repo diff
-- Claude Haiku is economically interesting, but the current run on this fixture failed to produce a real repo diff
 
 ### Do Not Start Here
 - `vercel/deepseek-v3.2-thinking`
@@ -189,6 +190,14 @@ The repository includes a public smoke bench that:
 - sanitizes private route segments before writing public output
 - runs a real repo-edit task on a small fixture
 - refuses to call a run a pass unless it produces a non-empty repo diff
+
+Current active bench focus:
+- `vercel/minimax-m2.7-highspeed`
+- `vercel/glm-5-turbo`
+- `vercel/kimi-k2.5`
+- `vercel/claude-haiku-4.5`
+
+DeepSeek is tracked separately as a blocked `/responses` route, not as a default public bench candidate.
 
 Run it with:
 

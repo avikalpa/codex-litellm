@@ -22,31 +22,34 @@ Last updated: 2026-03-20
 
 ## Current Validation State
 - required debug build: pass
-- current live `mini-web` smoke on the gateway-discovered MiniMax route: pass
-- current wider `mini-web` research matrix:
+- current live `mini-web` smoke on the gateway-discovered MiniMax route with the explicit restyle prompt: pass
+- current active `mini-web` research matrix:
   - `vercel/minimax-m2.7-highspeed`: pass
-  - `vercel/glm-5-turbo`: edit succeeded, but the run still hit retry/rate-limit noise
+  - `vercel/claude-haiku-4.5`: pass on the explicit restyle prompt, but still needs broader fixture coverage
+  - `vercel/glm-5-turbo`: failed on the focused rerun after hitting retry/rate-limit noise before a repo diff
   - `vercel/kimi-k2.5`: failed by finalizing without a repo diff
-  - `vercel/claude-haiku-4.5`: failed by ending without a repo diff after a bad local `apply_patch` assumption
+- separately tracked blocked route:
   - `vercel/deepseek-v3.2-thinking`: failed on LiteLLM `/responses` tool-follow-up handling
 
 ## Release Read
 - `/responses` remains the default forward path.
 - DeepSeek remains a known blocker on that path.
 - MiniMax is the current release gate and current best default route.
-- Kimi, Claude Haiku, and GLM should stay in the bench, not in the default recommendation set.
+- Claude Haiku has moved up into the promising bench tier on the explicit restyle prompt, but it is still not a default recommendation.
+- Kimi and GLM stay in the active bench as non-default routes that still need more work.
+- The bench prompt is now explicit enough to force a measurable button restyle instead of inviting “already done” false passes.
 
 ## Evidence
 - passing MiniMax smoke on `0.116.0`: current `mini-web` run recorded in local `logs/`
+- passing Claude Haiku smoke on the explicit prompt: current `mini-web` run recorded in local `logs/`
 - current Kimi failure: latest `mini-web` run recorded in local `logs/`
 - current DeepSeek failure: latest `mini-web` run recorded in local `logs/`
-- current GLM run with edit + retry noise: latest `mini-web` run recorded in local `logs/`
-- current Claude Haiku failure: latest `mini-web` run recorded in local `logs/`
+- current GLM failure with retry/rate-limit noise: latest `mini-web` run recorded in local `logs/`
 
 ## Remaining Work
-- finish the bounded default-`~/.codex` smoke check and record the result
-- refresh `agent_docs/CHANGELOG.md` for the `0.116.0` line
-- commit, push, tag, and publish the `0.116.0` release if the remaining release checks stay green
+- let the in-flight `0.116.0` release complete on GitHub Actions
+- keep DeepSeek tracked as a blocked `/responses` route until the bridge bug is fixed
+- extend the refreshed explicit-prompt bench to `python-cli` and a heavier repo so Claude Haiku and MiniMax are not only validated on `mini-web`
 
 ## Handoff Rule
 Do not release or publish from any older base.

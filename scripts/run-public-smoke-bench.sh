@@ -65,9 +65,7 @@ families=(
   minimax
   glm
   kimi
-  deepseek
-  gemini-pro
-  grok-fast
+  claude-haiku
 )
 
 sanitize_slug() {
@@ -92,14 +90,8 @@ note_for_family() {
     kimi)
       printf '%s\n' "Strong AA model, but verify it actually edits instead of only sounding confident."
       ;;
-    deepseek)
-      printf '%s\n' "Keep-alive watchlist model; current /responses bridge risk is still real."
-      ;;
-    gemini-pro)
-      printf '%s\n' "AA intelligence leader, but tool-call reliability still needs verification."
-      ;;
-    grok-fast)
-      printf '%s\n' "Economics-oriented Grok route; keep it on the bench until it finishes cleanly."
+    claude-haiku)
+      printf '%s\n' "Low-cost candidate; keep it in the active bench until it reliably produces real repo edits."
       ;;
   esac
 }
@@ -171,6 +163,8 @@ printf '%s\n' "$results_json" > "$json_file"
   echo
   echo "- fixture: \`$fixture\`"
   echo "- profile path: \`$display_profile\`"
+  echo "- active agentic bench: MiniMax, GLM, Kimi, Claude Haiku"
+  echo "- DeepSeek is tracked separately as a blocked /responses route, not a default bench candidate"
   echo "- exact gateway-specific route segments are intentionally not published"
   echo
   echo "| Model family | Public slug | Status | Notes |"

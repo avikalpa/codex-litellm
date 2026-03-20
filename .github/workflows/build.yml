@@ -65,7 +65,7 @@ jobs:
     needs: release-preflight
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 4
       matrix:
         include:
           - target: x86_64-unknown-linux-gnu

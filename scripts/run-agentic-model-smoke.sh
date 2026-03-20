@@ -55,7 +55,7 @@ fi
 
 case "$fixture" in
   calibre-web|mini-web)
-    default_prompt="change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission."
+    default_prompt="change every button and button-like input in the repository to use a diagonal gradient from #195c53 to #d17a2d, a 999px pill radius, 14px 24px padding, and a stronger hover shadow. Make the repo edit directly and finish after the edit. Do not ask for permission."
     ;;
   python-cli)
     default_prompt="add a --verbose option to the CLI, update the README usage section, and add or update a test for it. Just do it."

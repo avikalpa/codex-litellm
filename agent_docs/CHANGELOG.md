@@ -7,10 +7,10 @@ This file tracks user-visible changes in `codex-litellm`.
 
 Current public-facing model picture on this gateway:
 - pass: `vercel/minimax-m2.7-highspeed`
+- amber: `vercel/claude-haiku-4.5`
 - amber: `vercel/glm-5-turbo`
 - fail: `vercel/kimi-k2.5`
-- fail: `vercel/claude-haiku-4.5`
-- fail: `vercel/deepseek-v3.2-thinking`
+- blocked: `vercel/deepseek-v3.2-thinking`
 
 ### Highlights
 - Refreshed the maintained patchset onto upstream `rust-v0.116.0`.
@@ -18,6 +18,8 @@ Current public-facing model picture on this gateway:
 - Hardened stream handling so out-of-order text/reasoning deltas no longer panic debug sessions.
 - Revalidated the current MiniMax route as the best default live editing path on this gateway.
 - Updated the README to steer users toward the current agentic routes, away from weak or expensive paths, and toward LiteLLM semantic cache with cheap embeddings.
+- Tightened the active smoke bench around MiniMax, GLM, Kimi, and Claude Haiku, with DeepSeek tracked separately as a blocked route.
+- Made the UI smoke prompt explicit enough to force a measurable restyle instead of inviting “already done” false passes.
 
 ### Detailed Changes
 - upstream: rebased the maintained LiteLLM patchset onto `rust-v0.116.0` and regenerated `stable-tag.patch` from that exact tag.
@@ -27,8 +29,9 @@ Current public-facing model picture on this gateway:
 - validation: re-ran current bench candidates and confirmed:
   - `vercel/kimi-k2.5` still finalizes without a repo diff
   - `vercel/deepseek-v3.2-thinking` is still blocked by the current LiteLLM `/responses` follow-up path
-  - `vercel/glm-5-turbo` can edit, but the current route is still noisy under retry/rate-limit pressure
-  - `vercel/claude-haiku-4.5` is not yet a clean pass on this fixture
+  - `vercel/glm-5-turbo` remains noisy enough under retry/rate-limit pressure to fail the focused rerun
+  - `vercel/claude-haiku-4.5` now clears the explicit `mini-web` restyle prompt, but still needs broader fixture coverage before it should be treated as a default
+- validation: narrowed the default public bench to MiniMax, GLM, Kimi, and Claude Haiku so DeepSeek does not dilute the active green/amber/red matrix while it is still a known blocked route.
 - docs: rewrote `README.md` around real user experience, current model guidance, `/responses`, economic tradeoffs, and LiteLLM semantic cache guidance.
 
 ## Format

@@ -21,7 +21,7 @@ These are the required live smoke tests before push or release.
   - currently: `vercel/minimax-m2.7-highspeed`
 
 ## Canonical Prompt
-`change all buttons in the repository to have a gradient and pill shape. Just do it. Do not ask for permission.`
+`change every button and button-like input in the repository to use a diagonal gradient from #195c53 to #d17a2d, a 999px pill radius, 14px 24px padding, and a stronger hover shadow. Make the repo edit directly and finish after the edit. Do not ask for permission.`
 
 ## Pass Criteria
 ### Agentic release gate
@@ -50,11 +50,11 @@ These are the required live smoke tests before push or release.
   - `python-cli` for CLI + README + test updates
   - `calibre-web` as the heavier real-world UI repo
 - For current agentic model research, the baseline matrix is:
-  - `vercel/deepseek-v3.2-thinking`
   - `vercel/minimax-m2.7-highspeed`
   - `vercel/kimi-k2.5`
   - `vercel/claude-haiku-4.5`
   - `vercel/glm-5-turbo`
+- DeepSeek is tracked separately as a blocked `/responses` route, not part of the default green/amber/red research matrix.
 - Runner helpers:
   - `./scripts/run-agentic-model-smoke.sh --fixture <fixture> --model <slug> --profile /home/pi/.codex-litellm-debug`
   - `./scripts/run-agentic-matrix.sh <fixture> /home/pi/.codex-litellm-debug`
