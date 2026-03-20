@@ -43,12 +43,12 @@ These are not the whole allowlist. They are the current mandatory live checks be
   - `vercel/minimax-m2.7-highspeed`
   - `vercel/claude-haiku-4.5`
 - Amber:
-  - `vercel/glm-5-turbo`
+  - `vercel/glm-5-turbo` because it still shows real ability, but current route pressure is too noisy for default use
 - Watchlist:
   - `vercel/gemini-3.1-pro-preview` because it makes the right edit on the explicit fixture prompt, but still stalls too long after the diff
   - `vercel/grok-4.20-reasoning-beta` because it clears the explicit fixture prompt, but fails the stricter `python-cli` rerun under rate-limit pressure
-- Red:
-  - `vercel/kimi-k2.5` because it still finalizes without a repo diff on the focused rerun
+- Split / research-only:
+  - `vercel/kimi-k2.5` because it fails the explicit UI fixture, but passes the stricter procedural `python-cli` task
 - Blocked:
   - `vercel/deepseek-v3.2-thinking` because the current LiteLLM `/responses` bridge still rejects some tool-use follow-up turns with missing `reasoning_content`
 

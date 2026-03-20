@@ -19,99 +19,120 @@ Official Codex is still the right answer when you want the official hosted harne
 - fast model experimentation without abandoning the Codex workflow
 - a patchset that stays close to upstream instead of becoming a permanent fork
 
-## Current Recommendation
+## Research Snapshot
 
-Start with MiniMax.
+This README is not only setup documentation. It is also the current live research report for which non-OpenAI routes are actually usable inside the Codex harness.
 
-Current agentic shortlist on the LiteLLM `/responses` path:
-- Green: `vercel/minimax-m2.7-highspeed`
-- Green: `vercel/claude-haiku-4.5`
-- Amber: `vercel/glm-5-turbo`
-- Watchlist: `vercel/gemini-3.1-pro-preview`
-- Watchlist: `vercel/grok-4.20-reasoning-beta`
-- Red: `vercel/kimi-k2.5`
-- Blocked: `vercel/deepseek-v3.2-thinking`
-
-What those labels mean here:
-- `Green`: made a real repo edit and completed cleanly
-- `Amber`: promising, but still unstable or economically noisy on this endpoint
-- `Watchlist`: worth continued testing, but not stable enough to recommend as a default route yet
-- `Red`: not reliable enough for Codex-style editing on this endpoint today
-- `Blocked`: failing at the LiteLLM `/responses` bridge layer rather than only at model quality
-
-## Feasibility By Model
-
-These ratings come from live `codex-litellm` runs against the current LiteLLM gateway, not benchmark claims.
-
-| Model | `mini-web` explicit restyle | `python-cli` strict multi-file task | Current recommendation |
-| --- | --- | --- | --- |
-| `vercel/minimax-m2.7-highspeed` | pass | pass | best default |
-| `vercel/claude-haiku-4.5` | pass | pass | best cheaper second option |
-| `vercel/glm-5-turbo` | edit, but noisy / retries | not yet revalidated | test carefully |
-| `vercel/gemini-3.1-pro-preview` | correct edit, then stalled | fail under rate-limit pressure | watchlist only |
-| `vercel/grok-4.20-reasoning-beta` | pass | fail under rate-limit pressure | watchlist only |
-| `vercel/kimi-k2.5` | fail, no repo diff | not worth promoting yet | avoid for now |
-| `vercel/deepseek-v3.2-thinking` | blocked | blocked by same bridge class | blocked on this stack |
-
-What this means in practice:
-- if you want the highest first-run odds, use `vercel/minimax-m2.7-highspeed`
+Short version:
+- start with `vercel/minimax-m2.7-highspeed`
 - if you want a cheaper serious option, try `vercel/claude-haiku-4.5`
-- if you want to experiment, keep `vercel/gemini-3.1-pro-preview` and `vercel/grok-4.20-reasoning-beta` in the bench, not as defaults
-- do not spend time debugging `vercel/deepseek-v3.2-thinking` on this stack until the LiteLLM `/responses` tool-follow-up bug is fixed
+- keep `vercel/gemini-3.1-pro-preview`, `vercel/grok-4.20-reasoning-beta`, `vercel/glm-5-turbo`, and `vercel/kimi-k2.5` in the research lane
+- do not spend time debugging `vercel/deepseek-v3.2-thinking` on this stack until the LiteLLM `/responses` bridge issue is fixed
 
-## What We Mean By “Agentic”
+## How To Read The Results
+
+These ratings come from live `codex-litellm` runs through the Codex harness, not from benchmark claims, API pings, or chatbot feel.
 
 A model is only useful here if it can:
-- inspect a repo
+- inspect a real repository
 - use tools correctly
-- make a real file edit
-- stop after the edit
+- make a real repo diff
+- stop after the edit instead of looping
 - return a final assistant answer
 
 Good benchmark scores are not enough.
 
-## Model Selection
+## Research Method
 
-### Best Default
-- `vercel/minimax-m2.7-highspeed`
+The current research bench uses the same Codex harness users run, with real repository fixtures and real `git diff` checks.
 
-Why:
-- currently the cleanest edit loop on this gateway
-- good price/performance
-- clears both the lightweight UI fixture and the stricter multi-file CLI fixture
+| Fixture | What it probes | Pass condition |
+| --- | --- | --- |
+| `mini-web` | lightweight UI edit loop | model must inspect, edit, and finish a concrete button restyle |
+| `python-cli` | multi-file procedural edit loop | model must change `README.md`, `src/fixture_cli/cli.py`, and `tests/test_cli.py` |
+| `calibre-web` | heavier real-world repo stress | exploratory probe for large-repo tool use, route stability, and follow-through |
 
-### Best Secondary Option
-- `vercel/claude-haiku-4.5`
+The current prompt family is intentionally explicit. It is designed to prevent fake passes where a model says the work is already done.
 
-Why:
-- now clears both the explicit `mini-web` restyle task and the stricter `python-cli` task
-- cheaper than many frontier alternatives
-- materially better current evidence than Gemini, Grok, Kimi, or DeepSeek on this stack
+```mermaid
+flowchart LR
+  A[Model route] --> B[Find the right files]
+  B --> C[Make a real repo diff]
+  C --> D[Stop exploring]
+  D --> E[Return final answer]
+  C --> F[No diff / wrong files]
+  D --> G[Loops, stalls, or rate-limit churn]
+  E --> H[Clean Codex-harness pass]
+```
 
-### Worth Testing Next
-- `vercel/glm-5-turbo`
-- `vercel/claude-haiku-4.5`
-- `vercel/gemini-3.1-pro-preview`
-- `vercel/grok-4.20-reasoning-beta`
+## Current Recommendation
 
-Why they are not defaults yet:
-- GLM can edit, but the current route still shows retry/rate-limit noise on this endpoint
-- Gemini 3.1 Pro Preview makes the right edit on this fixture, but the current route still stalls too long after the diff
-- Grok 4.20 now passes the explicit fixture prompt, but it still belongs in the watchlist lane until it proves itself on broader repos
+Current agentic shortlist on the LiteLLM `/responses` path:
+- `Recommended default`: `vercel/minimax-m2.7-highspeed`
+- `Recommended cheaper second option`: `vercel/claude-haiku-4.5`
+- `Research lane`: `vercel/glm-5-turbo`, `vercel/gemini-3.1-pro-preview`, `vercel/grok-4.20-reasoning-beta`, `vercel/kimi-k2.5`
+- `Blocked`: `vercel/deepseek-v3.2-thinking`
 
-### Do Not Start Here
-- `vercel/kimi-k2.5`
-- `vercel/deepseek-v3.2-thinking`
+## Feasibility By Model
 
-Why:
-- Kimi still fails to produce dependable repo diffs in the current bench
-- DeepSeek is still blocked by the current LiteLLM `/responses` tool-follow-up bridge on this endpoint
+### Scoreboard
 
-### Economics Warning
+| Model | `mini-web` | `python-cli` | `calibre-web` exploratory | What usually goes wrong | Current recommendation |
+| --- | --- | --- | --- | --- | --- |
+| `vercel/minimax-m2.7-highspeed` | PASS | PASS | FAIL under route pressure, no clean diff on the latest heavy probe | larger repos currently amplify retry or 429 noise | best default |
+| `vercel/claude-haiku-4.5` | PASS | PASS | not yet cleanly completed in the latest heavy probe batch | needs more large-repo evidence | best cheaper second option |
+| `vercel/glm-5-turbo` | FAIL | FAIL | FAIL | retry and 429 noise before a useful diff | research only |
+| `vercel/gemini-3.1-pro-preview` | EDITS, THEN STALLS | TIMEOUT | incomplete probe | post-edit finalization is still too weak | watchlist only |
+| `vercel/grok-4.20-reasoning-beta` | PASS | FAIL | incomplete probe | can look strong on light UI work, then fail to produce a qualifying diff on procedural work | watchlist only |
+| `vercel/kimi-k2.5` | FAIL | PASS | incomplete probe | behavior is fixture-sensitive; it handles procedural edits better than broad UI hunting | research only |
+| `vercel/deepseek-v3.2-thinking` | BLOCKED | BLOCKED | not worth probing further until bridge fix | LiteLLM `/responses` tool-follow-up incompatibility | blocked on this stack |
+
+### What The Table Actually Means
+
+- `PASS` means the model completed a Codex-harness run with a real repo diff and a final answer.
+- `EDITS, THEN STALLS` means the model found the right change, but did not exit cleanly enough to be trustworthy.
+- `FAIL` means it either never produced the required diff or collapsed into retries, rate limits, or a no-op finish.
+- `BLOCKED` means the problem is below normal model quality. The current bridge path is incompatible.
+
+### Reliability Read
+
+| Tier | Models | Why |
+| --- | --- | --- |
+| Default-safe today | `vercel/minimax-m2.7-highspeed` | best combination of real passes, cost, and clean completion loop |
+| Serious secondary option | `vercel/claude-haiku-4.5` | clears the current light and medium fixtures with better cost discipline than many frontier routes |
+| Research lane | `vercel/kimi-k2.5`, `vercel/glm-5-turbo`, `vercel/gemini-3.1-pro-preview`, `vercel/grok-4.20-reasoning-beta` | each shows some useful capability, but not enough consistency to recommend as defaults |
+| Blocked lane | `vercel/deepseek-v3.2-thinking` | current LiteLLM `/responses` bridge cannot reliably carry tool-follow-up turns |
+
+## What This Tells Users
+
+- if you want the highest first-run odds, use `vercel/minimax-m2.7-highspeed`
+- if you want a cheaper serious option, use `vercel/claude-haiku-4.5`
+- if you want to debate frontier-model upside, keep `vercel/gemini-3.1-pro-preview` and `vercel/grok-4.20-reasoning-beta` in the bench, not as your default daily route
+- do not over-read Kimi's current mixed picture; it is not dead, but it is not stable enough to recommend broadly
+- do not treat GLM failures as proof that the model family is bad; current evidence says the route is still too noisy on this endpoint
+- do not spend premium-model money through a weak bridge path when the official harness would do the job better
+
+## What This Tells Maintainers
+
+The current frontier-model debates are less about raw intelligence and more about where the Codex harness fails under a given route.
+
+| Failure class | Models where it shows up now | Likely implication |
+| --- | --- | --- |
+| post-edit finalization drift | `vercel/gemini-3.1-pro-preview` | strengthen "edit once, then finalize" steering after the first qualifying diff |
+| route-pressure or retry churn on larger repos | `vercel/minimax-m2.7-highspeed`, `vercel/glm-5-turbo`, `vercel/grok-4.20-reasoning-beta` | improve retry budgeting, backoff, and possibly trim exploration pressure on large repos |
+| fixture-shape sensitivity | `vercel/kimi-k2.5` | keep testing both UI-style and procedural fixtures; do not collapse judgment from one fixture only |
+| bridge-level incompatibility | `vercel/deepseek-v3.2-thinking` | fix LiteLLM `/responses` follow-up handling or add a model-specific fallback path |
+
+Practical conclusion:
+- some routes will graduate simply with time as providers stabilize
+- some routes will graduate because `codex-litellm` gets slightly better finalization or retry behavior
+- DeepSeek looks different from the rest; it currently needs a bridge fix, not just better steering
+
+## Economics Warning
 
 If you want to spend premium money on expensive frontier models, ask whether LiteLLM is adding value for that run.
 
-If the goal is simply “best possible flagship Codex experience”, the official harness is usually the better value:
+If the goal is simply "best possible flagship Codex experience", the official harness is usually the better value:
 - less bridge complexity
 - fewer provider quirks
 - less money wasted debugging endpoint behavior instead of doing work
@@ -219,7 +240,7 @@ Why this matters:
 The repository includes a public smoke bench that:
 - resolves live model IDs from your LiteLLM `/v1/models`
 - sanitizes private route segments before writing public output
-- runs a real repo-edit task on a small fixture
+- runs real Codex-harness repo-edit tasks, not toy prompt checks
 - refuses to call a run a pass unless it produces a non-empty repo diff
 
 Current active bench focus:
@@ -236,7 +257,8 @@ DeepSeek is tracked separately as a blocked `/responses` route, not as a default
 
 The fixture gates are intentionally different:
 - `mini-web` checks whether a model can inspect, edit, and finalize a concrete UI restyle
-- `python-cli` now requires diffs in the CLI file, the README, and the test file, so partial edits do not count as a pass
+- `python-cli` requires diffs in the CLI file, the README, and the test file, so partial edits do not count as a pass
+- `calibre-web` is the heavier real-world probe for large-repo search, edit discipline, and route stability
 
 Run it with:
 
@@ -249,8 +271,8 @@ scripts/run-public-smoke-bench.sh --profile ~/.codex
 - Do not start with non-agentic models.
 - Do not assume a model listed on `/v1/models` is ready for Codex-style work.
 - Do not assume benchmark rank means good tool behavior.
-- Do not assume Kimi or Claude Haiku are green just because they are strong model families.
-- Do not assume Gemini 3.1 Pro Preview or Grok 4.20 are default-safe just because they are strong frontier families.
+- Do not assume one passing fixture means a model is fully green.
+- Do not assume one failing fixture means the whole model family is dead.
 - Do not assume DeepSeek is usable on this LiteLLM `/responses` bridge today.
 - Do not spend premium-model money through a weak bridge path when the official harness would do the job better.
 
