@@ -666,6 +666,139 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "codex-core",
+diff --git a/codex-rs/build/codex_litellm_version.rs b/codex-rs/build/codex_litellm_version.rs
+new file mode 100644
+index 000000000..d5b882cfd
+--- /dev/null
++++ b/codex-rs/build/codex_litellm_version.rs
+@@ -0,0 +1,127 @@
++use serde_json::Value;
++use std::env;
++use std::fs;
++use std::path::{Path, PathBuf};
++use std::process::Command;
++
++pub fn emit_codex_litellm_display_version() {
++    println!("cargo:rerun-if-env-changed=CODEX_LITELLM_UPSTREAM_COMMIT");
++    println!("cargo:rerun-if-env-changed=CODEX_LITELLM_PATCH_COMMIT");
++
++    let package_version = env::var("CARGO_PKG_VERSION").unwrap_or_else(|_| "0.0.0".to_string());
++    let Some(repo_root) = find_repo_root(
++        Path::new(&env::var("CARGO_MANIFEST_DIR").unwrap_or_else(|_| ".".to_string())),
++    ) else {
++        println!("cargo:rustc-env=CODEX_LITELLM_DISPLAY_VERSION={package_version}");
++        return;
++    };
++
++    let package_json = repo_root.join("package.json");
++    if package_json.is_file() {
++        println!("cargo:rerun-if-changed={}", package_json.display());
++    }
++    emit_git_rerun_if_changed(&repo_root);
++
++    let upstream_commit = env::var("CODEX_LITELLM_UPSTREAM_COMMIT")
++        .ok()
++        .filter(|value| !value.trim().is_empty())
++        .or_else(|| read_upstream_commit(&package_json));
++    let patch_commit = env::var("CODEX_LITELLM_PATCH_COMMIT")
++        .ok()
++        .filter(|value| !value.trim().is_empty())
++        .or_else(|| git_short_hash(&repo_root));
++
++    let display_version = match (upstream_commit.as_deref(), patch_commit.as_deref()) {
++        (Some(upstream), Some(patch)) => format!(
++            "{package_version}+{}+lit{}",
++            short_hash(upstream),
++            short_hash(patch)
++        ),
++        _ => package_version,
++    };
++
++    println!("cargo:rustc-env=CODEX_LITELLM_DISPLAY_VERSION={display_version}");
++}
++
++fn find_repo_root(start: &Path) -> Option<PathBuf> {
++    for dir in start.ancestors() {
++        let package_json = dir.join("package.json");
++        if !package_json.is_file() {
++            continue;
++        }
++
++        if package_json_contains_codex_litellm_metadata(&package_json) {
++            return Some(dir.to_path_buf());
++        }
++    }
++    None
++}
++
++fn package_json_contains_codex_litellm_metadata(package_json: &Path) -> bool {
++    let Ok(json) = fs::read_to_string(package_json) else {
++        return false;
++    };
++    let Ok(value) = serde_json::from_str::<Value>(&json) else {
++        return false;
++    };
++    value.get("codexLitellm").is_some()
++}
++
++fn read_upstream_commit(package_json: &Path) -> Option<String> {
++    let json = fs::read_to_string(package_json).ok()?;
++    let value: Value = serde_json::from_str(&json).ok()?;
++    value
++        .get("codexLitellm")?
++        .get("upstreamCommit")?
++        .as_str()
++        .map(ToOwned::to_owned)
++}
++
++fn git_short_hash(repo_root: &Path) -> Option<String> {
++    let output = Command::new("git")
++        .args(["rev-parse", "--short=8", "HEAD"])
++        .current_dir(repo_root)
++        .output()
++        .ok()?;
++    if !output.status.success() {
++        return None;
++    }
++
++    let hash = String::from_utf8(output.stdout).ok()?;
++    let trimmed = hash.trim();
++    (!trimmed.is_empty()).then(|| trimmed.to_string())
++}
++
++fn short_hash(value: &str) -> String {
++    value
++        .chars()
++        .filter(|ch| ch.is_ascii_hexdigit())
++        .take(8)
++        .collect()
++}
++
++fn emit_git_rerun_if_changed(repo_root: &Path) {
++    let git_dir = repo_root.join(".git");
++    let head_path = git_dir.join("HEAD");
++    if !head_path.is_file() {
++        return;
++    }
++
++    println!("cargo:rerun-if-changed={}", head_path.display());
++
++    let Ok(head_contents) = fs::read_to_string(&head_path) else {
++        return;
++    };
++    let Some(reference) = head_contents.strip_prefix("ref: ") else {
++        return;
++    };
++    let reference = reference.trim();
++    if reference.is_empty() {
++        return;
++    }
++
++    let reference_path = git_dir.join(reference);
++    if reference_path.is_file() {
++        println!("cargo:rerun-if-changed={}", reference_path.display());
++    }
++}
 diff --git a/codex-rs/cli/Cargo.toml b/codex-rs/cli/Cargo.toml
 index a7e88cd1b..8795f5500 100644
 --- a/codex-rs/cli/Cargo.toml
@@ -694,6 +827,18 @@ index a7e88cd1b..8795f5500 100644
 +
 +[build-dependencies]
 +serde_json = { workspace = true }
+diff --git a/codex-rs/cli/build.rs b/codex-rs/cli/build.rs
+new file mode 100644
+index 000000000..a09cff7c6
+--- /dev/null
++++ b/codex-rs/cli/build.rs
+@@ -0,0 +1,6 @@
++#[path = "../build/codex_litellm_version.rs"]
++mod codex_litellm_version;
++
++fn main() {
++    codex_litellm_version::emit_codex_litellm_display_version();
++}
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
 index 698035fea..f5b17de11 100644
 --- a/codex-rs/cli/src/main.rs
@@ -3942,6 +4087,17 @@ index 378523560..aea9fb1c0 100644
 +
 +[build-dependencies]
 +serde_json = { workspace = true }
+diff --git a/codex-rs/exec/build.rs b/codex-rs/exec/build.rs
+new file mode 100644
+index 000000000..54c4c79ee
+--- /dev/null
++++ b/codex-rs/exec/build.rs
+@@ -0,0 +1,5 @@
++include!("../build/codex_litellm_version.rs");
++
++fn main() {
++    emit_codex_litellm_display_version();
++}
 diff --git a/codex-rs/exec/src/event_processor_with_human_output.rs b/codex-rs/exec/src/event_processor_with_human_output.rs
 index 0e49166b8..19e688c0a 100644
 --- a/codex-rs/exec/src/event_processor_with_human_output.rs
@@ -3981,6 +4137,17 @@ index 03c3a03dd..350c86a40 100644
 +
 +[build-dependencies]
 +serde_json = { workspace = true }
+diff --git a/codex-rs/tui/build.rs b/codex-rs/tui/build.rs
+new file mode 100644
+index 000000000..54c4c79ee
+--- /dev/null
++++ b/codex-rs/tui/build.rs
+@@ -0,0 +1,5 @@
++include!("../build/codex_litellm_version.rs");
++
++fn main() {
++    emit_codex_litellm_display_version();
++}
 diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
 index 54a7a2c66..7e76515d1 100644
 --- a/codex-rs/tui/src/app.rs
@@ -4652,6 +4819,17 @@ index 9ab33202c..18cab01ee 100644
 +
 +[build-dependencies]
 +serde_json = { workspace = true }
+diff --git a/codex-rs/tui_app_server/build.rs b/codex-rs/tui_app_server/build.rs
+new file mode 100644
+index 000000000..54c4c79ee
+--- /dev/null
++++ b/codex-rs/tui_app_server/build.rs
+@@ -0,0 +1,5 @@
++include!("../build/codex_litellm_version.rs");
++
++fn main() {
++    emit_codex_litellm_display_version();
++}
 diff --git a/codex-rs/tui_app_server/src/app.rs b/codex-rs/tui_app_server/src/app.rs
 index bc9d47abe..df1e4dec9 100644
 --- a/codex-rs/tui_app_server/src/app.rs
