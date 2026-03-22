@@ -1418,6 +1418,122 @@ index 698035fea..55a3d3460 100644
 +        );
 +    }
  }
+diff --git a/codex-rs/codex-api/src/endpoint/models.rs b/codex-rs/codex-api/src/endpoint/models.rs
+index 97781ac41..2e1673f1d 100644
+--- a/codex-rs/codex-api/src/endpoint/models.rs
++++ b/codex-rs/codex-api/src/endpoint/models.rs
+@@ -9,12 +9,23 @@ use codex_protocol::openai_models::ModelsResponse;
+ use http::HeaderMap;
+ use http::Method;
+ use http::header::ETAG;
++use serde::Deserialize;
+ use std::sync::Arc;
+
+ pub struct ModelsClient<T: HttpTransport, A: AuthProvider> {
+     session: EndpointSession<T, A>,
+ }
+
++#[derive(Deserialize)]
++struct OpenAiCompatibleModelsResponse {
++    data: Vec<OpenAiCompatibleModelEntry>,
++}
++
++#[derive(Deserialize)]
++struct OpenAiCompatibleModelEntry {
++    id: String,
++}
++
+ impl<T: HttpTransport, A: AuthProvider> ModelsClient<T, A> {
+     pub fn new(transport: T, provider: Provider, auth: A) -> Self {
+         Self {
+@@ -61,13 +72,23 @@ impl<T: HttpTransport, A: AuthProvider> ModelsClient<T, A> {
+             .and_then(|value| value.to_str().ok())
+             .map(ToString::to_string);
+
+-        let ModelsResponse { models } = serde_json::from_slice::<ModelsResponse>(&resp.body)
+-            .map_err(|e| {
+-                ApiError::Stream(format!(
+-                    "failed to decode models response: {e}; body: {}",
+-                    String::from_utf8_lossy(&resp.body)
+-                ))
+-            })?;
++        let models = match serde_json::from_slice::<ModelsResponse>(&resp.body) {
++            Ok(ModelsResponse { models }) => models,
++            Err(models_err) => {
++                let OpenAiCompatibleModelsResponse { data } =
++                    serde_json::from_slice::<OpenAiCompatibleModelsResponse>(&resp.body).map_err(
++                        |data_err| {
++                            ApiError::Stream(format!(
++                                "failed to decode models response: {models_err}; openai-compatible decode failed: {data_err}; body: {}",
++                                String::from_utf8_lossy(&resp.body)
++                            ))
++                        },
++                    )?;
++                data.into_iter()
++                    .map(|entry| ModelInfo::compatibility_from_slug(&entry.id))
++                    .collect()
++            }
++        };
+
+         Ok((models, header_etag))
+     }
+@@ -269,4 +290,56 @@ mod tests {
+         assert_eq!(models.len(), 0);
+         assert_eq!(etag, Some("\"abc\"".to_string()));
+     }
++
++    #[tokio::test]
++    async fn parses_openai_compatible_models_response() {
++        #[derive(Clone)]
++        struct OpenAiCompatTransport {
++            last_request: Arc<Mutex<Option<Request>>>,
++        }
++
++        #[async_trait]
++        impl HttpTransport for OpenAiCompatTransport {
++            async fn execute(&self, req: Request) -> Result<Response, TransportError> {
++                *self.last_request.lock().unwrap() = Some(req);
++                Ok(Response {
++                    status: StatusCode::OK,
++                    headers: HeaderMap::new(),
++                    body: serde_json::to_vec(&json!({
++                        "object": "list",
++                        "data": [
++                            { "id": "vercel/minimax-m2.7-highspeed", "object": "model" },
++                            { "id": "vercel/claude-haiku-4.5", "object": "model" }
++                        ]
++                    }))
++                    .unwrap()
++                    .into(),
++                })
++            }
++
++            async fn stream(&self, _req: Request) -> Result<StreamResponse, TransportError> {
++                Err(TransportError::Build("stream should not run".to_string()))
++            }
++        }
++
++        let transport = OpenAiCompatTransport {
++            last_request: Arc::new(Mutex::new(None)),
++        };
++
++        let client = ModelsClient::new(
++            transport,
++            provider("https://example.com/v1"),
++            DummyAuth,
++        );
++
++        let (models, _) = client
++            .list_models("0.99.0", HeaderMap::new())
++            .await
++            .expect("request should succeed");
++
++        assert_eq!(models.len(), 2);
++        assert_eq!(models[0].slug, "vercel/minimax-m2.7-highspeed");
++        assert!(models[0].used_fallback_model_metadata);
++        assert_eq!(models[1].slug, "vercel/claude-haiku-4.5");
++    }
+ }
 diff --git a/codex-rs/core/src/client.rs b/codex-rs/core/src/client.rs
 index eb5cb4c08..99ed510a5 100644
 --- a/codex-rs/core/src/client.rs
@@ -3002,7 +3118,7 @@ index a5309117a..cdf324334 100644
 +    assert_eq!(api_provider.base_url, "https://example.test/openai");
 +}
 diff --git a/codex-rs/core/src/models_manager/manager.rs b/codex-rs/core/src/models_manager/manager.rs
-index 29a1a8576..bf7a2451e 100644
+index 29a1a8576..47614b9b6 100644
 --- a/codex-rs/core/src/models_manager/manager.rs
 +++ b/codex-rs/core/src/models_manager/manager.rs
 @@ -14,6 +14,8 @@ use crate::model_provider_info::ModelProviderInfo;
@@ -3091,7 +3207,7 @@ index 29a1a8576..bf7a2451e 100644
      }
 
      fn construct_model_info_from_candidates(
-@@ -357,8 +369,9 @@ impl ModelsManager {
+@@ -357,15 +369,20 @@ impl ModelsManager {
          candidates: &[ModelInfo],
          config: &Config,
      ) -> ModelInfo {
@@ -3103,7 +3219,22 @@ index 29a1a8576..bf7a2451e 100644
          let remote = Self::find_model_by_longest_prefix(model, candidates)
              .or_else(|| Self::find_model_by_namespaced_suffix(model, candidates));
          let model_info = if let Some(remote) = remote {
-@@ -396,7 +409,7 @@ impl ModelsManager {
+-            ModelInfo {
+-                slug: model.to_string(),
+-                used_fallback_model_metadata: false,
+-                ..remote
++            if remote.used_fallback_model_metadata {
++                model_info::model_info_from_slug(model)
++            } else {
++                ModelInfo {
++                    slug: model.to_string(),
++                    used_fallback_model_metadata: false,
++                    ..remote
++                }
+             }
+         } else {
+             model_info::model_info_from_slug(model)
+@@ -396,7 +413,7 @@ impl ModelsManager {
              return Ok(());
          }
 
@@ -3112,7 +3243,7 @@ index 29a1a8576..bf7a2451e 100644
              if matches!(
                  refresh_strategy,
                  RefreshStrategy::Offline | RefreshStrategy::OnlineIfUncached
-@@ -428,6 +441,14 @@ impl ModelsManager {
+@@ -428,6 +445,14 @@ impl ModelsManager {
          }
      }
 
@@ -3127,7 +3258,7 @@ index 29a1a8576..bf7a2451e 100644
      async fn fetch_and_update_models(&self) -> CoreResult<()> {
          let _timer =
              codex_otel::start_global_timer("codex.remote_models.fetch_update.duration_ms", &[]);
-@@ -523,12 +544,61 @@ impl ModelsManager {
+@@ -523,12 +548,61 @@ impl ModelsManager {
          let mut presets: Vec<ModelPreset> = remote_models.into_iter().map(Into::into).collect();
          let chatgpt_mode = matches!(self.auth_manager.auth_mode(), Some(AuthMode::Chatgpt));
          presets = ModelPreset::filter_by_auth(presets, chatgpt_mode);
@@ -3190,7 +3321,7 @@ index 29a1a8576..bf7a2451e 100644
          self.remote_models.read().await.clone()
      }
 diff --git a/codex-rs/core/src/models_manager/manager_tests.rs b/codex-rs/core/src/models_manager/manager_tests.rs
-index 07cf4dc39..74755ba9e 100644
+index 07cf4dc39..a527d75af 100644
 --- a/codex-rs/core/src/models_manager/manager_tests.rs
 +++ b/codex-rs/core/src/models_manager/manager_tests.rs
 @@ -92,6 +92,26 @@ fn provider_for(base_url: String) -> ModelProviderInfo {
@@ -3220,10 +3351,41 @@ index 07cf4dc39..74755ba9e 100644
  #[derive(Default)]
  struct TagCollectorVisitor {
      tags: BTreeMap<String, String>,
-@@ -167,6 +187,51 @@ async fn get_model_info_tracks_fallback_usage() {
+@@ -167,6 +187,82 @@ async fn get_model_info_tracks_fallback_usage() {
      assert_eq!(unknown.slug, "model-that-does-not-exist");
  }
 
++#[tokio::test]
++async fn litellm_compatibility_catalog_uses_local_tuned_metadata_for_known_routes() {
++    let codex_home = tempdir().expect("temp dir");
++    let config = ConfigBuilder::default()
++        .codex_home(codex_home.path().to_path_buf())
++        .build()
++        .await
++        .expect("load default test config");
++    let auth_manager = AuthManager::from_auth_for_testing(CodexAuth::from_api_key("Test API Key"));
++    let manager = ModelsManager::with_provider_for_tests(
++        codex_home.path().to_path_buf(),
++        auth_manager,
++        litellm_provider_for("https://litellm.example.com/v1".to_string()),
++    );
++
++    {
++        let mut remote = manager.remote_models.write().await;
++        *remote = vec![ModelInfo::compatibility_from_slug(
++            "vercel/minimax-m2.7-highspeed",
++        )];
++    }
++
++    let model = manager
++        .get_model_info("vercel/minimax-m2.7-highspeed", &config)
++        .await;
++
++    assert_eq!(model.display_name, "MiniMax M2.7");
++    assert!(!model.used_fallback_model_metadata);
++    assert_eq!(model.visibility, codex_protocol::openai_models::ModelVisibility::List);
++}
++
 +#[tokio::test]
 +async fn litellm_provider_starts_with_empty_catalog_without_remote_models() {
 +    let codex_home = tempdir().expect("temp dir");
@@ -3272,7 +3434,7 @@ index 07cf4dc39..74755ba9e 100644
  #[tokio::test]
  async fn get_model_info_uses_custom_catalog() {
      let codex_home = tempdir().expect("temp dir");
-@@ -229,7 +294,7 @@ async fn get_model_info_matches_namespaced_suffix() {
+@@ -229,7 +325,7 @@ async fn get_model_info_matches_namespaced_suffix() {
  }
 
  #[tokio::test]
@@ -3281,7 +3443,7 @@ index 07cf4dc39..74755ba9e 100644
      let codex_home = tempdir().expect("temp dir");
      let config = ConfigBuilder::default()
          .codex_home(codex_home.path().to_path_buf())
-@@ -255,7 +320,39 @@ async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
+@@ -255,7 +351,39 @@ async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
      let model_info = manager.get_model_info(&namespaced_model, &config).await;
 
      assert_eq!(model_info.slug, namespaced_model);
@@ -3322,7 +3484,7 @@ index 07cf4dc39..74755ba9e 100644
  }
 
  #[tokio::test]
-@@ -568,6 +665,50 @@ async fn refresh_available_models_skips_network_without_chatgpt_auth() {
+@@ -568,6 +696,50 @@ async fn refresh_available_models_skips_network_without_chatgpt_auth() {
          provider,
      );
 
@@ -3373,7 +3535,7 @@ index 07cf4dc39..74755ba9e 100644
      manager
          .refresh_available_models(RefreshStrategy::Online)
          .await
-@@ -577,12 +718,12 @@ async fn refresh_available_models_skips_network_without_chatgpt_auth() {
+@@ -577,12 +749,12 @@ async fn refresh_available_models_skips_network_without_chatgpt_auth() {
          !cached_remote
              .iter()
              .any(|candidate| candidate.slug == dynamic_slug),
@@ -4645,6 +4807,55 @@ index 0e49166b8..19e688c0a 100644
              VERSION
          );
 
+diff --git a/codex-rs/protocol/src/openai_models.rs b/codex-rs/protocol/src/openai_models.rs
+index 01515d107..b6771cb80 100644
+--- a/codex-rs/protocol/src/openai_models.rs
++++ b/codex-rs/protocol/src/openai_models.rs
+@@ -414,6 +414,44 @@ pub struct ModelsResponse {
+     pub models: Vec<ModelInfo>,
+ }
+
++impl ModelInfo {
++    /// Construct a minimal compatibility descriptor from an OpenAI-compatible `/models`
++    /// payload that only exposes an `id`.
++    pub fn compatibility_from_slug(slug: &str) -> Self {
++        Self {
++            slug: slug.to_string(),
++            display_name: slug.to_string(),
++            description: None,
++            default_reasoning_level: None,
++            supported_reasoning_levels: Vec::new(),
++            shell_type: ConfigShellToolType::Default,
++            visibility: ModelVisibility::List,
++            supported_in_api: true,
++            priority: 99,
++            availability_nux: None,
++            upgrade: None,
++            base_instructions: String::new(),
++            model_messages: None,
++            supports_reasoning_summaries: false,
++            default_reasoning_summary: ReasoningSummary::Auto,
++            support_verbosity: false,
++            default_verbosity: None,
++            apply_patch_tool_type: None,
++            web_search_tool_type: WebSearchToolType::Text,
++            truncation_policy: TruncationPolicyConfig::bytes(10_000),
++            supports_parallel_tool_calls: false,
++            supports_image_detail_original: false,
++            context_window: None,
++            auto_compact_token_limit: None,
++            effective_context_window_percent: default_effective_context_window_percent(),
++            experimental_supported_tools: Vec::new(),
++            input_modalities: default_input_modalities(),
++            used_fallback_model_metadata: true,
++            supports_search_tool: false,
++        }
++    }
++}
++
+ // convert ModelInfo to ModelPreset
+ impl From<ModelInfo> for ModelPreset {
+     fn from(info: ModelInfo) -> Self {
 diff --git a/codex-rs/tui/Cargo.toml b/codex-rs/tui/Cargo.toml
 index 03c3a03dd..350c86a40 100644
 --- a/codex-rs/tui/Cargo.toml
