@@ -19,6 +19,27 @@ Official Codex is still the right answer when you want the official hosted harne
 - fast model experimentation without abandoning the Codex workflow
 - a patchset that stays close to upstream instead of becoming a permanent fork
 
+## Fast Local Build
+
+For local testing, do not use `build.sh`. That is release automation and resets the upstream checkout.
+
+Fastest local debug build:
+
+```bash
+./scripts/build-local-fast.sh
+```
+
+Run the binary from the upstream workspace target dir:
+
+```bash
+./codex/codex-rs/target/debug/codex-litellm
+```
+
+Notes:
+- `./target/debug/codex-litellm` from the repo root is the wrong path
+- the helper enables incremental builds and uses `sccache` automatically if it is installed
+- keep `codex/codex-rs/target/` around between builds; that is where most of the speedup comes from
+
 ## Research Snapshot
 
 This README is not only setup documentation. It is also the current live research report for which non-OpenAI routes are actually usable inside the Codex harness.

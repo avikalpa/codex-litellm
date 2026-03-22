@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+
 usage() {
   cat <<'EOF'
 Usage: scripts/setup-test-repo.sh [--refresh] <fixture> [dest]
@@ -27,6 +29,10 @@ if [[ -z "$fixture" ]]; then
   exit 1
 fi
 
+if [[ "${PRUNE_TEST_WORKSPACES:-1}" != "0" ]]; then
+  "$repo_root/scripts/prune-test-workspaces.sh" "$dest"
+fi
+
 make_git_fixture_repo() {
   local repo_dir="$1"
   git -C "$repo_dir" init -q
@@ -39,11 +45,7 @@ make_git_fixture_repo() {
 reset_dest() {
   local repo_dir="$1"
   if [[ -e "$repo_dir" && "$refresh" -eq 1 ]]; then
-    local backup_dir="${repo_dir}.bak.$(date +%s)"
-    while [[ -e "$backup_dir" ]]; do
-      backup_dir="${repo_dir}.bak.$(date +%s%N)"
-    done
-    mv "$repo_dir" "$backup_dir"
+    rm -rf "$repo_dir"
   fi
 }
 
