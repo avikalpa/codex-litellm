@@ -1,5 +1,5 @@
 diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
-index d6a13a3d4..004615fef 100644
+index d6a13a3d4..e47be0367 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
 @@ -402,7 +402,7 @@ checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
@@ -137,7 +137,23 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -1687,7 +1687,7 @@ dependencies = [
+@@ -1666,6 +1666,7 @@ dependencies = [
+  "codex-stdio-to-uds",
+  "codex-tui",
+  "codex-tui-app-server",
++ "codex-utils-absolute-path",
+  "codex-utils-cargo-bin",
+  "codex-utils-cli",
+  "codex-windows-sandbox",
+@@ -1680,6 +1681,7 @@ dependencies = [
+  "tempfile",
+  "tokio",
+  "toml 0.9.11+spec-1.1.0",
++ "toml_edit 0.24.0+spec-1.1.0",
+  "tracing",
+  "tracing-appender",
+  "tracing-subscriber",
+@@ -1687,7 +1689,7 @@ dependencies = [
 
  [[package]]
  name = "codex-client"
@@ -146,7 +162,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "async-trait",
   "bytes",
-@@ -1717,7 +1717,7 @@ dependencies = [
+@@ -1717,7 +1719,7 @@ dependencies = [
 
  [[package]]
  name = "codex-cloud-requirements"
@@ -155,7 +171,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "async-trait",
   "base64 0.22.1",
-@@ -1740,7 +1740,7 @@ dependencies = [
+@@ -1740,7 +1742,7 @@ dependencies = [
 
  [[package]]
  name = "codex-cloud-tasks"
@@ -164,7 +180,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1770,7 +1770,7 @@ dependencies = [
+@@ -1770,7 +1772,7 @@ dependencies = [
 
  [[package]]
  name = "codex-cloud-tasks-client"
@@ -173,7 +189,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -1785,7 +1785,7 @@ dependencies = [
+@@ -1785,7 +1787,7 @@ dependencies = [
 
  [[package]]
  name = "codex-config"
@@ -182,7 +198,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "codex-app-server-protocol",
-@@ -1808,7 +1808,7 @@ dependencies = [
+@@ -1808,7 +1810,7 @@ dependencies = [
 
  [[package]]
  name = "codex-connectors"
@@ -191,7 +207,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "codex-app-server-protocol",
-@@ -1820,7 +1820,7 @@ dependencies = [
+@@ -1820,7 +1822,7 @@ dependencies = [
 
  [[package]]
  name = "codex-core"
@@ -200,7 +216,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "arc-swap",
-@@ -1937,7 +1937,7 @@ dependencies = [
+@@ -1937,7 +1939,7 @@ dependencies = [
 
  [[package]]
  name = "codex-debug-client"
@@ -209,7 +225,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -1949,7 +1949,7 @@ dependencies = [
+@@ -1949,7 +1951,7 @@ dependencies = [
 
  [[package]]
  name = "codex-environment"
@@ -218,7 +234,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "async-trait",
   "codex-utils-absolute-path",
-@@ -1960,7 +1960,7 @@ dependencies = [
+@@ -1960,7 +1962,7 @@ dependencies = [
 
  [[package]]
  name = "codex-exec"
@@ -227,7 +243,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -2005,7 +2005,7 @@ dependencies = [
+@@ -2005,7 +2007,7 @@ dependencies = [
 
  [[package]]
  name = "codex-execpolicy"
@@ -236,7 +252,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -2022,7 +2022,7 @@ dependencies = [
+@@ -2022,7 +2024,7 @@ dependencies = [
 
  [[package]]
  name = "codex-execpolicy-legacy"
@@ -245,7 +261,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "allocative",
   "anyhow",
-@@ -2042,7 +2042,7 @@ dependencies = [
+@@ -2042,7 +2044,7 @@ dependencies = [
 
  [[package]]
  name = "codex-experimental-api-macros"
@@ -254,7 +270,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "proc-macro2",
   "quote",
-@@ -2051,7 +2051,7 @@ dependencies = [
+@@ -2051,7 +2053,7 @@ dependencies = [
 
  [[package]]
  name = "codex-feedback"
@@ -263,7 +279,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "codex-protocol",
-@@ -2063,7 +2063,7 @@ dependencies = [
+@@ -2063,7 +2065,7 @@ dependencies = [
 
  [[package]]
  name = "codex-file-search"
@@ -272,7 +288,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -2079,7 +2079,7 @@ dependencies = [
+@@ -2079,7 +2081,7 @@ dependencies = [
 
  [[package]]
  name = "codex-git"
@@ -281,7 +297,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "assert_matches",
   "once_cell",
-@@ -2095,7 +2095,7 @@ dependencies = [
+@@ -2095,7 +2097,7 @@ dependencies = [
 
  [[package]]
  name = "codex-hooks"
@@ -290,7 +306,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "chrono",
-@@ -2113,7 +2113,7 @@ dependencies = [
+@@ -2113,7 +2115,7 @@ dependencies = [
 
  [[package]]
  name = "codex-keyring-store"
@@ -299,7 +315,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "keyring",
   "tracing",
-@@ -2121,7 +2121,7 @@ dependencies = [
+@@ -2121,7 +2123,7 @@ dependencies = [
 
  [[package]]
  name = "codex-linux-sandbox"
@@ -308,7 +324,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "cc",
   "clap",
-@@ -2142,7 +2142,7 @@ dependencies = [
+@@ -2142,7 +2144,7 @@ dependencies = [
 
  [[package]]
  name = "codex-lmstudio"
@@ -317,7 +333,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "codex-core",
   "reqwest",
-@@ -2155,7 +2155,7 @@ dependencies = [
+@@ -2155,7 +2157,7 @@ dependencies = [
 
  [[package]]
  name = "codex-login"
@@ -326,7 +342,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "base64 0.22.1",
-@@ -2182,7 +2182,7 @@ dependencies = [
+@@ -2182,7 +2184,7 @@ dependencies = [
 
  [[package]]
  name = "codex-mcp-server"
@@ -335,7 +351,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "codex-arg0",
-@@ -2209,7 +2209,7 @@ dependencies = [
+@@ -2209,7 +2211,7 @@ dependencies = [
 
  [[package]]
  name = "codex-network-proxy"
@@ -344,7 +360,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -2240,7 +2240,7 @@ dependencies = [
+@@ -2240,7 +2242,7 @@ dependencies = [
 
  [[package]]
  name = "codex-ollama"
@@ -353,7 +369,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "assert_matches",
   "async-stream",
-@@ -2258,7 +2258,7 @@ dependencies = [
+@@ -2258,7 +2260,7 @@ dependencies = [
 
  [[package]]
  name = "codex-otel"
@@ -362,7 +378,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "chrono",
   "codex-api",
-@@ -2289,7 +2289,7 @@ dependencies = [
+@@ -2289,7 +2291,7 @@ dependencies = [
 
  [[package]]
  name = "codex-package-manager"
@@ -371,7 +387,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "fd-lock",
   "flate2",
-@@ -2309,7 +2309,7 @@ dependencies = [
+@@ -2309,7 +2311,7 @@ dependencies = [
 
  [[package]]
  name = "codex-process-hardening"
@@ -380,7 +396,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "libc",
   "pretty_assertions",
-@@ -2317,7 +2317,7 @@ dependencies = [
+@@ -2317,7 +2319,7 @@ dependencies = [
 
  [[package]]
  name = "codex-protocol"
@@ -389,7 +405,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "codex-execpolicy",
-@@ -2344,7 +2344,7 @@ dependencies = [
+@@ -2344,7 +2346,7 @@ dependencies = [
 
  [[package]]
  name = "codex-responses-api-proxy"
@@ -398,7 +414,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "clap",
-@@ -2360,7 +2360,7 @@ dependencies = [
+@@ -2360,7 +2362,7 @@ dependencies = [
 
  [[package]]
  name = "codex-rmcp-client"
@@ -407,7 +423,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "axum",
-@@ -2394,7 +2394,7 @@ dependencies = [
+@@ -2394,7 +2396,7 @@ dependencies = [
 
  [[package]]
  name = "codex-secrets"
@@ -416,7 +432,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "age",
   "anyhow",
-@@ -2414,7 +2414,7 @@ dependencies = [
+@@ -2414,7 +2416,7 @@ dependencies = [
 
  [[package]]
  name = "codex-shell-command"
@@ -425,7 +441,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "base64 0.22.1",
-@@ -2434,7 +2434,7 @@ dependencies = [
+@@ -2434,7 +2436,7 @@ dependencies = [
 
  [[package]]
  name = "codex-shell-escalation"
@@ -434,7 +450,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "async-trait",
-@@ -2455,7 +2455,7 @@ dependencies = [
+@@ -2455,7 +2457,7 @@ dependencies = [
 
  [[package]]
  name = "codex-skills"
@@ -443,7 +459,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "codex-utils-absolute-path",
   "include_dir",
-@@ -2464,7 +2464,7 @@ dependencies = [
+@@ -2464,7 +2466,7 @@ dependencies = [
 
  [[package]]
  name = "codex-state"
@@ -452,7 +468,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "chrono",
-@@ -2485,7 +2485,7 @@ dependencies = [
+@@ -2485,7 +2487,7 @@ dependencies = [
 
  [[package]]
  name = "codex-stdio-to-uds"
@@ -461,7 +477,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "codex-utils-cargo-bin",
-@@ -2496,7 +2496,7 @@ dependencies = [
+@@ -2496,7 +2498,7 @@ dependencies = [
 
  [[package]]
  name = "codex-test-macros"
@@ -470,7 +486,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "proc-macro2",
   "quote",
-@@ -2505,7 +2505,7 @@ dependencies = [
+@@ -2505,7 +2507,7 @@ dependencies = [
 
  [[package]]
  name = "codex-tui"
@@ -479,7 +495,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "arboard",
-@@ -2596,7 +2596,7 @@ dependencies = [
+@@ -2596,7 +2598,7 @@ dependencies = [
 
  [[package]]
  name = "codex-tui-app-server"
@@ -488,7 +504,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "arboard",
-@@ -2686,7 +2686,7 @@ dependencies = [
+@@ -2686,7 +2688,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-absolute-path"
@@ -497,7 +513,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "dirs",
   "path-absolutize",
-@@ -2700,14 +2700,14 @@ dependencies = [
+@@ -2700,14 +2702,14 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-approval-presets"
@@ -514,7 +530,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "lru 0.16.3",
   "sha1",
-@@ -2716,7 +2716,7 @@ dependencies = [
+@@ -2716,7 +2718,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-cargo-bin"
@@ -523,7 +539,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "assert_cmd",
   "runfiles",
-@@ -2725,7 +2725,7 @@ dependencies = [
+@@ -2725,7 +2727,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-cli"
@@ -532,7 +548,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "clap",
   "codex-protocol",
-@@ -2736,15 +2736,15 @@ dependencies = [
+@@ -2736,15 +2738,15 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-elapsed"
@@ -551,7 +567,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "dirs",
   "pretty_assertions",
-@@ -2753,7 +2753,7 @@ dependencies = [
+@@ -2753,7 +2755,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-image"
@@ -560,7 +576,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "base64 0.22.1",
   "codex-utils-cache",
-@@ -2764,7 +2764,7 @@ dependencies = [
+@@ -2764,7 +2766,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-json-to-toml"
@@ -569,7 +585,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "pretty_assertions",
   "serde_json",
-@@ -2773,7 +2773,7 @@ dependencies = [
+@@ -2773,7 +2775,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-oss"
@@ -578,7 +594,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "codex-core",
   "codex-lmstudio",
-@@ -2782,7 +2782,7 @@ dependencies = [
+@@ -2782,7 +2784,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-pty"
@@ -587,7 +603,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "filedescriptor",
-@@ -2798,7 +2798,7 @@ dependencies = [
+@@ -2798,7 +2800,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-readiness"
@@ -596,7 +612,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "assert_matches",
   "async-trait",
-@@ -2809,14 +2809,14 @@ dependencies = [
+@@ -2809,14 +2811,14 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-rustls-provider"
@@ -613,7 +629,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "codex-core",
   "codex-protocol",
-@@ -2826,7 +2826,7 @@ dependencies = [
+@@ -2826,7 +2828,7 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-sleep-inhibitor"
@@ -622,7 +638,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "core-foundation 0.9.4",
   "libc",
-@@ -2836,14 +2836,14 @@ dependencies = [
+@@ -2836,14 +2838,14 @@ dependencies = [
 
  [[package]]
  name = "codex-utils-stream-parser"
@@ -639,7 +655,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "pretty_assertions",
   "regex-lite",
-@@ -2851,7 +2851,7 @@ dependencies = [
+@@ -2851,7 +2853,7 @@ dependencies = [
 
  [[package]]
  name = "codex-windows-sandbox"
@@ -648,7 +664,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "base64 0.22.1",
-@@ -3056,7 +3056,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
+@@ -3056,7 +3058,7 @@ checksum = "773648b94d0e5d620f64f280777445740e61fe701025087ec8b57f45c791888b"
 
  [[package]]
  name = "core_test_support"
@@ -657,7 +673,7 @@ index d6a13a3d4..004615fef 100644
  dependencies = [
   "anyhow",
   "assert_cmd",
-@@ -5791,7 +5791,7 @@ checksum = "b3eede3bdf92f3b4f9dc04072a9ce5ab557d5ec9038773bf9ffcd5588b3cc05b"
+@@ -5791,7 +5793,7 @@ checksum = "b3eede3bdf92f3b4f9dc04072a9ce5ab557d5ec9038773bf9ffcd5588b3cc05b"
 
  [[package]]
  name = "mcp_test_support"
@@ -800,7 +816,7 @@ index 000000000..d5b882cfd
 +    }
 +}
 diff --git a/codex-rs/cli/Cargo.toml b/codex-rs/cli/Cargo.toml
-index a7e88cd1b..8795f5500 100644
+index a7e88cd1b..0128babe3 100644
 --- a/codex-rs/cli/Cargo.toml
 +++ b/codex-rs/cli/Cargo.toml
 @@ -3,11 +3,16 @@ name = "codex-cli"
@@ -820,7 +836,23 @@ index a7e88cd1b..8795f5500 100644
  [lib]
  name = "codex_cli"
  path = "src/lib.rs"
-@@ -67,3 +72,6 @@ codex-utils-cargo-bin = { workspace = true }
+@@ -26,6 +31,7 @@ codex-arg0 = { workspace = true }
+ codex-chatgpt = { workspace = true }
+ codex-cloud-tasks = { path = "../cloud-tasks" }
+ codex-utils-cli = { workspace = true }
++codex-utils-absolute-path = { workspace = true }
+ codex-config = { workspace = true }
+ codex-core = { workspace = true }
+ codex-exec = { workspace = true }
+@@ -53,6 +59,7 @@ tokio = { workspace = true, features = [
+     "signal",
+ ] }
+ toml = { workspace = true }
++toml_edit = { workspace = true }
+ tracing = { workspace = true }
+ tracing-appender = { workspace = true }
+ tracing-subscriber = { workspace = true }
+@@ -67,3 +74,6 @@ codex-utils-cargo-bin = { workspace = true }
  predicates = { workspace = true }
  pretty_assertions = { workspace = true }
  sqlx = { workspace = true }
@@ -840,18 +872,21 @@ index 000000000..a09cff7c6
 +    codex_litellm_version::emit_codex_litellm_display_version();
 +}
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
-index 698035fea..f5b17de11 100644
+index 698035fea..300cf63df 100644
 --- a/codex-rs/cli/src/main.rs
 +++ b/codex-rs/cli/src/main.rs
-@@ -31,6 +31,7 @@ use codex_tui::update_action::UpdateAction;
+@@ -31,8 +31,10 @@ use codex_tui::update_action::UpdateAction;
  use codex_utils_cli::CliConfigOverrides;
  use owo_colors::OwoColorize;
  use std::io::IsTerminal;
 +use std::path::Path;
  use std::path::PathBuf;
  use supports_color::Stream;
++use std::io::Write;
 
-@@ -42,6 +43,12 @@ mod mcp_cmd;
+ #[cfg(target_os = "macos")]
+ mod app_cmd;
+@@ -42,15 +44,25 @@ mod mcp_cmd;
  #[cfg(not(windows))]
  mod wsl_paths;
 
@@ -864,7 +899,20 @@ index 698035fea..f5b17de11 100644
  use crate::mcp_cmd::McpCli;
 
  use codex_core::config::Config;
-@@ -58,7 +65,7 @@ use codex_core::terminal::TerminalName;
+ use codex_core::config::ConfigOverrides;
+ use codex_core::config::edit::ConfigEditsBuilder;
+ use codex_core::config::find_codex_home;
++use codex_core::config::load_config_as_toml_with_cli_overrides;
+ use codex_core::features::Stage;
+ use codex_core::features::is_known_feature_key;
++use codex_utils_absolute_path::AbsolutePathBuf;
+ use codex_core::terminal::TerminalName;
++use std::fs;
++use toml_edit::value;
+
+ /// Codex CLI
+ ///
+@@ -58,7 +70,7 @@ use codex_core::terminal::TerminalName;
  #[derive(Debug, Parser)]
  #[clap(
      author,
@@ -873,7 +921,7 @@ index 698035fea..f5b17de11 100644
      // If a sub‑command is given, ignore requirements of the default args.
      subcommand_negates_reqs = true,
      // The executable is sometimes invoked via a platform‑specific name like
-@@ -607,6 +614,11 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
+@@ -607,11 +619,26 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
          subcommand,
      } = MultitoolCli::parse();
 
@@ -885,7 +933,22 @@ index 698035fea..f5b17de11 100644
      // Fold --enable/--disable into config overrides so they flow to all subcommands.
      let toggle_overrides = feature_toggles.to_overrides()?;
      root_config_overrides.raw_overrides.extend(toggle_overrides);
-@@ -932,6 +944,59 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
+     let root_remote = remote.remote;
+
++    let should_attempt_litellm_onboarding = is_codex_litellm_invocation(current_invocation_name().as_deref())
++        && root_remote.is_none()
++        && matches!(
++            &subcommand,
++            None | Some(Subcommand::Resume(_)) | Some(Subcommand::Fork(_))
++        );
++    if should_attempt_litellm_onboarding {
++        maybe_run_codex_litellm_onboarding(&mut root_config_overrides).await?;
++    }
++
+     match subcommand {
+         None => {
+             prepend_config_flags(
+@@ -932,6 +959,336 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
      Ok(())
  }
 
@@ -942,10 +1005,287 @@ index 698035fea..f5b17de11 100644
 +    }
 +}
 +
++#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
++struct LiteLLMOnboardingStatus {
++    missing_base_url: bool,
++    missing_api_key: bool,
++}
++
++impl LiteLLMOnboardingStatus {
++    fn needs_onboarding(self) -> bool {
++        self.missing_base_url || self.missing_api_key
++    }
++}
++
++async fn maybe_run_codex_litellm_onboarding(
++    config_overrides: &mut CliConfigOverrides,
++) -> anyhow::Result<()> {
++    let codex_home = find_codex_home()?;
++    let cwd = AbsolutePathBuf::current_dir()?;
++    let cli_overrides = config_overrides
++        .parse_overrides()
++        .map_err(anyhow::Error::msg)?;
++    let config_toml = load_config_as_toml_with_cli_overrides(&codex_home, &cwd, cli_overrides)
++        .await
++        .map_err(|err| anyhow::anyhow!("failed to inspect LiteLLM configuration: {err}"))?;
++    let status = detect_litellm_onboarding_status(&config_toml);
++    if !status.needs_onboarding() {
++        return Ok(());
++    }
++
++    if !(std::io::stdin().is_terminal() && std::io::stderr().is_terminal()) {
++        anyhow::bail!(
++            "Codex Litellm needs initial LiteLLM setup. Re-run `codex-litellm` in an interactive terminal, or preconfigure `~/.codex/.env` with `LITELLM_BASE_URL` and `LITELLM_API_KEY`."
++        );
++    }
++
++    eprintln!();
++    eprintln!("Codex Litellm first-run setup");
++    eprintln!("Store your LiteLLM endpoint in config and your API key in `~/.codex/.env`.");
++    eprintln!();
++
++    let base_url = if status.missing_base_url {
++        Some(prompt_required(
++            "LiteLLM base URL (for example https://litellm.example.com/v1): ",
++        )?)
++    } else {
++        None
++    };
++    let api_key = if status.missing_api_key {
++        Some(prompt_required(
++            "LiteLLM API key (input is visible in this terminal): ",
++        )?)
++    } else {
++        None
++    };
++    let default_model = prompt_optional(
++        "Default model slug for codex-litellm (optional, press Enter to choose later with /model): ",
++    )?;
++
++    persist_codex_litellm_onboarding(
++        &codex_home,
++        base_url.as_deref(),
++        api_key.as_deref(),
++        default_model.as_deref(),
++    )
++    .await?;
++    apply_codex_litellm_runtime_overrides(
++        config_overrides,
++        base_url.as_deref(),
++        api_key.as_deref(),
++        default_model.as_deref(),
++    );
++
++    eprintln!();
++    eprintln!("LiteLLM setup saved. Starting Codex Litellm.");
++    eprintln!();
++    Ok(())
++}
++
++fn detect_litellm_onboarding_status(config_toml: &codex_core::config::ConfigToml) -> LiteLLMOnboardingStatus {
++    let configured_base_url = config_toml
++        .model_providers
++        .get("litellm")
++        .and_then(|provider| provider.base_url.as_deref())
++        .is_some_and(|value| !value.trim().is_empty());
++    let configured_bearer_token = config_toml
++        .model_providers
++        .get("litellm")
++        .and_then(|provider| provider.experimental_bearer_token.as_deref())
++        .is_some_and(|value| !value.trim().is_empty());
++    let env_base_url = std::env::var("LITELLM_BASE_URL")
++        .ok()
++        .is_some_and(|value| !value.trim().is_empty());
++    let env_api_key = std::env::var("LITELLM_API_KEY")
++        .ok()
++        .is_some_and(|value| !value.trim().is_empty());
++
++    LiteLLMOnboardingStatus {
++        missing_base_url: !(configured_base_url || env_base_url),
++        missing_api_key: !(configured_bearer_token || env_api_key),
++    }
++}
++
++async fn persist_codex_litellm_onboarding(
++    codex_home: &Path,
++    base_url: Option<&str>,
++    api_key: Option<&str>,
++    default_model: Option<&str>,
++) -> anyhow::Result<()> {
++    fs::create_dir_all(codex_home)?;
++
++    let mut builder = ConfigEditsBuilder::new(codex_home).with_profile(Some(CODEX_LITELLM_PROFILE_NAME));
++    builder = builder.with_edits([
++        codex_core::config::edit::ConfigEdit::SetPath {
++            segments: vec![
++                "profiles".to_string(),
++                CODEX_LITELLM_PROFILE_NAME.to_string(),
++                "model_provider".to_string(),
++            ],
++            value: value("litellm"),
++        },
++    ]);
++
++    if let Some(base_url) = base_url {
++        builder = builder.with_edits([
++            codex_core::config::edit::ConfigEdit::SetPath {
++                segments: vec![
++                    "model_providers".to_string(),
++                    "litellm".to_string(),
++                    "name".to_string(),
++                ],
++                value: value("LiteLLM"),
++            },
++            codex_core::config::edit::ConfigEdit::SetPath {
++                segments: vec![
++                    "model_providers".to_string(),
++                    "litellm".to_string(),
++                    "base_url".to_string(),
++                ],
++                value: value(base_url),
++            },
++            codex_core::config::edit::ConfigEdit::SetPath {
++                segments: vec![
++                    "model_providers".to_string(),
++                    "litellm".to_string(),
++                    "env_key".to_string(),
++                ],
++                value: value("LITELLM_API_KEY"),
++            },
++            codex_core::config::edit::ConfigEdit::SetPath {
++                segments: vec![
++                    "model_providers".to_string(),
++                    "litellm".to_string(),
++                    "wire_api".to_string(),
++                ],
++                value: value("responses"),
++            },
++        ]);
++    }
++
++    if default_model.is_some() {
++        builder = builder.set_model(default_model, None);
++    }
++
++    builder.apply().await?;
++
++    if let Some(api_key) = api_key {
++        upsert_dotenv_entry(&codex_home.join(".env"), "LITELLM_API_KEY", api_key)?;
++    }
++
++    Ok(())
++}
++
++fn apply_codex_litellm_runtime_overrides(
++    config_overrides: &mut CliConfigOverrides,
++    base_url: Option<&str>,
++    api_key: Option<&str>,
++    default_model: Option<&str>,
++) {
++    if let Some(base_url) = base_url {
++        config_overrides.raw_overrides.push(format!(
++            "model_providers.litellm.name={}",
++            toml::Value::String("LiteLLM".to_string())
++        ));
++        config_overrides.raw_overrides.push(format!(
++            "model_providers.litellm.base_url={}",
++            toml::Value::String(base_url.to_string())
++        ));
++        config_overrides.raw_overrides.push(format!(
++            "model_providers.litellm.env_key={}",
++            toml::Value::String("LITELLM_API_KEY".to_string())
++        ));
++        config_overrides.raw_overrides.push(format!(
++            "model_providers.litellm.wire_api={}",
++            toml::Value::String("responses".to_string())
++        ));
++    }
++    if let Some(api_key) = api_key {
++        config_overrides.raw_overrides.push(format!(
++            "model_providers.litellm.experimental_bearer_token={}",
++            toml::Value::String(api_key.to_string())
++        ));
++    }
++    if let Some(default_model) = default_model {
++        config_overrides.raw_overrides.push(format!(
++            "profiles.{CODEX_LITELLM_PROFILE_NAME}.model={}",
++            toml::Value::String(default_model.to_string())
++        ));
++    }
++}
++
++fn upsert_dotenv_entry(path: &Path, key: &str, value: &str) -> anyhow::Result<()> {
++    let existing = match fs::read_to_string(path) {
++        Ok(contents) => contents,
++        Err(err) if err.kind() == std::io::ErrorKind::NotFound => String::new(),
++        Err(err) => return Err(err.into()),
++    };
++    let mut found = false;
++    let mut lines = Vec::new();
++    for line in existing.lines() {
++        if dotenv_entry_key(line) == Some(key) {
++            lines.push(format!("{key}={}", encode_dotenv_value(value)));
++            found = true;
++        } else {
++            lines.push(line.to_string());
++        }
++    }
++    if !found {
++        lines.push(format!("{key}={}", encode_dotenv_value(value)));
++    }
++    let mut updated = lines.join("\n");
++    if !updated.is_empty() {
++        updated.push('\n');
++    }
++    fs::write(path, updated)?;
++    Ok(())
++}
++
++fn encode_dotenv_value(value: &str) -> String {
++    serde_json::to_string(value).unwrap_or_else(|_| format!("\"{}\"", value.replace('"', "\\\"")))
++}
++
++fn dotenv_entry_key(line: &str) -> Option<&str> {
++    let trimmed = line.trim_start();
++    if trimmed.is_empty() || trimmed.starts_with('#') {
++        return None;
++    }
++    let (key, _) = trimmed.split_once('=')?;
++    let key = key.trim();
++    if key.is_empty() {
++        None
++    } else {
++        Some(key)
++    }
++}
++
++fn prompt_required(prompt: &str) -> anyhow::Result<String> {
++    loop {
++        let value = prompt_optional(prompt)?;
++        if let Some(value) = value {
++            return Ok(value);
++        }
++        eprintln!("A value is required.");
++    }
++}
++
++fn prompt_optional(prompt: &str) -> anyhow::Result<Option<String>> {
++    eprint!("{prompt}");
++    std::io::stderr().flush()?;
++    let mut input = String::new();
++    std::io::stdin().read_line(&mut input)?;
++    let trimmed = input.trim();
++    if trimmed.is_empty() {
++        Ok(None)
++    } else {
++        Ok(Some(trimmed.to_string()))
++    }
++}
++
  async fn enable_feature_in_config(interactive: &TuiCli, feature: &str) -> anyhow::Result<()> {
      FeatureToggles::validate_feature(feature)?;
      let codex_home = find_codex_home()?;
-@@ -1774,4 +1839,39 @@ mod tests {
+@@ -1774,4 +2131,82 @@ mod tests {
              .expect_err("feature should be rejected");
          assert_eq!(err.to_string(), "Unknown feature flag: does_not_exist");
      }
@@ -983,6 +1323,49 @@ index 698035fea..f5b17de11 100644
 +                format!("profiles.{CODEX_LITELLM_PROFILE_NAME}.model_provider=\"custom\""),
 +            ]
 +        );
++    }
++
++    #[test]
++    fn upsert_dotenv_entry_replaces_existing_value_without_clobbering_other_lines() {
++        let temp = tempfile::tempdir().expect("tempdir");
++        let env_path = temp.path().join(".env");
++        std::fs::write(
++            &env_path,
++            "EXISTING=value\nLITELLM_API_KEY=old-key\n# comment\n",
++        )
++        .expect("seed env");
++
++        upsert_dotenv_entry(&env_path, "LITELLM_API_KEY", "new-key").expect("update env");
++
++        let updated = std::fs::read_to_string(&env_path).expect("read env");
++        assert_eq!(
++            updated,
++            "EXISTING=value\nLITELLM_API_KEY=\"new-key\"\n# comment\n"
++        );
++    }
++
++    #[test]
++    fn apply_codex_litellm_runtime_overrides_adds_current_run_values() {
++        let mut config_overrides = CliConfigOverrides::default();
++
++        apply_codex_litellm_runtime_overrides(
++            &mut config_overrides,
++            Some("https://gateway.example.com/v1"),
++            Some("secret-token"),
++            Some("vercel/minimax-m2.7-highspeed"),
++        );
++
++        assert!(config_overrides.raw_overrides.iter().any(|entry| {
++            entry
++                == "model_providers.litellm.base_url=\"https://gateway.example.com/v1\""
++        }));
++        assert!(config_overrides.raw_overrides.iter().any(|entry| {
++            entry == "model_providers.litellm.experimental_bearer_token=\"secret-token\""
++        }));
++        assert!(config_overrides.raw_overrides.iter().any(|entry| {
++            entry
++                == "profiles.codex-litellm.model=\"vercel/minimax-m2.7-highspeed\""
++        }));
 +    }
  }
 diff --git a/codex-rs/core/src/client.rs b/codex-rs/core/src/client.rs
@@ -4197,7 +4580,7 @@ index e2ed04669..8fcb19129 100644
      OpenFullAccessConfirmation {
          preset: ApprovalPreset,
 diff --git a/codex-rs/tui/src/chatwidget.rs b/codex-rs/tui/src/chatwidget.rs
-index 67d0d8e6e..53f40b67a 100644
+index 67d0d8e6e..0ce5504c5 100644
 --- a/codex-rs/tui/src/chatwidget.rs
 +++ b/codex-rs/tui/src/chatwidget.rs
 @@ -49,7 +49,7 @@ use crate::status::format_directory_display;
@@ -4209,7 +4592,15 @@ index 67d0d8e6e..53f40b67a 100644
  use codex_app_server_protocol::ConfigLayerSource;
  use codex_backend_client::Client as BackendClient;
  use codex_chatgpt::connectors;
-@@ -183,6 +183,7 @@ const PLAN_MODE_REASONING_SCOPE_TITLE: &str = "Apply reasoning change";
+@@ -171,6 +171,7 @@ use tracing::debug;
+ use tracing::warn;
+
+ const DEFAULT_MODEL_DISPLAY_NAME: &str = "loading";
++const DEFAULT_LITELLM_MODEL_DISPLAY_NAME: &str = "no model selected";
+ const PLAN_IMPLEMENTATION_TITLE: &str = "Implement this plan?";
+ const PLAN_IMPLEMENTATION_YES: &str = "Yes, implement this plan";
+ const PLAN_IMPLEMENTATION_NO: &str = "No, stay in Plan mode";
+@@ -183,6 +184,7 @@ const PLAN_MODE_REASONING_SCOPE_TITLE: &str = "Apply reasoning change";
  const PLAN_MODE_REASONING_SCOPE_PLAN_ONLY: &str = "Apply to Plan mode override";
  const PLAN_MODE_REASONING_SCOPE_ALL_MODES: &str = "Apply to global default and Plan mode override";
  const CONNECTORS_SELECTION_VIEW_ID: &str = "connectors-selection";
@@ -4217,7 +4608,7 @@ index 67d0d8e6e..53f40b67a 100644
 
  /// Choose the keybinding used to edit the most-recently queued message.
  ///
-@@ -5909,7 +5910,7 @@ impl ChatWidget {
+@@ -5909,7 +5911,7 @@ impl ChatWidget {
                      .unwrap_or_else(|| "weekly".to_string());
                  self.status_line_limit_display(window, &label)
              }
@@ -4226,7 +4617,7 @@ index 67d0d8e6e..53f40b67a 100644
              StatusLineItem::ContextWindowSize => self
                  .status_line_context_window_size()
                  .map(|cws| format!("{} window", format_tokens_compact(cws))),
-@@ -6505,6 +6506,10 @@ impl ChatWidget {
+@@ -6505,6 +6507,10 @@ impl ChatWidget {
      }
 
      fn model_menu_warning_line(&self) -> Option<Line<'static>> {
@@ -4237,7 +4628,7 @@ index 67d0d8e6e..53f40b67a 100644
          let base_url = self.custom_openai_base_url()?;
          let warning = format!(
              "Warning: OpenAI base URL is overridden to {base_url}. Selecting models may not be supported or work properly."
-@@ -6512,6 +6517,46 @@ impl ChatWidget {
+@@ -6512,6 +6518,58 @@ impl ChatWidget {
          Some(Line::from(warning.red()))
      }
 
@@ -4252,10 +4643,7 @@ index 67d0d8e6e..53f40b67a 100644
 +            ));
 +        }
 +
-+        if std::env::var("LITELLM_API_KEY")
-+            .ok()
-+            .is_none_or(|value| value.trim().is_empty())
-+        {
++        if self.litellm_endpoint_missing_api_key() {
 +            return Some(Line::from(
 +                "Set LITELLM_API_KEY to authenticate LiteLLM model discovery.".red(),
 +            ));
@@ -4281,10 +4669,25 @@ index 67d0d8e6e..53f40b67a 100644
 +        trimmed.trim_end_matches('/') == DEFAULT_LITELLM_BASE_URL.trim_end_matches('/')
 +    }
 +
++    fn litellm_endpoint_missing_api_key(&self) -> bool {
++        if self.config.model_provider_id != "litellm" {
++            return false;
++        }
++
++        self.config
++            .model_provider
++            .experimental_bearer_token
++            .as_deref()
++            .is_none_or(|value| value.trim().is_empty())
++            && std::env::var("LITELLM_API_KEY")
++                .ok()
++                .is_none_or(|value| value.trim().is_empty())
++    }
++
      fn custom_openai_base_url(&self) -> Option<String> {
          if !self.config.model_provider.is_openai() {
              return None;
-@@ -6532,101 +6577,27 @@ impl ChatWidget {
+@@ -6532,101 +6590,27 @@ impl ChatWidget {
      }
 
      pub(crate) fn open_model_popup_with_presets(&mut self, presets: Vec<ModelPreset>) {
@@ -4402,7 +4805,7 @@ index 67d0d8e6e..53f40b67a 100644
      }
 
      pub(crate) fn open_all_models_popup(&mut self, presets: Vec<ModelPreset>) {
-@@ -6651,6 +6622,13 @@ impl ChatWidget {
+@@ -6651,6 +6635,13 @@ impl ChatWidget {
                      model: preset_for_event,
                  });
              })];
@@ -4416,7 +4819,7 @@ index 67d0d8e6e..53f40b67a 100644
              items.push(SelectionItem {
                  name: preset.model.clone(),
                  description,
-@@ -6658,18 +6636,21 @@ impl ChatWidget {
+@@ -6658,18 +6649,21 @@ impl ChatWidget {
                  is_default: preset.is_default,
                  actions,
                  dismiss_on_select: single_supported_effort,
@@ -4440,7 +4843,7 @@ index 67d0d8e6e..53f40b67a 100644
              ..Default::default()
          });
      }
-@@ -6719,29 +6700,6 @@ impl ChatWidget {
+@@ -6719,29 +6713,6 @@ impl ChatWidget {
          });
      }
 
@@ -4470,7 +4873,39 @@ index 67d0d8e6e..53f40b67a 100644
      fn should_prompt_plan_mode_reasoning_scope(
          &self,
          selected_model: &str,
-@@ -8338,7 +8296,7 @@ impl ChatWidget {
+@@ -8192,12 +8163,20 @@ impl ChatWidget {
+     fn model_display_name(&self) -> &str {
+         let model = self.current_model();
+         if model.is_empty() {
+-            DEFAULT_MODEL_DISPLAY_NAME
++            self.default_model_display_name()
+         } else {
+             model
+         }
+     }
+
++    fn default_model_display_name(&self) -> &'static str {
++        if self.config.model_provider_id == "litellm" {
++            DEFAULT_LITELLM_MODEL_DISPLAY_NAME
++        } else {
++            DEFAULT_MODEL_DISPLAY_NAME
++        }
++    }
++
+     /// Get the label for the current collaboration mode.
+     fn collaboration_mode_label(&self) -> Option<&'static str> {
+         if !self.collaboration_modes_enabled() {
+@@ -8333,12 +8312,16 @@ impl ChatWidget {
+     fn placeholder_session_header_cell(config: &Config) -> Box<dyn HistoryCell> {
+         let placeholder_style = Style::default().add_modifier(Modifier::DIM | Modifier::ITALIC);
+         Box::new(history_cell::SessionHeaderHistoryCell::new_with_style(
+-            DEFAULT_MODEL_DISPLAY_NAME.to_string(),
++            if config.model_provider_id == "litellm" {
++                DEFAULT_LITELLM_MODEL_DISPLAY_NAME.to_string()
++            } else {
++                DEFAULT_MODEL_DISPLAY_NAME.to_string()
++            },
+             placeholder_style,
              /*reasoning_effort*/ None,
              /*show_fast_status*/ false,
              config.cwd.clone(),
@@ -4879,7 +5314,7 @@ index 3dd571c1c..ee2a953e2 100644
      OpenFullAccessConfirmation {
          preset: ApprovalPreset,
 diff --git a/codex-rs/tui_app_server/src/chatwidget.rs b/codex-rs/tui_app_server/src/chatwidget.rs
-index ffa2590f3..caabb28bd 100644
+index ffa2590f3..d790c073a 100644
 --- a/codex-rs/tui_app_server/src/chatwidget.rs
 +++ b/codex-rs/tui_app_server/src/chatwidget.rs
 @@ -54,7 +54,7 @@ use crate::status::format_directory_display;
@@ -4891,7 +5326,15 @@ index ffa2590f3..caabb28bd 100644
  use codex_app_server_protocol::CodexErrorInfo as AppServerCodexErrorInfo;
  use codex_app_server_protocol::CollabAgentState as AppServerCollabAgentState;
  use codex_app_server_protocol::CollabAgentStatus as AppServerCollabAgentStatus;
-@@ -230,6 +230,7 @@ const PLAN_MODE_REASONING_SCOPE_PLAN_ONLY: &str = "Apply to Plan mode override";
+@@ -217,6 +217,7 @@ use tracing::debug;
+ use tracing::warn;
+
+ const DEFAULT_MODEL_DISPLAY_NAME: &str = "loading";
++const DEFAULT_LITELLM_MODEL_DISPLAY_NAME: &str = "no model selected";
+ const PLAN_IMPLEMENTATION_TITLE: &str = "Implement this plan?";
+ const PLAN_IMPLEMENTATION_YES: &str = "Yes, implement this plan";
+ const PLAN_IMPLEMENTATION_NO: &str = "No, stay in Plan mode";
+@@ -230,6 +231,7 @@ const PLAN_MODE_REASONING_SCOPE_PLAN_ONLY: &str = "Apply to Plan mode override";
  const PLAN_MODE_REASONING_SCOPE_ALL_MODES: &str = "Apply to global default and Plan mode override";
  const CONNECTORS_SELECTION_VIEW_ID: &str = "connectors-selection";
  const APP_SERVER_TUI_STUB_MESSAGE: &str = "Not available in app-server TUI yet.";
@@ -4899,7 +5342,7 @@ index ffa2590f3..caabb28bd 100644
 
  /// Choose the keybinding used to edit the most-recently queued message.
  ///
-@@ -7005,7 +7006,7 @@ impl ChatWidget {
+@@ -7005,7 +7007,7 @@ impl ChatWidget {
                      .unwrap_or_else(|| "weekly".to_string());
                  self.status_line_limit_display(window, &label)
              }
@@ -4908,7 +5351,7 @@ index ffa2590f3..caabb28bd 100644
              StatusLineItem::ContextWindowSize => self
                  .status_line_context_window_size()
                  .map(|cws| format!("{} window", format_tokens_compact(cws))),
-@@ -7573,6 +7574,10 @@ impl ChatWidget {
+@@ -7573,6 +7575,10 @@ impl ChatWidget {
      }
 
      fn model_menu_warning_line(&self) -> Option<Line<'static>> {
@@ -4919,7 +5362,7 @@ index ffa2590f3..caabb28bd 100644
          let base_url = self.custom_openai_base_url()?;
          let warning = format!(
              "Warning: OpenAI base URL is overridden to {base_url}. Selecting models may not be supported or work properly."
-@@ -7580,6 +7585,46 @@ impl ChatWidget {
+@@ -7580,6 +7586,58 @@ impl ChatWidget {
          Some(Line::from(warning.red()))
      }
 
@@ -4934,10 +5377,7 @@ index ffa2590f3..caabb28bd 100644
 +            ));
 +        }
 +
-+        if std::env::var("LITELLM_API_KEY")
-+            .ok()
-+            .is_none_or(|value| value.trim().is_empty())
-+        {
++        if self.litellm_endpoint_missing_api_key() {
 +            return Some(Line::from(
 +                "Set LITELLM_API_KEY to authenticate LiteLLM model discovery.".red(),
 +            ));
@@ -4963,10 +5403,25 @@ index ffa2590f3..caabb28bd 100644
 +        trimmed.trim_end_matches('/') == DEFAULT_LITELLM_BASE_URL.trim_end_matches('/')
 +    }
 +
++    fn litellm_endpoint_missing_api_key(&self) -> bool {
++        if self.config.model_provider_id != "litellm" {
++            return false;
++        }
++
++        self.config
++            .model_provider
++            .experimental_bearer_token
++            .as_deref()
++            .is_none_or(|value| value.trim().is_empty())
++            && std::env::var("LITELLM_API_KEY")
++                .ok()
++                .is_none_or(|value| value.trim().is_empty())
++    }
++
      fn custom_openai_base_url(&self) -> Option<String> {
          if !self.config.model_provider.is_openai() {
              return None;
-@@ -7600,101 +7645,27 @@ impl ChatWidget {
+@@ -7600,101 +7658,27 @@ impl ChatWidget {
      }
 
      pub(crate) fn open_model_popup_with_presets(&mut self, presets: Vec<ModelPreset>) {
@@ -5084,7 +5539,7 @@ index ffa2590f3..caabb28bd 100644
      }
 
      pub(crate) fn open_all_models_popup(&mut self, presets: Vec<ModelPreset>) {
-@@ -7719,6 +7690,13 @@ impl ChatWidget {
+@@ -7719,6 +7703,13 @@ impl ChatWidget {
                      model: preset_for_event,
                  });
              })];
@@ -5098,7 +5553,7 @@ index ffa2590f3..caabb28bd 100644
              items.push(SelectionItem {
                  name: preset.model.clone(),
                  description,
-@@ -7726,18 +7704,21 @@ impl ChatWidget {
+@@ -7726,18 +7717,21 @@ impl ChatWidget {
                  is_default: preset.is_default,
                  actions,
                  dismiss_on_select: single_supported_effort,
@@ -5122,7 +5577,7 @@ index ffa2590f3..caabb28bd 100644
              ..Default::default()
          });
      }
-@@ -7787,29 +7768,6 @@ impl ChatWidget {
+@@ -7787,29 +7781,6 @@ impl ChatWidget {
          });
      }
 
@@ -5152,7 +5607,39 @@ index ffa2590f3..caabb28bd 100644
      fn should_prompt_plan_mode_reasoning_scope(
          &self,
          selected_model: &str,
-@@ -9435,7 +9393,7 @@ impl ChatWidget {
+@@ -9291,12 +9262,20 @@ impl ChatWidget {
+     fn model_display_name(&self) -> &str {
+         let model = self.current_model();
+         if model.is_empty() {
+-            DEFAULT_MODEL_DISPLAY_NAME
++            self.default_model_display_name()
+         } else {
+             model
+         }
+     }
+
++    fn default_model_display_name(&self) -> &'static str {
++        if self.config.model_provider_id == "litellm" {
++            DEFAULT_LITELLM_MODEL_DISPLAY_NAME
++        } else {
++            DEFAULT_MODEL_DISPLAY_NAME
++        }
++    }
++
+     /// Get the label for the current collaboration mode.
+     fn collaboration_mode_label(&self) -> Option<&'static str> {
+         if !self.collaboration_modes_enabled() {
+@@ -9430,12 +9409,16 @@ impl ChatWidget {
+     fn placeholder_session_header_cell(config: &Config) -> Box<dyn HistoryCell> {
+         let placeholder_style = Style::default().add_modifier(Modifier::DIM | Modifier::ITALIC);
+         Box::new(history_cell::SessionHeaderHistoryCell::new_with_style(
+-            DEFAULT_MODEL_DISPLAY_NAME.to_string(),
++            if config.model_provider_id == "litellm" {
++                DEFAULT_LITELLM_MODEL_DISPLAY_NAME.to_string()
++            } else {
++                DEFAULT_MODEL_DISPLAY_NAME.to_string()
++            },
+             placeholder_style,
              /*reasoning_effort*/ None,
              /*show_fast_status*/ false,
              config.cwd.clone(),
