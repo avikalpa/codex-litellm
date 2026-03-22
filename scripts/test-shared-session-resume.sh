@@ -24,7 +24,17 @@ bootstrap_patched_checkout() {
   LITELLM_BIN="$CODEX_RS_DIR/target/debug/codex-litellm"
 }
 
-if ! rg -q 'name = "codex-litellm"' "$CODEX_RS_DIR/cli/Cargo.toml"; then
+if command -v rg >/dev/null 2>&1; then
+  has_litellm_patch() {
+    rg -q 'name = "codex-litellm"' "$CODEX_RS_DIR/cli/Cargo.toml"
+  }
+else
+  has_litellm_patch() {
+    grep -q 'name = "codex-litellm"' "$CODEX_RS_DIR/cli/Cargo.toml"
+  }
+fi
+
+if ! has_litellm_patch; then
   bootstrap_patched_checkout
 fi
 
@@ -129,7 +139,11 @@ EOF
 find_session_path() {
   local sessions_dir="$1"
   local marker="$2"
-  rg -l --glob '*.jsonl' "$marker" "$sessions_dir" | head -n1
+  if command -v rg >/dev/null 2>&1; then
+    rg -l --glob '*.jsonl' "$marker" "$sessions_dir" | head -n1
+  else
+    grep -R -l --include='*.jsonl' -- "$marker" "$sessions_dir" | head -n1
+  fi
 }
 
 run_case() {
