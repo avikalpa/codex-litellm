@@ -29,7 +29,13 @@ Fastest local debug build:
 ./scripts/build-local-fast.sh
 ```
 
-Run the binary from the upstream workspace target dir:
+Run it from the repo root with the launcher:
+
+```bash
+./codex-litellm
+```
+
+Or run the binary directly from the upstream workspace target dir:
 
 ```bash
 ./codex/codex-rs/target/debug/codex-litellm
@@ -37,6 +43,7 @@ Run the binary from the upstream workspace target dir:
 
 Notes:
 - `./target/debug/codex-litellm` from the repo root is the wrong path
+- `../codex/codex-rs/target/debug/codex-litellm` is also the wrong path from this repo; that points outside this checkout
 - the helper enables incremental builds and uses `sccache` automatically if it is installed
 - keep `codex/codex-rs/target/` around between builds; that is where most of the speedup comes from
 

@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+repo_root="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+bin_path="$repo_root/codex/codex-rs/target/debug/codex-litellm"
+
+if [[ ! -x "$bin_path" ]]; then
+  echo "Missing debug binary: $bin_path" >&2
+  echo "Build it first with: ./scripts/build-local-fast.sh" >&2
+  exit 1
+fi
+
+exec "$bin_path" "$@"
