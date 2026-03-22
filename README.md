@@ -215,11 +215,27 @@ wire_api = "responses"
 
 [profiles.codex-litellm]
 model = "vercel/minimax-m2.7-highspeed"
+model_provider = "litellm"
 ```
 
 Why the dedicated profile matters:
 - plain `codex` and `codex-litellm` can share `~/.codex`
 - the remembered model choice lives under the `codex-litellm` profile instead of stomping the default Codex model selection
+
+## Shared Sessions
+
+`codex` and `codex-litellm` intentionally share the same session store under `~/.codex/sessions`.
+
+That gives you one history, but two runtime defaults:
+- `codex` keeps the plain Codex provider and model defaults
+- `codex-litellm` keeps the hidden `codex-litellm` profile and LiteLLM model defaults
+
+When you resume an old session from the other CLI, the active CLI wins for provider and default model selection. The session history is shared; the current executable stays in charge of how the next turn is routed.
+
+Practical consequence:
+- resuming a plain Codex session from `codex-litellm` keeps LiteLLM active
+- resuming a LiteLLM session from `codex` keeps plain Codex active
+- the two CLIs do not clobber each other's remembered default model
 
 Start the CLI:
 
@@ -247,6 +263,11 @@ DeepSeek is the clearest current example:
 - the model family matters
 - but the current blocker here is the LiteLLM `/responses` bridge for tool-follow-up turns
 - until that bridge is fixed, DeepSeek is not a recommended Codex route on this stack
+
+The release path reflects that policy:
+- default `~/.codex` bootstrap is release-gated
+- shared-session resume between `codex` and `codex-litellm` is release-gated
+- paid live model sweeps happen separately, after the low-cost confidence gates are clean
 
 ## Semantic Cache
 

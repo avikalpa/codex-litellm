@@ -46,6 +46,9 @@ jobs:
       - name: Verify default ~/.codex path still loads LiteLLM config
         run: ./scripts/test-default-codex-home.sh
 
+      - name: Verify shared ~/.codex sessions resume cleanly across binaries
+        run: ./scripts/test-shared-session-resume.sh
+
       - name: Verify stable-tag.patch applies to the pinned upstream tag
         shell: bash
         run: |

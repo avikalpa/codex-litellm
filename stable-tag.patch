@@ -2312,10 +2312,10 @@ index 2c07b4fd1..091af1d4b 100644
  fn auth_request_telemetry_context_tracks_attached_auth_and_retry_phase() {
      let auth_context = AuthRequestTelemetryContext::new(
 diff --git a/codex-rs/core/src/codex.rs b/codex-rs/core/src/codex.rs
-index 7b947249b..c28f72c68 100644
+index 7b947249b..93be3b86b 100644
 --- a/codex-rs/core/src/codex.rs
 +++ b/codex-rs/core/src/codex.rs
-@@ -199,6 +199,17 @@ pub(crate) struct PreviousTurnSettings {
+@@ -199,6 +199,46 @@ pub(crate) struct PreviousTurnSettings {
      pub(crate) realtime_active: Option<bool>,
  }
  
@@ -2330,19 +2330,63 @@ index 7b947249b..c28f72c68 100644
 +    previous_suffix == current_suffix && (previous.contains('/') != current.contains('/'))
 +}
 +
++fn previous_session_provider_from_rollout_items(items: &[RolloutItem]) -> Option<&str> {
++    items.iter().find_map(|item| match item {
++        RolloutItem::SessionMeta(meta_line) => meta_line.meta.model_provider.as_deref(),
++        RolloutItem::ResponseItem(_)
++        | RolloutItem::Compacted(_)
++        | RolloutItem::TurnContext(_)
++        | RolloutItem::EventMsg(_) => None,
++    })
++}
++
++fn should_warn_about_resumed_model_change(
++    previous_model: &str,
++    current_model: &str,
++    previous_provider: Option<&str>,
++    current_provider: &str,
++) -> bool {
++    if is_cross_provider_model_alias(previous_model, current_model) {
++        return false;
++    }
++
++    if let Some(previous_provider) = previous_provider
++        && previous_provider != current_provider
++    {
++        return false;
++    }
++
++    true
++}
++
  use crate::exec_policy::ExecPolicyUpdateError;
  use crate::feedback_tags;
  use crate::file_watcher::FileWatcher;
-@@ -2117,7 +2128,7 @@ impl Session {
+@@ -2108,6 +2148,7 @@ impl Session {
+             }
+             InitialHistory::Resumed(resumed_history) => {
+                 let rollout_items = resumed_history.history;
++                let previous_provider = previous_session_provider_from_rollout_items(&rollout_items);
+                 let previous_turn_settings = self
+                     .apply_rollout_reconstruction(&turn_context, &rollout_items)
+                     .await;
+@@ -2117,7 +2158,14 @@ impl Session {
                  if let Some(prev) = previous_turn_settings
                      .as_ref()
                      .map(|settings| settings.model.as_str())
 -                    .filter(|model| *model != curr)
-+                    .filter(|model| !is_cross_provider_model_alias(model, curr))
++                    .filter(|model| {
++                        should_warn_about_resumed_model_change(
++                            model,
++                            curr,
++                            previous_provider,
++                            turn_context.config.model_provider_id.as_str(),
++                        )
++                    })
                  {
                      warn!("resuming session with different model: previous={prev}, current={curr}");
                      self.send_event(
-@@ -5577,6 +5588,8 @@ pub(crate) async fn run_turn(
+@@ -5577,6 +5625,8 @@ pub(crate) async fn run_turn(
      sess.maybe_start_ghost_snapshot(Arc::clone(&turn_context), cancellation_token.child_token())
          .await;
      let mut stop_hook_active = false;
@@ -2351,7 +2395,7 @@ index 7b947249b..c28f72c68 100644
      // Although from the perspective of codex.rs, TurnDiffTracker has the lifecycle of a Task which contains
      // many turns, from the perspective of the user, it is a single turn.
      let turn_diff_tracker = Arc::new(tokio::sync::Mutex::new(TurnDiffTracker::new()));
-@@ -5660,6 +5673,7 @@ pub(crate) async fn run_turn(
+@@ -5660,6 +5710,7 @@ pub(crate) async fn run_turn(
              &mut client_session,
              turn_metadata_header.as_deref(),
              sampling_request_input,
@@ -2359,7 +2403,7 @@ index 7b947249b..c28f72c68 100644
              &turn_enabled_connectors,
              skills_outcome,
              &mut server_model_warning_emitted_for_turn,
-@@ -5671,7 +5685,9 @@ pub(crate) async fn run_turn(
+@@ -5671,7 +5722,9 @@ pub(crate) async fn run_turn(
                  let SamplingRequestResult {
                      needs_follow_up,
                      last_agent_message: sampling_request_last_agent_message,
@@ -2369,7 +2413,7 @@ index 7b947249b..c28f72c68 100644
                  let total_usage_tokens = sess.get_total_token_usage().await;
                  let token_limit_reached = total_usage_tokens >= auto_compact_limit;
  
-@@ -5741,13 +5757,7 @@ pub(crate) async fn run_turn(
+@@ -5741,13 +5794,7 @@ pub(crate) async fn run_turn(
                      if stop_outcome.should_block {
                          if let Some(continuation_prompt) = stop_outcome.continuation_prompt.clone()
                          {
@@ -2384,7 +2428,7 @@ index 7b947249b..c28f72c68 100644
                              stop_hook_active = true;
                              continue;
                          } else {
-@@ -5823,6 +5833,21 @@ pub(crate) async fn run_turn(
+@@ -5823,6 +5870,21 @@ pub(crate) async fn run_turn(
                      }
                      break;
                  }
@@ -2406,7 +2450,7 @@ index 7b947249b..c28f72c68 100644
                  continue;
              }
              Err(CodexErr::TurnAborted) => {
-@@ -5862,6 +5887,9 @@ async fn run_pre_sampling_compact(
+@@ -5862,6 +5924,9 @@ async fn run_pre_sampling_compact(
      sess: &Arc<Session>,
      turn_context: &Arc<TurnContext>,
  ) -> CodexResult<()> {
@@ -2416,7 +2460,7 @@ index 7b947249b..c28f72c68 100644
      let total_usage_tokens_before_compaction = sess.get_total_token_usage().await;
      maybe_run_previous_model_inline_compact(
          sess,
-@@ -5907,10 +5935,14 @@ async fn maybe_run_previous_model_inline_compact(
+@@ -5907,10 +5972,14 @@ async fn maybe_run_previous_model_inline_compact(
      let Some(new_context_window) = turn_context.model_context_window() else {
          return Ok(false);
      };
@@ -2435,7 +2479,7 @@ index 7b947249b..c28f72c68 100644
      let should_run = total_usage_tokens > new_auto_compact_limit
          && previous_model_turn_context.model_info.slug != turn_context.model_info.slug
          && old_context_window > new_context_window;
-@@ -5949,6 +5981,10 @@ async fn run_auto_compact(
+@@ -5949,6 +6018,10 @@ async fn run_auto_compact(
      Ok(())
  }
  
@@ -2446,7 +2490,7 @@ index 7b947249b..c28f72c68 100644
  fn collect_explicit_app_ids_from_skill_items(
      skill_items: &[ResponseItem],
      connectors: &[connectors::AppInfo],
-@@ -6110,6 +6146,7 @@ pub(crate) fn build_prompt(
+@@ -6110,6 +6183,7 @@ pub(crate) fn build_prompt(
      router: &ToolRouter,
      turn_context: &TurnContext,
      base_instructions: BaseInstructions,
@@ -2454,7 +2498,7 @@ index 7b947249b..c28f72c68 100644
  ) -> Prompt {
      let deferred_dynamic_tools = turn_context
          .dynamic_tools
-@@ -6132,6 +6169,7 @@ pub(crate) fn build_prompt(
+@@ -6132,6 +6206,7 @@ pub(crate) fn build_prompt(
          tools,
          parallel_tool_calls: turn_context.model_info.supports_parallel_tool_calls,
          base_instructions,
@@ -2462,7 +2506,7 @@ index 7b947249b..c28f72c68 100644
          personality: turn_context.personality,
          output_schema: turn_context.final_output_json_schema.clone(),
      }
-@@ -6152,6 +6190,7 @@ async fn run_sampling_request(
+@@ -6152,6 +6227,7 @@ async fn run_sampling_request(
      client_session: &mut ModelClientSession,
      turn_metadata_header: Option<&str>,
      input: Vec<ResponseItem>,
@@ -2470,7 +2514,7 @@ index 7b947249b..c28f72c68 100644
      explicitly_enabled_connectors: &HashSet<String>,
      skills_outcome: Option<&SkillLoadOutcome>,
      server_model_warning_emitted_for_turn: &mut bool,
-@@ -6174,6 +6213,7 @@ async fn run_sampling_request(
+@@ -6174,6 +6250,7 @@ async fn run_sampling_request(
          router.as_ref(),
          turn_context.as_ref(),
          base_instructions,
@@ -2478,7 +2522,7 @@ index 7b947249b..c28f72c68 100644
      );
      let tool_runtime = ToolCallRuntime::new(
          Arc::clone(&router),
-@@ -6192,6 +6232,7 @@ async fn run_sampling_request(
+@@ -6192,6 +6269,7 @@ async fn run_sampling_request(
          )
          .await;
      let mut retries = 0;
@@ -2486,7 +2530,7 @@ index 7b947249b..c28f72c68 100644
      loop {
          let err = match try_run_sampling_request(
              tool_runtime.clone(),
-@@ -6227,6 +6268,52 @@ async fn run_sampling_request(
+@@ -6227,6 +6305,52 @@ async fn run_sampling_request(
              return Err(err);
          }
  
@@ -2539,7 +2583,7 @@ index 7b947249b..c28f72c68 100644
          // Use the configured provider-specific stream retry budget.
          let max_retries = turn_context.provider.stream_max_retries();
          if retries >= max_retries
-@@ -6415,6 +6502,7 @@ pub(crate) async fn built_tools(
+@@ -6415,6 +6539,7 @@ pub(crate) async fn built_tools(
  struct SamplingRequestResult {
      needs_follow_up: bool,
      last_agent_message: Option<String>,
@@ -2547,7 +2591,7 @@ index 7b947249b..c28f72c68 100644
  }
  
  /// Ephemeral per-response state for streaming a single proposed plan.
-@@ -6998,6 +7086,7 @@ async fn try_run_sampling_request(
+@@ -6998,6 +7123,7 @@ async fn try_run_sampling_request(
          FuturesOrdered::new();
      let mut needs_follow_up = false;
      let mut last_agent_message: Option<String> = None;
@@ -2555,7 +2599,7 @@ index 7b947249b..c28f72c68 100644
      let mut active_item: Option<TurnItem> = None;
      let mut should_emit_turn_diff = false;
      let plan_mode = turn_context.collaboration_mode.mode == ModeKind::Plan;
-@@ -7085,6 +7174,7 @@ async fn try_run_sampling_request(
+@@ -7085,6 +7211,7 @@ async fn try_run_sampling_request(
                  if let Some(agent_message) = output_result.last_agent_message {
                      last_agent_message = Some(agent_message);
                  }
@@ -2563,7 +2607,7 @@ index 7b947249b..c28f72c68 100644
                  needs_follow_up |= output_result.needs_follow_up;
              }
              ResponseEvent::OutputItemAdded(item) => {
-@@ -7186,6 +7276,7 @@ async fn try_run_sampling_request(
+@@ -7186,6 +7313,7 @@ async fn try_run_sampling_request(
                  break Ok(SamplingRequestResult {
                      needs_follow_up,
                      last_agent_message,
@@ -2571,7 +2615,7 @@ index 7b947249b..c28f72c68 100644
                  });
              }
              ResponseEvent::OutputTextDelta(delta) => {
-@@ -7214,7 +7305,7 @@ async fn try_run_sampling_request(
+@@ -7214,7 +7342,7 @@ async fn try_run_sampling_request(
                              .await;
                      }
                  } else {
@@ -2580,7 +2624,7 @@ index 7b947249b..c28f72c68 100644
                  }
              }
              ResponseEvent::ReasoningSummaryDelta {
-@@ -7232,7 +7323,7 @@ async fn try_run_sampling_request(
+@@ -7232,7 +7360,7 @@ async fn try_run_sampling_request(
                      sess.send_event(&turn_context, EventMsg::ReasoningContentDelta(event))
                          .await;
                  } else {
@@ -2589,7 +2633,7 @@ index 7b947249b..c28f72c68 100644
                  }
              }
              ResponseEvent::ReasoningSummaryPartAdded { summary_index } => {
-@@ -7244,7 +7335,7 @@ async fn try_run_sampling_request(
+@@ -7244,7 +7372,7 @@ async fn try_run_sampling_request(
                          });
                      sess.send_event(&turn_context, event).await;
                  } else {
@@ -2598,7 +2642,7 @@ index 7b947249b..c28f72c68 100644
                  }
              }
              ResponseEvent::ReasoningContentDelta {
-@@ -7262,7 +7353,7 @@ async fn try_run_sampling_request(
+@@ -7262,7 +7390,7 @@ async fn try_run_sampling_request(
                      sess.send_event(&turn_context, EventMsg::ReasoningRawContentDelta(event))
                          .await;
                  } else {
@@ -4785,10 +4829,61 @@ index 767f80500..b3a14a45a 100644
  #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
  async fn integration_creates_and_checks_session_file() -> anyhow::Result<()> {
 diff --git a/codex-rs/core/tests/suite/resume_warning.rs b/codex-rs/core/tests/suite/resume_warning.rs
-index b1e6a694c..5a83b5c81 100644
+index b1e6a694c..a65c36b71 100644
 --- a/codex-rs/core/tests/suite/resume_warning.rs
 +++ b/codex-rs/core/tests/suite/resume_warning.rs
-@@ -121,3 +121,40 @@ async fn emits_warning_when_resumed_model_differs() {
+@@ -9,6 +9,9 @@ use codex_protocol::protocol::EventMsg;
+ use codex_protocol::protocol::InitialHistory;
+ use codex_protocol::protocol::ResumedHistory;
+ use codex_protocol::protocol::RolloutItem;
++use codex_protocol::protocol::SessionMeta;
++use codex_protocol::protocol::SessionMetaLine;
++use codex_protocol::protocol::SessionSource;
+ use codex_protocol::protocol::TurnCompleteEvent;
+ use codex_protocol::protocol::TurnContextItem;
+ use codex_protocol::protocol::TurnStartedEvent;
+@@ -22,9 +25,23 @@ use tempfile::TempDir;
+ fn resume_history(
+     config: &codex_core::config::Config,
+     previous_model: &str,
++    previous_provider: Option<&str>,
+     rollout_path: &std::path::Path,
+ ) -> InitialHistory {
+     let turn_id = "resume-warning-seed-turn".to_string();
++    let session_meta = RolloutItem::SessionMeta(SessionMetaLine {
++        meta: SessionMeta {
++            id: ThreadId::default(),
++            timestamp: "2026-03-22T00:00:00Z".to_string(),
++            cwd: config.cwd.clone(),
++            originator: "test".to_string(),
++            cli_version: env!("CARGO_PKG_VERSION").to_string(),
++            source: SessionSource::default(),
++            model_provider: previous_provider.map(str::to_string),
++            ..SessionMeta::default()
++        },
++        git: None,
++    });
+     let turn_ctx = TurnContextItem {
+         turn_id: Some(turn_id.clone()),
+         trace_id: None,
+@@ -51,6 +68,7 @@ fn resume_history(
+     InitialHistory::Resumed(ResumedHistory {
+         conversation_id: ThreadId::default(),
+         history: vec![
++            session_meta,
+             RolloutItem::EventMsg(EventMsg::TurnStarted(TurnStartedEvent {
+                 turn_id: turn_id.clone(),
+                 model_context_window: None,
+@@ -84,7 +102,7 @@ async fn emits_warning_when_resumed_model_differs() {
+     let rollout_path = home.path().join("rollout.jsonl");
+     std::fs::write(&rollout_path, "").expect("create rollout placeholder");
+ 
+-    let initial_history = resume_history(&config, "previous-model", &rollout_path);
++    let initial_history = resume_history(&config, "previous-model", Some("openai"), &rollout_path);
+ 
+     let thread_manager = codex_core::test_support::thread_manager_with_models_provider(
+         CodexAuth::from_api_key("test"),
+@@ -121,3 +139,79 @@ async fn emits_warning_when_resumed_model_differs() {
      // The warning is emitted during initialization, so a short sleep is sufficient.
      tokio::time::sleep(Duration::from_millis(50)).await;
  }
@@ -4803,7 +4898,46 @@ index b1e6a694c..5a83b5c81 100644
 +    let rollout_path = home.path().join("rollout.jsonl");
 +    std::fs::write(&rollout_path, "").expect("create rollout placeholder");
 +
-+    let initial_history = resume_history(&config, "gpt-5.4", &rollout_path);
++    let initial_history = resume_history(&config, "gpt-5.4", Some("openai"), &rollout_path);
++
++    let thread_manager = codex_core::test_support::thread_manager_with_models_provider(
++        CodexAuth::from_api_key("test"),
++        config.model_provider.clone(),
++    );
++    let auth_manager =
++        codex_core::test_support::auth_manager_from_auth(CodexAuth::from_api_key("test"));
++
++    let NewThread {
++        thread: conversation,
++        ..
++    } = thread_manager
++        .resume_thread_with_history(config, initial_history, auth_manager, false, None)
++        .await
++        .expect("resume conversation");
++
++    tokio::time::sleep(Duration::from_millis(100)).await;
++
++    let warning = tokio::time::timeout(Duration::from_millis(100), async {
++        wait_for_event(&conversation, |ev| matches!(ev, EventMsg::Warning(_))).await
++    })
++    .await;
++
++    assert!(warning.is_err(), "unexpected warning event: {warning:?}");
++}
++
++#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
++async fn does_not_emit_warning_for_deliberate_cross_provider_resume() {
++    let home = TempDir::new().expect("tempdir");
++    let mut config = load_default_config_for_test(&home).await;
++    config.model_provider_id = "litellm".to_string();
++    config.model = Some("vercel/minimax-m2.7-highspeed".to_string());
++    assert!(config.cwd.is_absolute());
++
++    let rollout_path = home.path().join("rollout.jsonl");
++    std::fs::write(&rollout_path, "").expect("create rollout placeholder");
++
++    let initial_history =
++        resume_history(&config, "gpt-5.4", Some("openai"), &rollout_path);
 +
 +    let thread_manager = codex_core::test_support::thread_manager_with_models_provider(
 +        CodexAuth::from_api_key("test"),
@@ -4892,6 +5026,128 @@ index 0e49166b8..19e688c0a 100644
              VERSION
          );
  
+diff --git a/codex-rs/exec/src/lib.rs b/codex-rs/exec/src/lib.rs
+index d27cec1f5..6b7a72900 100644
+--- a/codex-rs/exec/src/lib.rs
++++ b/codex-rs/exec/src/lib.rs
+@@ -1406,7 +1406,6 @@ async fn resolve_resume_path(
+     args: &crate::cli::ResumeArgs,
+ ) -> anyhow::Result<Option<PathBuf>> {
+     if args.last {
+-        let default_provider_filter = vec![config.model_provider_id.clone()];
+         let filter_cwd = if args.all {
+             None
+         } else {
+@@ -1418,7 +1417,7 @@ async fn resolve_resume_path(
+             /*cursor*/ None,
+             codex_core::ThreadSortKey::UpdatedAt,
+             &[],
+-            Some(default_provider_filter.as_slice()),
++            None,
+             &config.model_provider_id,
+             filter_cwd,
+         )
+diff --git a/codex-rs/exec/tests/suite/resume.rs b/codex-rs/exec/tests/suite/resume.rs
+index a85183620..83e3b963a 100644
+--- a/codex-rs/exec/tests/suite/resume.rs
++++ b/codex-rs/exec/tests/suite/resume.rs
+@@ -499,6 +499,96 @@ fn exec_resume_preserves_cli_configuration_overrides() -> anyhow::Result<()> {
+     Ok(())
+ }
+ 
++#[test]
++fn exec_resume_last_all_crosses_provider_boundaries_but_keeps_active_profile() -> anyhow::Result<()>
++{
++    let test = test_codex_exec();
++    let fixture = exec_fixture()?;
++
++    std::fs::write(
++        test.home_path().join("config.toml"),
++        concat!(
++            "model = \"gpt-5.4\"\n",
++            "openai_base_url = \"http://unused.local\"\n\n",
++            "[model_providers.litellm]\n",
++            "name = \"LiteLLM\"\n",
++            "base_url = \"http://unused.local\"\n",
++            "env_key = \"PATH\"\n",
++            "wire_api = \"responses\"\n\n",
++            "[profiles.codex-litellm]\n",
++            "model = \"vercel/minimax-m2.7-highspeed\"\n",
++            "model_provider = \"litellm\"\n",
++        ),
++    )?;
++
++    let marker = format!("resume-cross-provider-{}", Uuid::new_v4());
++    let prompt = format!("echo {marker}");
++
++    test.cmd()
++        .env("CODEX_RS_SSE_FIXTURE", &fixture)
++        .env("OPENAI_BASE_URL", "http://unused.local")
++        .arg("--skip-git-repo-check")
++        .arg("-C")
++        .arg(test.cwd_path())
++        .arg(&prompt)
++        .assert()
++        .success();
++
++    let sessions_dir = test.home_path().join("sessions");
++    let path = find_session_file_containing_marker(&sessions_dir, &marker)
++        .expect("no session file found after first run");
++
++    let marker2 = format!("resume-cross-provider-2-{}", Uuid::new_v4());
++    let prompt2 = format!("echo {marker2}");
++
++    let output = test
++        .cmd()
++        .env("CODEX_RS_SSE_FIXTURE", &fixture)
++        .env("OPENAI_BASE_URL", "http://unused.local")
++        .arg("--profile")
++        .arg("codex-litellm")
++        .arg("--skip-git-repo-check")
++        .arg("-C")
++        .arg(test.cwd_path())
++        .arg(&prompt2)
++        .arg("resume")
++        .arg("--last")
++        .arg("--all")
++        .output()
++        .context("cross-provider resume run should succeed")?;
++
++    assert!(
++        output.status.success(),
++        "cross-provider resume run failed: {output:?}"
++    );
++
++    let stderr = String::from_utf8(output.stderr)?;
++    assert!(
++        stderr.contains("provider: litellm"),
++        "stderr missing litellm provider summary: {stderr}"
++    );
++    assert!(
++        stderr.contains("model: vercel/minimax-m2.7-highspeed"),
++        "stderr missing litellm model summary: {stderr}"
++    );
++    assert!(
++        !stderr.contains("Consider switching back to `gpt-5.4`"),
++        "unexpected cross-provider alias warning: {stderr}"
++    );
++
++    let resumed_path = find_session_file_containing_marker(&sessions_dir, &marker2)
++        .expect("no resumed session file containing marker2");
++    assert_eq!(
++        resumed_path, path,
++        "cross-provider resume should append to the existing file"
++    );
++
++    let content = std::fs::read_to_string(&resumed_path)?;
++    assert!(content.contains(&marker));
++    assert!(content.contains(&marker2));
++    Ok(())
++}
++
+ #[test]
+ fn exec_resume_accepts_images_after_subcommand() -> anyhow::Result<()> {
+     let test = test_codex_exec();
 diff --git a/codex-rs/protocol/src/openai_models.rs b/codex-rs/protocol/src/openai_models.rs
 index 01515d107..b6771cb80 100644
 --- a/codex-rs/protocol/src/openai_models.rs
