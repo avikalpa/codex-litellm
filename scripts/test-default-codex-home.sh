@@ -23,7 +23,17 @@ bootstrap_patched_checkout() {
   WORKDIR="$CODEX_RS_DIR"
 }
 
-if ! rg -q 'name = "codex-litellm"' "$CODEX_RS_DIR/cli/Cargo.toml"; then
+if command -v rg >/dev/null 2>&1; then
+  has_litellm_patch() {
+    rg -q 'name = "codex-litellm"' "$CODEX_RS_DIR/cli/Cargo.toml"
+  }
+else
+  has_litellm_patch() {
+    grep -q 'name = "codex-litellm"' "$CODEX_RS_DIR/cli/Cargo.toml"
+  }
+fi
+
+if ! has_litellm_patch; then
   bootstrap_patched_checkout
 fi
 
