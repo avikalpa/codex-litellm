@@ -667,10 +667,16 @@ index d6a13a3d4..004615fef 100644
   "anyhow",
   "codex-core",
 diff --git a/codex-rs/cli/Cargo.toml b/codex-rs/cli/Cargo.toml
-index a7e88cd1b..a9a0ecf23 100644
+index a7e88cd1b..8795f5500 100644
 --- a/codex-rs/cli/Cargo.toml
 +++ b/codex-rs/cli/Cargo.toml
-@@ -8,6 +8,10 @@ license.workspace = true
+@@ -3,11 +3,16 @@ name = "codex-cli"
+ version.workspace = true
+ edition.workspace = true
+ license.workspace = true
++build = "build.rs"
+
+ [[bin]]
  name = "codex"
  path = "src/main.rs"
 
@@ -681,8 +687,15 @@ index a7e88cd1b..a9a0ecf23 100644
  [lib]
  name = "codex_cli"
  path = "src/lib.rs"
+@@ -67,3 +72,6 @@ codex-utils-cargo-bin = { workspace = true }
+ predicates = { workspace = true }
+ pretty_assertions = { workspace = true }
+ sqlx = { workspace = true }
++
++[build-dependencies]
++serde_json = { workspace = true }
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
-index 698035fea..17598b206 100644
+index 698035fea..f5b17de11 100644
 --- a/codex-rs/cli/src/main.rs
 +++ b/codex-rs/cli/src/main.rs
 @@ -31,6 +31,7 @@ use codex_tui::update_action::UpdateAction;
@@ -693,16 +706,29 @@ index 698035fea..17598b206 100644
  use std::path::PathBuf;
  use supports_color::Stream;
 
-@@ -42,6 +43,8 @@ mod mcp_cmd;
+@@ -42,6 +43,12 @@ mod mcp_cmd;
  #[cfg(not(windows))]
  mod wsl_paths;
 
 +const CODEX_LITELLM_PROFILE_NAME: &str = "codex-litellm";
++const CODEX_LITELLM_DISPLAY_VERSION: &str = match option_env!("CODEX_LITELLM_DISPLAY_VERSION") {
++    Some(version) => version,
++    None => env!("CARGO_PKG_VERSION"),
++};
 +
  use crate::mcp_cmd::McpCli;
 
  use codex_core::config::Config;
-@@ -607,6 +610,11 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
+@@ -58,7 +65,7 @@ use codex_core::terminal::TerminalName;
+ #[derive(Debug, Parser)]
+ #[clap(
+     author,
+-    version,
++    version = CODEX_LITELLM_DISPLAY_VERSION,
+     // If a sub‑command is given, ignore requirements of the default args.
+     subcommand_negates_reqs = true,
+     // The executable is sometimes invoked via a platform‑specific name like
+@@ -607,6 +614,11 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
          subcommand,
      } = MultitoolCli::parse();
 
@@ -714,7 +740,7 @@ index 698035fea..17598b206 100644
      // Fold --enable/--disable into config overrides so they flow to all subcommands.
      let toggle_overrides = feature_toggles.to_overrides()?;
      root_config_overrides.raw_overrides.extend(toggle_overrides);
-@@ -932,6 +940,59 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
+@@ -932,6 +944,59 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
      Ok(())
  }
 
@@ -774,7 +800,7 @@ index 698035fea..17598b206 100644
  async fn enable_feature_in_config(interactive: &TuiCli, feature: &str) -> anyhow::Result<()> {
      FeatureToggles::validate_feature(feature)?;
      let codex_home = find_codex_home()?;
-@@ -1774,4 +1835,39 @@ mod tests {
+@@ -1774,4 +1839,39 @@ mod tests {
              .expect_err("feature should be rejected");
          assert_eq!(err.to_string(), "Unknown feature flag: does_not_exist");
      }
@@ -1242,7 +1268,7 @@ index 33a1f535c..eba135fb8 100644
          let mut input = self.input.clone();
 
 diff --git a/codex-rs/core/src/client_tests.rs b/codex-rs/core/src/client_tests.rs
-index 2c07b4fd1..33307cbf4 100644
+index 2c07b4fd1..091af1d4b 100644
 --- a/codex-rs/core/src/client_tests.rs
 +++ b/codex-rs/core/src/client_tests.rs
 @@ -1,12 +1,25 @@
@@ -1271,7 +1297,7 @@ index 2c07b4fd1..33307cbf4 100644
  use pretty_assertions::assert_eq;
  use serde_json::json;
 
-@@ -27,6 +40,24 @@ fn test_model_client(session_source: SessionSource) -> ModelClient {
+@@ -27,6 +40,23 @@ fn test_model_client(session_source: SessionSource) -> ModelClient {
      )
  }
 
@@ -1288,7 +1314,6 @@ index 2c07b4fd1..33307cbf4 100644
 +        None,
 +        responses_websockets_enabled_by_feature,
 +        false,
-+        false,
 +        None,
 +    )
 +}
@@ -1296,7 +1321,7 @@ index 2c07b4fd1..33307cbf4 100644
  fn test_model_info() -> ModelInfo {
      serde_json::from_value(json!({
          "slug": "gpt-test",
-@@ -57,6 +88,71 @@ fn test_model_info() -> ModelInfo {
+@@ -57,6 +87,74 @@ fn test_model_info() -> ModelInfo {
      .expect("deserialize test model info")
  }
 
@@ -1320,6 +1345,7 @@ index 2c07b4fd1..33307cbf4 100644
 +        request_max_retries: Some(0),
 +        stream_max_retries: Some(0),
 +        stream_idle_timeout_ms: Some(5_000),
++        websocket_connect_timeout_ms: None,
 +        requires_openai_auth: false,
 +        supports_websockets: false,
 +    }
@@ -1341,6 +1367,7 @@ index 2c07b4fd1..33307cbf4 100644
 +        request_max_retries: Some(0),
 +        stream_max_retries: Some(0),
 +        stream_idle_timeout_ms: Some(5_000),
++        websocket_connect_timeout_ms: None,
 +        requires_openai_auth: false,
 +        supports_websockets,
 +    }
@@ -1360,6 +1387,7 @@ index 2c07b4fd1..33307cbf4 100644
 +        request_max_retries: Some(0),
 +        stream_max_retries: Some(0),
 +        stream_idle_timeout_ms: Some(5_000),
++        websocket_connect_timeout_ms: None,
 +        requires_openai_auth: false,
 +        supports_websockets,
 +    }
@@ -1368,7 +1396,7 @@ index 2c07b4fd1..33307cbf4 100644
  fn test_session_telemetry() -> SessionTelemetry {
      SessionTelemetry::new(
          ThreadId::new(),
-@@ -97,6 +193,220 @@ async fn summarize_memories_returns_empty_for_empty_input() {
+@@ -97,6 +195,220 @@ async fn summarize_memories_returns_empty_for_empty_input() {
      assert_eq!(output.len(), 0);
  }
 
@@ -1915,10 +1943,10 @@ index 9439d8125..005b94608 100644
          output_schema: None,
      };
 diff --git a/codex-rs/core/src/config/config_tests.rs b/codex-rs/core/src/config/config_tests.rs
-index ee856664d..7fda53fe3 100644
+index ee856664d..e3f0b13e5 100644
 --- a/codex-rs/core/src/config/config_tests.rs
 +++ b/codex-rs/core/src/config/config_tests.rs
-@@ -2755,6 +2755,51 @@ async fn set_model_updates_profile() -> anyhow::Result<()> {
+@@ -2755,6 +2755,84 @@ async fn set_model_updates_profile() -> anyhow::Result<()> {
      Ok(())
  }
 
@@ -1967,11 +1995,44 @@ index ee856664d..7fda53fe3 100644
 +    Ok(())
 +}
 +
++#[tokio::test]
++async fn codex_litellm_profile_does_not_inherit_plain_codex_model_defaults() -> anyhow::Result<()>
++{
++    let codex_home = TempDir::new()?;
++    tokio::fs::write(
++        codex_home.path().join(CONFIG_TOML_FILE),
++        r#"
++model = "gpt-5.4"
++model_reasoning_effort = "medium"
++
++[profiles.codex-litellm]
++model_provider = "litellm"
++"#,
++    )
++    .await?;
++
++    let config = ConfigBuilder::default()
++        .codex_home(codex_home.path().to_path_buf())
++        .cli_overrides(vec![(
++            "profile".to_string(),
++            TomlValue::String("codex-litellm".to_string()),
++        )])
++        .build()
++        .await?;
++
++    assert_eq!(config.active_profile.as_deref(), Some("codex-litellm"));
++    assert_eq!(config.model_provider_id, "litellm");
++    assert_eq!(config.model, None);
++    assert_eq!(config.model_reasoning_effort, None);
++
++    Ok(())
++}
++
  #[tokio::test]
  async fn set_model_updates_existing_profile() -> anyhow::Result<()> {
      let codex_home = TempDir::new()?;
 diff --git a/codex-rs/core/src/config/mod.rs b/codex-rs/core/src/config/mod.rs
-index a1f270458..b075cbaaa 100644
+index a1f270458..8b2ebce7a 100644
 --- a/codex-rs/core/src/config/mod.rs
 +++ b/codex-rs/core/src/config/mod.rs
 @@ -2375,9 +2375,10 @@ impl Config {
@@ -1987,6 +2048,36 @@ index a1f270458..b075cbaaa 100644
          }
 
          let model_provider_id = model_provider
+@@ -2487,7 +2488,13 @@ impl Config {
+
+         let forced_login_method = cfg.forced_login_method;
+
+-        let model = model.or(config_profile.model).or(cfg.model);
++        let use_profile_scoped_model_defaults_only =
++            active_profile_name.as_deref() == Some("codex-litellm");
++        let model = if use_profile_scoped_model_defaults_only {
++            model.or(config_profile.model)
++        } else {
++            model.or(config_profile.model).or(cfg.model)
++        };
+         let service_tier = service_tier_override
+             .unwrap_or_else(|| config_profile.service_tier.or(cfg.service_tier));
+         let service_tier = match service_tier {
+@@ -2729,9 +2736,11 @@ impl Config {
+                 .or(show_raw_agent_reasoning)
+                 .unwrap_or(false),
+             guardian_developer_instructions,
+-            model_reasoning_effort: config_profile
+-                .model_reasoning_effort
+-                .or(cfg.model_reasoning_effort),
++            model_reasoning_effort: if use_profile_scoped_model_defaults_only {
++                config_profile.model_reasoning_effort
++            } else {
++                config_profile.model_reasoning_effort.or(cfg.model_reasoning_effort)
++            },
+             plan_mode_reasoning_effort: config_profile
+                 .plan_mode_reasoning_effort
+                 .or(cfg.plan_mode_reasoning_effort),
 diff --git a/codex-rs/core/src/context_manager/history.rs b/codex-rs/core/src/context_manager/history.rs
 index d09e100fe..febab29c1 100644
 --- a/codex-rs/core/src/context_manager/history.rs
@@ -2239,7 +2330,7 @@ index 737a47780..3fc1a02a9 100644
      // These CODEX_OSS_ environment variables are experimental: we may
      // switch to reading values from config.toml instead.
 diff --git a/codex-rs/core/src/models_manager/manager.rs b/codex-rs/core/src/models_manager/manager.rs
-index 29a1a8576..c255be2a0 100644
+index 29a1a8576..bf7a2451e 100644
 --- a/codex-rs/core/src/models_manager/manager.rs
 +++ b/codex-rs/core/src/models_manager/manager.rs
 @@ -14,6 +14,8 @@ use crate::model_provider_info::ModelProviderInfo;
@@ -2251,15 +2342,42 @@ index 29a1a8576..c255be2a0 100644
  use crate::response_debug_context::extract_response_debug_context;
  use crate::response_debug_context::telemetry_transport_error_message;
  use crate::util::FeedbackRequestTags;
-@@ -38,6 +40,7 @@ use tokio::time::timeout;
+@@ -38,8 +40,9 @@ use tokio::time::timeout;
  use tracing::error;
  use tracing::info;
  use tracing::instrument;
 +use tracing::warn;
 
- const MODEL_CACHE_FILE: &str = "models_cache.json";
+-const MODEL_CACHE_FILE: &str = "models_cache.json";
++const MODEL_CACHE_FILE_PREFIX: &str = "models_cache";
  const DEFAULT_MODEL_CACHE_TTL: Duration = Duration::from_secs(300);
-@@ -334,22 +337,27 @@ impl ModelsManager {
+ const MODELS_REFRESH_TIMEOUT: Duration = Duration::from_secs(5);
+ const MODELS_ENDPOINT: &str = "/models";
+@@ -212,7 +215,7 @@ impl ModelsManager {
+         collaboration_modes_config: CollaborationModesConfig,
+         provider: ModelProviderInfo,
+     ) -> Self {
+-        let cache_path = codex_home.join(MODEL_CACHE_FILE);
++        let cache_path = codex_home.join(Self::cache_file_name_for_provider(&provider));
+         let cache_manager = ModelsCacheManager::new(cache_path, DEFAULT_MODEL_CACHE_TTL);
+         let catalog_mode = if model_catalog.is_some() {
+             CatalogMode::Custom
+@@ -222,8 +225,12 @@ impl ModelsManager {
+         let remote_models = model_catalog
+             .map(|catalog| catalog.models)
+             .unwrap_or_else(|| {
+-                Self::load_remote_models_from_file()
+-                    .unwrap_or_else(|err| panic!("failed to load bundled models.json: {err}"))
++                if Self::should_seed_bundled_catalog(&provider) {
++                    Self::load_remote_models_from_file()
++                        .unwrap_or_else(|err| panic!("failed to load bundled models.json: {err}"))
++                } else {
++                    Vec::new()
++                }
+             });
+         Self {
+             remote_models: RwLock::new(remote_models),
+@@ -334,22 +341,27 @@ impl ModelsManager {
          best
      }
 
@@ -2301,7 +2419,7 @@ index 29a1a8576..c255be2a0 100644
      }
 
      fn construct_model_info_from_candidates(
-@@ -357,8 +365,9 @@ impl ModelsManager {
+@@ -357,8 +369,9 @@ impl ModelsManager {
          candidates: &[ModelInfo],
          config: &Config,
      ) -> ModelInfo {
@@ -2313,7 +2431,31 @@ index 29a1a8576..c255be2a0 100644
          let remote = Self::find_model_by_longest_prefix(model, candidates)
              .or_else(|| Self::find_model_by_namespaced_suffix(model, candidates));
          let model_info = if let Some(remote) = remote {
-@@ -523,6 +532,15 @@ impl ModelsManager {
+@@ -396,7 +409,7 @@ impl ModelsManager {
+             return Ok(());
+         }
+
+-        if self.auth_manager.auth_mode() != Some(AuthMode::Chatgpt) {
++        if !self.should_fetch_remote_models_from_network() {
+             if matches!(
+                 refresh_strategy,
+                 RefreshStrategy::Offline | RefreshStrategy::OnlineIfUncached
+@@ -428,6 +441,14 @@ impl ModelsManager {
+         }
+     }
+
++    fn should_fetch_remote_models_from_network(&self) -> bool {
++        if !self.provider.requires_openai_auth {
++            return true;
++        }
++
++        matches!(self.auth_manager.auth_mode(), Some(AuthMode::Chatgpt))
++    }
++
+     async fn fetch_and_update_models(&self) -> CoreResult<()> {
+         let _timer =
+             codex_otel::start_global_timer("codex.remote_models.fetch_update.duration_ms", &[]);
+@@ -523,12 +544,61 @@ impl ModelsManager {
          let mut presets: Vec<ModelPreset> = remote_models.into_iter().map(Into::into).collect();
          let chatgpt_mode = matches!(self.auth_manager.auth_mode(), Some(AuthMode::Chatgpt));
          presets = ModelPreset::filter_by_auth(presets, chatgpt_mode);
@@ -2329,11 +2471,136 @@ index 29a1a8576..c255be2a0 100644
 
          ModelPreset::mark_default_by_picker_visibility(&mut presets);
 
+         presets
+     }
+
++    fn should_seed_bundled_catalog(provider: &ModelProviderInfo) -> bool {
++        !(provider.env_key.as_deref() == Some("LITELLM_API_KEY") && !provider.requires_openai_auth)
++    }
++
++    fn cache_file_name_for_provider(provider: &ModelProviderInfo) -> String {
++        format!(
++            "{MODEL_CACHE_FILE_PREFIX}.{}.json",
++            Self::provider_cache_key(provider)
++        )
++    }
++
++    fn provider_cache_key(provider: &ModelProviderInfo) -> String {
++        if provider.is_openai() {
++            return "openai".to_string();
++        }
++
++        if provider.env_key.as_deref() == Some("LITELLM_API_KEY") && !provider.requires_openai_auth
++        {
++            return "litellm".to_string();
++        }
++
++        let mut key = provider
++            .name
++            .chars()
++            .map(|ch| {
++                if ch.is_ascii_alphanumeric() {
++                    ch.to_ascii_lowercase()
++                } else {
++                    '-'
++                }
++            })
++            .collect::<String>();
++        key = key.trim_matches('-').to_string();
++        if key.is_empty() {
++            "provider".to_string()
++        } else {
++            key
++        }
++    }
++
+     async fn get_remote_models(&self) -> Vec<ModelInfo> {
+         self.remote_models.read().await.clone()
+     }
 diff --git a/codex-rs/core/src/models_manager/manager_tests.rs b/codex-rs/core/src/models_manager/manager_tests.rs
-index 07cf4dc39..f435740a3 100644
+index 07cf4dc39..74755ba9e 100644
 --- a/codex-rs/core/src/models_manager/manager_tests.rs
 +++ b/codex-rs/core/src/models_manager/manager_tests.rs
-@@ -229,7 +229,7 @@ async fn get_model_info_matches_namespaced_suffix() {
+@@ -92,6 +92,26 @@ fn provider_for(base_url: String) -> ModelProviderInfo {
+     }
+ }
+
++fn litellm_provider_for(base_url: String) -> ModelProviderInfo {
++    ModelProviderInfo {
++        name: "LiteLLM".into(),
++        base_url: Some(base_url),
++        env_key: Some("LITELLM_API_KEY".into()),
++        env_key_instructions: Some("Set LITELLM_API_KEY.".into()),
++        experimental_bearer_token: None,
++        wire_api: WireApi::Responses,
++        query_params: None,
++        http_headers: None,
++        env_http_headers: None,
++        request_max_retries: Some(0),
++        stream_max_retries: Some(0),
++        stream_idle_timeout_ms: Some(5_000),
++        websocket_connect_timeout_ms: None,
++        requires_openai_auth: false,
++        supports_websockets: false,
++    }
++}
++
+ #[derive(Default)]
+ struct TagCollectorVisitor {
+     tags: BTreeMap<String, String>,
+@@ -167,6 +187,51 @@ async fn get_model_info_tracks_fallback_usage() {
+     assert_eq!(unknown.slug, "model-that-does-not-exist");
+ }
+
++#[tokio::test]
++async fn litellm_provider_starts_with_empty_catalog_without_remote_models() {
++    let codex_home = tempdir().expect("temp dir");
++    let auth_manager = AuthManager::from_auth_for_testing(CodexAuth::from_api_key("Test API Key"));
++    let manager = ModelsManager::with_provider_for_tests(
++        codex_home.path().to_path_buf(),
++        auth_manager,
++        litellm_provider_for("https://litellm.example.com/v1".to_string()),
++    );
++
++    let presets = manager.try_list_models().expect("list models");
++    assert!(presets.is_empty());
++    assert_eq!(
++        manager
++            .get_default_model(&None, RefreshStrategy::Offline)
++            .await,
++        ""
++    );
++}
++
++#[tokio::test]
++async fn litellm_provider_ignores_legacy_shared_models_cache_file() {
++    let codex_home = tempdir().expect("temp dir");
++    let stale_cache = json!({
++        "etag": "stale",
++        "fetched_at": Utc::now(),
++        "models": [remote_model("gpt-5.4", "GPT-5.4", 0)],
++    });
++    std::fs::write(
++        codex_home.path().join("models_cache.json"),
++        serde_json::to_vec(&stale_cache).expect("serialize stale cache"),
++    )
++    .expect("write stale cache");
++
++    let auth_manager = AuthManager::from_auth_for_testing(CodexAuth::from_api_key("Test API Key"));
++    let manager = ModelsManager::with_provider_for_tests(
++        codex_home.path().to_path_buf(),
++        auth_manager,
++        litellm_provider_for("https://litellm.example.com/v1".to_string()),
++    );
++
++    let presets = manager.list_models(RefreshStrategy::Offline).await;
++    assert!(presets.is_empty());
++}
++
+ #[tokio::test]
+ async fn get_model_info_uses_custom_catalog() {
+     let codex_home = tempdir().expect("temp dir");
+@@ -229,7 +294,7 @@ async fn get_model_info_matches_namespaced_suffix() {
  }
 
  #[tokio::test]
@@ -2342,7 +2609,7 @@ index 07cf4dc39..f435740a3 100644
      let codex_home = tempdir().expect("temp dir");
      let config = ConfigBuilder::default()
          .codex_home(codex_home.path().to_path_buf())
-@@ -255,7 +255,39 @@ async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
+@@ -255,7 +320,39 @@ async fn get_model_info_rejects_multi_segment_namespace_suffix_matching() {
      let model_info = manager.get_model_info(&namespaced_model, &config).await;
 
      assert_eq!(model_info.slug, namespaced_model);
@@ -2383,6 +2650,72 @@ index 07cf4dc39..f435740a3 100644
  }
 
  #[tokio::test]
+@@ -568,6 +665,50 @@ async fn refresh_available_models_skips_network_without_chatgpt_auth() {
+         provider,
+     );
+
++    manager
++        .refresh_available_models(RefreshStrategy::Online)
++        .await
++        .expect("refresh should work for non-openai-auth providers");
++    let cached_remote = manager.get_remote_models().await;
++    assert!(
++        cached_remote
++            .iter()
++            .any(|candidate| candidate.slug == dynamic_slug),
++        "non-openai-auth providers should fetch their remote model catalogs"
++    );
++    assert_eq!(
++        models_mock.requests().len(),
++        1,
++        "custom providers should hit /models even without chatgpt auth"
++    );
++}
++
++#[tokio::test]
++async fn refresh_available_models_skips_network_for_openai_auth_provider_without_chatgpt_auth() {
++    let server = MockServer::start().await;
++    let dynamic_slug = "dynamic-model-only-for-test-openai-auth";
++    let models_mock = mount_models_once(
++        &server,
++        ModelsResponse {
++            models: vec![remote_model(dynamic_slug, "Needs ChatGPT", 1)],
++        },
++    )
++    .await;
++
++    let codex_home = tempdir().expect("temp dir");
++    let auth_manager = Arc::new(AuthManager::new(
++        codex_home.path().to_path_buf(),
++        false,
++        AuthCredentialsStoreMode::File,
++    ));
++    let mut provider = provider_for(server.uri());
++    provider.requires_openai_auth = true;
++    let manager = ModelsManager::with_provider_for_tests(
++        codex_home.path().to_path_buf(),
++        auth_manager,
++        provider,
++    );
++
+     manager
+         .refresh_available_models(RefreshStrategy::Online)
+         .await
+@@ -577,12 +718,12 @@ async fn refresh_available_models_skips_network_without_chatgpt_auth() {
+         !cached_remote
+             .iter()
+             .any(|candidate| candidate.slug == dynamic_slug),
+-        "remote refresh should be skipped without chatgpt auth"
++        "providers that require openai auth should still skip remote refresh without chatgpt auth"
+     );
+     assert_eq!(
+         models_mock.requests().len(),
+         0,
+-        "no auth should avoid /models requests"
++        "chatgpt-auth providers should avoid /models requests without chatgpt auth"
+     );
+ }
+
 diff --git a/codex-rs/core/src/models_manager/mod.rs b/codex-rs/core/src/models_manager/mod.rs
 index 53b33bc4e..291d08baf 100644
 --- a/codex-rs/core/src/models_manager/mod.rs
@@ -2755,6 +3088,97 @@ index c5f784906..091d0ae8e 100644
              output.last_agent_message = last_agent_message;
          }
          // Guardrail: the model issued a LocalShellCall without an id; surface the error back into history.
+diff --git a/codex-rs/core/src/thread_manager.rs b/codex-rs/core/src/thread_manager.rs
+index f9f887523..dac074909 100644
+--- a/codex-rs/core/src/thread_manager.rs
++++ b/codex-rs/core/src/thread_manager.rs
+@@ -1,7 +1,6 @@
+ use crate::AuthManager;
+ use crate::CodexAuth;
+ use crate::ModelProviderInfo;
+-use crate::OPENAI_PROVIDER_ID;
+ use crate::agent::AgentControl;
+ use crate::codex::Codex;
+ use crate::codex::CodexSpawnArgs;
+@@ -169,11 +168,7 @@ impl ThreadManager {
+         collaboration_modes_config: CollaborationModesConfig,
+     ) -> Self {
+         let codex_home = config.codex_home.clone();
+-        let openai_models_provider = config
+-            .model_providers
+-            .get(OPENAI_PROVIDER_ID)
+-            .cloned()
+-            .unwrap_or_else(|| ModelProviderInfo::create_openai_provider(/*base_url*/ None));
++        let models_provider = config.model_provider.clone();
+         let (thread_created_tx, _) = broadcast::channel(THREAD_CREATED_CHANNEL_CAPACITY);
+         let plugins_manager = Arc::new(PluginsManager::new(codex_home.clone()));
+         let mcp_manager = Arc::new(McpManager::new(Arc::clone(&plugins_manager)));
+@@ -192,7 +187,7 @@ impl ThreadManager {
+                     auth_manager.clone(),
+                     config.model_catalog.clone(),
+                     collaboration_modes_config,
+-                    openai_models_provider,
++                    models_provider,
+                 )),
+                 skills_manager,
+                 plugins_manager,
+diff --git a/codex-rs/core/src/thread_manager_tests.rs b/codex-rs/core/src/thread_manager_tests.rs
+index e69e88fe7..47b01b1f3 100644
+--- a/codex-rs/core/src/thread_manager_tests.rs
++++ b/codex-rs/core/src/thread_manager_tests.rs
+@@ -1,6 +1,8 @@
+ use super::*;
+ use crate::codex::make_session_and_context;
+ use crate::config::test_config;
++use crate::ModelProviderInfo;
++use crate::model_provider_info::WireApi;
+ use crate::models_manager::collaboration_mode_presets::CollaborationModesConfig;
+ use crate::models_manager::manager::RefreshStrategy;
+ use assert_matches::assert_matches;
+@@ -157,7 +159,7 @@ async fn shutdown_all_threads_bounded_submits_shutdown_to_every_thread() {
+ }
+
+ #[tokio::test]
+-async fn new_uses_configured_openai_provider_for_model_refresh() {
++async fn new_uses_configured_model_provider_for_model_refresh() {
+     let server = MockServer::start().await;
+     let models_mock = mount_models_once(&server, ModelsResponse { models: vec![] }).await;
+
+@@ -167,14 +169,26 @@ async fn new_uses_configured_openai_provider_for_model_refresh() {
+     config.cwd = config.codex_home.clone();
+     std::fs::create_dir_all(&config.codex_home).expect("create codex home");
+     config.model_catalog = None;
+-    config
+-        .model_providers
+-        .get_mut("openai")
+-        .expect("openai provider should exist")
+-        .base_url = Some(server.uri());
+-
+-    let auth_manager =
+-        AuthManager::from_auth_for_testing(CodexAuth::create_dummy_chatgpt_auth_for_testing());
++    config.model_provider_id = "litellm".to_string();
++    config.model_provider = ModelProviderInfo {
++        name: "LiteLLM".into(),
++        base_url: Some(server.uri()),
++        env_key: None,
++        env_key_instructions: None,
++        experimental_bearer_token: None,
++        wire_api: WireApi::Responses,
++        query_params: None,
++        http_headers: None,
++        env_http_headers: None,
++        request_max_retries: Some(0),
++        stream_max_retries: Some(0),
++        stream_idle_timeout_ms: Some(5_000),
++        websocket_connect_timeout_ms: None,
++        requires_openai_auth: false,
++        supports_websockets: false,
++    };
++
++    let auth_manager = AuthManager::from_auth_for_testing(CodexAuth::from_api_key("test-key"));
+     let manager = ThreadManager::new(
+         &config,
+         auth_manager,
 diff --git a/codex-rs/core/src/tools/code_mode/execute_handler.rs b/codex-rs/core/src/tools/code_mode/execute_handler.rs
 index 9eba126dd..468b11fda 100644
 --- a/codex-rs/core/src/tools/code_mode/execute_handler.rs
@@ -3499,12 +3923,38 @@ index 80896689f..f472d2065 100644
      license = licenses.asl20;
      homepage = "https://github.com/openai/codex";
      mainProgram = "codex";
+diff --git a/codex-rs/exec/Cargo.toml b/codex-rs/exec/Cargo.toml
+index 378523560..aea9fb1c0 100644
+--- a/codex-rs/exec/Cargo.toml
++++ b/codex-rs/exec/Cargo.toml
+@@ -3,6 +3,7 @@ name = "codex-exec"
+ version.workspace = true
+ edition.workspace = true
+ license.workspace = true
++build = "build.rs"
+
+ [[bin]]
+ name = "codex-exec"
+@@ -69,3 +70,6 @@ tracing-opentelemetry = { workspace = true }
+ uuid = { workspace = true }
+ walkdir = { workspace = true }
+ wiremock = { workspace = true }
++
++[build-dependencies]
++serde_json = { workspace = true }
 diff --git a/codex-rs/exec/src/event_processor_with_human_output.rs b/codex-rs/exec/src/event_processor_with_human_output.rs
-index 0e49166b8..8043c5d18 100644
+index 0e49166b8..19e688c0a 100644
 --- a/codex-rs/exec/src/event_processor_with_human_output.rs
 +++ b/codex-rs/exec/src/event_processor_with_human_output.rs
-@@ -187,7 +187,7 @@ impl EventProcessor for EventProcessorWithHumanOutput {
-         const VERSION: &str = env!("CARGO_PKG_VERSION");
+@@ -184,10 +184,13 @@ impl EventProcessor for EventProcessorWithHumanOutput {
+         prompt: &str,
+         session_configured_event: &SessionConfiguredEvent,
+     ) {
+-        const VERSION: &str = env!("CARGO_PKG_VERSION");
++        const VERSION: &str = match option_env!("CODEX_LITELLM_DISPLAY_VERSION") {
++            Some(version) => version,
++            None => env!("CARGO_PKG_VERSION"),
++        };
          ts_msg!(
              self,
 -            "OpenAI Codex v{} (research preview)\n--------",
@@ -3512,10 +3962,47 @@ index 0e49166b8..8043c5d18 100644
              VERSION
          );
 
+diff --git a/codex-rs/tui/Cargo.toml b/codex-rs/tui/Cargo.toml
+index 03c3a03dd..350c86a40 100644
+--- a/codex-rs/tui/Cargo.toml
++++ b/codex-rs/tui/Cargo.toml
+@@ -3,6 +3,7 @@ name = "codex-tui"
+ version.workspace = true
+ edition.workspace = true
+ license.workspace = true
++build = "build.rs"
+
+ [[bin]]
+ name = "codex-tui"
+@@ -143,3 +144,6 @@ rand = { workspace = true }
+ serial_test = { workspace = true }
+ vt100 = { workspace = true }
+ uuid = { workspace = true }
++
++[build-dependencies]
++serde_json = { workspace = true }
 diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
-index 54a7a2c66..e3908c743 100644
+index 54a7a2c66..7e76515d1 100644
 --- a/codex-rs/tui/src/app.rs
 +++ b/codex-rs/tui/src/app.rs
+@@ -37,7 +37,7 @@ use crate::resume_picker::SessionSelection;
+ use crate::tui;
+ use crate::tui::TuiEvent;
+ use crate::update_action::UpdateAction;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use codex_ansi_escape::ansi_escape_line;
+ use codex_app_server_protocol::ConfigLayerSource;
+ use codex_core::AuthManager;
+@@ -1173,7 +1173,7 @@ impl App {
+     }
+
+     fn clear_ui_header_lines(&self, width: u16) -> Vec<Line<'static>> {
+-        self.clear_ui_header_lines_with_version(width, CODEX_CLI_VERSION)
++        self.clear_ui_header_lines_with_version(width, CODEX_CLI_DISPLAY_VERSION)
+     }
+
+     fn queue_clear_ui_header(&mut self, tui: &mut tui::Tui) {
 @@ -2758,9 +2758,6 @@ impl App {
                  self.chat_widget
                      .open_plan_reasoning_scope_prompt(model, effort);
@@ -3543,13 +4030,101 @@ index e2ed04669..8fcb19129 100644
      OpenFullAccessConfirmation {
          preset: ApprovalPreset,
 diff --git a/codex-rs/tui/src/chatwidget.rs b/codex-rs/tui/src/chatwidget.rs
-index 67d0d8e6e..e8a1ff98a 100644
+index 67d0d8e6e..53f40b67a 100644
 --- a/codex-rs/tui/src/chatwidget.rs
 +++ b/codex-rs/tui/src/chatwidget.rs
-@@ -6536,97 +6536,7 @@ impl ChatWidget {
-             .into_iter()
-             .filter(|preset| preset.show_in_picker)
-             .collect();
+@@ -49,7 +49,7 @@ use crate::status::format_directory_display;
+ use crate::status::format_tokens_compact;
+ use crate::status::rate_limit_snapshot_display_for_limit;
+ use crate::text_formatting::proper_join;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use codex_app_server_protocol::ConfigLayerSource;
+ use codex_backend_client::Client as BackendClient;
+ use codex_chatgpt::connectors;
+@@ -183,6 +183,7 @@ const PLAN_MODE_REASONING_SCOPE_TITLE: &str = "Apply reasoning change";
+ const PLAN_MODE_REASONING_SCOPE_PLAN_ONLY: &str = "Apply to Plan mode override";
+ const PLAN_MODE_REASONING_SCOPE_ALL_MODES: &str = "Apply to global default and Plan mode override";
+ const CONNECTORS_SELECTION_VIEW_ID: &str = "connectors-selection";
++const DEFAULT_LITELLM_BASE_URL: &str = "https://litellm.example.com/v1";
+
+ /// Choose the keybinding used to edit the most-recently queued message.
+ ///
+@@ -5909,7 +5910,7 @@ impl ChatWidget {
+                     .unwrap_or_else(|| "weekly".to_string());
+                 self.status_line_limit_display(window, &label)
+             }
+-            StatusLineItem::CodexVersion => Some(CODEX_CLI_VERSION.to_string()),
++            StatusLineItem::CodexVersion => Some(CODEX_CLI_DISPLAY_VERSION.to_string()),
+             StatusLineItem::ContextWindowSize => self
+                 .status_line_context_window_size()
+                 .map(|cws| format!("{} window", format_tokens_compact(cws))),
+@@ -6505,6 +6506,10 @@ impl ChatWidget {
+     }
+
+     fn model_menu_warning_line(&self) -> Option<Line<'static>> {
++        if let Some(warning) = self.litellm_model_menu_warning_line() {
++            return Some(warning);
++        }
++
+         let base_url = self.custom_openai_base_url()?;
+         let warning = format!(
+             "Warning: OpenAI base URL is overridden to {base_url}. Selecting models may not be supported or work properly."
+@@ -6512,6 +6517,46 @@ impl ChatWidget {
+         Some(Line::from(warning.red()))
+     }
+
++    fn litellm_model_menu_warning_line(&self) -> Option<Line<'static>> {
++        if self.config.model_provider_id != "litellm" {
++            return None;
++        }
++
++        if self.litellm_endpoint_missing_base_url() {
++            return Some(Line::from(
++                "Configure LITELLM_BASE_URL to load models from your LiteLLM endpoint.".red(),
++            ));
++        }
++
++        if std::env::var("LITELLM_API_KEY")
++            .ok()
++            .is_none_or(|value| value.trim().is_empty())
++        {
++            return Some(Line::from(
++                "Set LITELLM_API_KEY to authenticate LiteLLM model discovery.".red(),
++            ));
++        }
++
++        None
++    }
++
++    fn litellm_endpoint_missing_base_url(&self) -> bool {
++        if self.config.model_provider_id != "litellm" {
++            return false;
++        }
++
++        let Some(base_url) = self.config.model_provider.base_url.as_ref() else {
++            return true;
++        };
++
++        let trimmed = base_url.trim();
++        if trimmed.is_empty() {
++            return true;
++        }
++
++        trimmed.trim_end_matches('/') == DEFAULT_LITELLM_BASE_URL.trim_end_matches('/')
++    }
++
+     fn custom_openai_base_url(&self) -> Option<String> {
+         if !self.config.model_provider.is_openai() {
+             return None;
+@@ -6532,101 +6577,27 @@ impl ChatWidget {
+     }
+
+     pub(crate) fn open_model_popup_with_presets(&mut self, presets: Vec<ModelPreset>) {
+-        let presets: Vec<ModelPreset> = presets
+-            .into_iter()
+-            .filter(|preset| preset.show_in_picker)
+-            .collect();
 -
 -        let current_model = self.current_model();
 -        let current_label = presets
@@ -3564,12 +4139,26 @@ index 67d0d8e6e..e8a1ff98a 100644
 -
 -        if auto_presets.is_empty() {
 -            self.open_all_models_popup(other_presets);
--            return;
--        }
--
++        if self.litellm_endpoint_missing_base_url() {
++            let header = self.model_menu_header(
++                "Select LiteLLM Model and Effort",
++                "Showing models discovered from your LiteLLM endpoint.",
++            );
++            self.bottom_pane.show_selection_view(SelectionViewParams {
++                footer_hint: Some("Press esc to dismiss.".into()),
++                header,
++                items: Vec::new(),
++                is_searchable: true,
++                search_placeholder: Some("Type to filter models...".to_string()),
++                ..Default::default()
++            });
+             return;
+         }
+
 -        auto_presets.sort_by_key(|preset| Self::auto_model_order(&preset.model));
 -        let mut items: Vec<SelectionItem> = auto_presets
--            .into_iter()
++        let presets: Vec<ModelPreset> = presets
+             .into_iter()
 -            .map(|preset| {
 -                let description =
 -                    (!preset.description.is_empty()).then_some(preset.description.clone());
@@ -3593,7 +4182,8 @@ index 67d0d8e6e..e8a1ff98a 100644
 -                    ..Default::default()
 -                }
 -            })
--            .collect();
++            .filter(|preset| preset.show_in_picker)
+             .collect();
 -
 -        if !other_presets.is_empty() {
 -            let all_models = other_presets;
@@ -3645,7 +4235,7 @@ index 67d0d8e6e..e8a1ff98a 100644
      }
 
      pub(crate) fn open_all_models_popup(&mut self, presets: Vec<ModelPreset>) {
-@@ -6651,6 +6561,13 @@ impl ChatWidget {
+@@ -6651,6 +6622,13 @@ impl ChatWidget {
                      model: preset_for_event,
                  });
              })];
@@ -3659,7 +4249,7 @@ index 67d0d8e6e..e8a1ff98a 100644
              items.push(SelectionItem {
                  name: preset.model.clone(),
                  description,
-@@ -6658,18 +6575,21 @@ impl ChatWidget {
+@@ -6658,18 +6636,21 @@ impl ChatWidget {
                  is_default: preset.is_default,
                  actions,
                  dismiss_on_select: single_supported_effort,
@@ -3669,8 +4259,9 @@ index 67d0d8e6e..e8a1ff98a 100644
          }
 
          let header = self.model_menu_header(
-             "Select Model and Effort",
+-            "Select Model and Effort",
 -            "Access legacy models by running codex -m <model_name> or in your config.toml",
++            "Select LiteLLM Model and Effort",
 +            "Showing models discovered from your LiteLLM endpoint.",
          );
          self.bottom_pane.show_selection_view(SelectionViewParams {
@@ -3682,7 +4273,7 @@ index 67d0d8e6e..e8a1ff98a 100644
              ..Default::default()
          });
      }
-@@ -6719,29 +6639,6 @@ impl ChatWidget {
+@@ -6719,29 +6700,6 @@ impl ChatWidget {
          });
      }
 
@@ -3712,8 +4303,17 @@ index 67d0d8e6e..e8a1ff98a 100644
      fn should_prompt_plan_mode_reasoning_scope(
          &self,
          selected_model: &str,
+@@ -8338,7 +8296,7 @@ impl ChatWidget {
+             /*reasoning_effort*/ None,
+             /*show_fast_status*/ false,
+             config.cwd.clone(),
+-            CODEX_CLI_VERSION,
++            CODEX_CLI_DISPLAY_VERSION,
+         ))
+     }
+
 diff --git a/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_picker_filters_hidden_models.snap b/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_picker_filters_hidden_models.snap
-index 56dff7b5f..5091f1696 100644
+index 56dff7b5f..6f83929bc 100644
 --- a/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_picker_filters_hidden_models.snap
 +++ b/codex-rs/tui/src/chatwidget/snapshots/codex_tui__chatwidget__tests__model_picker_filters_hidden_models.snap
 @@ -1,11 +1,11 @@
@@ -3722,8 +4322,9 @@ index 56dff7b5f..5091f1696 100644
 -assertion_line: 1989
  expression: popup
  ---
-   Select Model and Effort
+-  Select Model and Effort
 -  Access legacy models by running codex -m <model_name> or in your config.toml
++  Select LiteLLM Model and Effort
 +  Showing models discovered from your LiteLLM endpoint.
 
 -› 1. test-visible-model (current)  test-visible-model description
@@ -3775,9 +4376,45 @@ index 4f216ba2e..f9fe7cfd0 100644
  }
 
 diff --git a/codex-rs/tui/src/history_cell.rs b/codex-rs/tui/src/history_cell.rs
-index bba63c77a..3b7873c12 100644
+index bba63c77a..b37e1a0cd 100644
 --- a/codex-rs/tui/src/history_cell.rs
 +++ b/codex-rs/tui/src/history_cell.rs
+@@ -32,7 +32,7 @@ use crate::text_formatting::truncate_text;
+ use crate::tooltips;
+ use crate::ui_consts::LIVE_PREFIX_COLS;
+ use crate::update_action::UpdateAction;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use crate::wrapping::RtOptions;
+ use crate::wrapping::adaptive_wrap_line;
+ use crate::wrapping::adaptive_wrap_lines;
+@@ -523,7 +523,7 @@ impl HistoryCell for UpdateAvailableHistoryCell {
+                 padded_emoji("✨").bold().cyan(),
+                 "Update available!".bold().cyan(),
+                 " ",
+-                format!("{CODEX_CLI_VERSION} -> {}", self.latest_version).bold(),
++                format!("{CODEX_CLI_DISPLAY_VERSION} -> {}", self.latest_version).bold(),
+             ],
+             update_instruction,
+             "",
+@@ -1138,7 +1138,7 @@ pub(crate) fn new_session_info(
+         reasoning_effort,
+         show_fast_status,
+         config.cwd.clone(),
+-        CODEX_CLI_VERSION,
++        CODEX_CLI_DISPLAY_VERSION,
+     );
+     let mut parts: Vec<Box<dyn HistoryCell>> = vec![Box::new(header)];
+
+@@ -1167,7 +1167,7 @@ pub(crate) fn new_session_info(
+             Line::from(vec![
+                 "  ".into(),
+                 "/model".into(),
+-                " - choose what model and reasoning effort to use".dim(),
++                " - choose a LiteLLM endpoint model and reasoning effort".dim(),
+             ]),
+             Line::from(vec![
+                 "  ".into(),
 @@ -1310,10 +1310,10 @@ impl HistoryCell for SessionHeaderHistoryCell {
 
          let make_row = |spans: Vec<Span<'static>>| Line::from(spans);
@@ -3791,6 +4428,19 @@ index bba63c77a..3b7873c12 100644
              Span::from(" ").dim(),
              Span::from(format!("(v{})", self.version)).dim(),
          ];
+diff --git a/codex-rs/tui/src/slash_command.rs b/codex-rs/tui/src/slash_command.rs
+index d83135c2f..0087178e5 100644
+--- a/codex-rs/tui/src/slash_command.rs
++++ b/codex-rs/tui/src/slash_command.rs
+@@ -91,7 +91,7 @@ impl SlashCommand {
+             SlashCommand::Stop => "stop all background terminals",
+             SlashCommand::MemoryDrop => "DO NOT USE",
+             SlashCommand::MemoryUpdate => "DO NOT USE",
+-            SlashCommand::Model => "choose what model and reasoning effort to use",
++            SlashCommand::Model => "choose a LiteLLM endpoint model and reasoning effort",
+             SlashCommand::Fast => "toggle Fast mode to enable fastest inference at 2X plan usage",
+             SlashCommand::Personality => "choose a communication style for Codex",
+             SlashCommand::Realtime => "toggle realtime voice mode (experimental)",
 diff --git a/codex-rs/tui/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap b/codex-rs/tui/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap
 index 98d601506..2d9de3da1 100644
 --- a/codex-rs/tui/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap
@@ -3831,18 +4481,30 @@ index ad0fc4be1..ee4dcfd06 100644
  │ model:     gpt-5   /model to change │
  │ directory: /tmp/project             │
 diff --git a/codex-rs/tui/src/status/card.rs b/codex-rs/tui/src/status/card.rs
-index a7546230b..30feeefd2 100644
+index a7546230b..06538bd2e 100644
 --- a/codex-rs/tui/src/status/card.rs
 +++ b/codex-rs/tui/src/status/card.rs
-@@ -414,7 +414,7 @@ impl HistoryCell for StatusHistoryCell {
+@@ -2,7 +2,7 @@ use crate::history_cell::CompositeHistoryCell;
+ use crate::history_cell::HistoryCell;
+ use crate::history_cell::PlainHistoryCell;
+ use crate::history_cell::with_border_with_inner_width;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use chrono::DateTime;
+ use chrono::Local;
+ use codex_core::WireApi;
+@@ -414,9 +414,9 @@ impl HistoryCell for StatusHistoryCell {
          let mut lines: Vec<Line<'static>> = Vec::new();
          lines.push(Line::from(vec![
              Span::from(format!("{}>_ ", FieldFormatter::INDENT)).dim(),
 -            Span::from("OpenAI Codex").bold(),
 +            Span::from("Codex Litellm").bold(),
              Span::from(" ").dim(),
-             Span::from(format!("(v{CODEX_CLI_VERSION})")).dim(),
+-            Span::from(format!("(v{CODEX_CLI_VERSION})")).dim(),
++            Span::from(format!("(v{CODEX_CLI_DISPLAY_VERSION})")).dim(),
          ]));
+         lines.push(Line::from(Vec::<Span<'static>>::new()));
+
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
 index 4c2018abf..986199446 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
@@ -3960,10 +4622,58 @@ index 91057d482..17f241b6c 100644
  │                                                                    │
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date      │
  │ information on rate limits and credits                             │
+diff --git a/codex-rs/tui/src/version.rs b/codex-rs/tui/src/version.rs
+index 8c8d108dc..9b102cbca 100644
+--- a/codex-rs/tui/src/version.rs
++++ b/codex-rs/tui/src/version.rs
+@@ -1,2 +1,6 @@
+ /// The current Codex CLI version as embedded at compile time.
+ pub const CODEX_CLI_VERSION: &str = env!("CARGO_PKG_VERSION");
++pub const CODEX_CLI_DISPLAY_VERSION: &str = match option_env!("CODEX_LITELLM_DISPLAY_VERSION") {
++    Some(version) => version,
++    None => CODEX_CLI_VERSION,
++};
+diff --git a/codex-rs/tui_app_server/Cargo.toml b/codex-rs/tui_app_server/Cargo.toml
+index 9ab33202c..18cab01ee 100644
+--- a/codex-rs/tui_app_server/Cargo.toml
++++ b/codex-rs/tui_app_server/Cargo.toml
+@@ -4,6 +4,7 @@ version.workspace = true
+ edition.workspace = true
+ license.workspace = true
+ autobins = false
++build = "build.rs"
+
+ [[bin]]
+ name = "codex-tui-app-server"
+@@ -147,3 +148,6 @@ rand = { workspace = true }
+ serial_test = { workspace = true }
+ vt100 = { workspace = true }
+ uuid = { workspace = true }
++
++[build-dependencies]
++serde_json = { workspace = true }
 diff --git a/codex-rs/tui_app_server/src/app.rs b/codex-rs/tui_app_server/src/app.rs
-index bc9d47abe..fbb2725ad 100644
+index bc9d47abe..df1e4dec9 100644
 --- a/codex-rs/tui_app_server/src/app.rs
 +++ b/codex-rs/tui_app_server/src/app.rs
+@@ -45,7 +45,7 @@ use crate::resume_picker::SessionSelection;
+ use crate::tui;
+ use crate::tui::TuiEvent;
+ use crate::update_action::UpdateAction;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use codex_ansi_escape::ansi_escape_line;
+ use codex_app_server_client::AppServerRequestHandle;
+ use codex_app_server_protocol::ClientRequest;
+@@ -1415,7 +1415,7 @@ impl App {
+     }
+
+     fn clear_ui_header_lines(&self, width: u16) -> Vec<Line<'static>> {
+-        self.clear_ui_header_lines_with_version(width, CODEX_CLI_VERSION)
++        self.clear_ui_header_lines_with_version(width, CODEX_CLI_DISPLAY_VERSION)
+     }
+
+     fn queue_clear_ui_header(&mut self, tui: &mut tui::Tui) {
 @@ -3570,9 +3570,6 @@ impl App {
                  self.chat_widget
                      .open_plan_reasoning_scope_prompt(model, effort);
@@ -3991,13 +4701,101 @@ index 3dd571c1c..ee2a953e2 100644
      OpenFullAccessConfirmation {
          preset: ApprovalPreset,
 diff --git a/codex-rs/tui_app_server/src/chatwidget.rs b/codex-rs/tui_app_server/src/chatwidget.rs
-index ffa2590f3..ff7eaa955 100644
+index ffa2590f3..caabb28bd 100644
 --- a/codex-rs/tui_app_server/src/chatwidget.rs
 +++ b/codex-rs/tui_app_server/src/chatwidget.rs
-@@ -7604,97 +7604,7 @@ impl ChatWidget {
-             .into_iter()
-             .filter(|preset| preset.show_in_picker)
-             .collect();
+@@ -54,7 +54,7 @@ use crate::status::format_directory_display;
+ use crate::status::format_tokens_compact;
+ use crate::status::rate_limit_snapshot_display_for_limit;
+ use crate::text_formatting::proper_join;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use codex_app_server_protocol::CodexErrorInfo as AppServerCodexErrorInfo;
+ use codex_app_server_protocol::CollabAgentState as AppServerCollabAgentState;
+ use codex_app_server_protocol::CollabAgentStatus as AppServerCollabAgentStatus;
+@@ -230,6 +230,7 @@ const PLAN_MODE_REASONING_SCOPE_PLAN_ONLY: &str = "Apply to Plan mode override";
+ const PLAN_MODE_REASONING_SCOPE_ALL_MODES: &str = "Apply to global default and Plan mode override";
+ const CONNECTORS_SELECTION_VIEW_ID: &str = "connectors-selection";
+ const APP_SERVER_TUI_STUB_MESSAGE: &str = "Not available in app-server TUI yet.";
++const DEFAULT_LITELLM_BASE_URL: &str = "https://litellm.example.com/v1";
+
+ /// Choose the keybinding used to edit the most-recently queued message.
+ ///
+@@ -7005,7 +7006,7 @@ impl ChatWidget {
+                     .unwrap_or_else(|| "weekly".to_string());
+                 self.status_line_limit_display(window, &label)
+             }
+-            StatusLineItem::CodexVersion => Some(CODEX_CLI_VERSION.to_string()),
++            StatusLineItem::CodexVersion => Some(CODEX_CLI_DISPLAY_VERSION.to_string()),
+             StatusLineItem::ContextWindowSize => self
+                 .status_line_context_window_size()
+                 .map(|cws| format!("{} window", format_tokens_compact(cws))),
+@@ -7573,6 +7574,10 @@ impl ChatWidget {
+     }
+
+     fn model_menu_warning_line(&self) -> Option<Line<'static>> {
++        if let Some(warning) = self.litellm_model_menu_warning_line() {
++            return Some(warning);
++        }
++
+         let base_url = self.custom_openai_base_url()?;
+         let warning = format!(
+             "Warning: OpenAI base URL is overridden to {base_url}. Selecting models may not be supported or work properly."
+@@ -7580,6 +7585,46 @@ impl ChatWidget {
+         Some(Line::from(warning.red()))
+     }
+
++    fn litellm_model_menu_warning_line(&self) -> Option<Line<'static>> {
++        if self.config.model_provider_id != "litellm" {
++            return None;
++        }
++
++        if self.litellm_endpoint_missing_base_url() {
++            return Some(Line::from(
++                "Configure LITELLM_BASE_URL to load models from your LiteLLM endpoint.".red(),
++            ));
++        }
++
++        if std::env::var("LITELLM_API_KEY")
++            .ok()
++            .is_none_or(|value| value.trim().is_empty())
++        {
++            return Some(Line::from(
++                "Set LITELLM_API_KEY to authenticate LiteLLM model discovery.".red(),
++            ));
++        }
++
++        None
++    }
++
++    fn litellm_endpoint_missing_base_url(&self) -> bool {
++        if self.config.model_provider_id != "litellm" {
++            return false;
++        }
++
++        let Some(base_url) = self.config.model_provider.base_url.as_ref() else {
++            return true;
++        };
++
++        let trimmed = base_url.trim();
++        if trimmed.is_empty() {
++            return true;
++        }
++
++        trimmed.trim_end_matches('/') == DEFAULT_LITELLM_BASE_URL.trim_end_matches('/')
++    }
++
+     fn custom_openai_base_url(&self) -> Option<String> {
+         if !self.config.model_provider.is_openai() {
+             return None;
+@@ -7600,101 +7645,27 @@ impl ChatWidget {
+     }
+
+     pub(crate) fn open_model_popup_with_presets(&mut self, presets: Vec<ModelPreset>) {
+-        let presets: Vec<ModelPreset> = presets
+-            .into_iter()
+-            .filter(|preset| preset.show_in_picker)
+-            .collect();
 -
 -        let current_model = self.current_model();
 -        let current_label = presets
@@ -4012,12 +4810,26 @@ index ffa2590f3..ff7eaa955 100644
 -
 -        if auto_presets.is_empty() {
 -            self.open_all_models_popup(other_presets);
--            return;
--        }
--
++        if self.litellm_endpoint_missing_base_url() {
++            let header = self.model_menu_header(
++                "Select LiteLLM Model and Effort",
++                "Showing models discovered from your LiteLLM endpoint.",
++            );
++            self.bottom_pane.show_selection_view(SelectionViewParams {
++                footer_hint: Some("Press esc to dismiss.".into()),
++                header,
++                items: Vec::new(),
++                is_searchable: true,
++                search_placeholder: Some("Type to filter models...".to_string()),
++                ..Default::default()
++            });
+             return;
+         }
+
 -        auto_presets.sort_by_key(|preset| Self::auto_model_order(&preset.model));
 -        let mut items: Vec<SelectionItem> = auto_presets
--            .into_iter()
++        let presets: Vec<ModelPreset> = presets
+             .into_iter()
 -            .map(|preset| {
 -                let description =
 -                    (!preset.description.is_empty()).then_some(preset.description.clone());
@@ -4041,7 +4853,8 @@ index ffa2590f3..ff7eaa955 100644
 -                    ..Default::default()
 -                }
 -            })
--            .collect();
++            .filter(|preset| preset.show_in_picker)
+             .collect();
 -
 -        if !other_presets.is_empty() {
 -            let all_models = other_presets;
@@ -4093,7 +4906,7 @@ index ffa2590f3..ff7eaa955 100644
      }
 
      pub(crate) fn open_all_models_popup(&mut self, presets: Vec<ModelPreset>) {
-@@ -7719,6 +7629,13 @@ impl ChatWidget {
+@@ -7719,6 +7690,13 @@ impl ChatWidget {
                      model: preset_for_event,
                  });
              })];
@@ -4107,7 +4920,7 @@ index ffa2590f3..ff7eaa955 100644
              items.push(SelectionItem {
                  name: preset.model.clone(),
                  description,
-@@ -7726,18 +7643,21 @@ impl ChatWidget {
+@@ -7726,18 +7704,21 @@ impl ChatWidget {
                  is_default: preset.is_default,
                  actions,
                  dismiss_on_select: single_supported_effort,
@@ -4117,8 +4930,9 @@ index ffa2590f3..ff7eaa955 100644
          }
 
          let header = self.model_menu_header(
-             "Select Model and Effort",
+-            "Select Model and Effort",
 -            "Access legacy models by running codex -m <model_name> or in your config.toml",
++            "Select LiteLLM Model and Effort",
 +            "Showing models discovered from your LiteLLM endpoint.",
          );
          self.bottom_pane.show_selection_view(SelectionViewParams {
@@ -4130,7 +4944,7 @@ index ffa2590f3..ff7eaa955 100644
              ..Default::default()
          });
      }
-@@ -7787,29 +7707,6 @@ impl ChatWidget {
+@@ -7787,29 +7768,6 @@ impl ChatWidget {
          });
      }
 
@@ -4160,15 +4974,26 @@ index ffa2590f3..ff7eaa955 100644
      fn should_prompt_plan_mode_reasoning_scope(
          &self,
          selected_model: &str,
+@@ -9435,7 +9393,7 @@ impl ChatWidget {
+             /*reasoning_effort*/ None,
+             /*show_fast_status*/ false,
+             config.cwd.clone(),
+-            CODEX_CLI_VERSION,
++            CODEX_CLI_DISPLAY_VERSION,
+         ))
+     }
+
 diff --git a/codex-rs/tui_app_server/src/chatwidget/snapshots/codex_tui_app_server__chatwidget__tests__model_picker_filters_hidden_models.snap b/codex-rs/tui_app_server/src/chatwidget/snapshots/codex_tui_app_server__chatwidget__tests__model_picker_filters_hidden_models.snap
-index f340fdf55..2033b35f9 100644
+index f340fdf55..305228048 100644
 --- a/codex-rs/tui_app_server/src/chatwidget/snapshots/codex_tui_app_server__chatwidget__tests__model_picker_filters_hidden_models.snap
 +++ b/codex-rs/tui_app_server/src/chatwidget/snapshots/codex_tui_app_server__chatwidget__tests__model_picker_filters_hidden_models.snap
-@@ -3,8 +3,9 @@ source: tui_app_server/src/chatwidget/tests.rs
+@@ -2,9 +2,10 @@
+ source: tui_app_server/src/chatwidget/tests.rs
  expression: popup
  ---
-   Select Model and Effort
+-  Select Model and Effort
 -  Access legacy models by running codex -m <model_name> or in your config.toml
++  Select LiteLLM Model and Effort
 +  Showing models discovered from your LiteLLM endpoint.
 
 -› 1. test-visible-model (current)  test-visible-model description
@@ -4220,9 +5045,45 @@ index 39baea655..80f2b961f 100644
  }
 
 diff --git a/codex-rs/tui_app_server/src/history_cell.rs b/codex-rs/tui_app_server/src/history_cell.rs
-index b6b1e9836..bf8ce091b 100644
+index b6b1e9836..fd8e45cf2 100644
 --- a/codex-rs/tui_app_server/src/history_cell.rs
 +++ b/codex-rs/tui_app_server/src/history_cell.rs
+@@ -32,7 +32,7 @@ use crate::text_formatting::truncate_text;
+ use crate::tooltips;
+ use crate::ui_consts::LIVE_PREFIX_COLS;
+ use crate::update_action::UpdateAction;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use crate::wrapping::RtOptions;
+ use crate::wrapping::adaptive_wrap_line;
+ use crate::wrapping::adaptive_wrap_lines;
+@@ -529,7 +529,7 @@ impl HistoryCell for UpdateAvailableHistoryCell {
+                 padded_emoji("✨").bold().cyan(),
+                 "Update available!".bold().cyan(),
+                 " ",
+-                format!("{CODEX_CLI_VERSION} -> {}", self.latest_version).bold(),
++                format!("{CODEX_CLI_DISPLAY_VERSION} -> {}", self.latest_version).bold(),
+             ],
+             update_instruction,
+             "",
+@@ -1144,7 +1144,7 @@ pub(crate) fn new_session_info(
+         reasoning_effort,
+         show_fast_status,
+         config.cwd.clone(),
+-        CODEX_CLI_VERSION,
++        CODEX_CLI_DISPLAY_VERSION,
+     );
+     let mut parts: Vec<Box<dyn HistoryCell>> = vec![Box::new(header)];
+
+@@ -1173,7 +1173,7 @@ pub(crate) fn new_session_info(
+             Line::from(vec![
+                 "  ".into(),
+                 "/model".into(),
+-                " - choose what model and reasoning effort to use".dim(),
++                " - choose a LiteLLM endpoint model and reasoning effort".dim(),
+             ]),
+             Line::from(vec![
+                 "  ".into(),
 @@ -1316,10 +1316,10 @@ impl HistoryCell for SessionHeaderHistoryCell {
 
          let make_row = |spans: Vec<Span<'static>>| Line::from(spans);
@@ -4236,6 +5097,19 @@ index b6b1e9836..bf8ce091b 100644
              Span::from(" ").dim(),
              Span::from(format!("(v{})", self.version)).dim(),
          ];
+diff --git a/codex-rs/tui_app_server/src/slash_command.rs b/codex-rs/tui_app_server/src/slash_command.rs
+index d83135c2f..0087178e5 100644
+--- a/codex-rs/tui_app_server/src/slash_command.rs
++++ b/codex-rs/tui_app_server/src/slash_command.rs
+@@ -91,7 +91,7 @@ impl SlashCommand {
+             SlashCommand::Stop => "stop all background terminals",
+             SlashCommand::MemoryDrop => "DO NOT USE",
+             SlashCommand::MemoryUpdate => "DO NOT USE",
+-            SlashCommand::Model => "choose what model and reasoning effort to use",
++            SlashCommand::Model => "choose a LiteLLM endpoint model and reasoning effort",
+             SlashCommand::Fast => "toggle Fast mode to enable fastest inference at 2X plan usage",
+             SlashCommand::Personality => "choose a communication style for Codex",
+             SlashCommand::Realtime => "toggle realtime voice mode (experimental)",
 diff --git a/codex-rs/tui_app_server/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap b/codex-rs/tui_app_server/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap
 index 98d601506..2d9de3da1 100644
 --- a/codex-rs/tui_app_server/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap
@@ -4315,18 +5189,30 @@ index b48bfa37e..902c17de8 100644
  │ model:     gpt-5   /model to change │
  │ directory: /tmp/project             │
 diff --git a/codex-rs/tui_app_server/src/status/card.rs b/codex-rs/tui_app_server/src/status/card.rs
-index 4b5a6474b..5cac44dad 100644
+index 4b5a6474b..3f2f11828 100644
 --- a/codex-rs/tui_app_server/src/status/card.rs
 +++ b/codex-rs/tui_app_server/src/status/card.rs
-@@ -413,7 +413,7 @@ impl HistoryCell for StatusHistoryCell {
+@@ -2,7 +2,7 @@ use crate::history_cell::CompositeHistoryCell;
+ use crate::history_cell::HistoryCell;
+ use crate::history_cell::PlainHistoryCell;
+ use crate::history_cell::with_border_with_inner_width;
+-use crate::version::CODEX_CLI_VERSION;
++use crate::version::CODEX_CLI_DISPLAY_VERSION;
+ use chrono::DateTime;
+ use chrono::Local;
+ use codex_core::WireApi;
+@@ -413,9 +413,9 @@ impl HistoryCell for StatusHistoryCell {
          let mut lines: Vec<Line<'static>> = Vec::new();
          lines.push(Line::from(vec![
              Span::from(format!("{}>_ ", FieldFormatter::INDENT)).dim(),
 -            Span::from("OpenAI Codex").bold(),
 +            Span::from("Codex Litellm").bold(),
              Span::from(" ").dim(),
-             Span::from(format!("(v{CODEX_CLI_VERSION})")).dim(),
+-            Span::from(format!("(v{CODEX_CLI_VERSION})")).dim(),
++            Span::from(format!("(v{CODEX_CLI_DISPLAY_VERSION})")).dim(),
          ]));
+         lines.push(Line::from(Vec::<Span<'static>>::new()));
+
 diff --git a/codex-rs/tui_app_server/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap b/codex-rs/tui_app_server/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
 index 4c2018abf..986199446 100644
 --- a/codex-rs/tui_app_server/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
@@ -4561,3 +5447,14 @@ index 7b7b4261a..86b3f57fc 100644
  │                                                                    │
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date      │
  │ information on rate limits and credits                             │
+diff --git a/codex-rs/tui_app_server/src/version.rs b/codex-rs/tui_app_server/src/version.rs
+index 8c8d108dc..9b102cbca 100644
+--- a/codex-rs/tui_app_server/src/version.rs
++++ b/codex-rs/tui_app_server/src/version.rs
+@@ -1,2 +1,6 @@
+ /// The current Codex CLI version as embedded at compile time.
+ pub const CODEX_CLI_VERSION: &str = env!("CARGO_PKG_VERSION");
++pub const CODEX_CLI_DISPLAY_VERSION: &str = match option_env!("CODEX_LITELLM_DISPLAY_VERSION") {
++    Some(version) => version,
++    None => CODEX_CLI_VERSION,
++};
