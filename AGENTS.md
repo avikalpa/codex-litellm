@@ -88,8 +88,12 @@
 - Use more than one test repository over time. `calibre-web` is only one probe.
 
 ## Docs Discipline
-- `README.md` is the primary user-facing documentation and should carry setup, examples, and UX guidance.
+- `README.md` is the primary user-facing document. Treat it as the project's manual, marketing surface, and PR document all at once.
+- `README.md` should always open with installation, and then guide the user through first setup, first run, model choice, economics, pitfalls, and troubleshooting in a clear order.
+- The tone in `README.md` should be warm and teaching by default, and more precise or research-oriented where evidence matters.
 - `agent_docs/` is operator-facing maintenance documentation.
+- `agent_docs/CHANGELOG.md` should tell the story of each release, not just dump raw bullets.
+- If user-facing reality changes, update `README.md` and `agent_docs/CHANGELOG.md` in the same workstream instead of letting them drift.
 - Keep steering docs short, current, and opinionated.
 - Document only non-obvious project-specific guidance.
 - Remove stale history instead of layering new text on top of it.

@@ -7,7 +7,8 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 - `codex/`, `stable-tag.patch`, `package.json`, and `package-lock.json` all point at the same upstream base.
 - The release is validated on the LiteLLM `/responses` path. That is the default path forward for `codex-litellm`.
 - The required live model checks in `agent_docs/MODEL_BEHAVIOR_TESTS.md` pass.
-- `agent_docs/CHANGELOG.md` is updated for the release.
+- `README.md` is updated if the user-facing story, recommendations, install path, or caveats changed.
+- `agent_docs/CHANGELOG.md` is updated for the release and reads like a coherent release story.
 - The release will be built on GitHub Actions. Local release artifacts are not the publish source.
 
 ## Versioning Rules
@@ -20,18 +21,21 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 1. Confirm the pinned upstream base:
    - `node -p "require('./package.json').codexLitellm.baseVersion"`
    - `git -C codex describe --tags --exact-match HEAD`
-2. Regenerate `package-lock.json`:
+2. Refresh the user-facing story if needed:
+   - review `README.md` for install order, setup flow, model guidance, and current caveats
+   - review `agent_docs/CHANGELOG.md` so the release story matches reality
+3. Regenerate `package-lock.json`:
    - `npm install --package-lock-only --ignore-scripts`
-3. Run the metadata checks:
+4. Run the metadata checks:
    - `./scripts/test-build-sh-metadata.sh`
    - `./scripts/test-npm-release-version.sh`
    - `./scripts/test-default-codex-home.sh`
    - `./scripts/test-shared-session-resume.sh`
-4. Run the required build/test checks:
+5. Run the required build/test checks:
    - `cargo build --locked --bin codex`
    - any targeted tests needed for the release
    - required live model smokes from `agent_docs/MODEL_BEHAVIOR_TESTS.md`
-5. Make sure the intended user path is not broken:
+6. Make sure the intended user path is not broken:
    - `./scripts/test-default-codex-home.sh` passes
    - `./scripts/test-shared-session-resume.sh` passes
    - debug-only `CODEX_HOME` behavior has not become a hidden dependency

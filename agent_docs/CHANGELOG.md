@@ -24,7 +24,7 @@ Current public-facing model picture on this gateway:
 - Made the UI smoke prompt explicit enough to force a measurable restyle instead of inviting “already done” false passes.
 - Restored Gemini 3.1 Pro Preview and Grok 4.20 to the research/watchlist lane instead of dropping them from testing entirely.
 - Added stricter `python-cli` fixture validation so a model must change the CLI file, README, and tests to count as a pass.
-- Turned the README into a live research report with fixture methodology, model-by-model tables, and harness implications.
+- Reframed the README as a manual-style front door with install first, setup second, model guidance third, and research notes later.
 - Taught the smoke helper to resolve public model slugs to the current live gateway route and to sanitize log filenames.
 - Stopped retrying hopeless `402 Payment Required` responses as if they were transient stream disconnects.
 
@@ -50,10 +50,12 @@ Current public-facing model picture on this gateway:
   - Gemini and Kimi both hit `402 Payment Required` on the current heavy probe, so those runs are gateway-billing evidence, not model-quality evidence
 - runtime: `UnexpectedStatus` retry logic is now status-aware so `402 Payment Required` fails fast instead of consuming the whole stream retry budget.
 - validation: kept DeepSeek out of the default public bench so the active green/amber/red matrix is not diluted by a known blocked route.
-- docs: rewrote `README.md` around real user experience, current model guidance, live research findings, `/responses`, economic tradeoffs, and LiteLLM semantic cache guidance.
+- docs: rewrote `README.md` as a manual-style user document with install-first structure, first-run guidance, model recommendations, `/responses`, economic tradeoffs, semantic cache guidance, and the research bench later in the narrative.
 
 ## Format
-Use VS Code-style release notes:
-- short intro paragraph
-- `Highlights`
-- `Detailed Changes`
+Use a release-story format:
+- short intro paragraph that explains what this release means for users
+- `Highlights` for the high-signal changes
+- `Detailed Changes` for concrete technical detail
+- keep the narrative user-facing first and maintainer-precise second
+- if `README.md` changes materially, make sure the changelog and README tell the same story
