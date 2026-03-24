@@ -14,9 +14,7 @@ npm install -g @avikalpa/codex-litellm
 
 `codex-litellm` is upstream Codex CLI with a maintained LiteLLM patchset.
 
-It keeps the Codex agent loop, but lets you run it against agentic models from many providers through one LiteLLM gateway. The point of the project is not to outgrow Codex. The point is to keep Codex usable over LiteLLM without asking users to learn a second tool or maintain a permanent fork.
-
-This README is the front door for the project. Read it like a small manual: install first, configure once, pick a sensible model, and only then go deeper into research notes and edge cases.
+It keeps the Codex agent loop, but lets you run it against agentic models from many providers through one LiteLLM gateway. The goal is to keep Codex usable over LiteLLM without asking users to learn a separate tool or maintain a long-lived fork.
 
 - Software license: Apache-2.0
 - Documentation license: CC BY 4.0
@@ -25,7 +23,7 @@ This README is the front door for the project. Read it like a small manual: inst
 
 ## 1. What This Project Is For
 
-Official Codex is still the better answer when you want the official OpenAI-hosted harness, the cleanest flagship OpenAI path, and the least bridge complexity.
+Official Codex is still the better choice when you want the official OpenAI-hosted harness, the cleanest flagship OpenAI path, and the least bridge complexity.
 
 `codex-litellm` is for a different job:
 - one Codex CLI talking to many providers through LiteLLM
@@ -33,7 +31,7 @@ Official Codex is still the better answer when you want the official OpenAI-host
 - cost control and model experimentation without abandoning the Codex workflow
 - a patchset that stays close to upstream instead of turning into a separate product line
 
-In other words, this project is strongest when you want Codex as the interface and LiteLLM as the routing layer.
+This project is strongest when you want Codex as the interface and LiteLLM as the routing layer.
 
 ## 2. Install
 
@@ -91,7 +89,7 @@ model = "vercel/minimax-m2.7-highspeed"
 model_provider = "litellm"
 ```
 
-That is the core setup. For most users, this is enough to get started.
+For most users, this is enough to get started.
 
 ## 4. First Run
 
@@ -125,11 +123,9 @@ Practical consequence:
 - resuming a LiteLLM session from `codex` keeps plain Codex active
 - the two CLIs should not clobber each other's remembered default model
 
-This is a deliberate product decision. Shared history is useful. Shared breakage is not.
+This is intentional: one shared history, with separate runtime defaults for each CLI.
 
 ## 6. Model Selection
-
-This part matters more than many users expect.
 
 The Codex harness rewards agentic behavior: models need to search, edit, stop at the right time, and return a final answer. A model that looks clever in benchmarks or chat demos may still be poor at Codex-style work.
 
@@ -147,13 +143,11 @@ The practical reading is simple:
 
 ### Why DeepSeek Is Marked Blocked
 
-DeepSeek is the clearest example of why `codex-litellm` has to be empirical rather than ideological.
-
-The current problem is not just “the model is bad.” The sharper diagnosis is that the current LiteLLM `/responses` bridge is still not carrying DeepSeek tool-follow-up turns cleanly enough for reliable Codex use. That matters, because the right fix is in the bridge path, not in storytelling around the model.
+DeepSeek is currently blocked because the LiteLLM `/responses` bridge is not carrying its tool-follow-up turns cleanly enough for reliable Codex use. This is a bridge-path issue, not just a model-quality issue.
 
 ## 7. Economics
 
-There is no economic value in routing an expensive flagship model through a weak bridge path just to say you can.
+There is usually little value in routing an expensive flagship model through a weak bridge path.
 
 If your real goal is the best possible flagship OpenAI Codex experience, the official harness is usually better value:
 - fewer moving parts
@@ -173,7 +167,7 @@ Practical spending advice:
 - do not spend money re-proving DeepSeek on the current `/responses` stack until the bridge issue is fixed
 - if you are mainly chasing flagship-quality output rather than multi-provider flexibility, use official Codex instead of paying an indirection tax here
 
-Use the right tool for the job. This project is not a moral victory for indirection.
+Use the route that gives you the best result for the money and operational complexity.
 
 ## 8. Semantic Cache
 
@@ -200,11 +194,11 @@ That means:
 - model curation is based on `/responses` behavior
 - known-broken routes are documented plainly instead of hidden behind fallback folklore
 
-This is important because it keeps the project honest. A route should only be called good if it works on the real path users are expected to run.
+A route should only be treated as supported if it works on the path users are expected to run.
 
 ## 10. How We Judge Models
 
-These ratings come from live `codex-litellm` runs through the Codex harness, not benchmark claims, API pings, or chatbot feel.
+These ratings come from live `codex-litellm` runs through the Codex harness, not benchmark claims, API checks, or chat impressions.
 
 A model is only useful here if it can:
 - inspect a real repository
@@ -217,7 +211,7 @@ Good benchmark scores are not enough.
 
 ### Benchmarks vs Reality
 
-We do still look at benchmark data, especially Artificial Analysis, but only as an intake signal.
+We do look at benchmark data, especially Artificial Analysis, but only as an intake signal.
 
 Benchmarks are useful for:
 - deciding which newly available models are worth paying to probe
@@ -230,7 +224,7 @@ Benchmarks are not enough for:
 - proving the LiteLLM `/responses` bridge is stable for that route
 - proving the model is worth its price on real repository work
 
-The rule here is simple: benchmark rank can earn a model a place on the research bench, but only live repo-edit runs can earn it a recommendation.
+Benchmark rank can earn a model a place on the research bench, but only live repo-edit runs can earn it a recommendation.
 
 ### Current Results
 
@@ -240,7 +234,7 @@ If you just want the short version:
 - treat GLM, Gemini, Grok, and Kimi as research lanes
 - treat DeepSeek as blocked on the current `/responses` stack
 
-The table below is the evidence summary, not marketing copy.
+The table below summarizes current live results.
 
 | Model | `mini-web` | `python-cli` | `calibre-web` exploratory | What usually goes wrong | Current recommendation |
 | --- | --- | --- | --- | --- | --- |
@@ -272,20 +266,20 @@ The active fixtures are intentionally different:
 - `python-cli` requires diffs in the CLI file, the README, and the test file, so partial edits do not count as a pass
 - `calibre-web` is the heavier real-world probe for large-repo search, edit discipline, and route stability
 
-What this bench is for:
-- separating “sounds smart” from “can finish Codex work”
-- measuring whether a model is worth its route cost
-- catching regressions in the LiteLLM bridge before users do
-- giving us evidence strong enough to block or allow release lanes
+This bench helps us:
+- separate “sounds smart” from “can finish Codex work”
+- measure whether a model is worth its route cost
+- catch regressions in the LiteLLM bridge before users do
+- build evidence strong enough to block or allow release lanes
 
-What we have found so far:
-- MiniMax is still the best overall default on this stack because it clears the harness often enough to justify its cost
-- Claude Haiku looks like the better cheaper lane when you want a serious second option
-- Kimi, GLM, Gemini, and Grok all have interesting moments, but their value is still bench-dependent rather than operationally stable
-- DeepSeek remains blocked by the current `/responses` bridge, so more paid probing there has poor return
-- heavier repos matter; some models that look fine on `mini-web` degrade sharply when the task shifts to larger search spaces and stricter edit discipline
+Current takeaways:
+- MiniMax is still the best overall default on this stack because it clears the harness often enough to justify its cost.
+- Claude Haiku is the best cheaper second option so far.
+- Kimi, GLM, Gemini, and Grok have shown promise, but they are still bench-dependent rather than operationally stable.
+- DeepSeek remains blocked by the current `/responses` bridge, so more paid probing there has low return.
+- Heavier repos matter; some models that look fine on `mini-web` degrade sharply when the task shifts to larger search spaces and stricter edit discipline.
 
-If you care about benchmark-style content, this is the project’s actual claim:
+If you care about benchmark-style content, the project’s position is:
 - we use benchmarks to choose what to test
 - we use Codex-harness repo-edit runs to decide what to recommend
 - we use cost and completion quality together, not benchmark rank alone
@@ -351,4 +345,4 @@ Operator-facing docs live in:
 - `AGENTS.md`
 - `agent_docs/`
 
-The story told in the README matters. The story told in the changelog matters too. If user-facing reality changes, those documents should change with it.
+If user-facing behavior changes, update `README.md` and the changelog to match.
