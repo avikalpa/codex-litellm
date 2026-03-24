@@ -1,6 +1,6 @@
 # codex-litellm
 
-Install it first:
+Use it with `npx`:
 
 ```bash
 npx @avikalpa/codex-litellm
@@ -166,6 +166,13 @@ If your real goal is the best possible flagship OpenAI Codex experience, the off
 - multi-provider experimentation
 - good agentic behavior from non-OpenAI routes
 
+Practical spending advice:
+- if you want the safest default here, spend on MiniMax first
+- if you want a cheaper serious lane, try Claude Haiku before escalating to more expensive research models
+- treat GLM, Gemini, Grok, and Kimi as measured experiments, not daily-driver defaults
+- do not spend money re-proving DeepSeek on the current `/responses` stack until the bridge issue is fixed
+- if you are mainly chasing flagship-quality output rather than multi-provider flexibility, use official Codex instead of paying an indirection tax here
+
 Use the right tool for the job. This project is not a moral victory for indirection.
 
 ## 8. Semantic Cache
@@ -208,16 +215,41 @@ A model is only useful here if it can:
 
 Good benchmark scores are not enough.
 
-### Current Scoreboard
+### Benchmarks vs Reality
+
+We do still look at benchmark data, especially Artificial Analysis, but only as an intake signal.
+
+Benchmarks are useful for:
+- deciding which newly available models are worth paying to probe
+- spotting which providers are moving quickly on agentic behavior
+- avoiding obviously stale or weak candidates
+
+Benchmarks are not enough for:
+- proving tool-use quality
+- proving stop/finalize discipline after an edit
+- proving the LiteLLM `/responses` bridge is stable for that route
+- proving the model is worth its price on real repository work
+
+The rule here is simple: benchmark rank can earn a model a place on the research bench, but only live repo-edit runs can earn it a recommendation.
+
+### Current Results
+
+If you just want the short version:
+- use MiniMax first
+- use Claude Haiku when you want the cheaper serious option
+- treat GLM, Gemini, Grok, and Kimi as research lanes
+- treat DeepSeek as blocked on the current `/responses` stack
+
+The table below is the evidence summary, not marketing copy.
 
 | Model | `mini-web` | `python-cli` | `calibre-web` exploratory | What usually goes wrong | Current recommendation |
 | --- | --- | --- | --- | --- | --- |
-| `vercel/minimax-m2.7-highspeed` | PASS | PASS | FAIL under route pressure, no clean diff on the latest heavy probe | larger repos currently amplify retry or 429 noise | best default |
-| `vercel/claude-haiku-4.5` | PASS | PASS | not yet cleanly completed in the latest heavy probe batch | needs more large-repo evidence | best cheaper second option |
-| `vercel/glm-5-turbo` | FAIL | FAIL | FAIL | retry and 429 noise before a useful diff | research only |
+| `vercel/minimax-m2.7-highspeed` | PASS | PASS | FAIL under route pressure, no clean diff on the latest heavy probe | larger repos currently amplify retry or 429 noise | recommended default |
+| `vercel/claude-haiku-4.5` | PASS | PASS | not yet cleanly completed in the latest heavy probe batch | needs more large-repo evidence | recommended cheaper second option |
+| `vercel/glm-5-turbo` | FAIL | FAIL | FAIL | retry and 429 noise before a useful diff | research lane only |
 | `vercel/gemini-3.1-pro-preview` | EDITS, THEN STALLS | TIMEOUT | blocked by current gateway credits on the latest heavy probe | post-edit finalization is still too weak, and heavy-repo results are currently confounded by billing state | watchlist only |
 | `vercel/grok-4.20-reasoning-beta` | PASS | FAIL | incomplete probe | can look strong on light UI work, then fail to produce a qualifying diff on procedural work | watchlist only |
-| `vercel/kimi-k2.5` | FAIL | PASS | blocked by current gateway credits on the latest heavy probe | behavior is fixture-sensitive; it handles procedural edits better than broad UI hunting | research only |
+| `vercel/kimi-k2.5` | FAIL | PASS | blocked by current gateway credits on the latest heavy probe | behavior is fixture-sensitive; it handles procedural edits better than broad UI hunting | research lane only |
 | `vercel/deepseek-v3.2-thinking` | BLOCKED | BLOCKED | not worth probing further until bridge fix | LiteLLM `/responses` tool-follow-up incompatibility | blocked on this stack |
 
 ### What The Labels Mean
@@ -239,6 +271,24 @@ The active fixtures are intentionally different:
 - `mini-web` checks whether a model can inspect, edit, and finalize a concrete UI restyle
 - `python-cli` requires diffs in the CLI file, the README, and the test file, so partial edits do not count as a pass
 - `calibre-web` is the heavier real-world probe for large-repo search, edit discipline, and route stability
+
+What this bench is for:
+- separating “sounds smart” from “can finish Codex work”
+- measuring whether a model is worth its route cost
+- catching regressions in the LiteLLM bridge before users do
+- giving us evidence strong enough to block or allow release lanes
+
+What we have found so far:
+- MiniMax is still the best overall default on this stack because it clears the harness often enough to justify its cost
+- Claude Haiku looks like the better cheaper lane when you want a serious second option
+- Kimi, GLM, Gemini, and Grok all have interesting moments, but their value is still bench-dependent rather than operationally stable
+- DeepSeek remains blocked by the current `/responses` bridge, so more paid probing there has poor return
+- heavier repos matter; some models that look fine on `mini-web` degrade sharply when the task shifts to larger search spaces and stricter edit discipline
+
+If you care about benchmark-style content, this is the project’s actual claim:
+- we use benchmarks to choose what to test
+- we use Codex-harness repo-edit runs to decide what to recommend
+- we use cost and completion quality together, not benchmark rank alone
 
 Run the public bench with:
 
