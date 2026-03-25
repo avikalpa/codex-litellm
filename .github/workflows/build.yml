@@ -326,13 +326,20 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'release'
     steps:
+      - uses: actions/checkout@v4
+
       - uses: actions/download-artifact@v4
         with:
           path: dist
 
+      - name: Generate curated release notes
+        shell: bash
+        run: ./scripts/release-notes.sh "${{ github.ref_name }}" > dist/RELEASE_NOTES.md
+
       - name: Publish assets to release
         uses: softprops/action-gh-release@v2
         with:
+          body_path: dist/RELEASE_NOTES.md
           files: |
             dist/**/codex-litellm-*.tar.gz
             dist/**/codex-litellm-*.tar.gz.sha256
