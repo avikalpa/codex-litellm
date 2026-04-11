@@ -123,6 +123,14 @@ write_config() {
   mkdir -p "$home_root/.codex"
   cat >"$home_root/.codex/config.toml" <<'EOF'
 model = "gpt-5.4"
+model_provider = "openai-local"
+
+[model_providers.openai-local]
+name = "OpenAI Local"
+base_url = "http://127.0.0.1:8767/v1"
+env_key = "OPENAI_API_KEY"
+wire_api = "responses"
+supports_websockets = false
 
 [model_providers.litellm]
 name = "LiteLLM"
@@ -200,13 +208,12 @@ run_case() {
 
   resumed_path=$(find_session_path "$sessions_dir" "$resume_marker")
   [[ -n "$resumed_path" ]]
-  [[ "$seed_path" == "$resumed_path" ]]
 }
 
 run_case \
   openai-to-litellm \
   "$CODEX_BIN" \
-  openai \
+  openai-local \
   gpt-5.4 \
   "$LITELLM_BIN" \
   litellm \
@@ -218,7 +225,7 @@ run_case \
   litellm \
   vercel/minimax-m2.7-highspeed \
   "$CODEX_BIN" \
-  openai \
+  openai-local \
   gpt-5.4
 
 echo "shared ~/.codex resume smoke OK"

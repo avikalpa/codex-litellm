@@ -18,7 +18,7 @@ It keeps the Codex agent loop, but lets you run it against agentic models from m
 
 - Software license: Apache-2.0
 - Documentation license: CC BY 4.0
-- Current upstream base: `rust-v0.116.0`
+- Current upstream base: `rust-v0.120.0`
 - Default LiteLLM runtime path: `/responses`
 
 ## 1. What This Project Is For

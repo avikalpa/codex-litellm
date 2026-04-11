@@ -1,19 +1,20 @@
-# Current Task — 0.116.0 Confidence Work
+# Current Task — 0.120.0 Confidence Work
 
-Last updated: 2026-03-22
+Last updated: 2026-04-11
 
 ## TL;DR
-- `codex/` is aligned to upstream `rust-v0.116.0` at commit `38771c90`.
+- `codex/` is aligned to upstream `rust-v0.120.0` at commit `65319eb1`.
 - Root metadata is aligned to the same base:
-  - `package.json.version = 0.116.0`
-  - `package.json.codexLitellm.baseVersion = 0.116.0`
-  - `package.json.codexLitellm.upstreamCommit = 38771c90`
-- `stable-tag.patch` has been regenerated from `rust-v0.116.0`.
+  - `package.json.version = 0.120.0`
+  - `package.json.codexLitellm.baseVersion = 0.120.0`
+  - `package.json.codexLitellm.upstreamCommit = 65319eb1`
+- `stable-tag.patch` has been regenerated from `rust-v0.120.0`.
 - `/responses` remains the default LiteLLM path forward.
 - DeepSeek remains a known blocked `/responses` route.
 - Paid live model sweeps are deferred until the low-cost confidence gates are clean.
 
 ## What Landed Recently
+- Refreshed the maintained patchset onto upstream `rust-v0.120.0`, including the new split crates such as `model-provider-info`, `models-manager`, and the current TUI/app-server surface.
 - `codex` and `codex-litellm` now intentionally share the same `~/.codex/sessions` store.
 - Resuming a session from the other CLI keeps the active executable's provider and default model profile instead of importing the old provider into the new runtime.
 - Cross-provider alias warnings are suppressed for obvious pairs such as plain `gpt-5.4` versus a namespaced LiteLLM route for the same model family.
