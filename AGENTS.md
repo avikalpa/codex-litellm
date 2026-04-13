@@ -15,7 +15,8 @@
 - If the user asks to update to latest upstream, do not release or publish anything from an older base afterward.
 - Never cut a release unless `main`, `package.json`, `package-lock.json`, `stable-tag.patch`, and the checked-out `codex/` baseline all agree on the same upstream version.
 - `build.sh` is release automation. Do not use it for development work inside `codex/`; it resets the upstream checkout.
-- After every milestone commit, explicitly ask the user whether to publish to npm before doing release actions.
+- After every non-release milestone commit, explicitly ask the user whether to publish to npm before doing release actions.
+- Exception: when the user asks to update to latest upstream, the default workstream is to smoke test, push, publish, and babysit the GitHub Actions and npm release path through completion unless the user explicitly says not to publish.
 - Block release on live model failures. A local build is not enough.
 - Release builds happen on GitHub Actions. Do not treat local release artifacts as publishable outputs.
 - Keep the repo surface clean enough for fast pacing. Local test/build clutter should not become normal working state.
@@ -53,6 +54,10 @@
 6. Regenerate `stable-tag.patch` from that exact upstream tag.
 7. Verify local build, required tests, and release metadata before tagging.
 8. Do not publish an older branch because `main` has not caught up yet. Move `main` first.
+9. Run the required low-cost smoke tests before push.
+10. Push `main` after the upstream refresh lands.
+11. Cut the GitHub release and publish to npm unless the user explicitly says not to publish.
+12. Babysit the release workflow until npm `latest` and `npm view` show the new version, or document the concrete blocker if publish fails.
 
 ## Patch Maintenance
 - Generate the patch from inside `codex/` against the exact pinned upstream tag or commit checked out there:
