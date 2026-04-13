@@ -3,8 +3,6 @@
 This file tracks user-visible changes in `codex-litellm`.
 
 ## Unreleased
-
-## [0.120.0+65319eb1+lit054ca7a] - 2026-04-13
 `codex-litellm` is now refreshed onto upstream `rust-v0.120.0` and keeps LiteLLM `/responses` as the default forward path. The release line remains intentionally agentic-first: the current recommended default is MiniMax, and DeepSeek remains a documented blocker on the LiteLLM `/responses` bridge for tool-follow-up turns.
 
 Current public-facing model picture on this gateway:
