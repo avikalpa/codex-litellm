@@ -3,7 +3,7 @@ index 4d173d203..0af084f8d 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
 @@ -402,7 +402,7 @@ checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
-
+ 
  [[package]]
  name = "app_test_support"
 -version = "0.0.0"
@@ -12,7 +12,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "base64 0.22.1",
 @@ -1368,7 +1368,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-analytics"
 -version = "0.0.0"
@@ -21,7 +21,7 @@ index 4d173d203..0af084f8d 100644
   "codex-app-server-protocol",
   "codex-git-utils",
 @@ -1386,7 +1386,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-ansi-escape"
 -version = "0.0.0"
@@ -30,7 +30,7 @@ index 4d173d203..0af084f8d 100644
   "ansi-to-tui",
   "ratatui",
 @@ -1395,7 +1395,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-api"
 -version = "0.0.0"
@@ -39,7 +39,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "assert_matches",
 @@ -1428,7 +1428,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server"
 -version = "0.0.0"
@@ -48,7 +48,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "app_test_support",
 @@ -1500,7 +1500,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server-client"
 -version = "0.0.0"
@@ -57,7 +57,7 @@ index 4d173d203..0af084f8d 100644
   "codex-app-server",
   "codex-app-server-protocol",
 @@ -1523,7 +1523,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server-protocol"
 -version = "0.0.0"
@@ -66,7 +66,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "clap",
 @@ -1551,7 +1551,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-app-server-test-client"
 -version = "0.0.0"
@@ -75,7 +75,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "clap",
 @@ -1572,7 +1572,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-apply-patch"
 -version = "0.0.0"
@@ -84,7 +84,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "assert_cmd",
 @@ -1591,7 +1591,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-arg0"
 -version = "0.0.0"
@@ -93,7 +93,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-apply-patch",
 @@ -1608,7 +1608,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-async-utils"
 -version = "0.0.0"
@@ -102,7 +102,7 @@ index 4d173d203..0af084f8d 100644
   "async-trait",
   "pretty_assertions",
 @@ -1618,7 +1618,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-backend-client"
 -version = "0.0.0"
@@ -111,7 +111,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-backend-openapi-models",
 @@ -1633,7 +1633,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-backend-openapi-models"
 -version = "0.0.0"
@@ -120,7 +120,7 @@ index 4d173d203..0af084f8d 100644
   "serde",
   "serde_json",
 @@ -1642,7 +1642,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-chatgpt"
 -version = "0.0.0"
@@ -129,7 +129,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "clap",
 @@ -1662,7 +1662,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cli"
 -version = "0.0.0"
@@ -155,7 +155,7 @@ index 4d173d203..0af084f8d 100644
   "tracing-subscriber",
 + "url",
  ]
-
+ 
  [[package]]
  name = "codex-client"
 -version = "0.0.0"
@@ -164,7 +164,7 @@ index 4d173d203..0af084f8d 100644
   "async-trait",
   "bytes",
 @@ -1744,7 +1747,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cloud-requirements"
 -version = "0.0.0"
@@ -173,7 +173,7 @@ index 4d173d203..0af084f8d 100644
   "async-trait",
   "base64 0.22.1",
 @@ -1769,7 +1772,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cloud-tasks"
 -version = "0.0.0"
@@ -182,7 +182,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "async-trait",
 @@ -1801,7 +1804,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cloud-tasks-client"
 -version = "0.0.0"
@@ -191,7 +191,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "async-trait",
 @@ -1815,7 +1818,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-cloud-tasks-mock-client"
 -version = "0.0.0"
@@ -200,7 +200,7 @@ index 4d173d203..0af084f8d 100644
   "async-trait",
   "chrono",
 @@ -1825,7 +1828,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-code-mode"
 -version = "0.0.0"
@@ -209,12 +209,12 @@ index 4d173d203..0af084f8d 100644
   "async-trait",
   "pretty_assertions",
 @@ -1839,11 +1842,11 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-collaboration-mode-templates"
 -version = "0.0.0"
 +version = "0.120.0"
-
+ 
  [[package]]
  name = "codex-config"
 -version = "0.0.0"
@@ -223,7 +223,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-app-server-protocol",
 @@ -1874,7 +1877,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-connectors"
 -version = "0.0.0"
@@ -232,7 +232,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-app-server-protocol",
 @@ -1886,7 +1889,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-core"
 -version = "0.0.0"
@@ -241,7 +241,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "arc-swap",
 @@ -2006,7 +2009,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-core-skills"
 -version = "0.0.0"
@@ -250,7 +250,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-analytics",
 @@ -2035,7 +2038,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-debug-client"
 -version = "0.0.0"
@@ -259,7 +259,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "clap",
 @@ -2047,7 +2050,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-exec"
 -version = "0.0.0"
@@ -268,7 +268,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "assert_cmd",
 @@ -2091,7 +2094,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-exec-server"
 -version = "0.0.0"
@@ -277,7 +277,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "arc-swap",
 @@ -2118,7 +2121,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-execpolicy"
 -version = "0.0.0"
@@ -286,7 +286,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "clap",
 @@ -2135,7 +2138,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-execpolicy-legacy"
 -version = "0.0.0"
@@ -295,7 +295,7 @@ index 4d173d203..0af084f8d 100644
   "allocative",
   "anyhow",
 @@ -2155,7 +2158,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-experimental-api-macros"
 -version = "0.0.0"
@@ -304,7 +304,7 @@ index 4d173d203..0af084f8d 100644
   "proc-macro2",
   "quote",
 @@ -2164,7 +2167,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-features"
 -version = "0.0.0"
@@ -313,7 +313,7 @@ index 4d173d203..0af084f8d 100644
   "codex-otel",
   "codex-protocol",
 @@ -2177,7 +2180,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-feedback"
 -version = "0.0.0"
@@ -322,7 +322,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-login",
 @@ -2190,7 +2193,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-file-search"
 -version = "0.0.0"
@@ -331,7 +331,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "clap",
 @@ -2206,7 +2209,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-git-utils"
 -version = "0.0.0"
@@ -340,7 +340,7 @@ index 4d173d203..0af084f8d 100644
   "assert_matches",
   "codex-utils-absolute-path",
 @@ -2225,7 +2228,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-hooks"
 -version = "0.0.0"
@@ -349,7 +349,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "chrono",
 @@ -2243,7 +2246,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-instructions"
 -version = "0.0.0"
@@ -358,7 +358,7 @@ index 4d173d203..0af084f8d 100644
   "codex-protocol",
   "pretty_assertions",
 @@ -2252,7 +2255,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-keyring-store"
 -version = "0.0.0"
@@ -367,7 +367,7 @@ index 4d173d203..0af084f8d 100644
   "keyring",
   "tracing",
 @@ -2260,7 +2263,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-linux-sandbox"
 -version = "0.0.0"
@@ -376,7 +376,7 @@ index 4d173d203..0af084f8d 100644
   "cc",
   "clap",
 @@ -2283,7 +2286,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-lmstudio"
 -version = "0.0.0"
@@ -385,7 +385,7 @@ index 4d173d203..0af084f8d 100644
   "codex-core",
   "codex-model-provider-info",
 @@ -2297,7 +2300,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-login"
 -version = "0.0.0"
@@ -394,7 +394,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "async-trait",
 @@ -2338,7 +2341,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-mcp"
 -version = "0.0.0"
@@ -403,7 +403,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "async-channel",
 @@ -2367,7 +2370,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-mcp-server"
 -version = "0.0.0"
@@ -412,7 +412,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-arg0",
 @@ -2399,7 +2402,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-model-provider-info"
 -version = "0.0.0"
@@ -426,7 +426,7 @@ index 4d173d203..0af084f8d 100644
   "toml 0.9.11+spec-1.1.0",
 + "url",
  ]
-
+ 
  [[package]]
  name = "codex-models-manager"
 -version = "0.0.0"
@@ -435,7 +435,7 @@ index 4d173d203..0af084f8d 100644
   "base64 0.22.1",
   "chrono",
 @@ -2447,7 +2451,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-network-proxy"
 -version = "0.0.0"
@@ -444,7 +444,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "async-trait",
 @@ -2478,7 +2482,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-ollama"
 -version = "0.0.0"
@@ -453,7 +453,7 @@ index 4d173d203..0af084f8d 100644
   "assert_matches",
   "async-stream",
 @@ -2497,7 +2501,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-otel"
 -version = "0.0.0"
@@ -462,7 +462,7 @@ index 4d173d203..0af084f8d 100644
   "chrono",
   "codex-api",
 @@ -2529,7 +2533,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-plugin"
 -version = "0.0.0"
@@ -471,7 +471,7 @@ index 4d173d203..0af084f8d 100644
   "codex-utils-absolute-path",
   "codex-utils-plugins",
 @@ -2538,7 +2542,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-process-hardening"
 -version = "0.0.0"
@@ -480,7 +480,7 @@ index 4d173d203..0af084f8d 100644
   "libc",
   "pretty_assertions",
 @@ -2546,7 +2550,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-protocol"
 -version = "0.0.0"
@@ -489,7 +489,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "chardetng",
 @@ -2586,7 +2590,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-realtime-webrtc"
 -version = "0.0.0"
@@ -498,7 +498,7 @@ index 4d173d203..0af084f8d 100644
   "libwebrtc",
   "thiserror 2.0.18",
 @@ -2595,7 +2599,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-response-debug-context"
 -version = "0.0.0"
@@ -507,7 +507,7 @@ index 4d173d203..0af084f8d 100644
   "base64 0.22.1",
   "codex-api",
 @@ -2606,7 +2610,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-responses-api-proxy"
 -version = "0.0.0"
@@ -516,7 +516,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "clap",
 @@ -2623,7 +2627,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-rmcp-client"
 -version = "0.0.0"
@@ -525,7 +525,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "axum",
 @@ -2657,7 +2661,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-rollout"
 -version = "0.0.0"
@@ -534,7 +534,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "async-trait",
 @@ -2682,7 +2686,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-sandboxing"
 -version = "0.0.0"
@@ -543,7 +543,7 @@ index 4d173d203..0af084f8d 100644
   "codex-network-proxy",
   "codex-protocol",
 @@ -2699,7 +2703,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-secrets"
 -version = "0.0.0"
@@ -552,7 +552,7 @@ index 4d173d203..0af084f8d 100644
   "age",
   "anyhow",
 @@ -2720,7 +2724,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-shell-command"
 -version = "0.0.0"
@@ -561,7 +561,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "base64 0.22.1",
 @@ -2740,7 +2744,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-shell-escalation"
 -version = "0.0.0"
@@ -570,7 +570,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "async-trait",
 @@ -2761,7 +2765,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-skills"
 -version = "0.0.0"
@@ -579,7 +579,7 @@ index 4d173d203..0af084f8d 100644
   "codex-utils-absolute-path",
   "include_dir",
 @@ -2770,7 +2774,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-state"
 -version = "0.0.0"
@@ -588,7 +588,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "chrono",
 @@ -2793,7 +2797,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-stdio-to-uds"
 -version = "0.0.0"
@@ -597,7 +597,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "codex-utils-cargo-bin",
 @@ -2804,7 +2808,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-terminal-detection"
 -version = "0.0.0"
@@ -606,7 +606,7 @@ index 4d173d203..0af084f8d 100644
   "pretty_assertions",
   "tracing",
 @@ -2812,7 +2816,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-tools"
 -version = "0.0.0"
@@ -615,7 +615,7 @@ index 4d173d203..0af084f8d 100644
   "codex-app-server-protocol",
   "codex-code-mode",
 @@ -2829,7 +2833,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-tui"
 -version = "0.0.0"
@@ -624,7 +624,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "arboard",
 @@ -2928,7 +2932,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-absolute-path"
 -version = "0.0.0"
@@ -633,7 +633,7 @@ index 4d173d203..0af084f8d 100644
   "dirs",
   "dunce",
 @@ -2942,14 +2946,14 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-approval-presets"
 -version = "0.0.0"
@@ -641,7 +641,7 @@ index 4d173d203..0af084f8d 100644
  dependencies = [
   "codex-protocol",
  ]
-
+ 
  [[package]]
  name = "codex-utils-cache"
 -version = "0.0.0"
@@ -650,7 +650,7 @@ index 4d173d203..0af084f8d 100644
   "lru 0.16.3",
   "sha1",
 @@ -2958,7 +2962,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-cargo-bin"
 -version = "0.0.0"
@@ -659,7 +659,7 @@ index 4d173d203..0af084f8d 100644
   "assert_cmd",
   "runfiles",
 @@ -2967,7 +2971,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-cli"
 -version = "0.0.0"
@@ -668,17 +668,17 @@ index 4d173d203..0af084f8d 100644
   "clap",
   "codex-protocol",
 @@ -2978,15 +2982,15 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-elapsed"
 -version = "0.0.0"
 +version = "0.120.0"
-
+ 
  [[package]]
  name = "codex-utils-fuzzy-match"
 -version = "0.0.0"
 +version = "0.120.0"
-
+ 
  [[package]]
  name = "codex-utils-home-dir"
 -version = "0.0.0"
@@ -687,7 +687,7 @@ index 4d173d203..0af084f8d 100644
   "dirs",
   "pretty_assertions",
 @@ -2995,7 +2999,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-image"
 -version = "0.0.0"
@@ -696,7 +696,7 @@ index 4d173d203..0af084f8d 100644
   "base64 0.22.1",
   "codex-utils-cache",
 @@ -3007,7 +3011,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-json-to-toml"
 -version = "0.0.0"
@@ -705,7 +705,7 @@ index 4d173d203..0af084f8d 100644
   "pretty_assertions",
   "serde_json",
 @@ -3016,7 +3020,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-oss"
 -version = "0.0.0"
@@ -714,7 +714,7 @@ index 4d173d203..0af084f8d 100644
   "codex-core",
   "codex-lmstudio",
 @@ -3026,7 +3030,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-output-truncation"
 -version = "0.0.0"
@@ -723,7 +723,7 @@ index 4d173d203..0af084f8d 100644
   "codex-protocol",
   "codex-utils-string",
 @@ -3035,7 +3039,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-path"
 -version = "0.0.0"
@@ -732,7 +732,7 @@ index 4d173d203..0af084f8d 100644
   "codex-utils-absolute-path",
   "dunce",
 @@ -3045,7 +3049,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-plugins"
 -version = "0.0.0"
@@ -741,7 +741,7 @@ index 4d173d203..0af084f8d 100644
   "codex-login",
   "serde",
 @@ -3055,7 +3059,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-pty"
 -version = "0.0.0"
@@ -750,7 +750,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "filedescriptor",
 @@ -3071,7 +3075,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-readiness"
 -version = "0.0.0"
@@ -759,7 +759,7 @@ index 4d173d203..0af084f8d 100644
   "assert_matches",
   "async-trait",
 @@ -3082,14 +3086,14 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-rustls-provider"
 -version = "0.0.0"
@@ -767,7 +767,7 @@ index 4d173d203..0af084f8d 100644
  dependencies = [
   "rustls",
  ]
-
+ 
  [[package]]
  name = "codex-utils-sandbox-summary"
 -version = "0.0.0"
@@ -776,7 +776,7 @@ index 4d173d203..0af084f8d 100644
   "codex-core",
   "codex-model-provider-info",
 @@ -3100,7 +3104,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-sleep-inhibitor"
 -version = "0.0.0"
@@ -785,7 +785,7 @@ index 4d173d203..0af084f8d 100644
   "core-foundation 0.9.4",
   "libc",
 @@ -3110,14 +3114,14 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-stream-parser"
 -version = "0.0.0"
@@ -793,7 +793,7 @@ index 4d173d203..0af084f8d 100644
  dependencies = [
   "pretty_assertions",
  ]
-
+ 
  [[package]]
  name = "codex-utils-string"
 -version = "0.0.0"
@@ -802,7 +802,7 @@ index 4d173d203..0af084f8d 100644
   "pretty_assertions",
   "regex-lite",
 @@ -3125,14 +3129,14 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-utils-template"
 -version = "0.0.0"
@@ -810,7 +810,7 @@ index 4d173d203..0af084f8d 100644
  dependencies = [
   "pretty_assertions",
  ]
-
+ 
  [[package]]
  name = "codex-v8-poc"
 -version = "0.0.0"
@@ -819,7 +819,7 @@ index 4d173d203..0af084f8d 100644
   "pretty_assertions",
   "v8",
 @@ -3140,7 +3144,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "codex-windows-sandbox"
 -version = "0.0.0"
@@ -828,7 +828,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "base64 0.22.1",
 @@ -3360,7 +3364,7 @@ dependencies = [
-
+ 
  [[package]]
  name = "core_test_support"
 -version = "0.0.0"
@@ -837,7 +837,7 @@ index 4d173d203..0af084f8d 100644
   "anyhow",
   "assert_cmd",
 @@ -6396,7 +6400,7 @@ checksum = "b3eede3bdf92f3b4f9dc04072a9ce5ab557d5ec9038773bf9ffcd5588b3cc05b"
-
+ 
  [[package]]
  name = "mcp_test_support"
 -version = "0.0.0"
@@ -852,7 +852,7 @@ index ab0d86de2..900a38cf6 100644
 @@ -9,6 +9,10 @@ build = "build.rs"
  name = "codex"
  path = "src/main.rs"
-
+ 
 +[[bin]]
 +name = "codex-litellm"
 +path = "src/main.rs"
@@ -877,7 +877,7 @@ index ab0d86de2..900a38cf6 100644
  tracing-appender = { workspace = true }
  tracing-subscriber = { workspace = true }
 +url = { workspace = true }
-
+ 
  [target.'cfg(target_os = "windows")'.dependencies]
  codex_windows_sandbox = { package = "codex-windows-sandbox", path = "../windows-sandbox-rs" }
 @@ -73,3 +80,6 @@ codex-utils-cargo-bin = { workspace = true }
@@ -913,7 +913,7 @@ index 6ebea29b6..721b0fbca 100644
  use supports_color::Stream;
 +use std::io::Write;
 +use url::Url;
-
+ 
  #[cfg(target_os = "macos")]
  mod app_cmd;
 @@ -48,12 +51,22 @@ use codex_core::config::Config;
@@ -936,7 +936,7 @@ index 6ebea29b6..721b0fbca 100644
 +    Some(version) => version,
 +    None => env!("CARGO_PKG_VERSION"),
 +};
-
+ 
  /// Codex CLI
  ///
 @@ -61,7 +74,7 @@ use codex_terminal_detection::TerminalName;
@@ -951,7 +951,7 @@ index 6ebea29b6..721b0fbca 100644
 @@ -639,12 +652,28 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
          subcommand,
      } = MultitoolCli::parse();
-
+ 
 +    apply_codex_litellm_defaults(
 +        current_invocation_name().as_deref(),
 +        &mut root_config_overrides,
@@ -962,7 +962,7 @@ index 6ebea29b6..721b0fbca 100644
      root_config_overrides.raw_overrides.extend(toggle_overrides);
      let root_remote = remote.remote;
      let root_remote_auth_token_env = remote.remote_auth_token_env;
-
+ 
 +    let should_attempt_litellm_onboarding =
 +        is_codex_litellm_invocation(current_invocation_name().as_deref())
 +            && root_remote.is_none()
@@ -980,7 +980,7 @@ index 6ebea29b6..721b0fbca 100644
 @@ -1086,6 +1115,327 @@ async fn cli_main(arg0_paths: Arg0DispatchPaths) -> anyhow::Result<()> {
      Ok(())
  }
-
+ 
 +fn current_invocation_name() -> Option<String> {
 +    let argv0 = std::env::args_os().next()?;
 +    let file_name = Path::new(&argv0).file_name()?.to_str()?;
@@ -1422,11 +1422,11 @@ index 97781ac41..2e1673f1d 100644
  use http::header::ETAG;
 +use serde::Deserialize;
  use std::sync::Arc;
-
+ 
  pub struct ModelsClient<T: HttpTransport, A: AuthProvider> {
      session: EndpointSession<T, A>,
  }
-
+ 
 +#[derive(Deserialize)]
 +struct OpenAiCompatibleModelsResponse {
 +    data: Vec<OpenAiCompatibleModelEntry>,
@@ -1443,7 +1443,7 @@ index 97781ac41..2e1673f1d 100644
 @@ -61,13 +72,23 @@ impl<T: HttpTransport, A: AuthProvider> ModelsClient<T, A> {
              .and_then(|value| value.to_str().ok())
              .map(ToString::to_string);
-
+ 
 -        let ModelsResponse { models } = serde_json::from_slice::<ModelsResponse>(&resp.body)
 -            .map_err(|e| {
 -                ApiError::Stream(format!(
@@ -1468,7 +1468,7 @@ index 97781ac41..2e1673f1d 100644
 +                    .collect()
 +            }
 +        };
-
+ 
          Ok((models, header_etag))
      }
 @@ -269,4 +290,56 @@ mod tests {
@@ -1540,7 +1540,7 @@ index 16f743943..3e5fa3ea3 100644
 +use codex_tools::JsonSchema;
 +use codex_tools::ResponsesApiTool;
 +use codex_tools::ToolSpec;
-
+ 
  pub const OPENAI_BETA_HEADER: &str = "OpenAI-Beta";
  pub const X_CODEX_INSTALLATION_ID_HEADER: &str = "x-codex-installation-id";
 @@ -133,6 +137,113 @@ const RESPONSES_WEBSOCKETS_V2_BETA_HEADER_VALUE: &str = "responses_websockets=20
@@ -1664,7 +1664,7 @@ index 16f743943..3e5fa3ea3 100644
 -        let client =
 -            ApiCompactClient::new(transport, client_setup.api_provider, client_setup.api_auth)
 -                .with_telemetry(Some(request_telemetry));
-
+ 
          let instructions = prompt.base_instructions.text.clone();
          let input = prompt.get_formatted_input();
 -        let tools = create_tools_json_for_responses_api(&prompt.tools)?;
@@ -1679,12 +1679,12 @@ index 16f743943..3e5fa3ea3 100644
 +        let client =
 +            ApiCompactClient::new(transport, client_setup.api_provider, client_setup.api_auth)
 +                .with_telemetry(Some(request_telemetry));
-
+ 
          let mut extra_headers = ApiHeaderMap::new();
          if let Ok(header_value) = HeaderValue::from_str(&self.state.installation_id) {
 @@ -808,6 +919,31 @@ impl Drop for ModelClientSession {
  }
-
+ 
  impl ModelClientSession {
 +    fn provider_name_uses_litellm_behavior(provider_name: &str) -> bool {
 +        provider_name.to_ascii_lowercase().contains("litellm")
@@ -1738,7 +1738,7 @@ index 16f743943..3e5fa3ea3 100644
 @@ -888,6 +1024,31 @@ impl ModelClientSession {
          Ok(request)
      }
-
+ 
 +    fn strip_reasoning_from_responses_request(request: &mut ResponsesApiRequest) {
 +        request.reasoning = None;
 +        request
@@ -1828,7 +1828,7 @@ index 16f743943..3e5fa3ea3 100644
 +                )
 +                .with_telemetry(Some(request_telemetry), Some(sse_telemetry));
 +                let stream_result = client.stream_request(request.clone(), options).await;
-
+ 
 -            match stream_result {
 -                Ok(stream) => {
 -                    let (stream, _) = map_response_stream(stream, session_telemetry.clone());
@@ -1890,7 +1890,7 @@ index 16f743943..3e5fa3ea3 100644
 @@ -1508,6 +1689,12 @@ fn parse_turn_metadata_header(turn_metadata_header: Option<&str>) -> Option<Head
      turn_metadata_header.and_then(|value| HeaderValue::from_str(value).ok())
  }
-
+ 
 +fn reasoning_effort_rejected(body: &str) -> bool {
 +    let body = body.to_ascii_lowercase();
 +    body.contains("reasoning_effort")
@@ -1905,9 +1905,9 @@ index c1dfa29ed..57c49008b 100644
 --- a/codex-rs/core/src/client_common.rs
 +++ b/codex-rs/core/src/client_common.rs
 @@ -37,6 +37,11 @@ pub struct Prompt {
-
+ 
      pub base_instructions: BaseInstructions,
-
+ 
 +    /// Ephemeral request-only instruction sections appended to the base
 +    /// `instructions` field for the next provider request. These are not
 +    /// persisted in conversation history.
@@ -1915,10 +1915,10 @@ index c1dfa29ed..57c49008b 100644
 +
      /// Optionally specify the personality of the model.
      pub personality: Option<Personality>,
-
+ 
 @@ -45,6 +50,18 @@ pub struct Prompt {
  }
-
+ 
  impl Prompt {
 +    pub(crate) fn formatted_instructions(&self) -> String {
 +        let mut sections = Vec::with_capacity(1 + self.additional_instructions.len());
@@ -1934,7 +1934,7 @@ index c1dfa29ed..57c49008b 100644
 +
      pub(crate) fn get_formatted_input(&self) -> Vec<ResponseItem> {
          let mut input = self.input.clone();
-
+ 
 diff --git a/codex-rs/core/src/client_tests.rs b/codex-rs/core/src/client_tests.rs
 index 2fd5f04f9..2b4cd8dcd 100644
 --- a/codex-rs/core/src/client_tests.rs
@@ -1942,7 +1942,7 @@ index 2fd5f04f9..2b4cd8dcd 100644
 @@ -34,6 +34,23 @@ fn test_model_client(session_source: SessionSource) -> ModelClient {
      )
  }
-
+ 
 +fn test_model_client_with_provider(
 +    session_source: SessionSource,
 +    provider: ModelProviderInfo,
@@ -1966,7 +1966,7 @@ index 2fd5f04f9..2b4cd8dcd 100644
 @@ -64,6 +81,74 @@ fn test_model_info() -> ModelInfo {
      .expect("deserialize test model info")
  }
-
+ 
 +fn test_reasoning_model_info() -> ModelInfo {
 +    let mut model_info = test_model_info();
 +    model_info.supports_reasoning_summaries = true;
@@ -2041,7 +2041,7 @@ index 2fd5f04f9..2b4cd8dcd 100644
 @@ -151,6 +236,220 @@ async fn summarize_memories_returns_empty_for_empty_input() {
      assert_eq!(output.len(), 0);
  }
-
+ 
 +#[test]
 +fn reasoning_effort_rejected_matches_litellm_gateway_error() {
 +    let body = r#"{"error":{"message":"litellm.UnsupportedParamsError: vercel_ai_gateway does not support parameters: ['reasoning_effort'], for model=openai/gpt-oss-120b.","code":"400"}}"#;
@@ -2266,7 +2266,7 @@ index cd6f1e84f..384deaee2 100644
 @@ -252,6 +252,46 @@ pub(crate) struct PreviousTurnSettings {
      pub(crate) realtime_active: Option<bool>,
  }
-
+ 
 +fn is_cross_provider_model_alias(previous: &str, current: &str) -> bool {
 +    if previous == current {
 +        return true;
@@ -2405,7 +2405,7 @@ index cd6f1e84f..384deaee2 100644
 @@ -6597,6 +6669,10 @@ async fn run_auto_compact(
      Ok(())
  }
-
+ 
 +fn should_disable_auto_compaction(provider: &ModelProviderInfo) -> bool {
 +    !provider.is_openai()
 +}
@@ -2456,7 +2456,7 @@ index cd6f1e84f..384deaee2 100644
 @@ -6847,6 +6928,52 @@ async fn run_sampling_request(
              return Err(err);
          }
-
+ 
 +        if !litellm_retry_state_reset_attempted
 +            && client_session.should_reset_state_after_retryable_stream_error()
 +        {
@@ -2512,7 +2512,7 @@ index cd6f1e84f..384deaee2 100644
      last_agent_message: Option<String>,
 +    follow_up_instructions: Vec<String>,
  }
-
+ 
  /// Ephemeral per-response state for streaming a single proposed plan.
 @@ -7593,6 +7721,7 @@ async fn try_run_sampling_request(
          FuturesOrdered::new();
@@ -2581,7 +2581,7 @@ index 6e901a034..add539fb0 100644
 @@ -4263,6 +4263,39 @@ async fn handle_output_item_done_skips_image_save_message_when_save_fails() {
      assert!(!expected_saved_path.exists());
  }
-
+ 
 +#[tokio::test]
 +async fn handle_output_item_done_requests_follow_up_for_blank_assistant_message() {
 +    let (session, turn_context) = make_session_and_context().await;
@@ -2637,7 +2637,7 @@ index a205b2041..0ee99e796 100644
 @@ -2988,6 +2988,84 @@ async fn set_model_updates_profile() -> anyhow::Result<()> {
      Ok(())
  }
-
+ 
 +#[tokio::test]
 +async fn codex_litellm_cli_profile_keeps_persisted_model_out_of_plain_codex_defaults(
 +) -> anyhow::Result<()> {
@@ -2730,15 +2730,15 @@ index eac8f9e36..87dc9c6eb 100644
 -            model_providers.entry(key).or_insert(provider);
 +            model_providers.insert(key, provider);
          }
-
+ 
 +        let root_model_provider_id = cfg.model_provider.clone();
          let model_provider_id = model_provider
              .or(config_profile.model_provider)
              .or(cfg.model_provider)
 @@ -1793,7 +1794,20 @@ impl Config {
-
+ 
          let forced_login_method = cfg.forced_login_method;
-
+ 
 -        let model = model.or(config_profile.model).or(cfg.model);
 +        let use_profile_scoped_model_defaults_only =
 +            active_profile_name.as_deref() == Some("codex-litellm");
@@ -2770,7 +2770,7 @@ index 051740077..314cdd3f6 100644
 +
          // all function/tool calls must have a corresponding output
          normalize::ensure_call_outputs_present(&mut self.items);
-
+ 
 diff --git a/codex-rs/core/src/context_manager/history_tests.rs b/codex-rs/core/src/context_manager/history_tests.rs
 index 9720492c1..15e49972c 100644
 --- a/codex-rs/core/src/context_manager/history_tests.rs
@@ -2778,7 +2778,7 @@ index 9720492c1..15e49972c 100644
 @@ -1482,6 +1482,48 @@ fn normalize_adds_missing_output_for_function_call_inserts_output() {
      );
  }
-
+ 
 +#[test]
 +fn normalize_removes_duplicate_function_calls_with_same_call_id() {
 +    let items = vec![
@@ -2831,7 +2831,7 @@ index 839bae331..2e0e4ecde 100644
 @@ -11,6 +11,31 @@ use tracing::info;
  const IMAGE_CONTENT_OMITTED_PLACEHOLDER: &str =
      "image content omitted because you do not support image input";
-
+ 
 +pub(crate) fn remove_duplicate_call_entries(items: &mut Vec<ResponseItem>) {
 +    let mut seen_function_call_ids = HashSet::new();
 +    let mut seen_tool_search_call_ids = HashSet::new();
@@ -2882,7 +2882,7 @@ index 789aac580..a52e6c43c 100644
          base_instructions,
 +        Vec::new(),
      );
-
+ 
      Ok(prompt.get_formatted_input())
 diff --git a/codex-rs/core/src/session_startup_prewarm.rs b/codex-rs/core/src/session_startup_prewarm.rs
 index acd9232c0..a790e1ca5 100644
@@ -2903,7 +2903,7 @@ index ac4334d68..7dfc1a654 100644
 @@ -87,6 +87,11 @@ fn strip_hidden_assistant_markup_and_parse_memory_citation(
      (visible_text, parse_memory_citation(citations))
  }
-
+ 
 +fn empty_assistant_follow_up_text() -> String {
 +    "Your previous assistant message was empty. Continue from the current workspace state. Successful tool results and file edits are already recorded. Do not repeat the same tool call, reapply the same patch, or spend more time inspecting files that you already checked. If the task is complete, send the final assistant response now."
 +        .to_string()
@@ -2919,7 +2919,7 @@ index ac4334d68..7dfc1a654 100644
 +    pub follow_up_instructions: Vec<String>,
      pub tool_future: Option<InFlightFuture<'static>>,
  }
-
+ 
 @@ -267,8 +273,17 @@ pub(crate) async fn handle_output_item_done(
              }
              record_completed_response_item(ctx.sess.as_ref(), ctx.turn_context.as_ref(), &item)
@@ -2945,13 +2945,13 @@ index d3a56ce5e..368380ee2 100644
 +++ b/codex-rs/core/src/thread_manager_tests.rs
 @@ -273,7 +273,7 @@ async fn shutdown_all_threads_bounded_submits_shutdown_to_every_thread() {
  }
-
+ 
  #[tokio::test]
 -async fn new_uses_configured_openai_provider_for_model_refresh() {
 +async fn new_uses_configured_model_provider_for_model_refresh() {
      let server = MockServer::start().await;
      let models_mock = mount_models_once(&server, ModelsResponse { models: vec![] }).await;
-
+ 
 diff --git a/codex-rs/core/src/tools/code_mode/execute_handler.rs b/codex-rs/core/src/tools/code_mode/execute_handler.rs
 index c46c3e045..13dcc25f1 100644
 --- a/codex-rs/core/src/tools/code_mode/execute_handler.rs
@@ -2964,9 +2964,9 @@ index c46c3e045..13dcc25f1 100644
  use crate::tools::context::FunctionToolOutput;
  use crate::tools::context::ToolInvocation;
 @@ -12,6 +15,11 @@ use super::handle_runtime_response;
-
+ 
  pub struct CodeModeExecuteHandler;
-
+ 
 +#[derive(Debug, Deserialize)]
 +struct FunctionCodeModeExecArgs {
 +    input: String,
@@ -2977,7 +2977,7 @@ index c46c3e045..13dcc25f1 100644
          &self,
 @@ -59,7 +67,10 @@ impl ToolHandler for CodeModeExecuteHandler {
      }
-
+ 
      fn matches_kind(&self, payload: &ToolPayload) -> bool {
 -        matches!(payload, ToolPayload::Custom { .. })
 +        matches!(
@@ -2985,11 +2985,11 @@ index c46c3e045..13dcc25f1 100644
 +            ToolPayload::Function { .. } | ToolPayload::Custom { .. }
 +        )
      }
-
+ 
      async fn handle(&self, invocation: ToolInvocation) -> Result<Self::Output, FunctionCallError> {
 @@ -73,11 +84,19 @@ impl ToolHandler for CodeModeExecuteHandler {
          } = invocation;
-
+ 
          match payload {
 +            ToolPayload::Function { arguments } if tool_name == PUBLIC_TOOL_NAME => {
 +                let args: FunctionCodeModeExecArgs = from_str(&arguments).map_err(|err| {
@@ -3014,7 +3014,7 @@ index 970afd6f3..541c386c0 100644
 +++ b/codex-rs/core/src/tools/handlers/shell.rs
 @@ -88,6 +88,45 @@ struct RunExecLikeArgs {
  }
-
+ 
  impl ShellHandler {
 +    async fn should_block_post_edit_read_only_command(
 +        command: &[String],
@@ -3061,7 +3061,7 @@ index 970afd6f3..541c386c0 100644
 @@ -479,6 +518,14 @@ impl ShellHandler {
              return Ok(output);
          }
-
+ 
 +        if Self::should_block_post_edit_read_only_command(&exec_params.command, &tracker).await {
 +            return Ok(FunctionToolOutput::from_text(
 +                "The workspace already contains successful edits for this task. Do not spend more time on read-only shell inspection. Do not run more grep/cat/tail/find/ls commands. If you need one verification step, run `git diff --stat` once. Otherwise send the final assistant response now."
@@ -3093,7 +3093,7 @@ index 970afd6f3..541c386c0 100644
 @@ -574,6 +631,11 @@ impl ShellHandler {
      }
  }
-
+ 
 +fn is_allowed_post_edit_read_only_command(command: &[String]) -> bool {
 +    let command_text = command.join(" ");
 +    command_text.contains("git diff --stat")
@@ -3109,7 +3109,7 @@ index fc1ad94b4..9d3f1c058 100644
 @@ -85,6 +85,47 @@ fn default_tty() -> bool {
      false
  }
-
+ 
 +impl UnifiedExecHandler {
 +    async fn should_block_post_edit_read_only_command(
 +        command: &[String],
@@ -3153,18 +3153,18 @@ index fc1ad94b4..9d3f1c058 100644
 +
  impl ToolHandler for UnifiedExecHandler {
      type Output = ExecCommandToolOutput;
-
+ 
 @@ -207,6 +248,7 @@ impl ToolHandler for UnifiedExecHandler {
                  )
                  .map_err(FunctionCallError::RespondToModel)?;
                  let command_for_display = codex_shell_command::parse_command::shlex_join(&command);
 +                let tracking_command = command.clone();
-
+ 
                  let ExecCommandArgs {
                      workdir,
 @@ -308,7 +350,22 @@ impl ToolHandler for UnifiedExecHandler {
                  }
-
+ 
                  emit_unified_exec_tty_metric(&turn.session_telemetry, tty);
 -                manager
 +                if Self::should_block_post_edit_read_only_command(&command, &tracker).await {
@@ -3208,7 +3208,7 @@ index fc1ad94b4..9d3f1c058 100644
 @@ -413,6 +480,11 @@ pub(crate) fn get_command(
      }
  }
-
+ 
 +fn is_allowed_post_edit_read_only_command(command: &[String]) -> bool {
 +    let command_text = command.join(" ");
 +    command_text.contains("git diff --stat")
@@ -3254,7 +3254,7 @@ index e54981b3b..b5e633b0f 100644
 --- a/codex-rs/core/src/tools/router_tests.rs
 +++ b/codex-rs/core/src/tools/router_tests.rs
 @@ -152,3 +152,40 @@ async fn build_tool_call_uses_namespace_for_registry_name() -> anyhow::Result<()
-
+ 
      Ok(())
  }
 +
@@ -3305,12 +3305,12 @@ index 2353e49e8..b4cbb22ff 100644
 +    /// True once a mutating shell command has completed successfully in this turn.
 +    saw_successful_mutating_shell_command: bool,
  }
-
+ 
  impl TurnDiffTracker {
 @@ -47,6 +49,14 @@ impl TurnDiffTracker {
          Self::default()
      }
-
+ 
 +    pub fn note_successful_mutating_shell_command(&mut self) {
 +        self.saw_successful_mutating_shell_command = true;
 +    }
@@ -3337,7 +3337,7 @@ index 156dd4a81..4a02b1377 100644
 @@ -21,6 +22,16 @@ fn cli_responses_fixture() -> std::path::PathBuf {
      find_resource!("tests/cli_responses_fixture.sse").expect("failed to resolve fixture path")
  }
-
+ 
 +fn set_home_env(cmd: &mut AssertCommand, home: &Path) {
 +    cmd.env("HOME", home);
 +    #[cfg(windows)]
@@ -3354,7 +3354,7 @@ index 156dd4a81..4a02b1377 100644
 @@ -295,6 +306,125 @@ async fn responses_api_stream_cli() {
      assert!(stdout.contains("fixture hello"));
  }
-
+ 
 +/// Ensures the shipped `codex-litellm` binary honors the default `~/.codex`
 +/// config path when `CODEX_HOME` is not set.
 +#[tokio::test(flavor = "multi_thread", worker_threads = 2)]
@@ -3518,10 +3518,10 @@ index f9ad64c77..f433c7af9 100644
 @@ -87,7 +104,7 @@ async fn emits_warning_when_resumed_model_differs() {
      let rollout_path = home.path().join("rollout.jsonl");
      std::fs::write(&rollout_path, "").expect("create rollout placeholder");
-
+ 
 -    let initial_history = resume_history(&config, "previous-model", &rollout_path);
 +    let initial_history = resume_history(&config, "previous-model", Some("openai"), &rollout_path);
-
+ 
      let thread_manager = codex_core::test_support::thread_manager_with_models_provider(
          CodexAuth::from_api_key("test"),
 @@ -130,3 +147,79 @@ async fn emits_warning_when_resumed_model_differs() {
@@ -3610,7 +3610,7 @@ index 80896689f..f472d2065 100644
 +++ b/codex-rs/default.nix
 @@ -48,7 +48,7 @@ rustPlatform.buildRustPackage (_: {
    };
-
+ 
    meta = with lib; {
 -    description = "OpenAI Codex command‑line interface rust implementation";
 +    description = "Codex Litellm command-line interface rust implementation";
@@ -3627,7 +3627,7 @@ index 0ec5d9b3c..3206d14a2 100644
  license.workspace = true
 +build = "build.rs"
  autotests = false
-
+ 
  [[bin]]
 @@ -73,3 +74,6 @@ tracing-opentelemetry = { workspace = true }
  uuid = { workspace = true }
@@ -3636,6 +3636,17 @@ index 0ec5d9b3c..3206d14a2 100644
 +
 +[build-dependencies]
 +serde_json = { workspace = true }
+diff --git a/codex-rs/exec/build.rs b/codex-rs/exec/build.rs
+new file mode 100644
+index 000000000..54c4c79ee
+--- /dev/null
++++ b/codex-rs/exec/build.rs
+@@ -0,0 +1,5 @@
++include!("../build/codex_litellm_version.rs");
++
++fn main() {
++    emit_codex_litellm_display_version();
++}
 diff --git a/codex-rs/exec/src/lib.rs b/codex-rs/exec/src/lib.rs
 index 81a0961fa..58d49043f 100644
 --- a/codex-rs/exec/src/lib.rs
@@ -3652,7 +3663,7 @@ index 81a0961fa..58d49043f 100644
 +    let _ = (config, args);
 +    None
  }
-
+ 
  fn canceled_mcp_server_elicitation_response() -> Result<Value, String> {
 diff --git a/codex-rs/exec/tests/suite/resume.rs b/codex-rs/exec/tests/suite/resume.rs
 index cfaa7aa81..2321bf1e9 100644
@@ -3661,7 +3672,7 @@ index cfaa7aa81..2321bf1e9 100644
 @@ -484,6 +484,96 @@ fn exec_resume_preserves_cli_configuration_overrides() -> anyhow::Result<()> {
      Ok(())
  }
-
+ 
 +#[test]
 +fn exec_resume_last_all_crosses_provider_boundaries_but_keeps_active_profile() -> anyhow::Result<()>
 +{
@@ -3764,7 +3775,7 @@ index 23c1b3415..875305ac5 100644
  schemars = { workspace = true }
  serde = { workspace = true, features = ["derive"] }
 +url = { workspace = true }
-
+ 
  [dev-dependencies]
  codex-utils-absolute-path = { workspace = true }
 diff --git a/codex-rs/model-provider-info/src/lib.rs b/codex-rs/model-provider-info/src/lib.rs
@@ -3776,12 +3787,12 @@ index f39ff0c7f..323df2113 100644
  use std::fmt;
  use std::time::Duration;
 +use url::Url;
-
+ 
  const DEFAULT_STREAM_IDLE_TIMEOUT_MS: u64 = 300_000;
  const DEFAULT_STREAM_MAX_RETRIES: u64 = 5;
 @@ -124,6 +125,21 @@ pub struct ModelProviderInfo {
  }
-
+ 
  impl ModelProviderInfo {
 +    fn normalized_base_url(base_url: &str) -> String {
 +        let trimmed = base_url.trim();
@@ -3807,14 +3818,14 @@ index f39ff0c7f..323df2113 100644
              .clone()
 +            .map(|base_url| Self::normalized_base_url(&base_url))
              .unwrap_or_else(|| default_base_url.to_string());
-
+ 
          let headers = self.build_header_map()?;
 @@ -310,6 +327,7 @@ pub const DEFAULT_OLLAMA_PORT: u16 = 11434;
-
+ 
  pub const LMSTUDIO_OSS_PROVIDER_ID: &str = "lmstudio";
  pub const OLLAMA_OSS_PROVIDER_ID: &str = "ollama";
 +pub const LITELLM_PROVIDER_ID: &str = "litellm";
-
+ 
  /// Built-in default provider list.
  pub fn built_in_model_providers(
 @@ -324,6 +342,7 @@ pub fn built_in_model_providers(
@@ -3828,7 +3839,7 @@ index f39ff0c7f..323df2113 100644
 @@ -338,6 +357,32 @@ pub fn built_in_model_providers(
      .collect()
  }
-
+ 
 +fn create_litellm_provider() -> ModelProviderInfo {
 +    let base_url = std::env::var("LITELLM_BASE_URL")
 +        .ok()
@@ -3867,7 +3878,7 @@ index e99c33edb..4f369a95a 100644
  pub mod model_info;
  pub mod model_presets;
 +pub(crate) mod supported_models;
-
+ 
  pub use codex_app_server_protocol::AuthMode;
  pub use codex_login::AuthManager;
 diff --git a/codex-rs/models-manager/src/manager.rs b/codex-rs/models-manager/src/manager.rs
@@ -3888,7 +3899,7 @@ index a7d4aa12a..07f5ab526 100644
  use tracing::info;
  use tracing::instrument;
 +use tracing::warn;
-
+ 
 -const MODEL_CACHE_FILE: &str = "models_cache.json";
 +const MODEL_CACHE_FILE_PREFIX: &str = "models_cache";
  const DEFAULT_MODEL_CACHE_TTL: Duration = Duration::from_secs(300);
@@ -3921,7 +3932,7 @@ index a7d4aa12a..07f5ab526 100644
 @@ -333,22 +342,27 @@ impl ModelsManager {
          best
      }
-
+ 
 -    /// Retry metadata lookup for a single namespaced slug like `namespace/model-name`.
 -    ///
 -    /// This only strips one leading namespace segment and only when the namespace is ASCII
@@ -3958,7 +3969,7 @@ index a7d4aa12a..07f5ab526 100644
 +
 +        best
      }
-
+ 
      fn construct_model_info_from_candidates(
 @@ -356,15 +370,19 @@ impl ModelsManager {
          candidates: &[ModelInfo],
@@ -3989,7 +4000,7 @@ index a7d4aa12a..07f5ab526 100644
 @@ -395,9 +413,7 @@ impl ModelsManager {
              return Ok(());
          }
-
+ 
 -        if self.auth_manager.auth_mode() != Some(AuthMode::Chatgpt)
 -            && !self.provider.has_command_auth()
 -        {
@@ -4000,7 +4011,7 @@ index a7d4aa12a..07f5ab526 100644
 @@ -429,6 +445,15 @@ impl ModelsManager {
          }
      }
-
+ 
 +    fn should_fetch_remote_models_from_network(&self) -> bool {
 +        if !self.provider.requires_openai_auth {
 +            return true;
@@ -4014,7 +4025,7 @@ index a7d4aa12a..07f5ab526 100644
          let _timer =
              codex_otel::start_global_timer("codex.remote_models.fetch_update.duration_ms", &[]);
 @@ -473,7 +498,11 @@ impl ModelsManager {
-
+ 
      /// Replace the cached remote models and rebuild the derived presets list.
      async fn apply_remote_models(&self, models: Vec<ModelInfo>) {
 -        let mut existing_models = Self::load_remote_models_from_file().unwrap_or_default();
@@ -4039,12 +4050,12 @@ index a7d4aa12a..07f5ab526 100644
 +        } else {
 +            presets = filtered_presets;
 +        }
-
+ 
          ModelPreset::mark_default_by_picker_visibility(&mut presets);
-
+ 
          presets
      }
-
+ 
 +    fn should_seed_bundled_catalog(provider: &ModelProviderInfo) -> bool {
 +        !(provider.env_key.as_deref() == Some("LITELLM_API_KEY") && !provider.requires_openai_auth)
 +    }
@@ -4102,7 +4113,7 @@ index fefec50ce..c0184db48 100644
  use codex_protocol::openai_models::TruncationPolicyConfig;
  use codex_protocol::openai_models::WebSearchToolType;
 @@ -58,6 +60,10 @@ pub fn with_config_overrides(mut model: ModelInfo, config: &ModelsManagerConfig)
-
+ 
  /// Build a minimal fallback model descriptor for missing/unknown slugs.
  pub fn model_info_from_slug(slug: &str) -> ModelInfo {
 +    if let Some(model_info) = known_agentic_model_info(slug) {
@@ -4115,7 +4126,7 @@ index fefec50ce..c0184db48 100644
 @@ -93,6 +99,117 @@ pub fn model_info_from_slug(slug: &str) -> ModelInfo {
      }
  }
-
+ 
 +fn known_agentic_model_info(slug: &str) -> Option<ModelInfo> {
 +    let normalized = slug.rsplit('/').next().unwrap_or(slug);
 +
@@ -4230,6 +4241,72 @@ index fefec50ce..c0184db48 100644
  fn local_personality_messages_for_slug(slug: &str) -> Option<ModelMessages> {
      match slug {
          "gpt-5.2-codex" | "exp-codex-personality" => Some(ModelMessages {
+diff --git a/codex-rs/models-manager/src/supported_models.rs b/codex-rs/models-manager/src/supported_models.rs
+new file mode 100644
+index 000000000..0b7af3e31
+--- /dev/null
++++ b/codex-rs/models-manager/src/supported_models.rs
+@@ -0,0 +1,60 @@
++use codex_protocol::openai_models::ModelPreset;
++
++const AGENTIC_SUPPORTED_MODELS: &[&str] = &[
++    "gpt-5.4",
++    "gpt-5.4-pro",
++    "gpt-5.3-codex",
++    "claude-sonnet-4.6",
++    "claude-opus-4.6",
++    "gemini-3.1-pro-preview",
++    "gemini-3-pro",
++    "gemini-3-flash",
++    "grok-4.1-fast-reasoning",
++    "grok-4.20-reasoning-beta",
++    "claude-haiku-4.5",
++    "glm-5",
++    "glm-5-turbo",
++    "deepseek-v3.2-thinking",
++    "kimi-k2.5",
++    "minimax-m2.5",
++    "minimax-m2.7",
++    "minimax-m2.7-highspeed",
++];
++
++fn normalize_model_token(model: &str) -> String {
++    model.replace('.', "-")
++}
++
++fn model_candidates(model: &str) -> impl Iterator<Item = &str> {
++    std::iter::once(model)
++        .chain(model.rsplit('/').next())
++        .chain(model.rsplit(':').next())
++}
++
++pub(crate) fn is_supported_agentic_model(model: &str) -> bool {
++    let normalized_candidates = model_candidates(model)
++        .map(normalize_model_token)
++        .collect::<Vec<_>>();
++
++    AGENTIC_SUPPORTED_MODELS.iter().any(|candidate| {
++        let normalized_candidate = normalize_model_token(candidate);
++        normalized_candidates.iter().any(|value| {
++            value == candidate
++                || value == &normalized_candidate
++                || value
++                    .strip_prefix(&normalized_candidate)
++                    .is_some_and(|suffix| suffix.starts_with('-'))
++        })
++    })
++}
++
++pub(crate) fn filter_supported_agentic_models(models: Vec<ModelPreset>) -> Vec<ModelPreset> {
++    models
++        .into_iter()
++        .filter(|preset| is_supported_agentic_model(&preset.model))
++        .collect()
++}
++
++pub(crate) fn supported_agentic_models() -> &'static [&'static str] {
++    AGENTIC_SUPPORTED_MODELS
++}
 diff --git a/codex-rs/protocol/src/openai_models.rs b/codex-rs/protocol/src/openai_models.rs
 index 3339e674b..8cca6f175 100644
 --- a/codex-rs/protocol/src/openai_models.rs
@@ -4237,7 +4314,7 @@ index 3339e674b..8cca6f175 100644
 @@ -420,6 +420,45 @@ pub struct ModelsResponse {
      pub models: Vec<ModelInfo>,
  }
-
+ 
 +impl ModelInfo {
 +    /// Construct a minimal compatibility descriptor from an OpenAI-compatible `/models`
 +    /// payload that only exposes an `id`.
@@ -4290,7 +4367,7 @@ index 2547fd16f..906bb6793 100644
  license.workspace = true
 +build = "build.rs"
  autobins = false
-
+ 
  [[bin]]
 @@ -148,3 +149,6 @@ rand = { workspace = true }
  serial_test = { workspace = true }
@@ -4299,6 +4376,17 @@ index 2547fd16f..906bb6793 100644
 +
 +[build-dependencies]
 +serde_json = { workspace = true }
+diff --git a/codex-rs/tui/build.rs b/codex-rs/tui/build.rs
+new file mode 100644
+index 000000000..54c4c79ee
+--- /dev/null
++++ b/codex-rs/tui/build.rs
+@@ -0,0 +1,5 @@
++include!("../build/codex_litellm_version.rs");
++
++fn main() {
++    emit_codex_litellm_display_version();
++}
 diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
 index 3791039f3..9a03e00ed 100644
 --- a/codex-rs/tui/src/app.rs
@@ -4324,7 +4412,7 @@ index 3791039f3..9a03e00ed 100644
 @@ -168,6 +168,28 @@ use self::app_server_requests::PendingAppServerRequests;
  use self::loaded_threads::find_loaded_subagent_threads_for_primary;
  use self::pending_interactive_replay::PendingInteractiveReplayState;
-
+ 
 +const CODEX_LITELLM_PROFILE_NAME: &str = "codex-litellm";
 +
 +fn session_cli_overrides(
@@ -4349,11 +4437,11 @@ index 3791039f3..9a03e00ed 100644
 +
  const EXTERNAL_EDITOR_HINT: &str = "Save and close external editor to continue.";
  const THREAD_EVENT_CHANNEL_CAPACITY: usize = 32768;
-
+ 
 @@ -1119,6 +1141,38 @@ impl App {
              .wrap_err_with(|| format!("Failed to rebuild config for cwd {cwd_display}"))
      }
-
+ 
 +    async fn rebuild_config_for_session(
 +        &self,
 +        cwd: PathBuf,
@@ -4406,12 +4494,12 @@ index 3791039f3..9a03e00ed 100644
                  if crate::cwds_differ(current_cwd, &resume_cwd) {
 @@ -1495,7 +1554,7 @@ impl App {
      }
-
+ 
      fn clear_ui_header_lines(&self, width: u16) -> Vec<Line<'static>> {
 -        self.clear_ui_header_lines_with_version(width, CODEX_CLI_VERSION)
 +        self.clear_ui_header_lines_with_version(width, CODEX_CLI_DISPLAY_VERSION)
      }
-
+ 
      fn queue_clear_ui_header(&mut self, tui: &mut tui::Tui) {
 @@ -2617,7 +2676,7 @@ impl App {
          session.cwd = notification.thread.cwd.clone();
@@ -4441,7 +4529,7 @@ index 3791039f3..9a03e00ed 100644
          harness_overrides: ConfigOverrides,
          active_profile: Option<String>,
 @@ -3617,6 +3676,43 @@ impl App {
-
+ 
          let harness_overrides =
              normalize_harness_overrides_for_cwd(harness_overrides, &config.cwd)?;
 +        let mut config = config;
@@ -4487,7 +4575,7 @@ index 3791039f3..9a03e00ed 100644
 @@ -4087,8 +4183,19 @@ impl App {
              }
          };
-
+ 
 +        let session_model = read_session_model_for_thread(
 +            &self.config,
 +            target_session.thread_id,
@@ -4561,7 +4649,7 @@ index 3791039f3..9a03e00ed 100644
              thread_id,
 +            model_provider: None,
          });
-
+ 
          assert!(ignored);
 @@ -6649,6 +6759,7 @@ mod tests {
          let ignored = app.ignore_same_thread_resume(&crate::resume_picker::SessionTarget {
@@ -4569,11 +4657,11 @@ index 3791039f3..9a03e00ed 100644
              thread_id,
 +            model_provider: None,
          });
-
+ 
          assert!(!ignored);
 @@ -10299,7 +10410,12 @@ guardian_approval = true
          let current_cwd = current_config.cwd.clone();
-
+ 
          let resume_config = app
 -            .rebuild_config_for_resume_or_fallback(&current_cwd, current_cwd.to_path_buf())
 +            .rebuild_config_for_resume_or_fallback(
@@ -4583,20 +4671,20 @@ index 3791039f3..9a03e00ed 100644
 +                None,
 +            )
              .await?;
-
+ 
          assert_eq!(resume_config, current_config);
 @@ -10317,13 +10433,102 @@ guardian_approval = true
          let next_cwd = next_cwd_tmp.path().to_path_buf();
-
+ 
          let result = app
 -            .rebuild_config_for_resume_or_fallback(&current_cwd, next_cwd)
 +            .rebuild_config_for_resume_or_fallback(&current_cwd, next_cwd, None, None)
              .await;
-
+ 
          assert!(result.is_err());
          Ok(())
      }
-
+ 
 +    #[tokio::test]
 +    async fn rebuild_config_for_cross_provider_resume_keeps_litellm_profile() -> Result<()> {
 +        let mut app = make_test_app().await;
@@ -4696,7 +4784,7 @@ index 78a252535..b036bce9c 100644
 @@ -368,11 +368,6 @@ pub(crate) enum AppEvent {
          effort: Option<ReasoningEffort>,
      },
-
+ 
 -    /// Open the full model picker (non-auto models).
 -    OpenAllModelsPopup {
 -        models: Vec<ModelPreset>,
@@ -4711,7 +4799,7 @@ index 5bf1eea30..482e4a5ca 100644
 +++ b/codex-rs/tui/src/chatwidget.rs
 @@ -242,6 +242,7 @@ use tracing::debug;
  use tracing::warn;
-
+ 
  const DEFAULT_MODEL_DISPLAY_NAME: &str = "loading";
 +const DEFAULT_LITELLM_MODEL_DISPLAY_NAME: &str = "no model selected";
  const PLAN_IMPLEMENTATION_TITLE: &str = "Implement this plan?";
@@ -4727,7 +4815,7 @@ index 5bf1eea30..482e4a5ca 100644
  struct RunningCommand {
 @@ -8178,6 +8180,10 @@ impl ChatWidget {
      }
-
+ 
      fn model_menu_warning_line(&self) -> Option<Line<'static>> {
 +        if let Some(warning) = self.litellm_model_menu_warning_line() {
 +            return Some(warning);
@@ -4739,7 +4827,7 @@ index 5bf1eea30..482e4a5ca 100644
 @@ -8185,6 +8191,75 @@ impl ChatWidget {
          Some(Line::from(warning.red()))
      }
-
+ 
 +    fn litellm_model_menu_warning_line(&self) -> Option<Line<'static>> {
 +        if self.config.model_provider_id != "litellm" {
 +            return None;
@@ -4814,7 +4902,7 @@ index 5bf1eea30..482e4a5ca 100644
              return None;
 @@ -8205,101 +8280,42 @@ impl ChatWidget {
      }
-
+ 
      pub(crate) fn open_model_popup_with_presets(&mut self, presets: Vec<ModelPreset>) {
 -        let presets: Vec<ModelPreset> = presets
 -            .into_iter()
@@ -4849,7 +4937,7 @@ index 5bf1eea30..482e4a5ca 100644
 +            });
              return;
          }
-
+ 
 -        auto_presets.sort_by_key(|preset| Self::auto_model_order(&preset.model));
 -        let mut items: Vec<SelectionItem> = auto_presets
 +        let presets: Vec<ModelPreset> = presets
@@ -4940,7 +5028,7 @@ index 5bf1eea30..482e4a5ca 100644
 -        }
 +        self.open_all_models_popup(presets);
      }
-
+ 
      pub(crate) fn open_all_models_popup(&mut self, presets: Vec<ModelPreset>) {
 @@ -8316,7 +8332,6 @@ impl ChatWidget {
              let description =
@@ -4973,7 +5061,7 @@ index 5bf1eea30..482e4a5ca 100644
                  ..Default::default()
              });
          }
-
+ 
          let header = self.model_menu_header(
 -            "Select Model and Effort",
 -            "Access legacy models by running codex -m <model_name> or in your config.toml",
@@ -4992,7 +5080,7 @@ index 5bf1eea30..482e4a5ca 100644
 @@ -8392,29 +8417,6 @@ impl ChatWidget {
          });
      }
-
+ 
 -    fn model_selection_actions(
 -        model_for_action: String,
 -        effort_for_action: Option<ReasoningEffortConfig>,
@@ -5029,7 +5117,7 @@ index 5bf1eea30..482e4a5ca 100644
              model
          }
      }
-
+ 
 +    fn default_model_display_name(&self) -> &'static str {
 +        if self.config.model_provider_id == "litellm" {
 +            DEFAULT_LITELLM_MODEL_DISPLAY_NAME
@@ -5071,7 +5159,7 @@ index 67bde227d..2cd85c7d0 100644
 +        CODEX_CLI_DISPLAY_VERSION,
      );
      let mut parts: Vec<Box<dyn HistoryCell>> = vec![Box::new(header)];
-
+ 
 @@ -1181,7 +1181,7 @@ pub(crate) fn new_session_info(
              Line::from(vec![
                  "  ".into(),
@@ -5082,9 +5170,9 @@ index 67bde227d..2cd85c7d0 100644
              Line::from(vec![
                  "  ".into(),
 @@ -1324,10 +1324,10 @@ impl HistoryCell for SessionHeaderHistoryCell {
-
+ 
          let make_row = |spans: Vec<Span<'static>>| Line::from(spans);
-
+ 
 -        // Title line rendered inside the box: ">_ OpenAI Codex (vX)"
 +        // Title line rendered inside the box: ">_ Codex Litellm (vX)"
          let title_spans: Vec<Span<'static>> = vec![
@@ -5116,7 +5204,7 @@ index 19c233c62..656f52a9f 100644
          }
 @@ -590,8 +592,8 @@ async fn lookup_latest_session_target_with_app_server(
  }
-
+ 
  fn latest_session_lookup_params(
 -    is_remote: bool,
 -    config: &Config,
@@ -5141,7 +5229,7 @@ index 19c233c62..656f52a9f 100644
 @@ -1452,6 +1450,40 @@ pub(crate) async fn resolve_session_thread_id(
      }
  }
-
+ 
 +#[allow(dead_code)]
 +pub(crate) async fn read_session_model_provider(path: &Path) -> Option<String> {
 +    match read_session_meta_line(path).await {
@@ -5182,7 +5270,7 @@ index 19c233c62..656f52a9f 100644
 @@ -1486,7 +1518,7 @@ pub(crate) async fn read_session_cwd(
      }
  }
-
+ 
 -pub(crate) async fn read_session_model(
 +pub(crate) async fn read_session_model_for_thread(
      config: &Config,
@@ -5194,7 +5282,7 @@ index 19c233c62..656f52a9f 100644
              thread_id,
 +            model_provider: None,
          };
-
+ 
          assert_eq!(target.display_label(), format!("thread {thread_id}"));
 diff --git a/codex-rs/tui/src/resume_picker.rs b/codex-rs/tui/src/resume_picker.rs
 index 53f33bfb0..f2a27bfb1 100644
@@ -5206,12 +5294,12 @@ index 53f33bfb0..f2a27bfb1 100644
      pub thread_id: ThreadId,
 +    pub model_provider: Option<String>,
  }
-
+ 
  impl SessionTarget {
 @@ -90,8 +91,17 @@ impl SessionPickerAction {
          }
      }
-
+ 
 -    fn selection(self, path: Option<PathBuf>, thread_id: ThreadId) -> SessionSelection {
 -        let target_session = SessionTarget { path, thread_id };
 +    fn selection(
@@ -5231,7 +5319,7 @@ index 53f33bfb0..f2a27bfb1 100644
 @@ -108,6 +118,7 @@ struct PageLoadRequest {
      sort_key: ThreadSortKey,
  }
-
+ 
 +#[allow(dead_code)]
  #[derive(Clone)]
  enum ProviderFilter {
@@ -5472,14 +5560,14 @@ index 198eee8e4..13bb03e08 100644
 +            Span::from(format!("(v{CODEX_CLI_DISPLAY_VERSION})")).dim(),
          ]));
          lines.push(Line::from(Vec::<Span<'static>>::new()));
-
+ 
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
 index 4c2018abf..986199446 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭─────────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                           │
 +│  >_ Codex Litellm (v0.0.0)                                           │
@@ -5492,7 +5580,7 @@ index 6cc7a8946..cbcb5e077 100644
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_credits_and_limits.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭───────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                         │
 +│  >_ Codex Litellm (v0.0.0)                                         │
@@ -5505,7 +5593,7 @@ index fa0df32ed..cb78a3039 100644
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_forked_from.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭───────────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                             │
 +│  >_ Codex Litellm (v0.0.0)                                             │
@@ -5518,7 +5606,7 @@ index 027d935c7..42ca2e836 100644
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭────────────────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                                  │
 +│  >_ Codex Litellm (v0.0.0)                                                  │
@@ -5531,7 +5619,7 @@ index 9115a04d5..44c6ca4b1 100644
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭───────────────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                                 │
 +│  >_ Codex Litellm (v0.0.0)                                                 │
@@ -5544,7 +5632,7 @@ index 6db1821d4..02cbf210f 100644
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭───────────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                             │
 +│  >_ Codex Litellm (v0.0.0)                                             │
@@ -5557,7 +5645,7 @@ index e6043b65f..8560a4f64 100644
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭───────────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                             │
 +│  >_ Codex Litellm (v0.0.0)                                             │
@@ -5570,7 +5658,7 @@ index 91057d482..17f241b6c 100644
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
 @@ -5,7 +5,7 @@ expression: sanitized
  /status
-
+ 
  ╭────────────────────────────────────────────────────────────────────╮
 -│  >_ OpenAI Codex (v0.0.0)                                          │
 +│  >_ Codex Litellm (v0.116.0)                                       │
