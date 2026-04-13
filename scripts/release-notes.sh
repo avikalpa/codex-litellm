@@ -7,17 +7,17 @@ version="${version_input#v}"
 
 extract_section() {
   local section="$1"
-  awk -v section="$section" '
+  local header_bracket="## [$section]"
+  local header_plain="## $section"
+  awk -v header_bracket="$header_bracket" -v header_plain="$header_plain" '
     BEGIN {
       in_section = 0
-      wanted_bracket = "## [" section "]"
-      wanted_plain = "## " section
     }
     function is_heading(line) {
       return line ~ /^## /
     }
     function matches_target(line) {
-      return line == wanted_bracket || line == wanted_plain || line ~ ("^## " section "([[:space:]]+-|$)")
+      return line == header_bracket || line == header_plain || index(line, header_bracket " -") == 1 || index(line, header_plain " -") == 1
     }
     {
       if (!in_section) {
