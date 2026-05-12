@@ -1,5 +1,5 @@
 diff --git a/codex-rs/Cargo.lock b/codex-rs/Cargo.lock
-index 4d173d203..0af084f8d 100644
+index 4d173d2030..0af084f8d7 100644
 --- a/codex-rs/Cargo.lock
 +++ b/codex-rs/Cargo.lock
 @@ -402,7 +402,7 @@ checksum = "5f0e0fee31ef5ed1ba1316088939cea399010ed7731dba877ed44aeb407a75ea"
@@ -847,7 +847,7 @@ index 4d173d203..0af084f8d 100644
   "codex-login",
 diff --git a/codex-rs/build/codex_litellm_version.rs b/codex-rs/build/codex_litellm_version.rs
 new file mode 100644
-index 000000000..d5b882cfd
+index 0000000000..d5b882cfd9
 --- /dev/null
 +++ b/codex-rs/build/codex_litellm_version.rs
 @@ -0,0 +1,127 @@
@@ -979,7 +979,7 @@ index 000000000..d5b882cfd
 +    }
 +}
 diff --git a/codex-rs/cli/Cargo.toml b/codex-rs/cli/Cargo.toml
-index ab0d86de2..900a38cf6 100644
+index ab0d86de2c..900a38cf61 100644
 --- a/codex-rs/cli/Cargo.toml
 +++ b/codex-rs/cli/Cargo.toml
 @@ -9,6 +9,10 @@ build = "build.rs"
@@ -1021,7 +1021,7 @@ index ab0d86de2..900a38cf6 100644
 +[build-dependencies]
 +serde_json = { workspace = true }
 diff --git a/codex-rs/cli/build.rs b/codex-rs/cli/build.rs
-index abccc48bb..402ff5d17 100644
+index abccc48bb6..402ff5d174 100644
 --- a/codex-rs/cli/build.rs
 +++ b/codex-rs/cli/build.rs
 @@ -1,5 +1,8 @@
@@ -1034,7 +1034,7 @@ index abccc48bb..402ff5d17 100644
 +    emit_codex_litellm_display_version();
  }
 diff --git a/codex-rs/cli/src/main.rs b/codex-rs/cli/src/main.rs
-index 6ebea29b6..721b0fbca 100644
+index 6ebea29b65..721b0fbca5 100644
 --- a/codex-rs/cli/src/main.rs
 +++ b/codex-rs/cli/src/main.rs
 @@ -31,8 +31,11 @@ use codex_tui::UpdateAction;
@@ -1546,7 +1546,7 @@ index 6ebea29b6..721b0fbca 100644
 +    }
  }
 diff --git a/codex-rs/codex-api/src/endpoint/models.rs b/codex-rs/codex-api/src/endpoint/models.rs
-index 97781ac41..2e1673f1d 100644
+index 97781ac419..2e1673f1d2 100644
 --- a/codex-rs/codex-api/src/endpoint/models.rs
 +++ b/codex-rs/codex-api/src/endpoint/models.rs
 @@ -9,12 +9,23 @@ use codex_protocol::openai_models::ModelsResponse;
@@ -1662,7 +1662,7 @@ index 97781ac41..2e1673f1d 100644
 +    }
  }
 diff --git a/codex-rs/core/src/client.rs b/codex-rs/core/src/client.rs
-index 16f743943..3e5fa3ea3 100644
+index 16f743943a..e4af193e6f 100644
 --- a/codex-rs/core/src/client.rs
 +++ b/codex-rs/core/src/client.rs
 @@ -119,6 +119,10 @@ use codex_response_debug_context::extract_response_debug_context;
@@ -1859,8 +1859,24 @@ index 16f743943..3e5fa3ea3 100644
          let default_reasoning_effort = model_info.default_reasoning_level;
          let reasoning = if model_info.supports_reasoning_summaries {
              Some(Reasoning {
-@@ -864,7 +1000,7 @@ impl ModelClientSession {
+@@ -862,9 +998,23 @@ impl ModelClientSession {
+         };
+         let text = create_text_param_for_request(verbosity, &prompt.output_schema);
          let prompt_cache_key = Some(self.client.state.conversation_id.to_string());
++        // codex-litellm: LiteLLM does not yet recognize `client_metadata` as an
++        // OpenAI Responses API parameter, so it forwards the field unchanged
++        // into provider-specific request bodies. On Bedrock application
++        // inference profiles this triggers a 400 "Extra inputs are not
++        // permitted" error. Omit the field when the active provider is
++        // LiteLLM-backed; OpenAI-hosted paths keep the upstream behavior.
++        let client_metadata = if ModelClientSession::provider_uses_litellm_behavior(provider) {
++            None
++        } else {
++            Some(HashMap::from([(
++                X_CODEX_INSTALLATION_ID_HEADER.to_string(),
++                self.client.state.installation_id.clone(),
++            )]))
++        };
          let request = ResponsesApiRequest {
              model: model_info.slug.clone(),
 -            instructions: instructions.clone(),
@@ -1868,7 +1884,16 @@ index 16f743943..3e5fa3ea3 100644
              input,
              tools,
              tool_choice: "auto".to_string(),
-@@ -888,6 +1024,31 @@ impl ModelClientSession {
+@@ -880,14 +1030,36 @@ impl ModelClientSession {
+             },
+             prompt_cache_key,
+             text,
+-            client_metadata: Some(HashMap::from([(
+-                X_CODEX_INSTALLATION_ID_HEADER.to_string(),
+-                self.client.state.installation_id.clone(),
+-            )])),
++            client_metadata,
+         };
          Ok(request)
      }
  
@@ -1900,7 +1925,7 @@ index 16f743943..3e5fa3ea3 100644
      #[allow(clippy::too_many_arguments)]
      /// Builds shared Responses API transport options and request-body options.
      ///
-@@ -1166,24 +1327,10 @@ impl ModelClientSession {
+@@ -1166,24 +1338,10 @@ impl ModelClientSession {
              .as_ref()
              .map(AuthManager::unauthorized_recovery);
          let mut pending_retry = PendingUnauthorizedRetry::default();
@@ -1927,7 +1952,7 @@ index 16f743943..3e5fa3ea3 100644
                  &client_setup.api_provider,
                  prompt,
                  model_info,
-@@ -1191,33 +1338,67 @@ impl ModelClientSession {
+@@ -1191,33 +1349,67 @@ impl ModelClientSession {
                  summary,
                  service_tier,
              )?;
@@ -2020,7 +2045,7 @@ index 16f743943..3e5fa3ea3 100644
              }
          }
      }
-@@ -1508,6 +1689,12 @@ fn parse_turn_metadata_header(turn_metadata_header: Option<&str>) -> Option<Head
+@@ -1508,6 +1700,12 @@ fn parse_turn_metadata_header(turn_metadata_header: Option<&str>) -> Option<Head
      turn_metadata_header.and_then(|value| HeaderValue::from_str(value).ok())
  }
  
@@ -2034,7 +2059,7 @@ index 16f743943..3e5fa3ea3 100644
  ///
  /// These headers implement Codex-specific conventions:
 diff --git a/codex-rs/core/src/client_common.rs b/codex-rs/core/src/client_common.rs
-index c1dfa29ed..57c49008b 100644
+index c1dfa29edc..57c49008b1 100644
 --- a/codex-rs/core/src/client_common.rs
 +++ b/codex-rs/core/src/client_common.rs
 @@ -37,6 +37,11 @@ pub struct Prompt {
@@ -2069,7 +2094,7 @@ index c1dfa29ed..57c49008b 100644
          let mut input = self.input.clone();
  
 diff --git a/codex-rs/core/src/client_tests.rs b/codex-rs/core/src/client_tests.rs
-index 2fd5f04f9..2b4cd8dcd 100644
+index 2fd5f04f95..5e6457c6d2 100644
 --- a/codex-rs/core/src/client_tests.rs
 +++ b/codex-rs/core/src/client_tests.rs
 @@ -34,6 +34,23 @@ fn test_model_client(session_source: SessionSource) -> ModelClient {
@@ -2171,7 +2196,7 @@ index 2fd5f04f9..2b4cd8dcd 100644
  fn test_session_telemetry() -> SessionTelemetry {
      SessionTelemetry::new(
          ThreadId::new(),
-@@ -151,6 +236,220 @@ async fn summarize_memories_returns_empty_for_empty_input() {
+@@ -151,6 +236,251 @@ async fn summarize_memories_returns_empty_for_empty_input() {
      assert_eq!(output.len(), 0);
  }
  
@@ -2356,6 +2381,37 @@ index 2fd5f04f9..2b4cd8dcd 100644
 +}
 +
 +#[test]
++fn build_responses_request_omits_client_metadata_for_litellm_provider() {
++    // codex-litellm: LiteLLM forwards unknown OpenAI Responses params straight
++    // into provider-specific payloads. On Bedrock application inference
++    // profiles this triggers a 400 "Extra inputs are not permitted" error on
++    // `client_metadata`. The build path must therefore omit the field for
++    // LiteLLM providers while leaving it set for upstream OpenAI paths.
++    let client = test_model_client(SessionSource::Cli);
++    let session = client.new_session();
++    let model_info = test_model_info();
++    let provider = test_litellm_provider();
++    let prompt = Prompt::default();
++
++    let request = session
++        .build_responses_request(
++            &provider,
++            &prompt,
++            &model_info,
++            None,
++            ReasoningSummaryConfig::None,
++            None,
++        )
++        .expect("request");
++
++    assert!(
++        request.client_metadata.is_none(),
++        "LiteLLM build path must omit client_metadata, got {:?}",
++        request.client_metadata,
++    );
++}
++
++#[test]
 +fn build_responses_request_appends_additional_instructions() {
 +    let client = test_model_client(SessionSource::Cli);
 +    let session = client.new_session();
@@ -2393,7 +2449,7 @@ index 2fd5f04f9..2b4cd8dcd 100644
  fn auth_request_telemetry_context_tracks_attached_auth_and_retry_phase() {
      let auth_context = AuthRequestTelemetryContext::new(
 diff --git a/codex-rs/core/src/codex.rs b/codex-rs/core/src/codex.rs
-index cd6f1e84f..384deaee2 100644
+index cd6f1e84fd..384deaee24 100644
 --- a/codex-rs/core/src/codex.rs
 +++ b/codex-rs/core/src/codex.rs
 @@ -252,6 +252,46 @@ pub(crate) struct PreviousTurnSettings {
@@ -2708,7 +2764,7 @@ index cd6f1e84f..384deaee2 100644
              }
          }
 diff --git a/codex-rs/core/src/codex_tests.rs b/codex-rs/core/src/codex_tests.rs
-index 6e901a034..add539fb0 100644
+index 6e901a0346..add539fb02 100644
 --- a/codex-rs/core/src/codex_tests.rs
 +++ b/codex-rs/core/src/codex_tests.rs
 @@ -4263,6 +4263,39 @@ async fn handle_output_item_done_skips_image_save_message_when_save_fails() {
@@ -2751,8 +2807,55 @@ index 6e901a034..add539fb0 100644
  #[tokio::test]
  async fn build_initial_context_uses_previous_turn_settings_for_realtime_end() {
      let (session, turn_context) = make_session_and_context().await;
+diff --git a/codex-rs/core/src/compact.rs b/codex-rs/core/src/compact.rs
+index e132ce0213..ba7eab70f0 100644
+--- a/codex-rs/core/src/compact.rs
++++ b/codex-rs/core/src/compact.rs
+@@ -176,9 +176,30 @@ async fn run_compact_task_inner_impl(
+ 
+     loop {
+         // Clone is required because of the loop
+-        let turn_input = history
++        let mut turn_input = history
+             .clone()
+             .for_prompt(&turn_context.model_info.input_modalities);
++        // codex-litellm: Bedrock Converse rejects requests that carry tool
++        // `toolUse`/`toolResult` content blocks without a `toolConfig` (i.e. a
++        // declared `tools` array). The compaction Prompt intentionally omits
++        // tools (it is a summarization turn), so we strip every tool item from
++        // the historical payload sent to LiteLLM-backed providers. The
++        // assistant `Message` items that explained each tool action remain, so
++        // the summarizer keeps the narrative context. See LiteLLM trace:
++        // "The toolConfig field must be defined when using toolUse and
++        // toolResult content blocks."
++        if provider_name_uses_litellm_behavior(&turn_context.provider.name) {
++            turn_input.retain(|item| {
++                !matches!(
++                    item,
++                    ResponseItem::FunctionCall { .. }
++                        | ResponseItem::FunctionCallOutput { .. }
++                        | ResponseItem::LocalShellCall { .. }
++                        | ResponseItem::CustomToolCall { .. }
++                        | ResponseItem::CustomToolCallOutput { .. }
++                )
++            });
++        }
+         let turn_input_len = turn_input.len();
+         let prompt = Prompt {
+             input: turn_input,
+@@ -588,3 +609,10 @@ async fn drain_to_completed(
+ #[cfg(test)]
+ #[path = "compact_tests.rs"]
+ mod tests;
++
++/// codex-litellm: local mirror of the LiteLLM-detection heuristic that lives
++/// in `client.rs`. Duplicated intentionally to avoid widening the visibility
++/// of the canonical helper for a single call site.
++fn provider_name_uses_litellm_behavior(provider_name: &str) -> bool {
++    provider_name.to_ascii_lowercase().contains("litellm")
++}
 diff --git a/codex-rs/core/src/compact_remote.rs b/codex-rs/core/src/compact_remote.rs
-index 3e8e1e3a3..36b0dc517 100644
+index 3e8e1e3a39..36b0dc5173 100644
 --- a/codex-rs/core/src/compact_remote.rs
 +++ b/codex-rs/core/src/compact_remote.rs
 @@ -154,6 +154,7 @@ async fn run_remote_compact_task_inner_impl(
@@ -2764,7 +2867,7 @@ index 3e8e1e3a3..36b0dc517 100644
          output_schema: None,
      };
 diff --git a/codex-rs/core/src/config/config_tests.rs b/codex-rs/core/src/config/config_tests.rs
-index a205b2041..0ee99e796 100644
+index a205b2041c..0ee99e7962 100644
 --- a/codex-rs/core/src/config/config_tests.rs
 +++ b/codex-rs/core/src/config/config_tests.rs
 @@ -2988,6 +2988,84 @@ async fn set_model_updates_profile() -> anyhow::Result<()> {
@@ -2853,7 +2956,7 @@ index a205b2041..0ee99e796 100644
  async fn set_model_updates_existing_profile() -> anyhow::Result<()> {
      let codex_home = TempDir::new()?;
 diff --git a/codex-rs/core/src/config/mod.rs b/codex-rs/core/src/config/mod.rs
-index eac8f9e36..87dc9c6eb 100644
+index eac8f9e361..87dc9c6ebf 100644
 --- a/codex-rs/core/src/config/mod.rs
 +++ b/codex-rs/core/src/config/mod.rs
 @@ -1683,9 +1683,10 @@ impl Config {
@@ -2891,7 +2994,7 @@ index eac8f9e36..87dc9c6eb 100644
              .unwrap_or_else(|| config_profile.service_tier.or(cfg.service_tier));
          let service_tier = match service_tier {
 diff --git a/codex-rs/core/src/context_manager/history.rs b/codex-rs/core/src/context_manager/history.rs
-index 051740077..314cdd3f6 100644
+index 0517400773..314cdd3f6f 100644
 --- a/codex-rs/core/src/context_manager/history.rs
 +++ b/codex-rs/core/src/context_manager/history.rs
 @@ -362,6 +362,9 @@ impl ContextManager {
@@ -2905,7 +3008,7 @@ index 051740077..314cdd3f6 100644
          normalize::ensure_call_outputs_present(&mut self.items);
  
 diff --git a/codex-rs/core/src/context_manager/history_tests.rs b/codex-rs/core/src/context_manager/history_tests.rs
-index 9720492c1..15e49972c 100644
+index 9720492c1f..15e49972c0 100644
 --- a/codex-rs/core/src/context_manager/history_tests.rs
 +++ b/codex-rs/core/src/context_manager/history_tests.rs
 @@ -1482,6 +1482,48 @@ fn normalize_adds_missing_output_for_function_call_inserts_output() {
@@ -2958,7 +3061,7 @@ index 9720492c1..15e49972c 100644
  fn normalize_adds_missing_output_for_tool_search_call() {
      let items = vec![ResponseItem::ToolSearchCall {
 diff --git a/codex-rs/core/src/context_manager/normalize.rs b/codex-rs/core/src/context_manager/normalize.rs
-index 839bae331..2e0e4ecde 100644
+index 839bae331e..2e0e4ecde2 100644
 --- a/codex-rs/core/src/context_manager/normalize.rs
 +++ b/codex-rs/core/src/context_manager/normalize.rs
 @@ -11,6 +11,31 @@ use tracing::info;
@@ -2994,7 +3097,7 @@ index 839bae331..2e0e4ecde 100644
      // Collect synthetic outputs to insert immediately after their calls.
      // Store the insertion position (index of call) alongside the item so
 diff --git a/codex-rs/core/src/memories/phase1.rs b/codex-rs/core/src/memories/phase1.rs
-index 37cb0e9f4..10c21ca3e 100644
+index 37cb0e9f48..10c21ca3ec 100644
 --- a/codex-rs/core/src/memories/phase1.rs
 +++ b/codex-rs/core/src/memories/phase1.rs
 @@ -339,6 +339,7 @@ mod job {
@@ -3006,7 +3109,7 @@ index 37cb0e9f4..10c21ca3e 100644
              output_schema: Some(output_schema()),
          };
 diff --git a/codex-rs/core/src/prompt_debug.rs b/codex-rs/core/src/prompt_debug.rs
-index 789aac580..a52e6c43c 100644
+index 789aac5806..a52e6c43cd 100644
 --- a/codex-rs/core/src/prompt_debug.rs
 +++ b/codex-rs/core/src/prompt_debug.rs
 @@ -85,6 +85,7 @@ pub(crate) async fn build_prompt_input_from_session(
@@ -3018,7 +3121,7 @@ index 789aac580..a52e6c43c 100644
  
      Ok(prompt.get_formatted_input())
 diff --git a/codex-rs/core/src/session_startup_prewarm.rs b/codex-rs/core/src/session_startup_prewarm.rs
-index acd9232c0..a790e1ca5 100644
+index acd9232c09..a790e1ca57 100644
 --- a/codex-rs/core/src/session_startup_prewarm.rs
 +++ b/codex-rs/core/src/session_startup_prewarm.rs
 @@ -220,6 +220,7 @@ async fn schedule_startup_prewarm_inner(
@@ -3030,7 +3133,7 @@ index acd9232c0..a790e1ca5 100644
      let startup_turn_metadata_header = startup_turn_context
          .turn_metadata_state
 diff --git a/codex-rs/core/src/stream_events_utils.rs b/codex-rs/core/src/stream_events_utils.rs
-index ac4334d68..7dfc1a654 100644
+index ac4334d683..7dfc1a6546 100644
 --- a/codex-rs/core/src/stream_events_utils.rs
 +++ b/codex-rs/core/src/stream_events_utils.rs
 @@ -87,6 +87,11 @@ fn strip_hidden_assistant_markup_and_parse_memory_citation(
@@ -3073,7 +3176,7 @@ index ac4334d68..7dfc1a654 100644
          }
          // Guardrail: the model issued a LocalShellCall without an id; surface the error back into history.
 diff --git a/codex-rs/core/src/thread_manager_tests.rs b/codex-rs/core/src/thread_manager_tests.rs
-index d3a56ce5e..368380ee2 100644
+index d3a56ce5ea..368380ee26 100644
 --- a/codex-rs/core/src/thread_manager_tests.rs
 +++ b/codex-rs/core/src/thread_manager_tests.rs
 @@ -273,7 +273,7 @@ async fn shutdown_all_threads_bounded_submits_shutdown_to_every_thread() {
@@ -3086,7 +3189,7 @@ index d3a56ce5e..368380ee2 100644
      let models_mock = mount_models_once(&server, ModelsResponse { models: vec![] }).await;
  
 diff --git a/codex-rs/core/src/tools/code_mode/execute_handler.rs b/codex-rs/core/src/tools/code_mode/execute_handler.rs
-index c46c3e045..13dcc25f1 100644
+index c46c3e0458..13dcc25f14 100644
 --- a/codex-rs/core/src/tools/code_mode/execute_handler.rs
 +++ b/codex-rs/core/src/tools/code_mode/execute_handler.rs
 @@ -1,3 +1,6 @@
@@ -3142,10 +3245,10 @@ index c46c3e045..13dcc25f1 100644
          }
      }
 diff --git a/codex-rs/core/src/tools/handlers/shell.rs b/codex-rs/core/src/tools/handlers/shell.rs
-index 970afd6f3..541c386c0 100644
+index 970afd6f33..bcf9b2fdd6 100644
 --- a/codex-rs/core/src/tools/handlers/shell.rs
 +++ b/codex-rs/core/src/tools/handlers/shell.rs
-@@ -88,6 +88,45 @@ struct RunExecLikeArgs {
+@@ -88,6 +88,55 @@ struct RunExecLikeArgs {
  }
  
  impl ShellHandler {
@@ -3153,6 +3256,16 @@ index 970afd6f3..541c386c0 100644
 +        command: &[String],
 +        tracker: &crate::tools::context::SharedTurnDiffTracker,
 +    ) -> bool {
++        // codex-litellm: allow operators to disable the upstream post-edit
++        // read-only-command block when a LiteLLM-fronted model regresses on
++        // the heuristic and refuses to verify its own edits. Opt-in via
++        // CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK=1.
++        if std::env::var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK")
++            .map(|v| !v.is_empty() && v != "0" && v.to_lowercase() != "false")
++            .unwrap_or(false)
++        {
++            return false;
++        }
 +        if !is_known_safe_command(command) || is_allowed_post_edit_read_only_command(command) {
 +            return false;
 +        }
@@ -3191,7 +3304,7 @@ index 970afd6f3..541c386c0 100644
      fn to_exec_params(
          params: &ShellToolCallParams,
          turn_context: &TurnContext,
-@@ -479,6 +518,14 @@ impl ShellHandler {
+@@ -479,6 +528,14 @@ impl ShellHandler {
              return Ok(output);
          }
  
@@ -3206,7 +3319,7 @@ index 970afd6f3..541c386c0 100644
          let source = ExecCommandSource::Agent;
          let emitter = ToolEmitter::shell(
              exec_params.command.clone(),
-@@ -552,6 +599,16 @@ impl ShellHandler {
+@@ -552,6 +609,16 @@ impl ShellHandler {
              )
              .await
              .map(|result| result.output);
@@ -3223,7 +3336,7 @@ index 970afd6f3..541c386c0 100644
          let event_ctx = ToolEventCtx::new(
              session.as_ref(),
              turn.as_ref(),
-@@ -574,6 +631,11 @@ impl ShellHandler {
+@@ -574,6 +641,11 @@ impl ShellHandler {
      }
  }
  
@@ -3235,11 +3348,78 @@ index 970afd6f3..541c386c0 100644
  #[cfg(test)]
  #[path = "shell_tests.rs"]
  mod tests;
+diff --git a/codex-rs/core/src/tools/handlers/shell_tests.rs b/codex-rs/core/src/tools/handlers/shell_tests.rs
+index fee47c2147..da0dc733df 100644
+--- a/codex-rs/core/src/tools/handlers/shell_tests.rs
++++ b/codex-rs/core/src/tools/handlers/shell_tests.rs
+@@ -283,3 +283,62 @@ fn build_post_tool_use_payload_uses_tool_output_wire_value() {
+         })
+     );
+ }
++
++// codex-litellm: cover the CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK escape hatch.
++// We exercise the bypass directly on a tracker that has already observed a
++// mutation, which is precisely the state in which upstream blocks read-only
++// follow-up commands. The opt-in env var must short-circuit before the tracker
++// is consulted; with the var unset, the upstream block must still apply.
++#[tokio::test(flavor = "current_thread")]
++async fn codex_litellm_post_edit_block_bypass_env_var_disables_block() {
++    let tracker = Arc::new(Mutex::new(TurnDiffTracker::new()));
++    {
++        let mut guard = tracker.lock().await;
++        guard.note_successful_mutating_shell_command();
++    }
++    let command = vec![
++        "bash".to_string(),
++        "-lc".to_string(),
++        "cat README.md".to_string(),
++    ];
++    // Sanity check: this command is exactly the kind upstream would block.
++    assert!(is_known_safe_command(&command));
++
++    // Safe-guard: we manipulate process-level env state.
++    // Save and restore so the test stays hermetic.
++    // SAFETY: tests in this crate run with `flavor = "current_thread"` so no
++    // other thread observes the env mutation while it is set.
++    let previous = std::env::var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK").ok();
++    unsafe { std::env::set_var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK", "1") };
++    let blocked = ShellHandler::should_block_post_edit_read_only_command(&command, &tracker).await;
++    match previous {
++        Some(value) => unsafe { std::env::set_var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK", value) },
++        None => unsafe { std::env::remove_var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK") },
++    }
++    assert!(!blocked, "bypass env var should disable the post-edit block");
++}
++
++#[tokio::test(flavor = "current_thread")]
++async fn codex_litellm_post_edit_block_bypass_default_keeps_upstream_behavior() {
++    let tracker = Arc::new(Mutex::new(TurnDiffTracker::new()));
++    {
++        let mut guard = tracker.lock().await;
++        guard.note_successful_mutating_shell_command();
++    }
++    let command = vec![
++        "bash".to_string(),
++        "-lc".to_string(),
++        "cat README.md".to_string(),
++    ];
++
++    let previous = std::env::var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK").ok();
++    unsafe { std::env::remove_var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK") };
++    let blocked = ShellHandler::should_block_post_edit_read_only_command(&command, &tracker).await;
++    if let Some(value) = previous {
++        unsafe { std::env::set_var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK", value) };
++    }
++    assert!(
++        blocked,
++        "without bypass env var, upstream post-edit block must still apply"
++    );
++}
 diff --git a/codex-rs/core/src/tools/handlers/unified_exec.rs b/codex-rs/core/src/tools/handlers/unified_exec.rs
-index fc1ad94b4..9d3f1c058 100644
+index fc1ad94b4d..16df52dbdf 100644
 --- a/codex-rs/core/src/tools/handlers/unified_exec.rs
 +++ b/codex-rs/core/src/tools/handlers/unified_exec.rs
-@@ -85,6 +85,47 @@ fn default_tty() -> bool {
+@@ -85,6 +85,57 @@ fn default_tty() -> bool {
      false
  }
  
@@ -3248,6 +3428,16 @@ index fc1ad94b4..9d3f1c058 100644
 +        command: &[String],
 +        tracker: &crate::tools::context::SharedTurnDiffTracker,
 +    ) -> bool {
++        // codex-litellm: allow operators to disable the upstream post-edit
++        // read-only-command block when a LiteLLM-fronted model regresses on
++        // the heuristic and refuses to verify its own edits. Opt-in via
++        // CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK=1.
++        if std::env::var("CODEX_LITELLM_DISABLE_POST_EDIT_BLOCK")
++            .map(|v| !v.is_empty() && v != "0" && v.to_lowercase() != "false")
++            .unwrap_or(false)
++        {
++            return false;
++        }
 +        if !is_known_safe_command(command) || is_allowed_post_edit_read_only_command(command) {
 +            return false;
 +        }
@@ -3287,7 +3477,7 @@ index fc1ad94b4..9d3f1c058 100644
  impl ToolHandler for UnifiedExecHandler {
      type Output = ExecCommandToolOutput;
  
-@@ -207,6 +248,7 @@ impl ToolHandler for UnifiedExecHandler {
+@@ -207,6 +258,7 @@ impl ToolHandler for UnifiedExecHandler {
                  )
                  .map_err(FunctionCallError::RespondToModel)?;
                  let command_for_display = codex_shell_command::parse_command::shlex_join(&command);
@@ -3295,7 +3485,7 @@ index fc1ad94b4..9d3f1c058 100644
  
                  let ExecCommandArgs {
                      workdir,
-@@ -308,7 +350,22 @@ impl ToolHandler for UnifiedExecHandler {
+@@ -308,7 +360,22 @@ impl ToolHandler for UnifiedExecHandler {
                  }
  
                  emit_unified_exec_tty_metric(&turn.session_telemetry, tty);
@@ -3319,7 +3509,7 @@ index fc1ad94b4..9d3f1c058 100644
                      .exec_command(
                          ExecCommandRequest {
                              command,
-@@ -333,7 +390,17 @@ impl ToolHandler for UnifiedExecHandler {
+@@ -333,7 +400,17 @@ impl ToolHandler for UnifiedExecHandler {
                          FunctionCallError::RespondToModel(format!(
                              "exec_command failed for `{command_for_display}`: {err:?}"
                          ))
@@ -3338,7 +3528,7 @@ index fc1ad94b4..9d3f1c058 100644
              }
              "write_stdin" => {
                  let args: WriteStdinArgs = parse_arguments(&arguments)?;
-@@ -413,6 +480,11 @@ pub(crate) fn get_command(
+@@ -413,6 +490,11 @@ pub(crate) fn get_command(
      }
  }
  
@@ -3351,7 +3541,7 @@ index fc1ad94b4..9d3f1c058 100644
  #[path = "unified_exec_tests.rs"]
  mod tests;
 diff --git a/codex-rs/core/src/tools/router.rs b/codex-rs/core/src/tools/router.rs
-index ce59eebe0..7de77faa5 100644
+index ce59eebe01..7de77faa5e 100644
 --- a/codex-rs/core/src/tools/router.rs
 +++ b/codex-rs/core/src/tools/router.rs
 @@ -16,6 +16,7 @@ use codex_protocol::models::SearchToolCallParams;
@@ -3383,7 +3573,7 @@ index ce59eebe0..7de77faa5 100644
                      Ok(Some(ToolCall {
                          tool_name: name,
 diff --git a/codex-rs/core/src/tools/router_tests.rs b/codex-rs/core/src/tools/router_tests.rs
-index e54981b3b..b5e633b0f 100644
+index e54981b3b1..b5e633b0f7 100644
 --- a/codex-rs/core/src/tools/router_tests.rs
 +++ b/codex-rs/core/src/tools/router_tests.rs
 @@ -152,3 +152,40 @@ async fn build_tool_call_uses_namespace_for_registry_name() -> anyhow::Result<()
@@ -3428,7 +3618,7 @@ index e54981b3b..b5e633b0f 100644
 +    Ok(())
 +}
 diff --git a/codex-rs/core/src/turn_diff_tracker.rs b/codex-rs/core/src/turn_diff_tracker.rs
-index 2353e49e8..b4cbb22ff 100644
+index 2353e49e82..b4cbb22ffe 100644
 --- a/codex-rs/core/src/turn_diff_tracker.rs
 +++ b/codex-rs/core/src/turn_diff_tracker.rs
 @@ -40,6 +40,8 @@ pub struct TurnDiffTracker {
@@ -3456,7 +3646,7 @@ index 2353e49e8..b4cbb22ff 100644
      /// - Creates an in-memory baseline snapshot for files that already exist on disk when first seen.
      /// - For additions, we intentionally do not create a baseline snapshot so that diffs are proper additions.
 diff --git a/codex-rs/core/tests/suite/cli_stream.rs b/codex-rs/core/tests/suite/cli_stream.rs
-index 156dd4a81..4a02b1377 100644
+index 156dd4a817..4a02b13773 100644
 --- a/codex-rs/core/tests/suite/cli_stream.rs
 +++ b/codex-rs/core/tests/suite/cli_stream.rs
 @@ -6,6 +6,7 @@ use codex_utils_cargo_bin::find_resource;
@@ -3611,7 +3801,7 @@ index 156dd4a81..4a02b1377 100644
  #[tokio::test(flavor = "multi_thread", worker_threads = 2)]
  async fn integration_creates_and_checks_session_file() -> anyhow::Result<()> {
 diff --git a/codex-rs/core/tests/suite/resume_warning.rs b/codex-rs/core/tests/suite/resume_warning.rs
-index f9ad64c77..f433c7af9 100644
+index f9ad64c771..f433c7af94 100644
 --- a/codex-rs/core/tests/suite/resume_warning.rs
 +++ b/codex-rs/core/tests/suite/resume_warning.rs
 @@ -9,6 +9,9 @@ use codex_protocol::protocol::EventMsg;
@@ -3738,7 +3928,7 @@ index f9ad64c77..f433c7af9 100644
 +    assert!(warning.is_err(), "unexpected warning event: {warning:?}");
 +}
 diff --git a/codex-rs/default.nix b/codex-rs/default.nix
-index 80896689f..f472d2065 100644
+index 80896689f9..f472d20658 100644
 --- a/codex-rs/default.nix
 +++ b/codex-rs/default.nix
 @@ -48,7 +48,7 @@ rustPlatform.buildRustPackage (_: {
@@ -3751,7 +3941,7 @@ index 80896689f..f472d2065 100644
      homepage = "https://github.com/openai/codex";
      mainProgram = "codex";
 diff --git a/codex-rs/exec/Cargo.toml b/codex-rs/exec/Cargo.toml
-index 0ec5d9b3c..3206d14a2 100644
+index 0ec5d9b3c8..3206d14a2d 100644
 --- a/codex-rs/exec/Cargo.toml
 +++ b/codex-rs/exec/Cargo.toml
 @@ -3,6 +3,7 @@ name = "codex-exec"
@@ -3771,7 +3961,7 @@ index 0ec5d9b3c..3206d14a2 100644
 +serde_json = { workspace = true }
 diff --git a/codex-rs/exec/build.rs b/codex-rs/exec/build.rs
 new file mode 100644
-index 000000000..54c4c79ee
+index 0000000000..54c4c79ee6
 --- /dev/null
 +++ b/codex-rs/exec/build.rs
 @@ -0,0 +1,5 @@
@@ -3781,7 +3971,7 @@ index 000000000..54c4c79ee
 +    emit_codex_litellm_display_version();
 +}
 diff --git a/codex-rs/exec/src/lib.rs b/codex-rs/exec/src/lib.rs
-index 81a0961fa..58d49043f 100644
+index 81a0961fa4..58d49043f0 100644
 --- a/codex-rs/exec/src/lib.rs
 +++ b/codex-rs/exec/src/lib.rs
 @@ -1323,11 +1323,8 @@ fn resume_lookup_model_providers(
@@ -3799,7 +3989,7 @@ index 81a0961fa..58d49043f 100644
  
  fn canceled_mcp_server_elicitation_response() -> Result<Value, String> {
 diff --git a/codex-rs/exec/tests/suite/resume.rs b/codex-rs/exec/tests/suite/resume.rs
-index cfaa7aa81..2321bf1e9 100644
+index cfaa7aa81a..2321bf1e92 100644
 --- a/codex-rs/exec/tests/suite/resume.rs
 +++ b/codex-rs/exec/tests/suite/resume.rs
 @@ -484,6 +484,96 @@ fn exec_resume_preserves_cli_configuration_overrides() -> anyhow::Result<()> {
@@ -3900,7 +4090,7 @@ index cfaa7aa81..2321bf1e9 100644
  fn exec_resume_accepts_images_after_subcommand() -> anyhow::Result<()> {
      let test = test_codex_exec();
 diff --git a/codex-rs/model-provider-info/Cargo.toml b/codex-rs/model-provider-info/Cargo.toml
-index 23c1b3415..875305ac5 100644
+index 23c1b3415b..875305ac57 100644
 --- a/codex-rs/model-provider-info/Cargo.toml
 +++ b/codex-rs/model-provider-info/Cargo.toml
 @@ -19,6 +19,7 @@ codex-protocol = { workspace = true }
@@ -3912,7 +4102,7 @@ index 23c1b3415..875305ac5 100644
  [dev-dependencies]
  codex-utils-absolute-path = { workspace = true }
 diff --git a/codex-rs/model-provider-info/src/lib.rs b/codex-rs/model-provider-info/src/lib.rs
-index f39ff0c7f..323df2113 100644
+index f39ff0c7fe..323df21130 100644
 --- a/codex-rs/model-provider-info/src/lib.rs
 +++ b/codex-rs/model-provider-info/src/lib.rs
 @@ -21,6 +21,7 @@ use serde::Serialize;
@@ -4003,7 +4193,7 @@ index f39ff0c7f..323df2113 100644
      // These CODEX_OSS_ environment variables are experimental: we may
      // switch to reading values from config.toml instead.
 diff --git a/codex-rs/models-manager/src/lib.rs b/codex-rs/models-manager/src/lib.rs
-index e99c33edb..4f369a95a 100644
+index e99c33edb9..4f369a95a0 100644
 --- a/codex-rs/models-manager/src/lib.rs
 +++ b/codex-rs/models-manager/src/lib.rs
 @@ -4,6 +4,7 @@ pub(crate) mod config;
@@ -4015,7 +4205,7 @@ index e99c33edb..4f369a95a 100644
  pub use codex_app_server_protocol::AuthMode;
  pub use codex_login::AuthManager;
 diff --git a/codex-rs/models-manager/src/manager.rs b/codex-rs/models-manager/src/manager.rs
-index a7d4aa12a..07f5ab526 100644
+index a7d4aa12ab..07f5ab5263 100644
 --- a/codex-rs/models-manager/src/manager.rs
 +++ b/codex-rs/models-manager/src/manager.rs
 @@ -3,6 +3,8 @@ use crate::collaboration_mode_presets::CollaborationModesConfig;
@@ -4233,7 +4423,7 @@ index a7d4aa12a..07f5ab526 100644
          self.remote_models.read().await.clone()
      }
 diff --git a/codex-rs/models-manager/src/model_info.rs b/codex-rs/models-manager/src/model_info.rs
-index fefec50ce..c0184db48 100644
+index fefec50ce7..c0184db483 100644
 --- a/codex-rs/models-manager/src/model_info.rs
 +++ b/codex-rs/models-manager/src/model_info.rs
 @@ -4,6 +4,8 @@ use codex_protocol::openai_models::ModelInfo;
@@ -4376,7 +4566,7 @@ index fefec50ce..c0184db48 100644
          "gpt-5.2-codex" | "exp-codex-personality" => Some(ModelMessages {
 diff --git a/codex-rs/models-manager/src/supported_models.rs b/codex-rs/models-manager/src/supported_models.rs
 new file mode 100644
-index 000000000..0b7af3e31
+index 0000000000..0b7af3e314
 --- /dev/null
 +++ b/codex-rs/models-manager/src/supported_models.rs
 @@ -0,0 +1,60 @@
@@ -4441,7 +4631,7 @@ index 000000000..0b7af3e31
 +    AGENTIC_SUPPORTED_MODELS
 +}
 diff --git a/codex-rs/protocol/src/openai_models.rs b/codex-rs/protocol/src/openai_models.rs
-index 3339e674b..8cca6f175 100644
+index 3339e674be..8cca6f175f 100644
 --- a/codex-rs/protocol/src/openai_models.rs
 +++ b/codex-rs/protocol/src/openai_models.rs
 @@ -420,6 +420,45 @@ pub struct ModelsResponse {
@@ -4491,7 +4681,7 @@ index 3339e674b..8cca6f175 100644
  impl From<ModelInfo> for ModelPreset {
      fn from(info: ModelInfo) -> Self {
 diff --git a/codex-rs/tui/Cargo.toml b/codex-rs/tui/Cargo.toml
-index 2547fd16f..906bb6793 100644
+index 2547fd16f7..906bb67939 100644
 --- a/codex-rs/tui/Cargo.toml
 +++ b/codex-rs/tui/Cargo.toml
 @@ -3,6 +3,7 @@ name = "codex-tui"
@@ -4511,7 +4701,7 @@ index 2547fd16f..906bb6793 100644
 +serde_json = { workspace = true }
 diff --git a/codex-rs/tui/build.rs b/codex-rs/tui/build.rs
 new file mode 100644
-index 000000000..54c4c79ee
+index 0000000000..54c4c79ee6
 --- /dev/null
 +++ b/codex-rs/tui/build.rs
 @@ -0,0 +1,5 @@
@@ -4521,7 +4711,7 @@ index 000000000..54c4c79ee
 +    emit_codex_litellm_display_version();
 +}
 diff --git a/codex-rs/tui/src/app.rs b/codex-rs/tui/src/app.rs
-index 3791039f3..9a03e00ed 100644
+index 3791039f35..9a03e00ede 100644
 --- a/codex-rs/tui/src/app.rs
 +++ b/codex-rs/tui/src/app.rs
 @@ -43,7 +43,7 @@ use crate::multi_agents::format_agent_picker_item_name;
@@ -4911,7 +5101,7 @@ index 3791039f3..9a03e00ed 100644
      async fn sync_tui_theme_selection_updates_chat_widget_config_copy() {
          let mut app = make_test_app().await;
 diff --git a/codex-rs/tui/src/app_event.rs b/codex-rs/tui/src/app_event.rs
-index 78a252535..b036bce9c 100644
+index 78a2525350..b036bce9c9 100644
 --- a/codex-rs/tui/src/app_event.rs
 +++ b/codex-rs/tui/src/app_event.rs
 @@ -368,11 +368,6 @@ pub(crate) enum AppEvent {
@@ -4927,7 +5117,7 @@ index 78a252535..b036bce9c 100644
      OpenFullAccessConfirmation {
          preset: ApprovalPreset,
 diff --git a/codex-rs/tui/src/chatwidget.rs b/codex-rs/tui/src/chatwidget.rs
-index 5bf1eea30..482e4a5ca 100644
+index 5bf1eea305..482e4a5ca5 100644
 --- a/codex-rs/tui/src/chatwidget.rs
 +++ b/codex-rs/tui/src/chatwidget.rs
 @@ -242,6 +242,7 @@ use tracing::debug;
@@ -5263,7 +5453,7 @@ index 5bf1eea30..482e4a5ca 100644
      fn collaboration_mode_label(&self) -> Option<&'static str> {
          if !self.collaboration_modes_enabled() {
 diff --git a/codex-rs/tui/src/history_cell.rs b/codex-rs/tui/src/history_cell.rs
-index 67bde227d..2cd85c7d0 100644
+index 67bde227d9..2cd85c7d06 100644
 --- a/codex-rs/tui/src/history_cell.rs
 +++ b/codex-rs/tui/src/history_cell.rs
 @@ -34,7 +34,7 @@ use crate::text_formatting::truncate_text;
@@ -5316,7 +5506,7 @@ index 67bde227d..2cd85c7d0 100644
              Span::from(format!("(v{})", self.version)).dim(),
          ];
 diff --git a/codex-rs/tui/src/lib.rs b/codex-rs/tui/src/lib.rs
-index 19c233c62..656f52a9f 100644
+index 19c233c62f..656f52a9f6 100644
 --- a/codex-rs/tui/src/lib.rs
 +++ b/codex-rs/tui/src/lib.rs
 @@ -480,6 +480,7 @@ fn session_target_from_app_server_thread(
@@ -5418,7 +5608,7 @@ index 19c233c62..656f52a9f 100644
  
          assert_eq!(target.display_label(), format!("thread {thread_id}"));
 diff --git a/codex-rs/tui/src/resume_picker.rs b/codex-rs/tui/src/resume_picker.rs
-index 53f33bfb0..f2a27bfb1 100644
+index 53f33bfb0e..f2a27bfb13 100644
 --- a/codex-rs/tui/src/resume_picker.rs
 +++ b/codex-rs/tui/src/resume_picker.rs
 @@ -50,6 +50,7 @@ const LOAD_NEAR_THRESHOLD: usize = 5;
@@ -5631,7 +5821,7 @@ index 53f33bfb0..f2a27bfb1 100644
              other => panic!("unexpected selection: {other:?}"),
          }
 diff --git a/codex-rs/tui/src/slash_command.rs b/codex-rs/tui/src/slash_command.rs
-index 635dc317f..c483d9fde 100644
+index 635dc317f8..c483d9fdef 100644
 --- a/codex-rs/tui/src/slash_command.rs
 +++ b/codex-rs/tui/src/slash_command.rs
 @@ -94,7 +94,7 @@ impl SlashCommand {
@@ -5644,7 +5834,7 @@ index 635dc317f..c483d9fde 100644
              SlashCommand::Personality => "choose a communication style for Codex",
              SlashCommand::Realtime => "toggle realtime voice mode (experimental)",
 diff --git a/codex-rs/tui/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap b/codex-rs/tui/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap
-index 98d601506..2d9de3da1 100644
+index 98d6015064..2d9de3da10 100644
 --- a/codex-rs/tui/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap
 +++ b/codex-rs/tui/src/snapshots/codex_tui__app__tests__clear_ui_after_long_transcript_fresh_header_only.snap
 @@ -3,7 +3,7 @@ source: tui/src/app.rs
@@ -5657,7 +5847,7 @@ index 98d601506..2d9de3da1 100644
  │ model:     gpt-test high   /model to change │
  │ directory: /tmp/project                     │
 diff --git a/codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__session_info_availability_nux_tooltip_snapshot.snap b/codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__session_info_availability_nux_tooltip_snapshot.snap
-index ad0fc4be1..ee4dcfd06 100644
+index ad0fc4be1c..ee4dcfd062 100644
 --- a/codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__session_info_availability_nux_tooltip_snapshot.snap
 +++ b/codex-rs/tui/src/snapshots/codex_tui__history_cell__tests__session_info_availability_nux_tooltip_snapshot.snap
 @@ -3,7 +3,7 @@ source: tui/src/history_cell.rs
@@ -5670,7 +5860,7 @@ index ad0fc4be1..ee4dcfd06 100644
  │ model:     gpt-5   /model to change │
  │ directory: /tmp/project             │
 diff --git a/codex-rs/tui/src/status/card.rs b/codex-rs/tui/src/status/card.rs
-index 198eee8e4..13bb03e08 100644
+index 198eee8e44..13bb03e085 100644
 --- a/codex-rs/tui/src/status/card.rs
 +++ b/codex-rs/tui/src/status/card.rs
 @@ -2,7 +2,7 @@ use crate::history_cell::CompositeHistoryCell;
@@ -5695,7 +5885,7 @@ index 198eee8e4..13bb03e08 100644
          lines.push(Line::from(Vec::<Span<'static>>::new()));
  
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
-index 4c2018abf..986199446 100644
+index 4c2018abf1..9861994463 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_cached_limits_hide_credits_without_flag.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5708,7 +5898,7 @@ index 4c2018abf..986199446 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date       │
  │ information on rate limits and credits                              │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_credits_and_limits.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_credits_and_limits.snap
-index 6cc7a8946..cbcb5e077 100644
+index 6cc7a8946c..cbcb5e0772 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_credits_and_limits.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_credits_and_limits.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5721,7 +5911,7 @@ index 6cc7a8946..cbcb5e077 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date     │
  │ information on rate limits and credits                            │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_forked_from.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_forked_from.snap
-index fa0df32ed..cb78a3039 100644
+index fa0df32ed4..cb78a3039a 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_forked_from.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_forked_from.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5734,7 +5924,7 @@ index fa0df32ed..cb78a3039 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date         │
  │ information on rate limits and credits                                │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
-index 027d935c7..42ca2e836 100644
+index 027d935c70..42ca2e8360 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_monthly_limit.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5747,7 +5937,7 @@ index 027d935c7..42ca2e836 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date              │
  │ information on rate limits and credits                                     │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
-index 9115a04d5..44c6ca4b1 100644
+index 9115a04d5f..44c6ca4b1a 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_includes_reasoning_details.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5760,7 +5950,7 @@ index 9115a04d5..44c6ca4b1 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date             │
  │ information on rate limits and credits                                    │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
-index 6db1821d4..02cbf210f 100644
+index 6db1821d4c..02cbf210f5 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_missing_limits_message.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5773,7 +5963,7 @@ index 6db1821d4..02cbf210f 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date         │
  │ information on rate limits and credits                                │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap
-index e6043b65f..8560a4f64 100644
+index e6043b65f3..8560a4f644 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_shows_stale_limits_message.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5786,7 +5976,7 @@ index e6043b65f..8560a4f64 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date         │
  │ information on rate limits and credits                                │
 diff --git a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
-index 91057d482..17f241b6c 100644
+index 91057d482b..17f241b6c6 100644
 --- a/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
 +++ b/codex-rs/tui/src/status/snapshots/codex_tui__status__tests__status_snapshot_truncates_in_narrow_terminal.snap
 @@ -5,7 +5,7 @@ expression: sanitized
@@ -5799,7 +5989,7 @@ index 91057d482..17f241b6c 100644
  │ Visit https://chatgpt.com/codex/settings/usage for up-to-date      │
  │ information on rate limits and credits                             │
 diff --git a/codex-rs/tui/src/version.rs b/codex-rs/tui/src/version.rs
-index 8c8d108dc..9b102cbca 100644
+index 8c8d108dc6..9b102cbca6 100644
 --- a/codex-rs/tui/src/version.rs
 +++ b/codex-rs/tui/src/version.rs
 @@ -1,2 +1,6 @@
