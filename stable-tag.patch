@@ -1662,7 +1662,7 @@ index 97781ac419..2e1673f1d2 100644
 +    }
  }
 diff --git a/codex-rs/core/src/client.rs b/codex-rs/core/src/client.rs
-index 16f743943a..3e5fa3ea33 100644
+index 16f743943a..e4af193e6f 100644
 --- a/codex-rs/core/src/client.rs
 +++ b/codex-rs/core/src/client.rs
 @@ -119,6 +119,10 @@ use codex_response_debug_context::extract_response_debug_context;
@@ -1859,8 +1859,24 @@ index 16f743943a..3e5fa3ea33 100644
          let default_reasoning_effort = model_info.default_reasoning_level;
          let reasoning = if model_info.supports_reasoning_summaries {
              Some(Reasoning {
-@@ -864,7 +1000,7 @@ impl ModelClientSession {
+@@ -862,9 +998,23 @@ impl ModelClientSession {
+         };
+         let text = create_text_param_for_request(verbosity, &prompt.output_schema);
          let prompt_cache_key = Some(self.client.state.conversation_id.to_string());
++        // codex-litellm: LiteLLM does not yet recognize `client_metadata` as an
++        // OpenAI Responses API parameter, so it forwards the field unchanged
++        // into provider-specific request bodies. On Bedrock application
++        // inference profiles this triggers a 400 "Extra inputs are not
++        // permitted" error. Omit the field when the active provider is
++        // LiteLLM-backed; OpenAI-hosted paths keep the upstream behavior.
++        let client_metadata = if ModelClientSession::provider_uses_litellm_behavior(provider) {
++            None
++        } else {
++            Some(HashMap::from([(
++                X_CODEX_INSTALLATION_ID_HEADER.to_string(),
++                self.client.state.installation_id.clone(),
++            )]))
++        };
          let request = ResponsesApiRequest {
              model: model_info.slug.clone(),
 -            instructions: instructions.clone(),
@@ -1868,7 +1884,16 @@ index 16f743943a..3e5fa3ea33 100644
              input,
              tools,
              tool_choice: "auto".to_string(),
-@@ -888,6 +1024,31 @@ impl ModelClientSession {
+@@ -880,14 +1030,36 @@ impl ModelClientSession {
+             },
+             prompt_cache_key,
+             text,
+-            client_metadata: Some(HashMap::from([(
+-                X_CODEX_INSTALLATION_ID_HEADER.to_string(),
+-                self.client.state.installation_id.clone(),
+-            )])),
++            client_metadata,
+         };
          Ok(request)
      }
  
@@ -1900,7 +1925,7 @@ index 16f743943a..3e5fa3ea33 100644
      #[allow(clippy::too_many_arguments)]
      /// Builds shared Responses API transport options and request-body options.
      ///
-@@ -1166,24 +1327,10 @@ impl ModelClientSession {
+@@ -1166,24 +1338,10 @@ impl ModelClientSession {
              .as_ref()
              .map(AuthManager::unauthorized_recovery);
          let mut pending_retry = PendingUnauthorizedRetry::default();
@@ -1927,7 +1952,7 @@ index 16f743943a..3e5fa3ea33 100644
                  &client_setup.api_provider,
                  prompt,
                  model_info,
-@@ -1191,33 +1338,67 @@ impl ModelClientSession {
+@@ -1191,33 +1349,67 @@ impl ModelClientSession {
                  summary,
                  service_tier,
              )?;
@@ -2020,7 +2045,7 @@ index 16f743943a..3e5fa3ea33 100644
              }
          }
      }
-@@ -1508,6 +1689,12 @@ fn parse_turn_metadata_header(turn_metadata_header: Option<&str>) -> Option<Head
+@@ -1508,6 +1700,12 @@ fn parse_turn_metadata_header(turn_metadata_header: Option<&str>) -> Option<Head
      turn_metadata_header.and_then(|value| HeaderValue::from_str(value).ok())
  }
  
@@ -2069,7 +2094,7 @@ index c1dfa29edc..57c49008b1 100644
          let mut input = self.input.clone();
  
 diff --git a/codex-rs/core/src/client_tests.rs b/codex-rs/core/src/client_tests.rs
-index 2fd5f04f95..2b4cd8dcd6 100644
+index 2fd5f04f95..5e6457c6d2 100644
 --- a/codex-rs/core/src/client_tests.rs
 +++ b/codex-rs/core/src/client_tests.rs
 @@ -34,6 +34,23 @@ fn test_model_client(session_source: SessionSource) -> ModelClient {
@@ -2171,7 +2196,7 @@ index 2fd5f04f95..2b4cd8dcd6 100644
  fn test_session_telemetry() -> SessionTelemetry {
      SessionTelemetry::new(
          ThreadId::new(),
-@@ -151,6 +236,220 @@ async fn summarize_memories_returns_empty_for_empty_input() {
+@@ -151,6 +236,251 @@ async fn summarize_memories_returns_empty_for_empty_input() {
      assert_eq!(output.len(), 0);
  }
  
@@ -2353,6 +2378,37 @@ index 2fd5f04f95..2b4cd8dcd6 100644
 +    assert!(session.websocket_session.last_request.is_none());
 +    assert!(session.websocket_session.last_response_rx.is_none());
 +    assert!(!session.websocket_session.connection_reused());
++}
++
++#[test]
++fn build_responses_request_omits_client_metadata_for_litellm_provider() {
++    // codex-litellm: LiteLLM forwards unknown OpenAI Responses params straight
++    // into provider-specific payloads. On Bedrock application inference
++    // profiles this triggers a 400 "Extra inputs are not permitted" error on
++    // `client_metadata`. The build path must therefore omit the field for
++    // LiteLLM providers while leaving it set for upstream OpenAI paths.
++    let client = test_model_client(SessionSource::Cli);
++    let session = client.new_session();
++    let model_info = test_model_info();
++    let provider = test_litellm_provider();
++    let prompt = Prompt::default();
++
++    let request = session
++        .build_responses_request(
++            &provider,
++            &prompt,
++            &model_info,
++            None,
++            ReasoningSummaryConfig::None,
++            None,
++        )
++        .expect("request");
++
++    assert!(
++        request.client_metadata.is_none(),
++        "LiteLLM build path must omit client_metadata, got {:?}",
++        request.client_metadata,
++    );
 +}
 +
 +#[test]
