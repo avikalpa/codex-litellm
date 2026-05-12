@@ -2807,6 +2807,53 @@ index 6e901a0346..add539fb02 100644
  #[tokio::test]
  async fn build_initial_context_uses_previous_turn_settings_for_realtime_end() {
      let (session, turn_context) = make_session_and_context().await;
+diff --git a/codex-rs/core/src/compact.rs b/codex-rs/core/src/compact.rs
+index e132ce0213..ba7eab70f0 100644
+--- a/codex-rs/core/src/compact.rs
++++ b/codex-rs/core/src/compact.rs
+@@ -176,9 +176,30 @@ async fn run_compact_task_inner_impl(
+ 
+     loop {
+         // Clone is required because of the loop
+-        let turn_input = history
++        let mut turn_input = history
+             .clone()
+             .for_prompt(&turn_context.model_info.input_modalities);
++        // codex-litellm: Bedrock Converse rejects requests that carry tool
++        // `toolUse`/`toolResult` content blocks without a `toolConfig` (i.e. a
++        // declared `tools` array). The compaction Prompt intentionally omits
++        // tools (it is a summarization turn), so we strip every tool item from
++        // the historical payload sent to LiteLLM-backed providers. The
++        // assistant `Message` items that explained each tool action remain, so
++        // the summarizer keeps the narrative context. See LiteLLM trace:
++        // "The toolConfig field must be defined when using toolUse and
++        // toolResult content blocks."
++        if provider_name_uses_litellm_behavior(&turn_context.provider.name) {
++            turn_input.retain(|item| {
++                !matches!(
++                    item,
++                    ResponseItem::FunctionCall { .. }
++                        | ResponseItem::FunctionCallOutput { .. }
++                        | ResponseItem::LocalShellCall { .. }
++                        | ResponseItem::CustomToolCall { .. }
++                        | ResponseItem::CustomToolCallOutput { .. }
++                )
++            });
++        }
+         let turn_input_len = turn_input.len();
+         let prompt = Prompt {
+             input: turn_input,
+@@ -588,3 +609,10 @@ async fn drain_to_completed(
+ #[cfg(test)]
+ #[path = "compact_tests.rs"]
+ mod tests;
++
++/// codex-litellm: local mirror of the LiteLLM-detection heuristic that lives
++/// in `client.rs`. Duplicated intentionally to avoid widening the visibility
++/// of the canonical helper for a single call site.
++fn provider_name_uses_litellm_behavior(provider_name: &str) -> bool {
++    provider_name.to_ascii_lowercase().contains("litellm")
++}
 diff --git a/codex-rs/core/src/compact_remote.rs b/codex-rs/core/src/compact_remote.rs
 index 3e8e1e3a39..36b0dc5173 100644
 --- a/codex-rs/core/src/compact_remote.rs
