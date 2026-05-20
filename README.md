@@ -18,7 +18,7 @@ It keeps the Codex agent loop, but lets you run it against agentic models from m
 
 - Software license: Apache-2.0
 - Documentation license: CC BY 4.0
-- Current upstream base: `rust-v0.120.0`
+- Current upstream base: `rust-v0.132.0`
 - Default LiteLLM runtime path: `/responses`
 
 ## 1. What This Project Is For
@@ -59,13 +59,12 @@ The npm package downloads a prebuilt binary from GitHub Releases for your platfo
 
 `codex-litellm` is meant to use the same default home as Codex: `~/.codex`.
 
-That is intentional. The normal user path should not require a special debug-only `CODEX_HOME`.
-
-The extra LiteLLM-specific inputs you usually need are:
+On first interactive launch it runs a small LiteLLM setup flow that asks for:
 - `LITELLM_BASE_URL`
 - `LITELLM_API_KEY`
+- an optional default model slug
 
-Put them in `~/.codex/.env`:
+The setup writes the LiteLLM profile to `~/.codex/config.toml` and stores secrets in `~/.codex/.env`. You can also preconfigure those values yourself:
 
 ```bash
 mkdir -p ~/.codex
@@ -75,7 +74,7 @@ LITELLM_API_KEY=your-litellm-api-key
 EOF2
 ```
 
-Then define the LiteLLM provider and a default profile in `~/.codex/config.toml`:
+Then define the LiteLLM provider and profile in `~/.codex/config.toml`:
 
 ```toml
 [model_providers.litellm]
@@ -85,11 +84,11 @@ env_key = "LITELLM_API_KEY"
 wire_api = "responses"
 
 [profiles.codex-litellm]
-model = "vercel/minimax-m2.7-highspeed"
+model = "vercel/maa/minimax-m2.7-highspeed"
 model_provider = "litellm"
 ```
 
-For most users, this is enough to get started.
+For most users, either the first-run setup or this manual config is enough to get started.
 
 ## 4. First Run
 
@@ -103,7 +102,7 @@ Or run a one-shot command:
 
 ```bash
 codex-litellm exec "Summarize this repository"
-codex-litellm exec "Refactor this function" --model vercel/minimax-m2.7-highspeed
+codex-litellm exec "Refactor this function" --model vercel/maa/minimax-m2.7-highspeed
 ```
 
 If you already use plain `codex`, you can keep doing that. The two CLIs are meant to coexist.
@@ -130,20 +129,20 @@ This is intentional: one shared history, with separate runtime defaults for each
 The Codex harness rewards agentic behavior: models need to search, edit, stop at the right time, and return a final answer. A model that looks clever in benchmarks or chat demos may still be poor at Codex-style work.
 
 Current recommendation on the LiteLLM `/responses` path:
-- `Recommended default`: `vercel/minimax-m2.7-highspeed`
-- `Recommended cheaper second option`: `vercel/claude-haiku-4.5`
-- `Research lane`: `vercel/glm-5-turbo`, `vercel/gemini-3.1-pro-preview`, `vercel/grok-4.20-reasoning-beta`, `vercel/kimi-k2.5`
-- `Blocked`: `vercel/deepseek-v3.2-thinking`
+- `Recommended default`: `vercel/maa/minimax-m2.7-highspeed`
+- `Recommended cheaper second option`: `vercel/maa/claude-haiku-4.5`
+- `Research lane`: `vercel/maa/glm-5.1`, `vercel/maa/kimi-k2.6`, `vercel/maa/deepseek-v4-pro`
+- `Watchlist`: gateway routes for Gemini and Grok when available
 
 The practical reading is simple:
 - start with MiniMax
 - if you want a cheaper serious option, try Claude Haiku
-- treat GLM, Gemini, Grok, and Kimi as research candidates, not default daily drivers
-- do not spend time trying to force DeepSeek through this `/responses` stack until the bridge issue is fixed
+- treat GLM, Kimi, and DeepSeek as research candidates, not default daily drivers
+- rerun discovery before assuming a route still exists; this gateway currently uses `vercel/maa/...` names for these families
 
-### Why DeepSeek Is Marked Blocked
+### Why DeepSeek Needs A Fresh Gate
 
-DeepSeek is currently blocked because the LiteLLM `/responses` bridge is not carrying its tool-follow-up turns cleanly enough for reliable Codex use. This is a bridge-path issue, not just a model-quality issue.
+Previous DeepSeek routes were blocked because the LiteLLM `/responses` bridge did not carry tool-follow-up turns cleanly enough for reliable Codex use. The current gateway exposes `vercel/maa/deepseek-v4-pro`, but it should stay in the research lane until it passes the same live repo-edit gates as MiniMax.
 
 ## 7. Economics
 
@@ -163,8 +162,8 @@ If your real goal is the best possible flagship OpenAI Codex experience, the off
 Practical spending advice:
 - if you want the safest default here, spend on MiniMax first
 - if you want a cheaper serious lane, try Claude Haiku before escalating to more expensive research models
-- treat GLM, Gemini, Grok, and Kimi as measured experiments, not daily-driver defaults
-- do not spend money re-proving DeepSeek on the current `/responses` stack until the bridge issue is fixed
+- treat GLM, Kimi, DeepSeek, Gemini, and Grok routes as measured experiments, not daily-driver defaults
+- do not spend money trusting a refreshed DeepSeek route until it passes the live repo-edit gates
 - if you are mainly chasing flagship-quality output rather than multi-provider flexibility, use official Codex instead of paying an indirection tax here
 
 Use the route that gives you the best result for the money and operational complexity.
@@ -193,6 +192,7 @@ That means:
 - new work is validated against `/responses`
 - model curation is based on `/responses` behavior
 - known-broken routes are documented plainly instead of hidden behind fallback folklore
+- `/chat/completions` is deprecated for this project; old `wire_api = "chat"` provider configs should be changed to `wire_api = "responses"`
 
 A route should only be treated as supported if it works on the path users are expected to run.
 
@@ -238,13 +238,13 @@ The table below summarizes current live results.
 
 | Model | `mini-web` | `python-cli` | `calibre-web` exploratory | What usually goes wrong | Current recommendation |
 | --- | --- | --- | --- | --- | --- |
-| `vercel/minimax-m2.7-highspeed` | PASS | PASS | FAIL under route pressure, no clean diff on the latest heavy probe | larger repos currently amplify retry or 429 noise | recommended default |
-| `vercel/claude-haiku-4.5` | PASS | PASS | not yet cleanly completed in the latest heavy probe batch | needs more large-repo evidence | recommended cheaper second option |
-| `vercel/glm-5-turbo` | FAIL | FAIL | FAIL | retry and 429 noise before a useful diff | research lane only |
+| `vercel/maa/minimax-m2.7-highspeed` | PASS | PASS | PASS on the 2026-05-20 release gate | can produce broad CSS edits, but still verify the diff because fixture quality varies | recommended default |
+| `vercel/maa/claude-haiku-4.5` | PASS | PASS | not yet cleanly completed in the latest heavy probe batch | needs more large-repo evidence | recommended cheaper second option |
+| `vercel/maa/glm-5.1` | unknown on the refreshed route | unknown on the refreshed route | unknown on the refreshed route | needs a fresh matrix run | research lane only |
 | `vercel/gemini-3.1-pro-preview` | EDITS, THEN STALLS | TIMEOUT | blocked by current gateway credits on the latest heavy probe | post-edit finalization is still too weak, and heavy-repo results are currently confounded by billing state | watchlist only |
 | `vercel/grok-4.20-reasoning-beta` | PASS | FAIL | incomplete probe | can look strong on light UI work, then fail to produce a qualifying diff on procedural work | watchlist only |
-| `vercel/kimi-k2.5` | FAIL | PASS | blocked by current gateway credits on the latest heavy probe | behavior is fixture-sensitive; it handles procedural edits better than broad UI hunting | research lane only |
-| `vercel/deepseek-v3.2-thinking` | BLOCKED | BLOCKED | not worth probing further until bridge fix | LiteLLM `/responses` tool-follow-up incompatibility | blocked on this stack |
+| `vercel/maa/kimi-k2.6` | unknown on the refreshed route | unknown on the refreshed route | unknown on the refreshed route | needs a fresh matrix run | research lane only |
+| `vercel/maa/deepseek-v4-pro` | unknown on the refreshed route | unknown on the refreshed route | unknown on the refreshed route | previous DeepSeek routes had `/responses` follow-up issues; retest before use | research lane only |
 
 ### What The Labels Mean
 
@@ -343,6 +343,6 @@ User-facing docs live in `README.md`.
 
 Operator-facing docs live in:
 - `AGENTS.md`
-- `agent_docs/`
+- `docs/`
 
 If user-facing behavior changes, update `README.md` and the changelog to match.

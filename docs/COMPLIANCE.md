@@ -9,7 +9,7 @@
   - packaged release artifacts
 - Prose documentation is under CC BY 4.0:
   - `AGENTS.md`
-  - `agent_docs/`
+  - `docs/`
 - Upstream `openai/codex` remains Apache-2.0. Keep upstream attribution intact.
 
 ## Root Files

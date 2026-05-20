@@ -50,6 +50,10 @@ cleanup() {
   if [[ -n "$TMP_UPSTREAM_DIR" ]]; then
     rm -rf "$TMP_UPSTREAM_DIR"
   fi
+  for _ in 1 2 3; do
+    rm -rf "$tmpdir" && return
+    sleep 0.2
+  done
   rm -rf "$tmpdir"
 }
 trap cleanup EXIT
@@ -78,7 +82,7 @@ class Handler(BaseHTTPRequestHandler):
             body = (
                 '{"object":"list","data":['
                 '{"id":"gpt-5.4","object":"model"},'
-                '{"id":"vercel/minimax-m2.7-highspeed","object":"model"}'
+                '{"id":"vercel/maa/minimax-m2.7-highspeed","object":"model"}'
                 ']}'
             )
             self.send_response(200)
@@ -139,7 +143,7 @@ env_key = "LITELLM_API_KEY"
 wire_api = "responses"
 
 [profiles.codex-litellm]
-model = "vercel/minimax-m2.7-highspeed"
+model = "vercel/maa/minimax-m2.7-highspeed"
 model_provider = "litellm"
 EOF
 }
@@ -217,15 +221,68 @@ run_case \
   gpt-5.4 \
   "$LITELLM_BIN" \
   litellm \
-  vercel/minimax-m2.7-highspeed
+  vercel/maa/minimax-m2.7-highspeed
 
-run_case \
-  litellm-to-openai \
-  "$LITELLM_BIN" \
-  litellm \
-  vercel/minimax-m2.7-highspeed \
-  "$CODEX_BIN" \
-  openai-local \
-  gpt-5.4
+run_upstream_provider_filter_case() {
+  local case_name="upstream-provider-filter"
+  local home_root="$tmpdir/$case_name-home"
+  local openai_out="$tmpdir/$case_name-openai.out"
+  local litellm_out="$tmpdir/$case_name-litellm.out"
+  local resume_out="$tmpdir/$case_name-resume.out"
+  local openai_marker="seed-openai-${case_name}"
+  local litellm_marker="seed-litellm-${case_name}"
+  local resume_marker="resume-${case_name}"
+  local sessions_dir
+  local openai_path
+  local litellm_path
+  local resumed_path
+
+  write_config "$home_root"
+  sessions_dir="$home_root/.codex/sessions"
+  : >"$REQUEST_LOG"
+
+  HOME="$home_root" \
+  OPENAI_API_KEY=dummy-openai-key \
+  OPENAI_BASE_URL=http://127.0.0.1:8767/v1 \
+  LITELLM_API_KEY=dummy-litellm-key \
+  "$CODEX_BIN" exec --skip-git-repo-check -C "$WORKDIR" "$openai_marker" >"$openai_out" 2>&1
+
+  grep -q "provider: openai-local" "$openai_out"
+  grep -q "\"model\":\"gpt-5.4\"" "$REQUEST_LOG"
+  openai_path=$(find_session_path "$sessions_dir" "$openai_marker")
+  [[ -n "$openai_path" ]]
+
+  : >"$REQUEST_LOG"
+
+  HOME="$home_root" \
+  OPENAI_API_KEY=dummy-openai-key \
+  OPENAI_BASE_URL=http://127.0.0.1:8767/v1 \
+  LITELLM_API_KEY=dummy-litellm-key \
+  "$LITELLM_BIN" exec --skip-git-repo-check -C "$WORKDIR" "$litellm_marker" >"$litellm_out" 2>&1
+
+  grep -q "provider: litellm" "$litellm_out"
+  grep -q "\"model\":\"vercel/maa/minimax-m2.7-highspeed\"" "$REQUEST_LOG"
+  litellm_path=$(find_session_path "$sessions_dir" "$litellm_marker")
+  [[ -n "$litellm_path" ]]
+  [[ "$openai_path" != "$litellm_path" ]]
+
+  : >"$REQUEST_LOG"
+
+  HOME="$home_root" \
+  OPENAI_API_KEY=dummy-openai-key \
+  OPENAI_BASE_URL=http://127.0.0.1:8767/v1 \
+  LITELLM_API_KEY=dummy-litellm-key \
+  "$CODEX_BIN" exec --skip-git-repo-check -C "$WORKDIR" resume --last --all "$resume_marker" >"$resume_out" 2>&1
+
+  grep -q "provider: openai-local" "$resume_out"
+  grep -q "model: gpt-5.4" "$resume_out"
+  grep -q "^hi$" "$resume_out"
+  grep -q "\"model\":\"gpt-5.4\"" "$REQUEST_LOG"
+
+  resumed_path=$(find_session_path "$sessions_dir" "$resume_marker")
+  [[ "$resumed_path" == "$openai_path" ]]
+}
+
+run_upstream_provider_filter_case
 
 echo "shared ~/.codex resume smoke OK"

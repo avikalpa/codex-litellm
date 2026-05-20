@@ -21,10 +21,10 @@ Run this before handoff when a change affects rendering, reasoning display, tool
 
 4. Footer and completion state
 - the turn reaches a clear completed state
-- token/context footer behavior remains sane
+- footer token/status behavior remains sane
 
 5. Telemetry coherence
 - `trace/telemetry.py tui --session <uuid>` and session logs explain the visible UI state without relying on screenshots or pasted transcripts
 
 ## Failure Rule
-If one of these checks fails, capture the session id and log paths in `agent_docs/CURRENT_TASK.md` before patching.
+If one of these checks fails, capture the session id and log paths in `docs/CURRENT_TASK.md` before patching.

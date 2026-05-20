@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-CHANGELOG_PATH="${CHANGELOG_PATH:-agent_docs/CHANGELOG.md}"
+CHANGELOG_PATH="${CHANGELOG_PATH:-docs/CHANGELOG.md}"
 version_input="${1:-Unreleased}"
 version="${version_input#v}"
 

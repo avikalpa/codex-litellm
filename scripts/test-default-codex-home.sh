@@ -49,6 +49,10 @@ cleanup() {
   if [[ -n "$TMP_UPSTREAM_DIR" ]]; then
     rm -rf "$TMP_UPSTREAM_DIR"
   fi
+  for _ in 1 2 3; do
+    rm -rf "$tmpdir" && return
+    sleep 0.2
+  done
   rm -rf "$tmpdir"
 }
 trap cleanup EXIT

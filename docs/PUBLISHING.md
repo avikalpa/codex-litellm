@@ -6,14 +6,14 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 - `main` already contains the intended upstream refresh.
 - `codex/`, `stable-tag.patch`, `package.json`, and `package-lock.json` all point at the same upstream base.
 - The release is validated on the LiteLLM `/responses` path. That is the default path forward for `codex-litellm`.
-- The required live model checks in `agent_docs/MODEL_BEHAVIOR_TESTS.md` pass.
+- The required live model checks in `docs/MODEL_BEHAVIOR_TESTS.md` pass.
 - `README.md` is updated if the user-facing story, recommendations, install path, or caveats changed.
-- `agent_docs/CHANGELOG.md` is updated for the release and reads like a coherent release story.
+- `docs/CHANGELOG.md` is updated for the release and reads like a coherent release story.
 - The release will be built on GitHub Actions. Local release artifacts are not the publish source.
 
 ## Versioning Rules
 - `package.json.version` and `package.json.codexLitellm.baseVersion` track the upstream Codex version.
-- `package.json.codexLitellm.upstreamCommit` tracks the exact upstream commit we are patching.
+- `package.json.codexLitellm.upstreamCommit` tracks the 8-character upstream commit prefix used in release tags.
 - `package.json.codexLitellm.releaseTag` is the human-facing release seed.
 - The published npm version is derived from the GitHub release tag by replacing `+` with `-`.
 
@@ -23,7 +23,7 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
    - `git -C codex describe --tags --exact-match HEAD`
 2. Refresh the user-facing story if needed:
    - review `README.md` for install order, setup flow, model guidance, and current caveats
-   - review `agent_docs/CHANGELOG.md` so the release story matches reality
+   - review `docs/CHANGELOG.md` so the release story matches reality
 3. Regenerate `package-lock.json`:
    - `npm install --package-lock-only --ignore-scripts`
 4. Run the metadata checks:
@@ -34,7 +34,7 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 5. Run the required build/test checks:
    - `cargo build --locked --bin codex`
    - any targeted tests needed for the release
-   - required live model smokes from `agent_docs/MODEL_BEHAVIOR_TESTS.md`
+   - required live model smokes from `docs/MODEL_BEHAVIOR_TESTS.md`
 6. Make sure the intended user path is not broken:
    - `./scripts/test-default-codex-home.sh` passes
    - `./scripts/test-shared-session-resume.sh` passes
@@ -42,7 +42,7 @@ This is the release checklist for `codex-litellm`. If any step fails, stop and f
 
 ## Tagging
 1. Commit the release-ready state.
-2. Ask the user whether to publish now.
+2. Ask the user whether to publish now, except when the active task is a latest-upstream refresh and the user has already requested publish.
 3. Push `main`.
 4. Create the release tag from the current committed state:
    - `VERSION=$(node -p "require('./package.json').codexLitellm.baseVersion")`

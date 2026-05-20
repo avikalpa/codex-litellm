@@ -5,12 +5,13 @@ These are the required live smoke tests before push or release.
 ## Environment
 - Build from `codex/codex-rs`:
   - `cargo build --locked --bin codex`
+  - `cargo build --locked --bin codex-litellm`
 - Recreate the test repo for clean runs:
   - `rm -rf test-workspace && ./setup-test-env.sh`
 - For fixture-driven research runs beyond `calibre-web`:
   - `./scripts/setup-test-repo.sh --refresh <fixture> test-workspace`
 - Run from `test-workspace` with the canonical LiteLLM profile:
-  - `CODEX_HOME=/home/pi/.codex-litellm-debug ../codex/codex-rs/target/debug/codex exec "<prompt>" --model <slug> --skip-git-repo-check`
+  - `CODEX_HOME=/home/pi/.codex-litellm-debug ../codex/codex-rs/target/debug/codex-litellm exec "<prompt>" --model <slug> --skip-git-repo-check`
 
 ## Required Order
 1. Agentic release gate
@@ -18,7 +19,7 @@ These are the required live smoke tests before push or release.
 ## Required Models
 - Agentic release gate:
   - current gateway-discovered MiniMax release route
-  - currently: `vercel/minimax-m2.7-highspeed`
+  - currently: `vercel/maa/minimax-m2.7-highspeed`
 
 ## Canonical Prompt
 `change every button and button-like input in the repository to use a diagonal gradient from #195c53 to #d17a2d, a 999px pill radius, 14px 24px padding, and a stronger hover shadow. Make the repo edit directly and finish after the edit. Do not ask for permission.`
@@ -34,7 +35,7 @@ These are the required live smoke tests before push or release.
 
 ## Failure Handling
 - Save the rollout/session logs.
-- Record the exact log paths in `agent_docs/CURRENT_TASK.md`.
+- Record the exact log paths in `docs/CURRENT_TASK.md`.
 - Do not release until the failure is explained.
 
 ## Notes
@@ -50,10 +51,11 @@ These are the required live smoke tests before push or release.
   - `python-cli` for CLI + README + test updates
   - `calibre-web` as the heavier real-world UI repo
 - For current agentic model research, the baseline matrix is:
-  - `vercel/minimax-m2.7-highspeed`
-  - `vercel/kimi-k2.5`
-  - `vercel/claude-haiku-4.5`
-  - `vercel/glm-5-turbo`
+  - `vercel/maa/minimax-m2.7-highspeed`
+  - `vercel/maa/kimi-k2.6`
+  - `vercel/maa/claude-haiku-4.5`
+  - `vercel/maa/glm-5.1`
+  - `vercel/maa/deepseek-v4-pro`
 - Research watchlist that should still be re-run regularly:
   - `vercel/gemini-3.1-pro-preview`
   - `vercel/grok-4.20-reasoning-beta`

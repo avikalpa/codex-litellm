@@ -4,10 +4,11 @@
 `codex-litellm` is a patchset that keeps upstream Codex usable against a LiteLLM backend. It is not a separate product with its own independent architecture.
 
 ## What We Add Beyond Upstream
-- direct LiteLLM request/response compatibility
-- provider/model-specific runtime fixes
-- extra telemetry for debugging heterogeneous backends
-- supported-model curation and release gating based on real model behavior
+- direct LiteLLM `/responses` compatibility
+- LiteLLM first-run setup in the `codex-litellm` binary
+- LiteLLM `/v1/models` discovery in `/model`
+- narrow request/tool compatibility handling for heterogeneous backends
+- supported-model guidance and release gating based on real model behavior
 - packaging and publish automation for the patched binary
 
 ## What Makes This Project Hard
@@ -23,3 +24,4 @@
 - prefer evidence over theory
 - treat model support as a living compatibility matrix, not a static promise
 - keep the release path reproducible
+- rely on upstream Codex context-management defaults unless live evidence proves a regression
