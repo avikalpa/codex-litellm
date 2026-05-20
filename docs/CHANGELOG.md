@@ -22,6 +22,7 @@ No unreleased changes yet.
 - runtime: added a built-in `litellm` provider using `wire_api = "responses"`, `LITELLM_BASE_URL`, and `LITELLM_API_KEY`.
 - runtime: preserved LiteLLM tool-schema normalization for providers that reject upstream Responses tool shapes.
 - runtime: retries a LiteLLM Responses request once without `reasoning` when the gateway rejects `reasoning_effort`.
+- packaging: keeps the LiteLLM version-display build helper in the tracked CLI crate path so regenerated patches apply cleanly in CI.
 - models: accepts OpenAI-compatible `/v1/models` payloads and treats returned slugs as selectable compatibility entries.
 - models: avoids seeding the LiteLLM picker from OpenAI's bundled model catalog, so the picker reflects gateway discovery instead of a static allowlist.
 - models: refreshed the release-gate MiniMax route to the gateway-canonical `vercel/maa/minimax-m2.7-highspeed` slug.

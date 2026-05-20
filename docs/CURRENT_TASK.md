@@ -28,14 +28,16 @@ Last updated: 2026-05-20
 - `./scripts/test-npm-release-version.sh`: pass.
 - `./scripts/test-default-codex-home.sh`: pass.
 - `./scripts/test-shared-session-resume.sh`: pass.
+- `stable-tag.patch` apply check against a fresh `rust-v0.132.0` worktree: pass.
 - Live model gate: pass with `vercel/maa/minimax-m2.7-highspeed`.
   - Stale route `vercel/minimax-m2.7-highspeed` failed with `/responses` invalid model.
   - Passing rollout: `/home/pi/.codex-litellm-debug/sessions/2026/05/21/rollout-2026-05-21T00-48-18-019e46d3-11db-73d3-adb2-e288f5e3a088.jsonl`.
   - Evidence: non-empty fixture diff in `test-workspace/cps/static/css/style.css` and final assistant reply.
 
 ## Required Before Release
-- Commit the release-ready state.
-- Push `main`, create the GitHub release, and verify npm `latest`.
+- Commit and push the CI packaging fix.
+- Delete the failed `v0.132.0+13595c36+litfcc2f5f` release/tag or supersede it with the fixed release tag.
+- Create the replacement GitHub release and verify npm `latest`.
 
 ## Handoff Rule
 Do not release or publish from any older base.
