@@ -4,6 +4,7 @@ set -euo pipefail
 CHANGELOG_PATH="${CHANGELOG_PATH:-docs/CHANGELOG.md}"
 version_input="${1:-Unreleased}"
 version="${version_input#v}"
+base_version="${version%%+*}"
 
 extract_section() {
   local section="$1"
@@ -37,6 +38,10 @@ extract_section() {
 
 if ! output="$(extract_section "$version")" || [ -z "$output" ]; then
   output=""
+fi
+
+if [ -z "$output" ] && [ "$base_version" != "$version" ]; then
+  output="$(extract_section "$base_version" || true)"
 fi
 
 if [ -z "$output" ] && [ "$version" != "Unreleased" ]; then

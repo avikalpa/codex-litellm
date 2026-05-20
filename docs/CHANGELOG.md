@@ -3,6 +3,9 @@
 This file tracks user-visible changes in `codex-litellm`.
 
 ## Unreleased
+No unreleased changes yet.
+
+## 0.132.0 - 2026-05-20
 `codex-litellm` is refreshed onto upstream `rust-v0.132.0`. This release keeps the patchset narrower: `/responses` is the LiteLLM path, `/chat/completions` is deprecated, model discovery comes from the LiteLLM `/v1/models` endpoint, and custom context-management policy has been removed in favor of upstream Codex defaults.
 
 ### Highlights
